@@ -41,6 +41,8 @@ parameter fit은 불안정하고 far-OOD extrapolation은 linear fallback보다 
   realization이 parameter oracle에 수렴하는지 묻는 후속 규약
 - `RESULTS_EXPOSURE_IDENTIFIABILITY_EXTENSION_V1.md` — `O=.90`까지 확장한 결과와
   수렴 실패의 범위 제한 해석
+- `EXPERIMENT_NOTE.md` — 실험 질문 → 결과 → 기각/지지 범위 → 다음 실험을 잇는
+  지속 관리 연구 노트
 
 ## 실행
 
