@@ -110,6 +110,8 @@ evaluate it; Oracle Decomposition v1 does. See `TERMINOLOGY.md`.
 - Explain the constructive half: higher exposure does improve both utility and
   parameter estimates. The conclusion is `visible ≠ identifiable`, not that
   observation is useless.
+- Interpret `O` within family: equal numerical O values need not encode equal
+  information across regime change and curvature.
 - Safe scope: finite synthetic support, fixed noise and tail distance. Do not
   claim that family identity is universally or intrinsically insufficient.
 

@@ -90,3 +90,11 @@ the available support.
 This is a **development** result, not a real-data claim. It rejects practical
 convergence for the frozen high-exposure grid; it does not establish that no
 amount of further observation can identify these parameters.
+
+## Comparability guardrail
+
+`O` is an exposure coordinate used **within each family**. An `O=.80` regime
+change and an `O=.80` emergent-curvature trajectory need not contain the same
+absolute amount or type of statistical information. The primary comparison is
+therefore each family's own trajectory of parameter error and realization gap as
+exposure increases—not a cross-family comparison of equal-valued `O`.
