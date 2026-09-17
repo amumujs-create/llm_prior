@@ -1,0 +1,215 @@
+{
+  "experiment_id": "admission_v2_frozen_confirmation_v1",
+  "status": "confirmatory_synthetic_independent_draw",
+  "manifest_sha256": "da703b6766d0c71e1785608d9b5e9baa154d4851b1c9f6e981df3e9a475115c9",
+  "n_confirmation_tasks": 4500,
+  "data_independence": "New SeedSequence root 20260921; no shared parameter draws or noise realizations with development root 20260920.",
+  "primary_endpoint": {
+    "v1": {
+      "coverage": 0.6215555555555555,
+      "false_admission_rate": 0.6397816858702243,
+      "harm_risk_among_admitted": 0.37718984626385416,
+      "useful_prior_admit_rate": 0.611013679410733
+    },
+    "v2": {
+      "coverage": 0.5602222222222222,
+      "false_admission_rate": 0.19284414796846575,
+      "harm_risk_among_admitted": 0.12614042046806823,
+      "useful_prior_admit_rate": 0.7727113293581199
+    },
+    "paired_primary": {
+      "delta_far": -0.44693753790175866,
+      "ci95": [
+        -0.47847180109157067,
+        -0.4166161309884779
+      ],
+      "n_harmful": 1649
+    }
+  },
+  "by_family": {
+    "regime_change": {
+      "n": 1500,
+      "v1": {
+        "coverage": 0.44866666666666666,
+        "false_admission_rate": 0.5420918367346939,
+        "harm_risk_among_admitted": 0.6315007429420505,
+        "useful_prior_admit_rate": 0.3463687150837989
+      },
+      "v2": {
+        "coverage": 0.31533333333333335,
+        "false_admission_rate": 0.12372448979591837,
+        "harm_risk_among_admitted": 0.20507399577167018,
+        "useful_prior_admit_rate": 0.5251396648044693
+      },
+      "spearman_O_utility": 0.5708595280876034
+    },
+    "emergent_curvature": {
+      "n": 1500,
+      "v1": {
+        "coverage": 0.6186666666666667,
+        "false_admission_rate": 0.7521613832853026,
+        "harm_risk_among_admitted": 0.5625,
+        "useful_prior_admit_rate": 0.5037220843672456
+      },
+      "v2": {
+        "coverage": 0.42866666666666664,
+        "false_admission_rate": 0.1484149855907781,
+        "harm_risk_among_admitted": 0.16018662519440124,
+        "useful_prior_admit_rate": 0.6699751861042184
+      },
+      "spearman_O_utility": 0.42531339979017346
+    },
+    "asymptotic_bound": {
+      "n": 1500,
+      "v1": {
+        "coverage": 0.7973333333333333,
+        "false_admission_rate": 0.631578947368421,
+        "harm_risk_among_admitted": 0.0903010033444816,
+        "useful_prior_admit_rate": 0.8186606471030851
+      },
+      "v2": {
+        "coverage": 0.9366666666666666,
+        "false_admission_rate": 0.6900584795321637,
+        "harm_risk_among_admitted": 0.08398576512455516,
+        "useful_prior_admit_rate": 0.9683972911963883
+      },
+      "spearman_O_utility": 0.9262757465534562
+    }
+  },
+  "pooled_spearman_O_utility": 0.7220261344026481,
+  "coverage_harm_curve_supplementary": [
+    {
+      "threshold": 0.05,
+      "coverage": 0.9337777777777778,
+      "false_admission_rate": 0.8253486961795027,
+      "harm_risk_among_admitted": 0.3238933841028082,
+      "useful_prior_admit_rate": 0.9964924587863907
+    },
+    {
+      "threshold": 0.1,
+      "coverage": 0.868,
+      "false_admission_rate": 0.6579745300181928,
+      "harm_risk_among_admitted": 0.2777777777777778,
+      "useful_prior_admit_rate": 0.9894773763591722
+    },
+    {
+      "threshold": 0.15,
+      "coverage": 0.824,
+      "false_admission_rate": 0.5603395997574288,
+      "harm_risk_among_admitted": 0.24919093851132687,
+      "useful_prior_admit_rate": 0.976499473868818
+    },
+    {
+      "threshold": 0.2,
+      "coverage": 0.7848888888888889,
+      "false_admission_rate": 0.4887810794420861,
+      "harm_risk_among_admitted": 0.22819932049830124,
+      "useful_prior_admit_rate": 0.9561557348298843
+    },
+    {
+      "threshold": 0.25,
+      "coverage": 0.7502222222222222,
+      "false_admission_rate": 0.44329896907216493,
+      "harm_risk_among_admitted": 0.21652843601895735,
+      "useful_prior_admit_rate": 0.9277446509996492
+    },
+    {
+      "threshold": 0.3,
+      "coverage": 0.7031111111111111,
+      "false_admission_rate": 0.3784111582777441,
+      "harm_risk_among_admitted": 0.1972187104930468,
+      "useful_prior_admit_rate": 0.890915468256752
+    },
+    {
+      "threshold": 0.35,
+      "coverage": 0.6604444444444444,
+      "false_admission_rate": 0.3226197695573075,
+      "harm_risk_among_admitted": 0.17900403768506057,
+      "useful_prior_admit_rate": 0.8558400561206594
+    },
+    {
+      "threshold": 0.39999999999999997,
+      "coverage": 0.6204444444444445,
+      "false_admission_rate": 0.26804123711340205,
+      "harm_risk_among_admitted": 0.15830945558739254,
+      "useful_prior_admit_rate": 0.8242721851981761
+    },
+    {
+      "threshold": 0.44999999999999996,
+      "coverage": 0.5906666666666667,
+      "false_admission_rate": 0.23104912067919953,
+      "harm_risk_among_admitted": 0.1433408577878104,
+      "useful_prior_admit_rate": 0.7986671343388285
+    },
+    {
+      "threshold": 0.49999999999999994,
+      "coverage": 0.5602222222222222,
+      "false_admission_rate": 0.19284414796846575,
+      "harm_risk_among_admitted": 0.12614042046806823,
+      "useful_prior_admit_rate": 0.7727113293581199
+    },
+    {
+      "threshold": 0.5499999999999999,
+      "coverage": 0.5317777777777778,
+      "false_admission_rate": 0.16191631291691935,
+      "harm_risk_among_admitted": 0.11157542833263685,
+      "useful_prior_admit_rate": 0.7457032620133287
+    },
+    {
+      "threshold": 0.6,
+      "coverage": 0.5024444444444445,
+      "false_admission_rate": 0.13159490600363857,
+      "harm_risk_among_admitted": 0.09597523219814241,
+      "useful_prior_admit_rate": 0.7169414240617328
+    },
+    {
+      "threshold": 0.65,
+      "coverage": 0.47244444444444444,
+      "false_admission_rate": 0.1091570648878108,
+      "harm_risk_among_admitted": 0.08466603951081844,
+      "useful_prior_admit_rate": 0.682567520168362
+    },
+    {
+      "threshold": 0.7,
+      "coverage": 0.4411111111111111,
+      "false_admission_rate": 0.08914493632504548,
+      "harm_risk_among_admitted": 0.07405541561712846,
+      "useful_prior_admit_rate": 0.644686075061382
+    },
+    {
+      "threshold": 0.75,
+      "coverage": 0.4071111111111111,
+      "false_admission_rate": 0.07155852031534263,
+      "harm_risk_among_admitted": 0.06441048034934498,
+      "useful_prior_admit_rate": 0.6011925640126271
+    },
+    {
+      "threshold": 0.7999999999999999,
+      "coverage": 0.3551111111111111,
+      "false_admission_rate": 0.044269254093389936,
+      "harm_risk_among_admitted": 0.045682102628285357,
+      "useful_prior_admit_rate": 0.5349000350754122
+    },
+    {
+      "threshold": 0.85,
+      "coverage": 0.302,
+      "false_admission_rate": 0.021224984839296544,
+      "harm_risk_among_admitted": 0.025754231052244298,
+      "useful_prior_admit_rate": 0.464398456681866
+    },
+    {
+      "threshold": 0.9,
+      "coverage": 0.23133333333333334,
+      "false_admission_rate": 0.0072771376591873865,
+      "harm_risk_among_admitted": 0.011527377521613832,
+      "useful_prior_admit_rate": 0.36092599088039284
+    },
+    {
+      "threshold": 0.95,
+      "coverage": 0.1668888888888889,
+      "false_admission_rate": 0.0036385688295936932,
+      "harm_risk_among_admitted": 0.007989347536617843,
+      "useful_prior_admit_rate": 0.26131182041388984
+    }
+  ]
+}

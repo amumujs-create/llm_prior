@@ -61,6 +61,19 @@
 - Headline: **“A plausible, visible structure can still be unsafe when its parameters are unstable.”**
 - Coefficients are descriptive of the development model, not causal rankings.
 
+## Confirmation slide
+
+### Slide 8 — Frozen rule independently reproduces its safety gain
+
+- Use `figures/fig08_confirmation_coverage_harm_risk.png`.
+- Headline: **“Without modifying the rule, harmful-prior admission fell from 64.0% to 19.3% on a new draw.”**
+- Include the paired primary statistic: `Delta FAR = -0.447`, 95% CI
+  `[-0.478, -0.417]`; all values are synthetic confirmation values.
+- State both sides of the trade-off: coverage 62.2%→56.0%; useful-prior admit
+  61.1%→77.3%.
+- Family caveat: emphasize reproduced gains for regime change and emergent
+  curvature, and report the asymptotic-bound FAR nuance rather than hiding it.
+
 ## Figure provenance captions
 
 Every figure should carry: “Synthetic generic-prior development study; family
