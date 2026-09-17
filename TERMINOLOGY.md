@@ -6,6 +6,7 @@
 |---|---|---|---|
 | **World-truth prior** | Nothing; this is a property of the data-generating process | Family and all parameters | Not an executable method input |
 | **Generative-family oracle** | The correct structural family, e.g. `regime_change` | Change time, rates, exponents, bound, and all other parameters | May harm when prefix evidence cannot identify consequential parameters |
+| **Parameter oracle** | Correct family plus the consequential realization parameters | Nuisance parameters only | Shows whether parameter uncertainty, rather than family mismatch, caused the extrapolation failure |
 | **Full-information oracle** | Correct family **and** actual parameter values | Nothing relevant to the generated tail | Must be at least as good as the generative-family oracle; admission should never reject it |
 | **Contrast prior** | A deliberately different family | Its parameters are fit from prefix | Negative control for misspecification |
 | **Fallback** | No structural family | — | Linear least-squares extrapolation |
@@ -25,6 +26,14 @@ world-truth family ≠ parameter identifiability from the prefix
 generative-family oracle < fallback is possible
 full-information oracle ≥ generative-family oracle
 ```
+
+## Realization gap
+
+The **realization gap** is `RMSE(generative-family oracle) − RMSE(parameter
+oracle)`. It estimates the cost of having to infer consequential continuation
+parameters from the observed prefix. A gap closing with exposure is evidence of
+parameter identification in that generator; it is not evidence that a family
+label is universally sufficient.
 
 Admission asks neither “is this family true in the world?” nor “is it a
 full-information oracle?” It asks: **given only the currently observed support,

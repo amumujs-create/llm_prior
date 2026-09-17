@@ -53,6 +53,16 @@ v1 is `development` even when a result is positive.
 4. A rule inspired by v1 must be tested on a new seed and new parameter draw; it may
    not be presented as confirmation on v1.
 
+## Exposure / identifiability extension
+
+1. `exposure_identifiability_extension_v1` is a separate development experiment;
+   it does not alter Oracle Decomposition v1.
+2. Its generator, high-exposure grid, seed, bootstrap rule, and convergence
+   threshold are frozen in `EXPOSURE_IDENTIFIABILITY_EXTENSION_PROTOCOL.md` before
+   results are inspected.
+3. “Convergence” is only a practical, generator-scoped statement: upper paired
+   bootstrap 95% interval for the family-to-parameter RMSE gap is at most `.01`.
+
 ## Required result record
 
 Every version must save: generator config, split, seed, true observability definition,

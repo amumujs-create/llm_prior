@@ -4,7 +4,8 @@
 
 Terminology note for every slide: call the evaluated matched prior a
 **generative-family oracle**; reserve **full-information oracle** for a
-parameter-known upper bound that v1/v2 do not evaluate. See `TERMINOLOGY.md`.
+parameter-known upper bound. The generic sweep/admission experiments do not
+evaluate it; Oracle Decomposition v1 does. See `TERMINOLOGY.md`.
 
 ### Slide 1 — The problem is not merely prior retrieval
 
@@ -95,6 +96,22 @@ parameter-known upper bound that v1/v2 do not evaluate. See `TERMINOLOGY.md`.
 - Headline: **“Three realizations of the same acceleration prior show low-support risk.”**
 - Qualify as auxiliary: the three methods are a robustness probe, not an equal-
   budget model leaderboard.
+
+## Exposure / identifiability extension slide
+
+### Slide 11 — Visibility improves safety, but does not yet close the realization gap
+
+- Use `figures/fig11_exposure_identifiability_extension.png` with
+  `figures/fig12_exposure_parameter_identification.png` as mechanism support.
+- Headline: **“Even O=.90 visibility did not make family-only realization equal parameter knowledge.”**
+- Primary result: pre-specified family–parameter RMSE gap stayed above `.01` for
+  both families; at O=.90 it was `.0346` for regime change and `.0438` for
+  curvature, with bootstrap intervals excluding `.01`.
+- Explain the constructive half: higher exposure does improve both utility and
+  parameter estimates. The conclusion is `visible ≠ identifiable`, not that
+  observation is useless.
+- Safe scope: finite synthetic support, fixed noise and tail distance. Do not
+  claim that family identity is universally or intrinsically insufficient.
 
 ## Figure provenance captions
 

@@ -35,6 +35,12 @@ parameter fit은 불안정하고 far-OOD extrapolation은 linear fallback보다 
 - `figures/` — PPT 재사용용 PNG
 - `RESULTS_V1.md` — 결과 해석 및 발표용 문장
 - `PPT_STORYBOARD.md` — 그림별 슬라이드 역할과 안전한 claim
+- `ORACLE_DECOMPOSITION_PROTOCOL.md` / `RESULTS_ORACLE_DECOMPOSITION_V1.md` — family
+  knowledge와 realization knowledge를 분해한 실험
+- `EXPOSURE_IDENTIFIABILITY_EXTENSION_PROTOCOL.md` — high-exposure에서 family-only
+  realization이 parameter oracle에 수렴하는지 묻는 후속 규약
+- `RESULTS_EXPOSURE_IDENTIFIABILITY_EXTENSION_V1.md` — `O=.90`까지 확장한 결과와
+  수렴 실패의 범위 제한 해석
 
 ## 실행
 

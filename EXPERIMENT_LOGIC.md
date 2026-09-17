@@ -2,20 +2,25 @@
 
 ## Problem decomposition
 
-An extrapolation prior has three logically separate properties.
+An extrapolation prior has five logically separate properties.
 
 ```text
-Family truth  ──does the structural family match the generator?──────┐
-                                                                      ├─> Far-OOD utility
-Observability ──is its distinguishing evidence in the prefix?────────┘
-                                   ↑
-                           Admission must estimate this from data alone
+Family truth ──does the structural family match the generator?──┐
+                                                                  ↓
+Structural evidence ──is its signature visible in the prefix?───┤
+                                                                  ↓
+Parameter identifiability ──are onset/scale/shape constrained?──┤
+                                                                  ↓
+Safe realization ──can this fitted continuation be deployed?─────┤
+                                                                  ↓
+Far-OOD utility ──is it better than fallback on the hidden tail?─┘
 ```
 
 The purpose is not to show that a parametric curve can fit its own simulator.
 The falsifiable issue is whether the **same true family label**, whose parameters
 remain unknown, changes from harmful to helpful as its identifying evidence
-crosses the observation boundary.
+crosses the observation boundary. The further question is whether more visible
+evidence actually identifies the future-determining realization parameters.
 
 ## Causal test design
 
@@ -29,6 +34,7 @@ generative-family oracle, not a full-information oracle.
 | C2: observability drives utility | seven-level sweep in each of three generic families | utility trend / Spearman O→utility | nonpositive or unstable family-level association |
 | C3: data can decide admissibility | pseudo-OOD score only from prefix | score↔O association, low-O reject rate, high-O admit rate | score cannot separate low/high O |
 | C4: a validation design is transferable | compare uniform and boundary-focused scores | gate RMSE and error trade-offs across all families | one score only works by family-specific leakage/tuning |
+| C5: visibility becomes sufficient identification | extend post-onset exposure to O=.90 | family–parameter realization gap with paired bootstrap | gap remains above predeclared practical threshold |
 
 ## Why three families
 
@@ -52,7 +58,9 @@ M5 tail-weighted family-oracle gate: predeclared boundary-sensitive alternative
 M1 is intentionally not a full-information oracle. If M1 harms at low observability,
 the issue is not false scientific knowledge but an inability to infer usable
 parameters from the available data. M4/M5 must outperform M0 or improve risk
-selectively before they are called an admission solution.
+selectively before they are called an admission solution. Admission's target is
+therefore expected utility of a realized prior, `P(U_P > 0 | D_obs)`, rather
+than posterior family correctness.
 
 ## Decision logic after v1
 
@@ -65,3 +73,19 @@ selectively before they are called an admission solution.
 
 This prevents a retrieval system from being credited for a prior that the data
 cannot yet responsibly use.
+
+## Extension result: visible does not yet mean identifiable
+
+The independent high-exposure development extension evaluates C5. Family-only
+error and realization-parameter error both decline as O rises to `.90`, but the
+pre-specified family–parameter gap stays above `.01` for regime change and
+emergent curvature. This rejects *practical convergence within this finite
+grid* and keeps the relevant distinction explicit:
+
+```text
+structural evidence ≠ sufficient parameter identifiability
+```
+
+Thus a retrieval stage should aim to retrieve not merely a family label but
+constraints on the continuation's onset, scale, shape, or bound; admission then
+judges whether remaining uncertainty is safe.
