@@ -242,7 +242,7 @@ and how precise must that knowledge be before it improves far-OOD extrapolation?
 
 ---
 
-## 6. Next preregistration target — Partial Realization Knowledge Experiment
+## 6. Partial Realization Knowledge Sweep — the retrieval target is family-dependent
 
 **Why this is next.** The parameter oracle is intentionally too strong to model
 real scientific retrieval: RAG rarely returns exact onset, scale, and exponent.
@@ -255,7 +255,7 @@ missing realization fields, imprecise knowledge, and admission error.
 > Which realization fields, supplied at which precision, close enough of the
 > family-to-parameter gap to yield positive far-OOD utility?
 
-### Candidate conditions to freeze before execution
+### Frozen conditions
 
 For each of regime change and emergent curvature:
 
@@ -263,14 +263,32 @@ For each of regime change and emergent curvature:
 2. Each singleton: onset only, scale only, shape/exponent only.
 3. Each pair: onset+scale, onset+shape, scale+shape.
 4. All three fields (the existing parameter-oracle reference).
-5. Full-information oracle (upper-bound reference).
+5. All three fields, exact (the parameter-oracle reference).
 
 For each supplied field, distinguish exact knowledge from noisy or interval
 knowledge. A starting onset-noise sweep is `σ_K ∈ {0, .02, .05, .10, .20}` for
 `τ_known = τ + ε`, `ε ~ Normal(0, σ_K²)`. Corresponding scale and exponent
 precision grids must be specified before the experiment runs.
 
-### Planned outputs
+### Execution result
+
+The sweep ran at `O=.90` on 400 independent base trajectories (2 families ×
+200), reusing each noisy prefix across all conditions. It produced 14,400
+paired fits. Exact constraints show that no field has a universal ranking:
+
+| Family | Strongest exact pair | Gap closed | Important counterexample |
+|---|---|---:|---|
+| Regime change | onset+scale | 97.7% [97.0, 98.2] | onset alone: 21.3% |
+| Emergent curvature | scale+shape | 92.8% [90.5, 94.7] | onset alone: 3.6%, CI includes 0 |
+
+Precision changes the result. The all-field condition is perfect only when
+exact; for regime change it falls to 53% closure at `.05` retrieval noise and
+below family-only at `.10`. Curvature tolerates moderate all-field uncertainty
+better (68% at `.10`) but falls below family-only at `.40`. Therefore RAG must
+return constraints **and their uncertainty**, rather than be treated as a
+point-parameter oracle.
+
+### Outputs now recorded
 
 - Far-OOD RMSE and utility versus fallback for every knowledge subset.
 - Incremental gap closure relative to family-only and full parameter knowledge.
@@ -284,18 +302,24 @@ Structural family
     └── uncertainty / confidence / provenance
 ```
 
-### Decision logic
+### Decision and next question
 
-- If one field (e.g., onset) closes most of the gap, retrieval should prioritize
-  evidence for that field rather than generic family labels.
-- If field importance differs by family, use prior-conditioned admission
-  `A(P, D_obs)` and a family-specific knowledge schema.
-- If only exact values help, represent RAG output as uncertain constraints and
-  quantify whether ordinary scientific knowledge is sufficiently precise before
-  claiming deployment value.
-- Only after this experiment should actual RAG candidate generation be added:
-  RAG supplies plausible family plus realization constraints; admission decides
-  whether remaining uncertainty is safe.
+- Retrieval schema: family plus onset, scale, shape, and an uncertainty/confidence
+  field. The evidence priority is onset+scale for regime change and scale+shape
+  for curvature in this generator.
+- Admission should be prior-conditioned, `A(P, D_obs)`, because both valuable
+  fields and tolerance to imprecision differ by family.
+- Next step before actual retrieval: freeze a **RAG information specification**
+  that describes what an item must return (field, constraint/range, confidence,
+  provenance) and how uncertain constraints enter realization fitting. Actual
+  RAG can then be evaluated as candidate/constraint recall rather than an
+  uninterpretable end-to-end black box.
+
+**Artifacts.** `PARTIAL_REALIZATION_KNOWLEDGE_PROTOCOL.md`,
+`RESULTS_PARTIAL_REALIZATION_KNOWLEDGE_V1.md`,
+`results/partial_realization_knowledge_sweep_v1/results.json`,
+`figures/fig13_partial_knowledge_exact_gap_closure.png`,
+`figures/fig14_partial_knowledge_precision_sweep.png`.
 
 ---
 

@@ -63,6 +63,16 @@ v1 is `development` even when a result is positive.
 3. “Convergence” is only a practical, generator-scoped statement: upper paired
    bootstrap 95% interval for the family-to-parameter RMSE gap is at most `.01`.
 
+## Partial realization knowledge sweep
+
+1. `partial_realization_knowledge_sweep_v1` is a separate development study at
+   `O=.90`; it answers a knowledge-ablation question, not a complete
+   exposure-by-knowledge interaction.
+2. The frozen protocol defines the fields, all subset conditions, retrieval
+   perturbations, seed, and paired bootstrap outputs before execution.
+3. Treat noisy retrieved values as uncertain constraints. Do not describe the
+   exact all-fields condition as a deployable RAG result.
+
 ## Required result record
 
 Every version must save: generator config, split, seed, true observability definition,

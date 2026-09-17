@@ -89,3 +89,18 @@ structural evidence ≠ sufficient parameter identifiability
 Thus a retrieval stage should aim to retrieve not merely a family label but
 constraints on the continuation's onset, scale, shape, or bound; admission then
 judges whether remaining uncertainty is safe.
+
+## Partial knowledge result: the retrieval target is family-conditioned
+
+The partial-realization sweep fixes the high-exposure setting where family-only
+is useful but remains below the parameter reference. Exact onset+scale closes
+97.7% of the gap for regime change; exact scale+shape closes 92.8% for emergent
+curvature. Onset alone is nearly uninformative for curvature (3.6%). Retrieval
+precision can reverse the benefit of fixing several fields, so the retrieval
+output must be an uncertainty-aware constraint, not an unqualified point value.
+
+The next artifact before actual RAG is an information specification: the
+candidate record must include structural family, field-level constraints or
+ranges, confidence, and provenance. This makes a later evaluation decomposable
+into family recall, realization-constraint recall/accuracy, and admission
+safety.

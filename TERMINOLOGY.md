@@ -35,6 +35,15 @@ parameters from the observed prefix. A gap closing with exposure is evidence of
 parameter identification in that generator; it is not evidence that a family
 label is universally sufficient.
 
+## Partial realization knowledge
+
+**Partial realization knowledge** supplies only a subset of consequential
+fields—such as onset, scale, or shape—as external constraints while the prefix
+fits all remaining parameters. It is the synthetic proxy for useful scientific
+retrieval. A retrieved constraint must carry an uncertainty or confidence value:
+exact parameter-oracle values are an upper-bound reference, not a realistic RAG
+assumption.
+
 Admission asks neither “is this family true in the world?” nor “is it a
 full-information oracle?” It asks: **given only the currently observed support,
 is applying this fitted structural prior expected to have positive utility?**

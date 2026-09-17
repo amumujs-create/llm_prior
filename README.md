@@ -43,6 +43,9 @@ parameter fit은 불안정하고 far-OOD extrapolation은 linear fallback보다 
   수렴 실패의 범위 제한 해석
 - `EXPERIMENT_NOTE.md` — 실험 질문 → 결과 → 기각/지지 범위 → 다음 실험을 잇는
   지속 관리 연구 노트
+- `PARTIAL_REALIZATION_KNOWLEDGE_PROTOCOL.md` / `RESULTS_PARTIAL_REALIZATION_KNOWLEDGE_V1.md`
+  — RAG가 family label 외에 어떤 realization 제약을 얼마나 정확히 가져와야 하는지
+  분해한 실험
 
 ## 실행
 

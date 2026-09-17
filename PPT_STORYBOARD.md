@@ -115,6 +115,26 @@ evaluate it; Oracle Decomposition v1 does. See `TERMINOLOGY.md`.
 - Safe scope: finite synthetic support, fixed noise and tail distance. Do not
   claim that family identity is universally or intrinsically insufficient.
 
+## Partial realization knowledge slides
+
+### Slide 12 — RAG should retrieve realization constraints, not just a family label
+
+- Use `figures/fig13_partial_knowledge_exact_gap_closure.png`.
+- Headline: **“The useful scientific fact depends on the structural family.”**
+- Regime change: exact onset+scale closes 97.7% of the gap. Curvature: exact
+  scale+shape closes 92.8%. Onset alone closes only 3.6% for curvature.
+- Conclusion: a family-conditioned ontology should expose onset, scale, shape,
+  and uncertainty; do not treat any one field as universally decisive.
+
+### Slide 13 — More retrieved facts are not automatically safer
+
+- Use `figures/fig14_partial_knowledge_precision_sweep.png`.
+- Headline: **“Imprecise point knowledge can erase the benefit of exact knowledge.”**
+- Explain that all exact fields are an upper-bound reference. With retrieval
+  noise, fixing several inaccurate values can underperform family-only fitting.
+- Motivate uncertainty-aware retrieval and admission, not a claim that synthetic
+  Gaussian retrieval noise matches real RAG errors.
+
 ## Figure provenance captions
 
 Every figure should carry: “Synthetic generic-prior development study; family
