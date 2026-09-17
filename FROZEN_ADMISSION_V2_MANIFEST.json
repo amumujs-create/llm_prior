@@ -1,0 +1,24 @@
+{
+  "status": "frozen_confirmation_pending",
+  "frozen_at": "2026-09-17",
+  "frozen_v2_source_sha256": "c1c2eee7dcc430b2bd1ca7c414f01bfc6a783e922fc0a287d8cb14967fea8a29",
+  "protocol_sha256": "f2f2b33da5bb356d4ca685682b7a94f780fbfef20d1825676c436ab708f05a3b",
+  "development_result_sha256": "29687a6bb5a72d65dcbbd1b3ae49bae04362a21f966b35179a2abc6fb0191a11",
+  "config_sha256": "43f0eebf29b7c30971df1a3c694f1982175242cef1a6ac50f62cb9864ce15d10",
+  "config": {
+    "development_seed": 20260920,
+    "confirmation_seed": 20260921,
+    "boundary": 0.6,
+    "far_ood_tail": "t > .70",
+    "families": ["regime_change", "emergent_curvature", "asymptotic_bound"],
+    "onset_levels": [0.75, 0.6, 0.5, 0.4, 0.3, 0.2],
+    "bound_exposure_levels": [0.1, 0.35, 0.7, 1.2, 2.0, 3.0],
+    "noise_sd": [0.005, 0.01, 0.02, 0.035, 0.055],
+    "tasks_per_cell": 50,
+    "features": ["boundary_slope_change", "slope_decay", "change_bic_advantage", "post_change_support", "quadratic_curvature_z", "asymptote_proximity", "parameter_precision", "covariance_condition", "fit_stability", "v1_pseudo_ood_score", "family_one_hot"],
+    "normalization": "StandardScaler numeric features; OneHotEncoder family",
+    "classifier": "LogisticRegression(C=1.0, class_weight=balanced, max_iter=1000, random_state=20260920)",
+    "threshold": 0.5,
+    "utility_label": "RMSE(linear fallback) - RMSE(matched prior) > 0"
+  }
+}

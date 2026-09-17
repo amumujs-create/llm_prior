@@ -1,0 +1,467 @@
+{
+  "experiment_id": "generic_observability_sweep_v1",
+  "evidence_status": "development",
+  "seed": 20260919,
+  "n_total": 1260,
+  "n_per_level": 60,
+  "contract": {
+    "boundary": 0.6,
+    "far_ood_tail": "t > .70",
+    "noise_sd": 0.015,
+    "tail_weights": [
+      0.1,
+      0.25,
+      0.65
+    ]
+  },
+  "sweep_summary": [
+    {
+      "family": "asymptotic_bound",
+      "sweep_level": 0.1,
+      "observability": 0.095163,
+      "oracle_utility": -0.002516,
+      "oracle_utility_ci": [
+        -0.004316,
+        -0.000862
+      ],
+      "uniform_admit_rate": 0.633333,
+      "tail_admit_rate": 0.533333,
+      "mean_rmse": {
+        "linear_fallback": 0.00545,
+        "asymptotic_bound": 0.007966,
+        "emergent_curvature": 0.038612,
+        "candidate_select_uniform": 0.023262,
+        "oracle_gate_uniform": 0.007608,
+        "oracle_gate_tail": 0.007048
+      }
+    },
+    {
+      "family": "asymptotic_bound",
+      "sweep_level": 0.25,
+      "observability": 0.221199,
+      "oracle_utility": 0.004127,
+      "oracle_utility_ci": [
+        0.001536,
+        0.006543
+      ],
+      "uniform_admit_rate": 0.416667,
+      "tail_admit_rate": 0.383333,
+      "mean_rmse": {
+        "linear_fallback": 0.012746,
+        "asymptotic_bound": 0.008619,
+        "emergent_curvature": 0.078167,
+        "candidate_select_uniform": 0.04304,
+        "oracle_gate_uniform": 0.011589,
+        "oracle_gate_tail": 0.0123
+      }
+    },
+    {
+      "family": "asymptotic_bound",
+      "sweep_level": 0.5,
+      "observability": 0.393469,
+      "oracle_utility": 0.026781,
+      "oracle_utility_ci": [
+        0.022513,
+        0.030947
+      ],
+      "uniform_admit_rate": 0.7,
+      "tail_admit_rate": 0.733333,
+      "mean_rmse": {
+        "linear_fallback": 0.037473,
+        "asymptotic_bound": 0.010693,
+        "emergent_curvature": 0.069643,
+        "candidate_select_uniform": 0.020089,
+        "oracle_gate_uniform": 0.016405,
+        "oracle_gate_tail": 0.016276
+      }
+    },
+    {
+      "family": "asymptotic_bound",
+      "sweep_level": 0.9,
+      "observability": 0.59343,
+      "oracle_utility": 0.082023,
+      "oracle_utility_ci": [
+        0.076026,
+        0.08817
+      ],
+      "uniform_admit_rate": 0.966667,
+      "tail_admit_rate": 1.0,
+      "mean_rmse": {
+        "linear_fallback": 0.09132,
+        "asymptotic_bound": 0.009296,
+        "emergent_curvature": 0.123511,
+        "candidate_select_uniform": 0.013438,
+        "oracle_gate_uniform": 0.011381,
+        "oracle_gate_tail": 0.009296
+      }
+    },
+    {
+      "family": "asymptotic_bound",
+      "sweep_level": 1.5,
+      "observability": 0.77687,
+      "oracle_utility": 0.158776,
+      "oracle_utility_ci": [
+        0.147137,
+        0.169604
+      ],
+      "uniform_admit_rate": 1.0,
+      "tail_admit_rate": 1.0,
+      "mean_rmse": {
+        "linear_fallback": 0.165645,
+        "asymptotic_bound": 0.00687,
+        "emergent_curvature": 0.247778,
+        "candidate_select_uniform": 0.00687,
+        "oracle_gate_uniform": 0.00687,
+        "oracle_gate_tail": 0.00687
+      }
+    },
+    {
+      "family": "asymptotic_bound",
+      "sweep_level": 2.3,
+      "observability": 0.899741,
+      "oracle_utility": 0.232803,
+      "oracle_utility_ci": [
+        0.216303,
+        0.249956
+      ],
+      "uniform_admit_rate": 1.0,
+      "tail_admit_rate": 1.0,
+      "mean_rmse": {
+        "linear_fallback": 0.238471,
+        "asymptotic_bound": 0.005668,
+        "emergent_curvature": 0.391932,
+        "candidate_select_uniform": 0.005668,
+        "oracle_gate_uniform": 0.005668,
+        "oracle_gate_tail": 0.005668
+      }
+    },
+    {
+      "family": "asymptotic_bound",
+      "sweep_level": 3.2,
+      "observability": 0.959238,
+      "oracle_utility": 0.269079,
+      "oracle_utility_ci": [
+        0.250512,
+        0.287204
+      ],
+      "uniform_admit_rate": 1.0,
+      "tail_admit_rate": 1.0,
+      "mean_rmse": {
+        "linear_fallback": 0.272877,
+        "asymptotic_bound": 0.003797,
+        "emergent_curvature": 0.48393,
+        "candidate_select_uniform": 0.003797,
+        "oracle_gate_uniform": 0.003797,
+        "oracle_gate_tail": 0.003797
+      }
+    },
+    {
+      "family": "emergent_curvature",
+      "sweep_level": 0.28,
+      "observability": 0.533333,
+      "oracle_utility": 0.032948,
+      "oracle_utility_ci": [
+        0.008889,
+        0.053261
+      ],
+      "uniform_admit_rate": 0.566667,
+      "tail_admit_rate": 0.466667,
+      "mean_rmse": {
+        "linear_fallback": 0.109401,
+        "emergent_curvature": 0.076454,
+        "asymptotic_bound": 0.126074,
+        "candidate_select_uniform": 0.098498,
+        "oracle_gate_uniform": 0.097027,
+        "oracle_gate_tail": 0.104414
+      }
+    },
+    {
+      "family": "emergent_curvature",
+      "sweep_level": 0.38,
+      "observability": 0.366667,
+      "oracle_utility": 0.010529,
+      "oracle_utility_ci": [
+        -0.0114,
+        0.028307
+      ],
+      "uniform_admit_rate": 0.716667,
+      "tail_admit_rate": 0.716667,
+      "mean_rmse": {
+        "linear_fallback": 0.08753,
+        "emergent_curvature": 0.077001,
+        "asymptotic_bound": 0.095524,
+        "candidate_select_uniform": 0.08475,
+        "oracle_gate_uniform": 0.084408,
+        "oracle_gate_tail": 0.084408
+      }
+    },
+    {
+      "family": "emergent_curvature",
+      "sweep_level": 0.48,
+      "observability": 0.2,
+      "oracle_utility": -0.031699,
+      "oracle_utility_ci": [
+        -0.05694,
+        -0.009317
+      ],
+      "uniform_admit_rate": 0.7,
+      "tail_admit_rate": 0.733333,
+      "mean_rmse": {
+        "linear_fallback": 0.066734,
+        "emergent_curvature": 0.098433,
+        "asymptotic_bound": 0.072785,
+        "candidate_select_uniform": 0.095482,
+        "oracle_gate_uniform": 0.094714,
+        "oracle_gate_tail": 0.094397
+      }
+    },
+    {
+      "family": "emergent_curvature",
+      "sweep_level": 0.55,
+      "observability": 0.083333,
+      "oracle_utility": -0.042601,
+      "oracle_utility_ci": [
+        -0.074636,
+        -0.015296
+      ],
+      "uniform_admit_rate": 0.65,
+      "tail_admit_rate": 0.65,
+      "mean_rmse": {
+        "linear_fallback": 0.044546,
+        "emergent_curvature": 0.087147,
+        "asymptotic_bound": 0.050923,
+        "candidate_select_uniform": 0.062307,
+        "oracle_gate_uniform": 0.071484,
+        "oracle_gate_tail": 0.072383
+      }
+    },
+    {
+      "family": "emergent_curvature",
+      "sweep_level": 0.6,
+      "observability": 0.0,
+      "oracle_utility": -0.019735,
+      "oracle_utility_ci": [
+        -0.044839,
+        -0.000703
+      ],
+      "uniform_admit_rate": 0.666667,
+      "tail_admit_rate": 0.583333,
+      "mean_rmse": {
+        "linear_fallback": 0.03734,
+        "emergent_curvature": 0.057074,
+        "asymptotic_bound": 0.045007,
+        "candidate_select_uniform": 0.048576,
+        "oracle_gate_uniform": 0.053107,
+        "oracle_gate_tail": 0.055047
+      }
+    },
+    {
+      "family": "emergent_curvature",
+      "sweep_level": 0.68,
+      "observability": 0.0,
+      "oracle_utility": -0.028229,
+      "oracle_utility_ci": [
+        -0.055126,
+        -0.007165
+      ],
+      "uniform_admit_rate": 0.65,
+      "tail_admit_rate": 0.65,
+      "mean_rmse": {
+        "linear_fallback": 0.02602,
+        "emergent_curvature": 0.054248,
+        "asymptotic_bound": 0.032855,
+        "candidate_select_uniform": 0.054644,
+        "oracle_gate_uniform": 0.049794,
+        "oracle_gate_tail": 0.050076
+      }
+    },
+    {
+      "family": "emergent_curvature",
+      "sweep_level": 0.78,
+      "observability": 0.0,
+      "oracle_utility": -0.025934,
+      "oracle_utility_ci": [
+        -0.04406,
+        -0.009861
+      ],
+      "uniform_admit_rate": 0.7,
+      "tail_admit_rate": 0.566667,
+      "mean_rmse": {
+        "linear_fallback": 0.010973,
+        "emergent_curvature": 0.036907,
+        "asymptotic_bound": 0.01489,
+        "candidate_select_uniform": 0.033015,
+        "oracle_gate_uniform": 0.035217,
+        "oracle_gate_tail": 0.036243
+      }
+    },
+    {
+      "family": "regime_change",
+      "sweep_level": 0.28,
+      "observability": 0.533333,
+      "oracle_utility": 0.051054,
+      "oracle_utility_ci": [
+        0.032613,
+        0.069648
+      ],
+      "uniform_admit_rate": 0.183333,
+      "tail_admit_rate": 0.133333,
+      "mean_rmse": {
+        "linear_fallback": 0.150878,
+        "regime_change": 0.099824,
+        "asymptotic_bound": 0.167797,
+        "candidate_select_uniform": 0.148449,
+        "oracle_gate_uniform": 0.144074,
+        "oracle_gate_tail": 0.147405
+      }
+    },
+    {
+      "family": "regime_change",
+      "sweep_level": 0.38,
+      "observability": 0.366667,
+      "oracle_utility": 0.034541,
+      "oracle_utility_ci": [
+        0.016477,
+        0.051946
+      ],
+      "uniform_admit_rate": 0.433333,
+      "tail_admit_rate": 0.416667,
+      "mean_rmse": {
+        "linear_fallback": 0.103944,
+        "regime_change": 0.069403,
+        "asymptotic_bound": 0.119192,
+        "candidate_select_uniform": 0.109528,
+        "oracle_gate_uniform": 0.098228,
+        "oracle_gate_tail": 0.099145
+      }
+    },
+    {
+      "family": "regime_change",
+      "sweep_level": 0.48,
+      "observability": 0.2,
+      "oracle_utility": -0.02005,
+      "oracle_utility_ci": [
+        -0.033752,
+        -0.005883
+      ],
+      "uniform_admit_rate": 0.733333,
+      "tail_admit_rate": 0.666667,
+      "mean_rmse": {
+        "linear_fallback": 0.061419,
+        "regime_change": 0.081469,
+        "asymptotic_bound": 0.071909,
+        "candidate_select_uniform": 0.072289,
+        "oracle_gate_uniform": 0.075165,
+        "oracle_gate_tail": 0.070867
+      }
+    },
+    {
+      "family": "regime_change",
+      "sweep_level": 0.55,
+      "observability": 0.083333,
+      "oracle_utility": -0.050967,
+      "oracle_utility_ci": [
+        -0.07515,
+        -0.029012
+      ],
+      "uniform_admit_rate": 0.533333,
+      "tail_admit_rate": 0.516667,
+      "mean_rmse": {
+        "linear_fallback": 0.038729,
+        "regime_change": 0.089695,
+        "asymptotic_bound": 0.044983,
+        "candidate_select_uniform": 0.061993,
+        "oracle_gate_uniform": 0.061904,
+        "oracle_gate_tail": 0.065713
+      }
+    },
+    {
+      "family": "regime_change",
+      "sweep_level": 0.6,
+      "observability": 0.0,
+      "oracle_utility": -0.0705,
+      "oracle_utility_ci": [
+        -0.089469,
+        -0.054041
+      ],
+      "uniform_admit_rate": 0.516667,
+      "tail_admit_rate": 0.333333,
+      "mean_rmse": {
+        "linear_fallback": 0.028309,
+        "regime_change": 0.09881,
+        "asymptotic_bound": 0.031159,
+        "candidate_select_uniform": 0.043299,
+        "oracle_gate_uniform": 0.055834,
+        "oracle_gate_tail": 0.039849
+      }
+    },
+    {
+      "family": "regime_change",
+      "sweep_level": 0.68,
+      "observability": 0.0,
+      "oracle_utility": -0.077371,
+      "oracle_utility_ci": [
+        -0.101987,
+        -0.055463
+      ],
+      "uniform_admit_rate": 0.466667,
+      "tail_admit_rate": 0.366667,
+      "mean_rmse": {
+        "linear_fallback": 0.021371,
+        "regime_change": 0.098741,
+        "asymptotic_bound": 0.023606,
+        "candidate_select_uniform": 0.032796,
+        "oracle_gate_uniform": 0.047254,
+        "oracle_gate_tail": 0.036249
+      }
+    },
+    {
+      "family": "regime_change",
+      "sweep_level": 0.78,
+      "observability": 0.0,
+      "oracle_utility": -0.089825,
+      "oracle_utility_ci": [
+        -0.111309,
+        -0.071263
+      ],
+      "uniform_admit_rate": 0.466667,
+      "tail_admit_rate": 0.466667,
+      "mean_rmse": {
+        "linear_fallback": 0.011703,
+        "regime_change": 0.101528,
+        "asymptotic_bound": 0.01172,
+        "candidate_select_uniform": 0.038948,
+        "oracle_gate_uniform": 0.051474,
+        "oracle_gate_tail": 0.052624
+      }
+    }
+  ],
+  "family_summary": {
+    "regime_change": {
+      "n": 420,
+      "spearman_O_utility": 0.567631,
+      "spearman_O_uniform_score": -0.154749,
+      "spearman_O_tail_score": -0.123487
+    },
+    "emergent_curvature": {
+      "n": 420,
+      "spearman_O_utility": 0.34564,
+      "spearman_O_uniform_score": 0.069289,
+      "spearman_O_tail_score": 0.043611
+    },
+    "asymptotic_bound": {
+      "n": 420,
+      "spearman_O_utility": 0.943224,
+      "spearman_O_uniform_score": 0.907719,
+      "spearman_O_tail_score": 0.92229
+    }
+  },
+  "pooled": {
+    "spearman_O_utility": 0.739475,
+    "spearman_O_uniform_score": 0.448462,
+    "spearman_O_tail_score": 0.470665,
+    "zero_O_n": 360,
+    "uniform_reject_rate_at_zero_O": 0.422222,
+    "tail_reject_rate_at_zero_O": 0.505556
+  }
+}
