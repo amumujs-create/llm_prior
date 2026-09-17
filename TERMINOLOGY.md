@@ -36,8 +36,8 @@ Use:
 
 - “generative-family oracle” or “matching-family structural prior” for the
   evaluated matched-family baseline;
-- “full-information oracle (not evaluated in v1/v2)” for the parameter-known
-  upper bound;
+- “full-information oracle (evaluated in Oracle Decomposition v1)” for the
+  parameter-known upper bound;
 - “admission rejects a *currently unidentifiable matching-family prior*,” not
   “admission rejects the oracle.”
 

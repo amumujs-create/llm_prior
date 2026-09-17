@@ -1,0 +1,233 @@
+{
+  "experiment_id": "oracle_decomposition_v1",
+  "status": "development",
+  "n_tasks": 2100,
+  "terms": {
+    "family_oracle": "generative-family oracle; correct family only, parameters fitted from prefix",
+    "parameter_oracle": "bottleneck realization parameters supplied as prespecified in protocol",
+    "full_information_oracle": "all generator parameters supplied"
+  },
+  "summary": [
+    {
+      "family": "asymptotic_bound",
+      "level": 0.1,
+      "observability": 0.09516258196404048,
+      "no_prior": 0.00543631212598359,
+      "family_oracle": 0.006986359496206541,
+      "parameter_oracle": 0.0037040115894812625,
+      "full_information_oracle": 0.0
+    },
+    {
+      "family": "asymptotic_bound",
+      "level": 0.25,
+      "observability": 0.22119921692859512,
+      "no_prior": 0.01285197360470743,
+      "family_oracle": 0.008707765980449957,
+      "parameter_oracle": 0.0032718199621677617,
+      "full_information_oracle": 0.0
+    },
+    {
+      "family": "asymptotic_bound",
+      "level": 0.5,
+      "observability": 0.3934693402873666,
+      "no_prior": 0.037381900589288926,
+      "family_oracle": 0.00983187269486374,
+      "parameter_oracle": 0.002895696402167845,
+      "full_information_oracle": 0.0
+    },
+    {
+      "family": "asymptotic_bound",
+      "level": 0.9,
+      "observability": 0.5934303402594009,
+      "no_prior": 0.08530932282948589,
+      "family_oracle": 0.009517784017021406,
+      "parameter_oracle": 0.0019743536652899966,
+      "full_information_oracle": 0.0
+    },
+    {
+      "family": "asymptotic_bound",
+      "level": 1.5,
+      "observability": 0.7768698398515702,
+      "no_prior": 0.1659571888489845,
+      "family_oracle": 0.006902855600183797,
+      "parameter_oracle": 0.0011950940096589304,
+      "full_information_oracle": 0.0
+    },
+    {
+      "family": "asymptotic_bound",
+      "level": 2.3,
+      "observability": 0.8997411562771962,
+      "no_prior": 0.23139163187320144,
+      "family_oracle": 0.0051107550616273836,
+      "parameter_oracle": 0.0006482865960760526,
+      "full_information_oracle": 0.0
+    },
+    {
+      "family": "asymptotic_bound",
+      "level": 3.2,
+      "observability": 0.9592377960216338,
+      "no_prior": 0.2644742627901872,
+      "family_oracle": 0.004198895749011749,
+      "parameter_oracle": 0.00032409924930004475,
+      "full_information_oracle": 0.0
+    },
+    {
+      "family": "emergent_curvature",
+      "level": 0.28,
+      "observability": 0.5333333333333333,
+      "no_prior": 0.09875294125893602,
+      "family_oracle": 0.07779165072669972,
+      "parameter_oracle": 0.004016390220747875,
+      "full_information_oracle": 0.0
+    },
+    {
+      "family": "emergent_curvature",
+      "level": 0.38,
+      "observability": 0.36666666666666664,
+      "no_prior": 0.08569111757062037,
+      "family_oracle": 0.07411628693746382,
+      "parameter_oracle": 0.0036711636985382466,
+      "full_information_oracle": 0.0
+    },
+    {
+      "family": "emergent_curvature",
+      "level": 0.48,
+      "observability": 0.2,
+      "no_prior": 0.06500034182146514,
+      "family_oracle": 0.0955474041153393,
+      "parameter_oracle": 0.003473765883753387,
+      "full_information_oracle": 0.0
+    },
+    {
+      "family": "emergent_curvature",
+      "level": 0.55,
+      "observability": 0.08333333333333323,
+      "no_prior": 0.04618867181142062,
+      "family_oracle": 0.07187715116046185,
+      "parameter_oracle": 0.00343365788540187,
+      "full_information_oracle": 0.0
+    },
+    {
+      "family": "emergent_curvature",
+      "level": 0.6,
+      "observability": 0.0,
+      "no_prior": 0.039586631602875365,
+      "family_oracle": 0.05341268536898917,
+      "parameter_oracle": 0.003435393100497798,
+      "full_information_oracle": 0.0
+    },
+    {
+      "family": "emergent_curvature",
+      "level": 0.68,
+      "observability": 0.0,
+      "no_prior": 0.024740938245948994,
+      "family_oracle": 0.05798944366095141,
+      "parameter_oracle": 0.003925300211909062,
+      "full_information_oracle": 0.0
+    },
+    {
+      "family": "emergent_curvature",
+      "level": 0.78,
+      "observability": 0.0,
+      "no_prior": 0.011408132534192393,
+      "family_oracle": 0.045487822171264305,
+      "parameter_oracle": 0.004007180538478034,
+      "full_information_oracle": 0.0
+    },
+    {
+      "family": "regime_change",
+      "level": 0.28,
+      "observability": 0.5333333333333333,
+      "no_prior": 0.1406189776840604,
+      "family_oracle": 0.0999662555431737,
+      "parameter_oracle": 0.0020565778326635258,
+      "full_information_oracle": 0.0
+    },
+    {
+      "family": "regime_change",
+      "level": 0.38,
+      "observability": 0.36666666666666664,
+      "no_prior": 0.09841771835137761,
+      "family_oracle": 0.08342455984589608,
+      "parameter_oracle": 0.0018203491016631115,
+      "full_information_oracle": 0.0
+    },
+    {
+      "family": "regime_change",
+      "level": 0.48,
+      "observability": 0.2,
+      "no_prior": 0.061433068033004065,
+      "family_oracle": 0.06963192068748143,
+      "parameter_oracle": 0.0023524825377503017,
+      "full_information_oracle": 0.0
+    },
+    {
+      "family": "regime_change",
+      "level": 0.55,
+      "observability": 0.08333333333333323,
+      "no_prior": 0.04550251492487908,
+      "family_oracle": 0.06922236055567448,
+      "parameter_oracle": 0.002580682992708348,
+      "full_information_oracle": 0.0
+    },
+    {
+      "family": "regime_change",
+      "level": 0.6,
+      "observability": 0.0,
+      "no_prior": 0.03423332513347308,
+      "family_oracle": 0.09688252202754877,
+      "parameter_oracle": 0.0026466464489017707,
+      "full_information_oracle": 0.0
+    },
+    {
+      "family": "regime_change",
+      "level": 0.68,
+      "observability": 0.0,
+      "no_prior": 0.021431043492413645,
+      "family_oracle": 0.09862040274724021,
+      "parameter_oracle": 0.0028988075380528876,
+      "full_information_oracle": 0.0
+    },
+    {
+      "family": "regime_change",
+      "level": 0.78,
+      "observability": 0.0,
+      "no_prior": 0.01395305141640497,
+      "family_oracle": 0.11027883216911509,
+      "parameter_oracle": 0.0031856198576079475,
+      "full_information_oracle": 0.0
+    }
+  ],
+  "acceleration_realization_auxiliary": [
+    {
+      "observability": 0.0,
+      "power_law": 0.05229665040040163,
+      "concave_spline": 0.052609832643198524,
+      "constrained_neural_basis": 0.03368332112058569
+    },
+    {
+      "observability": 0.08333333333333323,
+      "power_law": 0.07187715116046185,
+      "concave_spline": 0.03903245914859718,
+      "constrained_neural_basis": 0.04094362942866013
+    },
+    {
+      "observability": 0.2,
+      "power_law": 0.0955474041153393,
+      "concave_spline": 0.033133227363174915,
+      "constrained_neural_basis": 0.05232404600665224
+    },
+    {
+      "observability": 0.36666666666666664,
+      "power_law": 0.07411628693746382,
+      "concave_spline": 0.03316013352250012,
+      "constrained_neural_basis": 0.06308493484189888
+    },
+    {
+      "observability": 0.5333333333333333,
+      "power_law": 0.07779165072669972,
+      "concave_spline": 0.03900355676298342,
+      "constrained_neural_basis": 0.05689990927143205
+    }
+  ]
+}

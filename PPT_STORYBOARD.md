@@ -78,6 +78,24 @@ parameter-known upper bound that v1/v2 do not evaluate. See `TERMINOLOGY.md`.
 - Family caveat: emphasize reproduced gains for regime change and emergent
   curvature, and report the asymptotic-bound FAR nuance rather than hiding it.
 
+## Oracle decomposition slides
+
+### Slide 9 — Why a true family label can still fail
+
+- Use `figures/fig09_oracle_decomposition_terminology.png`.
+- Headline: **“The correct family does not reveal the parameters that realize its future.”**
+- Explain the four information levels: data-only, generative-family oracle,
+  parameter oracle, full-information oracle.
+- Key low-O example: regime-change family oracle RMSE .097–.110 versus parameter
+  oracle .003, despite the family being correct in both cases.
+
+### Slide 10 — The effect is not a single power-law artifact
+
+- Use `figures/fig10_acceleration_realization_robustness.png`.
+- Headline: **“Three realizations of the same acceleration prior show low-support risk.”**
+- Qualify as auxiliary: the three methods are a robustness probe, not an equal-
+  budget model leaderboard.
+
 ## Figure provenance captions
 
 Every figure should carry: “Synthetic generic-prior development study; family
