@@ -8,6 +8,9 @@
 
 `prior truth != prior observability != prior utility`
 
+용어의 정확한 구분은 [TERMINOLOGY.md](TERMINOLOGY.md)를 따른다. 여기서 평가한
+“matching prior”는 **generative-family oracle**이며 full-information oracle이 아니다.
+
 정답 구조 family를 알고 있어도, 관측 prefix에서 그 구조를 식별할 evidence가 없으면
 parameter fit은 불안정하고 far-OOD extrapolation은 linear fallback보다 나빠질 수 있다.
 

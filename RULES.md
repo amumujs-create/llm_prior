@@ -11,12 +11,13 @@
 
 1. Seed `20260919`, boundary `.60`, tail endpoint `t > .70`, Gaussian noise SD
    `.015`, family당 7 sweep level × level당 60 trajectory를 실행 전에 고정했다.
-2. Oracle은 true parameter oracle이 아니다. correct **family label만** 알려 주고,
-   parameter는 observed prefix에서만 fit한다.
+2. **Generative-family oracle**은 full-information oracle이 아니다. Correct
+   **family label만** 알려 주고, parameter는 observed prefix에서만 fit한다.
 3. Far-OOD clean tail·tail statistic·family identity·true observability는 어떤
    admission score에도 사용할 수 없다.
-4. Methods are: linear fallback, true-family fit, contrast-family fit, uniform
-   pseudo-OOD candidate selection, uniform oracle gate, and tail-weighted oracle gate.
+4. Methods are: linear fallback, generative-family-oracle fit, contrast-family
+   fit, uniform pseudo-OOD candidate selection, uniform generative-family gate,
+   and tail-weighted generative-family gate.
 5. Uniform gate is `A_uniform > 0`, where A is pseudo-OOD MSE improvement against
    linear fallback. Tail-weighted gate uses prespecified weights `.10/.25/.65` for
    the three chronological pseudo-OOD windows. No threshold is tuned on endpoint data.

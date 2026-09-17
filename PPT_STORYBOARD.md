@@ -2,6 +2,10 @@
 
 ## Recommended 4-slide arc
 
+Terminology note for every slide: call the evaluated matched prior a
+**generative-family oracle**; reserve **full-information oracle** for a
+parameter-known upper bound that v1/v2 do not evaluate. See `TERMINOLOGY.md`.
+
 ### Slide 1 — The problem is not merely prior retrieval
 
 - Use `figures/fig04_experiment_logic.png`.

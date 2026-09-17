@@ -11,8 +11,8 @@ structural prior is usable at the current observation boundary.
 - Seed: `20260919`; 1,260 trajectories total (3 generic families × 7 levels × 60).
 - Noisy prefix: `t <= 0.60`, Gaussian SD `.015`.
 - Far-OOD endpoint: clean `t > 0.70`; no selector accesses it.
-- “Oracle” means only the matching family is known; its parameters are fit from
-  the observed prefix. It is not a parameter oracle.
+- The **generative-family oracle** means only the matching family is known; its
+  parameters are fit from the observed prefix. It is not a full-information oracle.
 - Generic family labels: `regime_change`, `emergent_curvature`,
   `asymptotic_bound`.
 - Utility: `RMSE(linear fallback) − RMSE(matching family prior)`. Positive is good.
