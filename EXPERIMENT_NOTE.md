@@ -674,3 +674,25 @@ refitting; afterward E6 addresses distance × residual trust.
 `experiments/prior_calibration_specificity_v1.py` ·
 `results/prior_calibration_specificity_v1/results.json` ·
 `figures/fig20_prior_calibration_specificity.png`
+
+---
+
+## 13. E5b Calibration Tolerance — the vulnerable field depends on the family
+
+E5b fixed narrow interval width and swept normalized center bias from `0` to
+`.40` by field. Broad-correct was the comparator. First negative narrow-minus-
+broad utility occurred at bound lower `.05`, curvature scale `.10`, curvature
+scale+shape `.10`, regime scale `.10`, and regime onset `.15`; curvature shape
+did not cross through `.40`, and regime onset+scale crossed only at `.40`.
+At first crossovers, harm-versus-broad rates were already 56.7–63.3%.
+
+**Conclusion.** Calibration tolerance is family-and-field-specific. An average
+utility curve alone is insufficient: tail harm rises around the crossover.
+This is the prior-trust axis needed before E6; the next orthogonal question is
+how query distance controls trust in the data-driven residual.
+
+**Artifacts.** [Frozen protocol](CALIBRATION_TOLERANCE_PROTOCOL_V1.md) ·
+[result report](RESULTS_CALIBRATION_TOLERANCE_V1.md) ·
+`experiments/calibration_tolerance_v1.py` ·
+`results/calibration_tolerance_v1/results.json` ·
+`figures/fig21_calibration_tolerance_curves.png`
