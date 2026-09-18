@@ -775,3 +775,21 @@ implemented LLM experiment.
 **Research sequence.** Finish E6 residual-trust phenomenon and the already
 frozen Coverage–Sharpness association analysis; then build this benchmark before
 testing actual LLM/RAG candidate generation.
+
+---
+
+## 16. E6-v1 — calibrated priors leave no average residual-trust regime
+
+**Purpose.** Measure distance-dependent trust of prefix-trained spline and NN
+residuals without far-OOD leakage, while holding prior calibration fixed.
+
+**Result.** Fixed hybrid ΔR was already negative at d=.05 for both NN (−.0021)
+and spline (−.0060), worsening to −.0251/−.0735 at d=1.0. Immediate d*=.05
+failure was 61.4% NN and 67.0% spline. Pseudo-OOD near gain did not predict NN
+far utility (Spearman .003). This setting therefore does not contain a useful
+residual regime for distance decay to preserve.
+
+**Conclusion.** The finding is not “all residuals fail.” It is that a
+calibrated correct-family prior can be sufficiently complete that residuals
+mainly fit noise. E6-v2 must use an incomplete but calibrated prior to create
+genuine near-OOD correction signal, without mixing in E5 calibration error.
