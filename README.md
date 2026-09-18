@@ -46,6 +46,8 @@ parameter fit은 불안정하고 far-OOD extrapolation은 linear fallback보다 
 - `PARTIAL_REALIZATION_KNOWLEDGE_PROTOCOL.md` / `RESULTS_PARTIAL_REALIZATION_KNOWLEDGE_V1.md`
   — RAG가 family label 외에 어떤 realization 제약을 얼마나 정확히 가져와야 하는지
   분해한 실험
+- `output/pdf/generic_structural_prior_research_brief.pdf` — 그림과 핵심 결과를 한 번에
+  읽는 8페이지 연구 브리프 (생성 스크립트: `experiments/build_research_brief_pdf.py`)
 
 ## 실행
 
