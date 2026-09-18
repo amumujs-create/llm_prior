@@ -465,3 +465,117 @@ Structural family
    support (`d`) when the design varies either one; do not use one as a proxy
    for the other without an explicit validation.
 6. Link protocol, code, results JSON, figures, and any commit/hash.
+
+---
+
+## 7. Prior Evaluation Metric Experiment — selection is not only a value-fit question
+
+**Question.** Can pseudo-OOD pointwise MSE select a structural-prior candidate
+reliably as evaluation moves farther outside observed support, or do
+direction/curvature/complexity metrics provide a better selection signal?
+
+**Why this follows now.** The prior-realization results showed that a family
+label does not determine a safe continuation. Before testing residual capacity
+or knowledge specificity, we must ask whether the *selection metric* rewards
+the appropriate candidate at all. This test explicitly separates structural
+compatibility, realization quality, and far-OOD utility.
+
+**Frozen manipulation.** Three existing generators × low/mid/high evidence ×
+noise `.005/.015/.030` × 100 draws (2,700 tasks). Inner fit is `t <= .45`,
+pseudo-OOD selection is `.45 < t <= .60`, candidates are refit on `t <= .60`,
+and far-OOD bands are D1 `.70–.80`, D2 `.90–1.00`, D3 `1.20–1.30`. No composite
+score was formed. Candidate metrics were MSE, first/second-difference cosine,
+derivative-sign agreement, Spearman trend, and predictive BIC.
+
+**Result.** MSE was the strongest value/shape-only selection rule, but
+complexity-aware predictive BIC did better pooled: D3 regret `.0817`
+`[.0769,.0869]` versus MSE `.0973` `[.0905,.1044]`, a 16.1% reduction, and
+incompatible selections fell from 25.4% to 22.7%. Derivative-sign and Spearman
+were safe in a narrow compatibility sense (0% incompatible selections) but
+lost too much realization information: both had D3 regret `.1648` and 97.0%
+pseudo-vs-far winner disagreement. Difference-cosine rules were worse and
+selected incompatible candidates frequently.
+
+**What it supports.** Pseudo-OOD MSE is not uniformly optimal for the fixed
+candidate library; adding an explicit complexity penalty improved pooled
+far-OOD selection. The result does **not** support replacing value fit with
+derivative/trend matching alone. The BIC improvement is family-dependent:
+asymptotic-bound settings drive much of it, while several high-exposure
+regime-change cells favor MSE.
+
+**Logical next question.** Is MSE sometimes selecting an incompatible prior
+because that candidate has extra residual capacity that improves near-support
+fit while concealing a poor structural continuation? E2 will compare MSE and
+BIC under capacity-matched versus capacity-stress residual corrections.
+
+**Artifacts.** [Frozen protocol](PRIOR_EVALUATION_METRIC_PROTOCOL_V1.md) ·
+[result report](RESULTS_PRIOR_EVALUATION_METRIC_V1.md) ·
+`experiments/prior_evaluation_metric_v1.py` ·
+`results/prior_evaluation_metric_v1/results.json` ·
+`figures/fig15_prior_metric_regret_by_distance.png` ·
+`figures/fig16_prior_metric_selection_risk.png`
+
+---
+
+## 8. Model Capacity / Residual Stress Test — a falsified mechanism is still useful
+
+**Question.** Does pseudo-OOD MSE prefer an incompatible structural candidate
+only because a higher-capacity residual can improve near-support fit?
+
+**Frozen manipulation.** E1's entire generator/support/selection contract was
+retained. Each candidate was `prior + ridge-polynomial residual`. Compatible
+candidates and neutral `P0` used four basis terms; incompatible candidates used
+four, eight, or sixteen. E1's MSE and predictive BIC were the only selectors.
+This is 2,700 base draws × 3 capacity ratios = 8,100 capacity cases.
+
+**Result.** The proposed monotone masking pattern did not occur. MSE's
+incompatible-selection rate fell from 36.0% at matched capacity to 3.8% at 2×
+and 0% at 4×; BIC followed the same direction (34.3%, 2.0%, 0%). High-capacity
+polynomial corrections were often sufficiently unstable already in pseudo-OOD
+that both selectors rejected them. However, rare 2× selections produced severe
+D3 regret: MSE `14.052 [10.706,17.594]`, BIC `7.986 [5.507,10.761]`. The
+average selected residual/prior norm ratio was about `.07`, but the residual
+changed first-difference direction about `.31` of pseudo-OOD steps.
+
+**What it supports.** Residual capacity is itself a distance-dependent
+realization risk, and BIC reduces the extreme failure in this stress setting.
+It does **not** support the general causal claim that flexible residuals make
+MSE select an incompatible prior more often. That claim stays open for spline
+or neural corrections; it cannot be claimed from this result.
+
+**Logical next question.** Even without the masking mechanism, how much prior
+detail should a system use at each evidence level? E3 tests the independent
+specificity hierarchy: weak constraints → family → family plus realization
+intervals.
+
+**Artifacts.** [Frozen protocol](RESIDUAL_CAPACITY_STRESS_PROTOCOL_V1.md) ·
+[result report](RESULTS_RESIDUAL_CAPACITY_STRESS_V1.md) ·
+`experiments/residual_capacity_stress_v1.py` ·
+`results/residual_capacity_stress_v1/results.json` ·
+`figures/fig17_residual_capacity_stress.png`
+
+---
+
+## 9. Prior Specificity Hierarchy — accurate external constraints can dominate exposure
+
+**Question.** Is a more specific prior harmful when evidence is low, and useful
+when evidence is high?
+
+**Result.** Not under the specified L4 condition. L4 supplied the matching
+family plus ±10% intervals on realization fields. It beat direction-only L1
+even at low exposure: D3 `L4-L1` was −.1666 for regime change, −.1383 for
+curvature, and −.0192 for bounds. At very high evidence, weak L1 had large
+under-specificity costs: .4614, .3025, and .5386, respectively.
+
+**Interpretation.** This is a boundary condition on the previous realization
+claim, not a contradiction. Accurate external constraints can make a specific
+prior useful before the structure is identifiable from the prefix. Therefore
+the v1 hierarchy cannot support an “over-specificity always harms at low O”
+claim. The next valid variant must vary interval calibration/width, rather than
+assuming all L4 constraints are accurate.
+
+**Artifacts.** [Frozen protocol](PRIOR_SPECIFICITY_HIERARCHY_PROTOCOL_V1.md) ·
+[result report](RESULTS_PRIOR_SPECIFICITY_HIERARCHY_V1.md) ·
+`experiments/prior_specificity_hierarchy_v1.py` ·
+`results/prior_specificity_hierarchy_v1/results.json` ·
+`figures/fig18_prior_specificity_hierarchy.png`
