@@ -850,3 +850,10 @@ primitive sanity suite. It freezes phenomenological versus mechanistic truth,
 finite-horizon asymptote semantics, a composition compatibility/scope table,
 sharpness-ensemble rank-robustness, a second realization engine, and null-task
 abstention metrics.
+
+**Operational freeze.** Numerical truth tolerances, conditional-sharpness
+estimator, practical utility threshold, compatibility matrix, candidate class
+balance, knowledge perturbations, engine budgets, aggregation, sample sizes,
+seeds, and sanity pass gates are fixed in
+`PRIOR_BENCHMARK_OPERATIONAL_FREEZE_V1.md`. Full execution is blocked until the
+sanity suite passes without changing these values.
