@@ -878,9 +878,43 @@ but is reported as `true-weaker`/`under-specific true`.
 
 Two final sanity blockers were resolved without expanding the full candidate
 set. Broad/medium/narrow-correct and narrow-biased priors are generated only as
-sanity measurement controls. Null tasks use a separately seeded out-of-grammar
-smooth generator with multiple derivative and curvature sign changes, no
-latent switch/limit mechanism, and an ex-ante acceptance rule requiring that
-every coverage-preserving registered prior has sharpness below `.10` in both
-frozen ensembles. Nullness is never assigned from utility. Parameter OOD is
-reported as seven coordinate-specific views plus one supplementary joint view.
+sanity measurement controls. Nulls are split to avoid circularity: structural
+nulls use only out-of-grammar generation and frozen truth checks, whereas
+informational nulls contain weak true structure but require sharpness below
+`.10` in both frozen ensembles. Neither is assigned from utility. Parameter OOD
+is reported as seven coordinate-specific views plus one supplementary joint
+view.
+
+---
+
+## 19. Prior Primitive–Composition Benchmark v1 — core sanity failure
+
+**Question.** Do the frozen generators, truth checkers, and conditional-
+sharpness estimator recover intended structure, preserve nested specificity,
+place narrow biased priors in the confidently-wrong region, and respect
+conjunction logic?
+
+**Run.** 840 tasks (`7 primitives × 3 generators × 40`), with `M=4096` for both
+`Q_spline` and `Q_basis`. This run evaluates measurement validity, not predictive
+RMSE. Structural-null/informational-null validation is not yet included.
+
+**Result.** Truth recovery was 1.000 for every primitive; biased-narrow behavior
+was 1.000; conjunction violations were zero; and sampler rank Spearman was
+`.987`. But strict broad < medium < narrow correct ordering held in only `.514`
+of spline and `.512` of basis tasks, so the suite failed. Median ESS was about
+175; 11–12% of tasks triggered the `ESS<100` warning.
+
+**Interpretation.** Zero-noise dense prefixes make the continuation weights
+nearly degenerate for several primitives, so broad and medium correct intervals
+both have sharpness near zero. This is measurement saturation: logical nesting
+is intact, but strict empirical separation is not resolvable under this sanity
+condition. The failure is strongest for bound, inflection, and turning.
+
+**Decision.** Full v1 remains blocked. Do not relax the gate post hoc. Any
+non-saturated condition or tie-aware endpoint must be declared as protocol
+v1.1 and independently rerun. Null-type sanity remains required afterward.
+
+**Artifacts.** [Result report](RESULTS_PRIOR_BENCHMARK_SANITY_V1.md) ·
+`experiments/prior_benchmark_sanity_v1.py` ·
+`results/prior_benchmark_sanity_v1/summary.json` ·
+`figures/fig24_prior_benchmark_sanity.png`

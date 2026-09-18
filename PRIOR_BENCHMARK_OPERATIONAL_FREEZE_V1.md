@@ -199,12 +199,16 @@ basis, and ODE constructors each produce 20/20 checker-valid trajectories,
 allowing at most 1,000 attempts per trajectory. Register the first eight
 feasible triples before computing the final protocol hash.
 
-### Null-task generator
+### Null-task generators
 
 Null status is assigned before model fitting and never from observed utility.
-Use a separate out-of-grammar smooth generator: a seeded mixture of 4–6 compact
-radial-basis components plus a chirp term, with no latent regime switch or
-finite-limit mechanism. Accept a draw only when the clean 401-point trajectory:
+Store two non-pooled labels:
+
+- **Structural null:** the registered grammar has no structurally valid,
+  informative primitive for the continuation. Generate it with a separate
+  out-of-grammar smooth generator: a seeded mixture of 4–6 compact radial-basis
+  components plus a chirp term, with no latent regime switch or finite-limit
+  mechanism. Accept a draw only when the clean 401-point trajectory:
 
 1. has at least two robust `f'` sign changes and at least two robust `f''` sign
    changes under the Section 1 tolerances;
@@ -212,15 +216,20 @@ finite-limit mechanism. Accept a draw only when the clean 401-point trajectory:
 3. fails the exactly-one inflection and exactly-one turning-point definitions;
 4. has phenomenological regime `Delta BIC<10` and no mechanistic regime label;
 5. fails the operational asymptote test; and
-6. under both frozen continuation ensembles, every registered candidate with
-   structural coverage 1 has conditional sharpness `<.10`.
+6. has no registered nontrivial bound constraint supplied by the latent
+   specification.
 
-Condition 6 prevents a trivially true but non-informative bound from making a
-task non-null. If no accepted draw is found in 2,000 seeded attempts, record a
-generator failure; do not relabel the task or use utility to decide nullness.
-Thus a null task means that the registered grammar contains no coverage-
-preserving candidate meeting the predeclared minimum information threshold,
-not that every imaginable scientific prior is absent.
+- **Informational null:** at least one weak registered constraint has structural
+  coverage 1, but every such coverage-preserving candidate has conditional
+  sharpness `<.10` under both frozen continuation ensembles. These are generated
+  from ordinary in-grammar tasks with deliberately uninformative prefixes.
+
+The `.10` threshold therefore defines only informational nulls and is never
+used to create structural-null truth. This prevents sharpness-based evaluation
+from receiving a structurally circular null label. If no accepted draw is found
+in 2,000 seeded attempts, record a generator failure; do not relabel the task
+or use utility to decide nullness. Neither label claims that every imaginable
+scientific prior is absent.
 
 ## 9. Sanity pass gates
 
@@ -231,9 +240,9 @@ agreement >=.95; mechanistic/phenomenological labels remain separate; null
 abstention and weak-prior actions are distinguishable. Failure blocks full v1.
 
 The broad/narrow checks use only the sanity-only auxiliary candidates defined
-in Section 5. Null validation additionally requires >=95% of accepted null
-tasks to satisfy all six ex-ante null conditions and zero utility-based
-relabeling.
+in Section 5. Null validation requires >=95% of structural-null draws to satisfy
+all six structural conditions, >=95% of informational-null draws to satisfy
+coverage plus the two-ensemble `<.10` rule, and zero utility-based relabeling.
 
 Cross-generator agreement uses paired latent structural specifications: the
 same sign, event count, normalized location, segment scope, and magnitude tier

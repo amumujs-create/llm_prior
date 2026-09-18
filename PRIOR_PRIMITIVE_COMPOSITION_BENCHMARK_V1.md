@@ -79,11 +79,12 @@ report marginal information such as `ΔS(B|A)=S(A∧B)-S(A)` and the matching
 deployment-dependent utility difference. This distinguishes redundancy,
 synergy, and harmful interactions.
 
-Operationally, null tasks come from a separate out-of-grammar oscillatory
-smooth generator and are accepted only when frozen truth checkers reject the
-registered event-count/global primitives and every coverage-preserving
-registered candidate has conditional sharpness below `.10` under both frozen
-continuation ensembles. Nullness is never defined from prediction utility.
+Null tasks are not pooled. **Structural nulls** come from a separate
+out-of-grammar oscillatory generator and are accepted using truth checks only.
+**Informational nulls** retain a weak coverage-preserving constraint but require
+all such candidates to have conditional sharpness below `.10` under both frozen
+ensembles. Sharpness is thus part only of the informational-null definition,
+not structural-null truth. Neither null type is defined from prediction utility.
 
 ## Future proposer evaluation
 

@@ -1,0 +1,46 @@
+{
+  "protocol": "prior_benchmark_sanity_v1",
+  "n_tasks": 840,
+  "M": 4096,
+  "truth_agreement": 1.0,
+  "agreement_by_primitive": {
+    "direction": 1.0,
+    "curvature": 1.0,
+    "inflection": 1.0,
+    "turning": 1.0,
+    "regime": 1.0,
+    "bound": 1.0,
+    "asymptote": 1.0
+  },
+  "nested_order_rate": {
+    "spline": 0.5142857142857142,
+    "basis": 0.5119047619047619
+  },
+  "confident_wrong_rate": {
+    "spline": 1.0,
+    "basis": 1.0
+  },
+  "conjunction_violations": {
+    "spline": 0,
+    "basis": 0
+  },
+  "sampler_rank_spearman": 0.9868983352837025,
+  "ess": {
+    "spline": {
+      "median": 175.42219620400994,
+      "lt100_rate": 0.11190476190476191
+    },
+    "basis": {
+      "median": 176.02947151457028,
+      "lt100_rate": 0.12142857142857143
+    }
+  },
+  "gates": {
+    "agreement_ge_095": true,
+    "nested_rate_ge_095": false,
+    "confident_wrong_ge_095": true,
+    "zero_conjunction_violations": true,
+    "sampler_rank_rho_ge_080": true
+  },
+  "passed": false
+}
