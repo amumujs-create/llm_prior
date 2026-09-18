@@ -605,3 +605,40 @@ extends the selection phenomenon beyond the initial three complex archetypes.
 `experiments/prior_archetype_generalization_v1.py` ·
 `results/prior_archetype_generalization_v1/results.json` ·
 `figures/fig19_monotone_archetype_generalization.png`
+
+---
+
+## 11. Synthesis after E1–E4 — from truth to calibrated incremental information
+
+The evidence does not support either “a true prior automatically improves
+extrapolation” or “specific priors are unsafe whenever evidence is low.” The
+current working decomposition is:
+
+```text
+prior truth
+  ≠ incremental information beyond the baseline
+  ≠ calibration of supplied realization knowledge
+  ≠ realization from the available prefix
+  ≠ far-OOD utility
+```
+
+E1 says value fit remains useful but complexity-aware predictive BIC improves
+pooled selection; derivative/trend rules alone lose too much realization
+information. E2 does not support polynomial residual masking as the mechanism
+for MSE failure, although it exposes residual capacity as a distance-sensitive
+risk. E3 establishes that accurate narrow realization intervals can be useful
+even before data reveal the structure. E4 shows a true monotone direction can
+add almost no forecast information if the affine baseline already learns it.
+
+**Next falsifiable question (E5).** At fixed correct family, does narrow
+knowledge become worse than broad knowledge as its calibration error increases?
+This is the required test of *calibration × specificity*, and it introduces
+`incremental prior information`: a prior is useful only if it adds reliable
+information beyond what the baseline already encodes.
+
+**Then E6.** Separately test `distance × residual trust`: how far a learned
+data correction can be trusted after external-prior calibration has been
+understood. These are two distinct trust axes: external knowledge calibration
+controls prior trust; query distance controls residual trust.
+
+**Artifact.** [E5 frozen protocol](PRIOR_CALIBRATION_SPECIFICITY_PROTOCOL_V1.md)
