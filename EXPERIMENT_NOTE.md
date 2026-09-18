@@ -642,3 +642,35 @@ understood. These are two distinct trust axes: external knowledge calibration
 controls prior trust; query distance controls residual trust.
 
 **Artifact.** [E5 frozen protocol](PRIOR_CALIBRATION_SPECIFICITY_PROTOCOL_V1.md)
+
+---
+
+## 12. E5 Calibration × Specificity — calibration tolerance is family-dependent
+
+**Question.** Holding the family true, when does a narrower realization
+constraint stop being better than a broader one as its center becomes biased?
+
+**Result.** Correct specificity orders as expected: pooled D3 utility rises
+from family-only `.0732`, broad `.2061`, medium `.2293`, to narrow `.2498`;
+harmful rate falls from 23.0% to 1.0%. Mild bias only slightly reduces narrow
+utility (`.2404`), but strong bias lowers it to `.2015`, below pooled broad
+correct (`.2061`). The reversal is clearest for asymptotic bounds (.2396 broad
+correct vs .1833 narrow strong bias), absent for curvature at the tested error,
+and nearly tied for regime change.
+
+**What it supports.** Specificity and calibration are empirically distinct.
+Accurate narrow knowledge can be useful before a structure is observable;
+miscalibration erodes that gain. The tolerance is prior-family dependent, so
+v1 cannot claim one universal crossover `e*`.
+
+**What it does not yet test.** Admission-v2 has not been re-evaluated because
+the frozen confirmation classifier artifact is not exported. Retraining on E5
+would contaminate the intended generalization test. The correct next step is to
+export that artifact, then score correct versus miscalibrated knowledge without
+refitting; afterward E6 addresses distance × residual trust.
+
+**Artifacts.** [Frozen protocol](PRIOR_CALIBRATION_SPECIFICITY_PROTOCOL_V1.md) ·
+[result report](RESULTS_PRIOR_CALIBRATION_SPECIFICITY_V1.md) ·
+`experiments/prior_calibration_specificity_v1.py` ·
+`results/prior_calibration_specificity_v1/results.json` ·
+`figures/fig20_prior_calibration_specificity.png`

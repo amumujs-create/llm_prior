@@ -24,14 +24,18 @@ specificity but independently vary their calibration:
 | ID | specificity | calibration |
 |---|---|---|
 | K0 | family only | no realization constraint |
-| K1 | broad interval (±30%) | centered on truth |
-| K2 | narrow interval (±10%) | centered on truth |
-| K3 | narrow interval (±10%) | mildly biased center (+.05 normalized onset; +10% scale/shape) |
-| K4 | narrow interval (±10%) | strongly biased center (+.15 normalized onset; +30% scale/shape) |
-| K5 | broad interval (±30%) | strongly biased center |
+| K1 | broad interval | centered on truth |
+| K2 | medium interval | centered on truth |
+| K3 | narrow interval | centered on truth |
+| K4 | narrow interval | mildly biased center |
+| K5 | narrow interval | strongly biased center |
 
-For bound parameters, offsets are clipped to the generator's valid parameter
-range. All interval bounds are fixed before seeing outcomes.
+For onset fields, broad/medium/narrow half-widths are `.20/.10/.03` in
+normalized time. Mild/strong onset-center biases are `+.05/+ .15`. For scale
+and shape fields (and bound lower/rate fields), the matching half-widths are
+`30%/15%/5%` of the true parameter and mild/strong center biases are
+`+10%/+30%`. Bounds are clipped to valid generator ranges. All interval bounds
+are fixed before seeing outcomes.
 
 ## Primary endpoint and planned figure
 
