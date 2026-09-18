@@ -16,10 +16,15 @@ out of scope for v1.
 | Inflection | `f''` changes sign | possible → one change → location interval |
 | Turning point | `f'` changes sign | possible → one turn → location/type interval |
 | Regime/change point | local law changes | possible → one change → onset interval → onset + post-change shape range |
-| Bound/asymptote | finite limiting region / one-sided bound | bound type → bound interval → bound + approach-rate range |
+| Bound | one-sided range constraint, e.g. `f>=L` | type → bound interval |
+| Asymptote | convergence toward a limiting region, `f→L` | possible → limit interval → limit + approach-rate range |
 
-A prior is a set of constraints, never a particular power-law or exponential
-formula. Formula classes are possible realizations only.
+A prior is an **AND conjunction** of constraints, never a particular power-law
+or exponential formula. Formula classes are possible realizations only. In
+particular: inflection is continuous `f''` sign change; turning point is `f'`
+sign change; regime change is a change in local law/parameter at an onset. A
+trajectory may carry multiple labels, but code must retain which check supplied
+each label.
 
 ## Composition and truth
 
@@ -46,8 +51,12 @@ primitive composition × data condition × distance × knowledge quality
 
 ## Candidate profile and frontier
 
-For every candidate record structural coverage, conditional sharpness,
-incremental utility, harm rate, calibration sensitivity, and distance stability.
+For every candidate record structural coverage, conditional sharpness, marginal
+sharpness under composition, logical specificity, incremental utility, harm
+rate, calibration sensitivity, and distance stability. Conditional sharpness
+freezes its reference ensemble: generator rule, ensemble size, prefix
+conditioning likelihood, and candidate-prior independence. A later robustness
+check compares spline and basis-mixture ensembles for ranking stability.
 Do not force one best-prior score. Report the **Prior Quality Frontier**:
 coverage-preserving candidates that are sharp, useful, and low harm.
 
@@ -56,6 +65,16 @@ coverage-preserving candidates that are sharp, useful, and low harm.
 1. Seen primitives, unseen parameters.
 2. Seen primitives, held-out compositions.
 3. Held-out primitive/mechanism (open-world prior OOD).
+4. Held-out generator realization for a fixed structure (e.g. ODE test versus
+   spline/basis development), to detect generator-artifact learning.
+
+## Null and interaction cases
+
+Include null/no-useful-prior tasks where the vocabulary has no informative safe
+constraint; correct behavior is abstention or a weak prior. For conjunctions,
+report marginal information such as `ΔS(B|A)=S(A∧B)-S(A)` and the matching
+deployment-dependent utility difference. This distinguishes redundancy,
+synergy, and harmful interactions.
 
 ## Future proposer evaluation
 

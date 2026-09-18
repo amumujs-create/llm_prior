@@ -834,4 +834,13 @@ This is the confirmatory vehicle for a true Extrapolation Hurdle Map. LLM/RAG
 is deferred until candidate proposal engines can be compared fairly on this
 grammar benchmark.
 
+**Design corrections before implementation.** Bound and asymptote are separate
+primitives. Priors are AND constraints; inflection, turning point, and regime
+change have distinct code-level checks. The benchmark includes null/abstention
+tasks, conditional-sharpness sampler freezing plus sampler robustness, marginal
+primitive interaction, and held-out generator-realization OOD. Structural
+metrics (coverage, sharpness, logical specificity) remain distinct from
+deployment-dependent utility/harm/distance metrics. The relevant frontier is
+coverage-preserving information, not unconstrained sharpness.
+
 **Artifact.** [Frozen benchmark design](PRIOR_PRIMITIVE_COMPOSITION_BENCHMARK_V1.md)
