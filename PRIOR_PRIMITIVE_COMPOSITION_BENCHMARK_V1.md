@@ -103,3 +103,20 @@ coverage, and missed-useful-prior rate. Before full execution, a 30–50 task pe
 primitive sanity suite at zero noise/dense observations/near OOD must verify
 coverage, sharpness ordering, biased-narrow behavior, conjunction logic, and
 cross-generator label agreement.
+
+## Further required freeze rules
+
+Candidate classes are `true-subset` (under-specific but all true), `true-full`,
+`biased-specific`, `mixed true+false`, and `fully wrong`. Phenomenological
+sharpness is trajectory-only. Mechanistic sharpness is only defined under a
+paired trajectory-and-latent-mechanism ensemble, and is never pooled as the
+same numeric quantity.
+
+Define a practical utility threshold before results: beneficial `U>delta`,
+neutral `|U|<=delta`, harmful `U<-delta`; retain raw U as well. Sharpness uses
+Laplace-smoothed weighted survival with a predeclared probability floor.
+Sanity checks measure any Monte-Carlo violation of `S(A AND B)>=S(A)`.
+
+Both realization engines receive identical data, candidates, split, and fixed
+optimization budget. Record complexity and solver failures; headline utility
+claims require concordant direction under spline and constrained-neural engines.
