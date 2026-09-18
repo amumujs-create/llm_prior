@@ -865,3 +865,13 @@ triples require deterministic three-generator satisfiability; benchmark-v1
 sharpness restarts on a capped 10.6204 scale; null count is exactly 675 of
 3,375; and generator agreement uses paired latent structural specifications.
 Sanity is a benchmark-validity test, not a model-performance result.
+
+The last execution degrees of freedom are also frozen before seeing sanity
+outcomes. Prefix likelihood uses per-point MSE, never SSE, and every sharpness
+estimate records effective sample size with an `ESS<100` diagnostic. Full-v1
+LHS ranges and transforms are numeric and seeded. The 3,375 tasks are one
+immutable corpus; parameter, composition, primitive, and generator OOD are
+separate metadata views for later generalization tests. Inference uses 5,000
+paired hierarchical bootstrap replicates over cells and tasks, with normalized
+utility for headline macro effects. Singleton `true-subset` remains a code key
+but is reported as `true-weaker`/`under-specific true`.
