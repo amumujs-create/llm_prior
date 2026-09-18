@@ -225,7 +225,19 @@ def build():
               p("Czarnecki et al.의 Sobolev Training은 function value뿐 아니라 target derivative를 맞추는 학습을 제안하고, studied settings에서 data efficiency와 generalization 개선을 보였다. 이는 slope, curvature, derivative-sign consistency를 evidence primitive로 기록하는 방법론적 precedent다. 우리의 deployment pipeline이 true derivative를 관측한다는 뜻은 아니다.", "BodyK"),
               p("Czarnecki, W. M., Osindero, S., Jaderberg, M., Swirszcz, G., & Pascanu, R. (2017). Sobolev Training for Neural Networks. NeurIPS 2017. https://proceedings.neurips.cc/paper/2017/hash/758a06618c69880a6cee5314ee42d52f-Abstract.html", "SmallK"),
               p("실험 기록에 주는 규칙", "H2K"),
-              p("prefix fit / function-value error, structural or derivative validity, parameter identifiability and realization uncertainty, far-OOD utility and harm risk를 분리해 기록한다. 한 점수에서 좋아 보이는 모델이 미래 continuation에서는 왜 실패하는지 드러내기 위함이다.", "CalloutK")]
+              p("prefix fit / function-value error, structural or derivative validity, parameter identifiability and realization uncertainty, far-OOD utility and harm risk를 분리해 기록한다. 한 점수에서 좋아 보이는 모델이 미래 continuation에서는 왜 실패하는지 드러내기 위함이다.", "CalloutK"), PageBreak()]
+
+    # Distance-aware OOD and extrapolation-aware validation
+    story += [p("9. Support 거리, 불확실성, 외삽형 검증", "H1K"),
+              p("관측 support의 끝을 넘어 얼마나 멀리 예측하는가와, prefix 안에서 구조가 얼마나 오래 드러났는가는 다른 축이다. 이 구분은 이 프로젝트의 O(관측성)와 d(support 밖 query 거리)를 같은 지표로 취급하지 않게 한다.", "BodyK"),
+              p("A. Distance from support is an OOD-risk signal", "H2K"),
+              p("Meyer & Pebesma는 predictor-space에서 training data까지의 weighted distance로 dissimilarity index를 정의하고 area of applicability를 추정한다. 요지는 support 밖에서는 cross-validation RMSE가 그대로 적용된다고 볼 수 없다는 것이다. Tossou et al.도 molecular regression OOD에서 training–deployment 거리가 증가할수록 성능과 calibration이 악화될 수 있음을 보여주며, 거리를 evaluation과 deployment decision에 포함해야 한다고 주장한다.", "BodyK"),
+              p("Meyer, H. & Pebesma, E. (2021). Predicting into unknown space? Estimating the area of applicability of spatial prediction models. Methods in Ecology and Evolution, 12, 1620–1633. DOI: 10.1111/2041-210X.13650\nTossou, P. et al. (2024). Real-World Molecular Out-of-Distribution: Specification and Investigation. JCIM, 64, 1012–1025. DOI: 10.1021/acs.jcim.3c01774", "SmallK"),
+              p("B. Extrapolation-aware splitting can select different models", "H2K"),
+              p("Garcia & Naets의 Leave-Boundary-Out (LBO)는 boundary region을 의도적으로 hold-out하여 extrapolation을 model selection에 넣는다. 이들의 benchmark에서는 interpolation–extrapolation trade-off가 나타났고, extrapolation을 고려해 선택된 model은 종종 더 단순했다(세부 양상은 model class에 따라 다름).", "BodyK"),
+              p("Garcia, M. & Naets, F. (2025). Beyond Limits: Enhancing the Extrapolation Performance of Regression Models by Leaving the Boundary Out. Machine Learning. DOI: 10.1007/s10994-025-06933-8", "SmallK"),
+              p("이 프로젝트에 주는 설계 규칙", "H2K"),
+              p("O = prefix 내부에서 prior-defining structure가 노출된 정도, d = support boundary 밖 evaluation/deployment query의 거리. 현재 결과는 far-tail을 고정한 O → utility 분석이다. 다음 distance-aware 확장은 O × d grid에서 RMSE, harmful admission risk, calibration을 함께 기록하고, random pseudo-OOD와 LBO형 boundary hold-out을 비교해야 한다.", "CalloutK")]
 
     doc.build(story)
     print(OUT)

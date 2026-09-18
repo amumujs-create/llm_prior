@@ -122,6 +122,56 @@ evaluating only function-value RMSE. It does not establish that Sobolev loss or
 true derivatives are available in our deployment setting; our current pipeline
 uses prefix-derived structural evidence instead.
 
+### D. Distance from training support: OOD risk and uncertainty are deployment variables
+
+Distance from the observed/training support is a separate source of risk from
+whether a structural mechanism has become visible in the prefix. Meyer and
+Pebesma define a dissimilarity index as a weighted distance from a prediction
+point to the training data in predictor space, and use it to delimit an *area
+of applicability*. Their central warning is that cross-validation error is not
+automatically applicable outside that support.
+
+- Meyer, H., & Pebesma, E. (2021). *[Predicting into unknown space? Estimating
+  the area of applicability of spatial prediction
+  models](https://doi.org/10.1111/2041-210X.13650)*, Methods in Ecology and
+  Evolution, 12(9), 1620–1633.
+
+Tossou et al. independently construct molecular regression OOD settings and
+report that performance and calibration deteriorate as test/deployment examples
+move farther from the training distribution. They argue that train-to-deployment
+distance should be represented in evaluation and deployment decision-making.
+
+- Tossou, P., Wognum, C., Craig, M., Mary, H., & Noutahi, E. (2024).
+  *[Real-World Molecular Out-of-Distribution: Specification and
+  Investigation](https://doi.org/10.1021/acs.jcim.3c01774)*, Journal of
+  Chemical Information and Modeling, 64(4), 1012–1025.
+
+**Use in this project.** Let `O` denote *mechanism exposure* inside the
+observed prefix (for example, post-onset evidence), and let `d` denote the
+distance of an evaluation/deployment query beyond the support boundary. They
+must not be conflated: a mechanism can be highly observable (`O` high) while a
+farther query still has larger continuation risk. The current synthetic tail
+keeps its far-OOD region fixed, so it demonstrates an `O → utility` relation;
+it does **not** yet estimate a `d → utility` curve.
+
+### E. Extrapolation-aware validation: interpolation and extrapolation select differently
+
+Garcia and Naets introduce Leave-Boundary-Out (LBO) splitting specifically to
+select regression models for extrapolation. Across their benchmark they find an
+interpolation–extrapolation trade-off, and the models selected with
+extrapolation considered are often simpler than those selected under standard
+splits (with the precise pattern model-class dependent).
+
+- Garcia, M., & Naets, F. (2025). *[Beyond Limits: Enhancing the
+  Extrapolation Performance of Regression Models by Leaving the Boundary
+  Out](https://doi.org/10.1007/s10994-025-06933-8)*, Machine Learning.
+
+**Use in this project.** This supports treating a boundary/leave-out-tail
+protocol as a model-selection instrument rather than evaluating only random
+interpolation-style splits. It does not claim that a simpler realization is
+always better; complexity must be judged jointly with held-out continuation
+utility and structural validity.
+
 ### Consequence for the experimental record
 
 Every future experiment should distinguish at least four layers:
@@ -130,6 +180,7 @@ Every future experiment should distinguish at least four layers:
 prefix fit / function-value error
 structural or derivative validity
 parameter identifiability and realization uncertainty
+distance from support (d) and uncertainty/calibration
 far-OOD utility and harm risk
 ```
 
@@ -410,4 +461,7 @@ Structural family
    improvements.
 4. State what the result supports, what it does not support, and one next
    question that follows logically.
-5. Link protocol, code, results JSON, figures, and any commit/hash.
+5. Record both mechanism exposure/observability (`O`) and query distance from
+   support (`d`) when the design varies either one; do not use one as a proxy
+   for the other without an explicit validation.
+6. Link protocol, code, results JSON, figures, and any commit/hash.
