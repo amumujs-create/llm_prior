@@ -696,3 +696,39 @@ how query distance controls trust in the data-driven residual.
 `experiments/calibration_tolerance_v1.py` ·
 `results/calibration_tolerance_v1/results.json` ·
 `figures/fig21_calibration_tolerance_curves.png`
+
+---
+
+## 14. Prior Quality Audit — coverage and sharpness are not utility
+
+**Purpose.** Prior quality needs a structural measurement layer separate from
+RMSE: (1) does the prior retain the true continuation, and (2) how much of the
+prefix-consistent continuation space does it remove? This analysis reuses E5
+conditions rather than introducing another predictive method.
+
+**Definitions.** Structural coverage is membership of the true realization in
+the supplied constraint. Structural sharpness is `-log` weighted survival mass
+after sampling family continuation parameters and weighting them by observed-
+prefix likelihood. The reference is therefore conditioned on data already
+seen; it does not count prefix fit as prior information.
+
+**Result.** Across 810 tasks, family-only has coverage 1.00 and sharpness 0.00;
+broad-correct has 1.00 and 7.52; narrow-correct has 1.00 and 24.64. Narrow
+mild/strong bias retains similarly high sharpness (25.07/25.93) but has zero
+coverage. It is therefore structurally *confidently wrong*, despite being
+highly restrictive.
+
+**What it supports.** The useful taxonomy is Coverage × Sharpness, with utility
+as a separate empirical outcome: true-but-uninformative, ideal, confidently
+wrong, and useless. It explains why E5 calibration is required.
+
+**Limit and next question.** This v1 ensemble is within the correct family, so
+incremental information is sharpness relative to family-only. A later broader
+ensemble is needed to measure what a prior adds beyond a baseline predictor.
+E6 remains separate: it asks how distance affects trust in learned residuals.
+
+**Artifacts.** [Protocol](PRIOR_QUALITY_AUDIT_PROTOCOL_V1.md) ·
+[result report](RESULTS_PRIOR_QUALITY_AUDIT_V1.md) ·
+`experiments/prior_quality_audit_v1.py` ·
+`results/prior_quality_audit_v1/results.json` ·
+`figures/fig23_prior_quality_audit.png`
