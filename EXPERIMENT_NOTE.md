@@ -732,3 +732,46 @@ E6 remains separate: it asks how distance affects trust in learned residuals.
 `experiments/prior_quality_audit_v1.py` ·
 `results/prior_quality_audit_v1/results.json` ·
 `figures/fig23_prior_quality_audit.png`
+
+---
+
+## 15. Post-E6 roadmap — Prior-Space Stress Benchmark v1
+
+**Motivation.** We should not claim that an LLM's broad pretraining makes its
+priors trustworthy. The testable claim is narrower: can it propose a wider and
+more useful candidate prior set than a closed handcrafted library, while a
+separate evaluator rejects harmful proposals?
+
+**Benchmark construction.** Define a compositional grammar of structural
+primitives rather than enumerate a fixed list of formulas: direction, curvature
+or curvature change, bound/asymptote, threshold/regime change, power scaling,
+periodicity, memory/path dependence, interaction, shock/discontinuity, and
+invariance/conservation. Sample one-to-three primitive compositions together
+with support length, OOD distance, noise, density, identifiability, transition
+exposure, local residual magnitude, and individual variation.
+
+**Generalization strata.**
+
+1. Seen primitive / unseen parameters — ordinary parameter generalization.
+2. Seen primitives / held-out composition — compositional prior generalization.
+3. Held-out primitive or mechanism — prior-space OOD.
+
+**Proposal-engine comparison.** Fixed handcrafted library, symbolic/grammar
+library, small learned proposer, LLM, and LLM+RAG. All outputs must be parsed
+into one schema: family/primitives, realization constraints, uncertainty, and
+provenance. The proposer is recall-oriented; admission remains deployment-
+precision-oriented.
+
+**Measures.** Candidate recall of useful priors; structural coverage;
+conditional sharpness; realization calibration; proposal harm; diversity; and
+unknown/abstain behavior under held-out mechanisms. Do not score an LLM only by
+whether it names the generator label.
+
+**Open-world requirement.** Some mechanisms will remain unknown. A valid system
+must retain unknown/abstain mass and avoid forcing a sharp unsupported prior,
+especially for precursor-free shocks. This is a benchmark target, not yet an
+implemented LLM experiment.
+
+**Research sequence.** Finish E6 residual-trust phenomenon and the already
+frozen Coverage–Sharpness association analysis; then build this benchmark before
+testing actual LLM/RAG candidate generation.
