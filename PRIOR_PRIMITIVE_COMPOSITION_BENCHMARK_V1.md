@@ -82,3 +82,24 @@ Only after the grammar benchmark is established compare handcrafted grammar,
 random generator, learned proposer, LLM, and LLM+RAG. Proposal engines are
 evaluated on candidate recall, coverage, sharpness, calibration, harm,
 diversity, and abstention—not generator-label accuracy alone.
+
+## Operational definitions required before execution
+
+Truth has two labels: phenomenological (realized target satisfies a constraint)
+and mechanistic (generator contains its mechanism). Regime change records both.
+Asymptote stores latent generator truth and a finite-horizon operational label
+based on predeclared late-domain decline in distance-to-limit and slope.
+
+Freeze a compatible/conditional/incompatible composition table and each
+constraint's global versus segment-local scope. Conditional sharpness freezes
+the reference ensemble generator, size, prefix-likelihood conditioning, and
+candidate independence; its robustness endpoint is rank correlation between
+spline-ensemble and basis-mixture-ensemble sharpness rankings. Utility is
+explicitly `U(prior, realization engine, baseline, distance)` and headline
+results must repeat under spline and constrained-neural realization engines.
+
+Null tasks report unnecessary proposal rate, harmful proposal rate, abstention
+coverage, and missed-useful-prior rate. Before full execution, a 30–50 task per
+primitive sanity suite at zero noise/dense observations/near OOD must verify
+coverage, sharpness ordering, biased-narrow behavior, conjunction logic, and
+cross-generator label agreement.

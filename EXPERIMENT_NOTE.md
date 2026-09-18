@@ -844,3 +844,9 @@ deployment-dependent utility/harm/distance metrics. The relevant frontier is
 coverage-preserving information, not unconstrained sharpness.
 
 **Artifact.** [Frozen benchmark design](PRIOR_PRIMITIVE_COMPOSITION_BENCHMARK_V1.md)
+
+**Pre-execution requirements.** Full benchmark execution follows only after a
+primitive sanity suite. It freezes phenomenological versus mechanistic truth,
+finite-horizon asymptote semantics, a composition compatibility/scope table,
+sharpness-ensemble rank-robustness, a second realization engine, and null-task
+abstention metrics.
