@@ -579,3 +579,29 @@ assuming all L4 constraints are accurate.
 `experiments/prior_specificity_hierarchy_v1.py` ·
 `results/prior_specificity_hierarchy_v1/results.json` ·
 `figures/fig18_prior_specificity_hierarchy.png`
+
+---
+
+## 10. Prior Archetype Generalization — simple truth is not full realization
+
+**Question.** Do selection failures persist when the only true shared prior is
+monotonic direction, not a transition/curvature/bound function family?
+
+**Result.** Yes for candidate selection. Across 900 random-monotone tasks, MSE
+selected incompatible curvature/bound/transition candidates at D3 in 82.3%,
+78.7%, and 72.0% of weak/medium/strong direction-SNR cases. BIC reduced these
+to 64.7%, 47.3%, and 56.3%, with D3 regret `.0190–.0972` versus MSE
+`.1388–.1715`. The direction-constrained affine prior itself had near-zero
+point-forecast utility except under weak direction with high noise, where it
+provided a small positive utility (`.00156 [.00065,.00272]`).
+
+**Interpretation.** A simple true structural property need not determine a
+future realization. Yet MSE can still reward spurious more-specific candidates;
+complexity-aware selection reduces, but does not eliminate, the error. This
+extends the selection phenomenon beyond the initial three complex archetypes.
+
+**Artifacts.** [Frozen protocol](PRIOR_ARCHETYPE_GENERALIZATION_PROTOCOL_V1.md) ·
+[result report](RESULTS_PRIOR_ARCHETYPE_GENERALIZATION_V1.md) ·
+`experiments/prior_archetype_generalization_v1.py` ·
+`results/prior_archetype_generalization_v1/results.json` ·
+`figures/fig19_monotone_archetype_generalization.png`
