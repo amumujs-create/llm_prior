@@ -793,3 +793,45 @@ residual regime for distance decay to preserve.
 calibrated correct-family prior can be sufficiently complete that residuals
 mainly fit noise. E6-v2 must use an incomplete but calibrated prior to create
 genuine near-OOD correction signal, without mixing in E5 calibration error.
+
+---
+
+## 17. Provisional hurdle taxonomy — parallel candidates, not a causal chain
+
+E1–E6 are development evidence for parallel extrapolation hurdles, not proof
+of one causal sequence. Prior-side hurdles are observability, identifiability,
+calibration, and incremental information. Candidate selection is decision-side;
+residual trust is predictor-side; novelty/unseen prior is open-world. Calibration
+is an external-knowledge property and can be poor independently of
+identifiability. Residual trust is a separate issue when a prior is incomplete.
+
+The confirmatory Extrapolation Hurdle Map must span:
+
+```text
+prior primitives/compositions × data conditions × extrapolation distance × knowledge quality
+```
+
+Knowledge quality is explicit because E5/E5b showed that width and calibration
+change outcomes for a fixed structure. Each benchmark cell must record coverage,
+conditional sharpness, identifiability error, calibration tolerance,
+incremental utility, harm, selection regret, residual-trust horizon,
+catastrophic failure, and unknown/abstention need. Only that primitive-
+composition benchmark can be called the paper's hurdle map.
+
+---
+
+## 18. Prior Primitive–Composition Benchmark v1 — next main experiment
+
+The next main artifact is not another predictor. It is a 1D scalar benchmark
+where priors are constraint compositions: direction, curvature, inflection,
+turning point, regime change, and bound/asymptote. Labels are multi-label
+structural truth; specificity is an explicit ladder. Generator realization is
+separated from candidate realization through constrained splines/basis
+mixtures/ODEs. The benchmark varies data conditions, distance, and knowledge
+quality, then reports a Coverage–Sharpness–Utility–Harm frontier.
+
+This is the confirmatory vehicle for a true Extrapolation Hurdle Map. LLM/RAG
+is deferred until candidate proposal engines can be compared fairly on this
+grammar benchmark.
+
+**Artifact.** [Frozen benchmark design](PRIOR_PRIMITIVE_COMPOSITION_BENCHMARK_V1.md)
