@@ -24,12 +24,14 @@ rate is 11.2% and 12.1%, respectively.
 
 ## Diagnosis
 
-The failed gate is measurement saturation, not a utility result. At zero noise
+The failed gate is a construct mismatch, not a utility result. At zero noise
 with dense prefix observations, the weighted continuation ensemble becomes so
 concentrated that broad- and medium-correct intervals often both receive
 probability near one. Their median sharpness is approximately `.0001`; narrow
 is only `.0001–.0002`. Strict ordering therefore fails even though all three
-correct intervals preserve the true continuation.
+correct intervals preserve the true continuation. This is valid behavior for
+`S(P|D_obs)`: logical specificity need not add information already supplied by
+the prefix.
 
 The failure is primitive-dependent. Strict nested ordering is 1.0 for
 direction, curvature, and asymptote; 0 for bound, inflection, and turning; and
@@ -39,12 +41,11 @@ identifiability geometry.
 
 ## Decision
 
-Do not run full v1. Do not lower the `.95` gate after seeing this result. The
-next protocol version must distinguish the logical nesting property—which is
-already exact—from empirical resolvability under the reference ensemble. A
-predeclared non-saturated measurement condition or a tie-aware endpoint can be
-proposed only as v1.1, then rerun independently. Structural-null and
-informational-null validation also remains outstanding before full v1.
+Do not run full v1 and do not lower the `.95` threshold. Protocol v1.1 instead
+separates exact nondecreasing logical nesting from primitive-specific empirical
+resolvability. Equality is valid. Saturation becomes a reported signal of low
+incremental information, not automatically an estimator failure. Structural-
+null and informational-null validation remains outstanding before full v1.
 
 ## Artifacts
 

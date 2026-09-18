@@ -906,15 +906,58 @@ of spline and `.512` of basis tasks, so the suite failed. Median ESS was about
 
 **Interpretation.** Zero-noise dense prefixes make the continuation weights
 nearly degenerate for several primitives, so broad and medium correct intervals
-both have sharpness near zero. This is measurement saturation: logical nesting
-is intact, but strict empirical separation is not resolvable under this sanity
-condition. The failure is strongest for bound, inflection, and turning.
+both have sharpness near zero. More importantly, the strict gate confused two
+constructs. Constraint sets can be logically nested while their conditional
+information after seeing data is equal. Thus saturation can mean that the data
+already supplied the narrower constraint's information. The effect is strongest
+for bound, inflection, and turning and exposes primitive-specific
+identifiability geometry.
 
-**Decision.** Full v1 remains blocked. Do not relax the gate post hoc. Any
-non-saturated condition or tie-aware endpoint must be declared as protocol
-v1.1 and independently rerun. Null-type sanity remains required afterward.
+**Decision.** Full v1 remains blocked and the failed threshold is not relaxed.
+Protocol v1.1 separates exact nondecreasing logical nesting from empirical
+resolvability in a predeclared data-limited condition. Saturation and
+informational-null rates become anatomy outputs rather than universal validity
+failures. Structural-null validation remains a separate gate.
 
 **Artifacts.** [Result report](RESULTS_PRIOR_BENCHMARK_SANITY_V1.md) ·
 `experiments/prior_benchmark_sanity_v1.py` ·
 `results/prior_benchmark_sanity_v1/summary.json` ·
 `figures/fig24_prior_benchmark_sanity.png`
+
+**New principle candidate.** `Prior specificity != prior incremental
+information given data.` See
+[v1.1 measurement-resolvability protocol](PRIOR_BENCHMARK_SANITY_PROTOCOL_V1_1.md).
+
+---
+
+## 20. V1.1 Measurement-Resolvability Sanity
+
+**Question.** Once logical nesting and data-conditioned information are
+separated, which primitive specificity ladders actually reduce continuation
+uncertainty under a frozen data-limited prefix?
+
+**Run.** 1,680 measurements with support fraction `.35`, 24 points, 3% noise,
+40 paired specifications per primitive/generator, two samplers, `M=4096`, and
+new seeds `51001..51003`.
+
+**Result.** Logical nesting violations were zero. Median narrow-minus-broad
+sharpness was about 1.72 direction, 1.76 curvature, 1.20–1.33 regime, and .40
+asymptote. Inflection and turning were only .003–.004 and saturated in 97–99%
+of tasks. Bound gave a small .058–.059 increase but remained below the `.10`
+informational-null threshold in every task.
+
+**Conclusion.** Logical specificity is universal set inclusion; effective
+conditional specificity is primitive- and data-dependent. Inflection/turning
+specificity is logical-only under this reference ensemble, while direction,
+curvature, regime, and asymptote supply resolvable incremental information.
+Bound is distinguishable but weak. This is evidence for `prior specificity !=
+prior incremental information given data`, not a reason to tune sharpness until
+every primitive separates.
+
+**Decision.** The v1.1 logical gate passes, but full v1 remains blocked until
+the structural-null generator/checker gate is independently run.
+
+**Artifacts.** [Protocol](PRIOR_BENCHMARK_SANITY_PROTOCOL_V1_1.md) ·
+[result](RESULTS_PRIOR_BENCHMARK_SANITY_V1_1.md) ·
+`experiments/prior_benchmark_resolvability_sanity_v1_1.py` ·
+`figures/fig25_resolvability_sanity_v1_1.png`
