@@ -857,3 +857,11 @@ balance, knowledge perturbations, engine budgets, aggregation, sample sizes,
 seeds, and sanity pass gates are fixed in
 `PRIOR_BENCHMARK_OPERATIONAL_FREEZE_V1.md`. Full execution is blocked until the
 sanity suite passes without changing these values.
+
+Seven final ambiguities were closed before sanity: asymptote is explicitly
+latent-assisted; regime Delta-BIC has fixed search, continuity, degrees of
+freedom, and variance floor; singleton true-subset and true-full are defined;
+triples require deterministic three-generator satisfiability; benchmark-v1
+sharpness restarts on a capped 10.6204 scale; null count is exactly 675 of
+3,375; and generator agreement uses paired latent structural specifications.
+Sanity is a benchmark-validity test, not a model-performance result.

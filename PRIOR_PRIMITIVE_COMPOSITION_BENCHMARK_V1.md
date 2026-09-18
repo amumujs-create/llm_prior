@@ -7,6 +7,9 @@ deliberately restricted to **one-dimensional progression → scalar target**.
 Scaling, memory, conservation, multivariate interaction, and periodicity are
 out of scope for v1.
 
+No v1 result is described as a universal prior theory. The scope is explicitly
+1D progression-to-scalar structural priors.
+
 ## Constraint primitives
 
 | Primitive | Constraint-level truth label | Specificity ladder |

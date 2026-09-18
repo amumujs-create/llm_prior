@@ -24,9 +24,17 @@ edge points are excluded. Let `Rx` and `Ry` be target-domain ranges.
   local-quadratic `Delta BIC >=10`, with segments >=15%.
 - Bound: all clean values satisfy the supplied one-sided bound within
   `.01 Ry` tolerance.
-- Asymptote operational label: in the final 20% versus preceding 20%, median
+- **Latent-assisted operational asymptote label**: in the final 20% versus preceding 20%, median
   absolute slope and median distance to latent limit each fall by >=50%.
   Latent asymptotic mechanism truth is stored separately.
+
+Phenomenological regime Delta-BIC searches normalized change locations
+`.15,.16,...,.85`. The single model is quadratic (`k=3`). The two-segment model
+uses continuous hinge basis `1,x,x^2,(x-tau)_+,(x-tau)_+^2` (`k=5`): value
+continuity is enforced, while slope and curvature may change. Use
+`BIC=n*log(max(RSS/n,sigma_floor^2))+k*log(n)`, where
+`sigma_floor=1e-6*max(Ry,1e-8)`. Delta-BIC is single minus the minimum
+two-segment BIC. Both segments retain at least 15% of points.
 
 ## 2. Conditional Sharpness estimator
 
@@ -48,6 +56,9 @@ of `S(A AND B)>=S(A)-1e-8`; sanity pass requires zero.
 
 Phenomenological and mechanistic sharpness are separate. Mechanistic sharpness
 requires a paired `(trajectory, latent mechanism)` ensemble.
+This v1 definition has `S_max=-log(1/40960)=10.6204`. Its absolute values are
+not comparable to exploratory sharpness values around 24–25; the scale restarts
+for benchmark v1.
 
 ## 3. Practical utility
 
@@ -80,6 +91,12 @@ Every non-null task has exactly six actions: abstain plus one each of
 `true-subset`, `true-full`, `biased-specific`, `mixed true+false`, and
 `fully-wrong`. Null tasks use abstain plus five matched-strength non-informative
 or wrong candidates. Candidate order is randomized by task seed.
+
+For size-2/3 truth, `true-subset` is a seeded nonempty proper subset at weakest
+logical specificity. For singleton truth it is the same primitive at its
+weakest logical level, never the empty prior. `true-full` contains all intended
+true primitives at medium-correct specificity. `biased-specific` is narrow;
+its signed bias tier is balanced. Mixed and fully-wrong use medium specificity.
 
 ## 6. Knowledge perturbations
 
@@ -115,6 +132,15 @@ pairs, 8 compatible triples, and 20% null tasks. Data conditions are sampled by
 a frozen Latin-hypercube design rather than a full factorial. Splits are fixed:
 parameter OOD, held-out composition, held-out primitive, and held-out generator.
 
+The 27 non-null cells yield 2,700 non-null tasks. Null tasks are 20% of the
+final total: `N_null=675`, `N_total=3375`.
+
+Pairwise compatibility does not register triples. Enumerate triples
+lexicographically with seed `40017`. A triple is feasible only when spline,
+basis, and ODE constructors each produce 20/20 checker-valid trajectories,
+allowing at most 1,000 attempts per trajectory. Register the first eight
+feasible triples before computing the final protocol hash.
+
 ## 9. Sanity pass gates
 
 Correct weak/strong coverage >=.95; wrong coverage <=.05; correct narrow median
@@ -122,3 +148,9 @@ sharpness exceeds broad; biased narrow has lower coverage and higher sharpness
 than broad; conjunction monotonicity violations zero; cross-generator truth
 agreement >=.95; mechanistic/phenomenological labels remain separate; null
 abstention and weak-prior actions are distinguishable. Failure blocks full v1.
+
+Cross-generator agreement uses paired latent structural specifications: the
+same sign, event count, normalized location, segment scope, and magnitude tier
+are supplied to spline, basis, and ODE constructors. The same 40 specifications
+are checked across all three generators. Sanity evaluates benchmark validity,
+not predictive performance.
