@@ -70,10 +70,26 @@ utility. Validate the frozen out-of-grammar generator independently. At least
 utility-based or sharpness-based relabeling. Generator exhaustion is reported
 as failure, not converted to informational null.
 
+Before generation, every structural-null trajectory is centered and scaled to
+the declared physical target range `[-1,1]`. The only registered meaningful
+one-sided bound candidates are lower and upper bounds at
+`{-0.75,-0.50,-0.25,0,.25,.50,.75}`. A bound primitive is present only when a
+candidate from this fixed catalog is supplied by the latent specification and
+passes the frozen checker. The null specification supplies none. Bounds at or
+beyond the physical range endpoints are excluded as trivial; no bound may be
+invented after inspecting a trajectory.
+
+Run 40 requested null tasks for each spline, basis, and ODE-style generator,
+using seeds `52001,52002,52003`. Each requested task allows at most 2,000 seeded
+draws. A draw is accepted only if global direction/curvature, exactly-one
+inflection/turning, mechanistic and phenomenological single-regime change,
+registered meaningful bound, and latent/operational asymptote are all false.
+The gate passes only if each generator accepts at least 38/40 requested tasks
+and no accepted task violates any check.
+
 ## Decision rule
 
 Full benchmark execution remains blocked unless logical nesting, conjunction,
 generator/checker recovery, confidently-wrong behavior, sampler rank
 robustness, and structural-null validation pass. Empirical resolvability and
 informational-null rates are anatomy results, not universal validity gates.
-

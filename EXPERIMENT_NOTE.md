@@ -961,3 +961,31 @@ the structural-null generator/checker gate is independently run.
 [result](RESULTS_PRIOR_BENCHMARK_SANITY_V1_1.md) ·
 `experiments/prior_benchmark_resolvability_sanity_v1_1.py` ·
 `figures/fig25_resolvability_sanity_v1_1.png`
+
+---
+
+## 21. Structural-Null Validation v1.1
+
+**Question.** Can the frozen out-of-grammar generator produce smooth
+continuations for which none of the seven registered structural primitives is
+valid, without defining nullness from sharpness or utility?
+
+**Bound guard.** The physical target range is normalized to `[-1,1]`. Only the
+predeclared interior bound catalog `{-0.75,-0.50,-0.25,0,.25,.50,.75}` is
+eligible; endpoint, post-hoc, or arbitrarily loose bounds are prohibited.
+
+**Result.** Spline, basis, and ODE-style generators each accepted 40/40 requested
+null tasks. Total attempts were 42, 50, and 41; no task exhausted its 2,000-draw
+budget. All accepted-task checker violations were zero. Neither sharpness nor
+utility entered generation or labeling.
+
+**Decision.** The structural-null gate passes. All protocol-level sanity
+blockers are now cleared, so full benchmark v1 may proceed under the frozen
+corpus and aggregation rules. Inflection and turning remain in the benchmark;
+their data-condition-dependent resolvability is a target anatomy result, not a
+reason for removal.
+
+**Artifacts.** [Result](RESULTS_STRUCTURAL_NULL_VALIDATION_V1_1.md) ·
+`experiments/structural_null_validation_v1_1.py` ·
+`results/structural_null_validation_v1_1/summary.json` ·
+`figures/fig26_structural_null_validation.png`
