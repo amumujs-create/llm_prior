@@ -875,3 +875,12 @@ separate metadata views for later generalization tests. Inference uses 5,000
 paired hierarchical bootstrap replicates over cells and tasks, with normalized
 utility for headline macro effects. Singleton `true-subset` remains a code key
 but is reported as `true-weaker`/`under-specific true`.
+
+Two final sanity blockers were resolved without expanding the full candidate
+set. Broad/medium/narrow-correct and narrow-biased priors are generated only as
+sanity measurement controls. Null tasks use a separately seeded out-of-grammar
+smooth generator with multiple derivative and curvature sign changes, no
+latent switch/limit mechanism, and an ex-ante acceptance rule requiring that
+every coverage-preserving registered prior has sharpness below `.10` in both
+frozen ensembles. Nullness is never assigned from utility. Parameter OOD is
+reported as seven coordinate-specific views plus one supplementary joint view.

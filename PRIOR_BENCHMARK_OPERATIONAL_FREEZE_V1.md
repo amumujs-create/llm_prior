@@ -107,6 +107,12 @@ its signed bias tier is balanced. Mixed and fully-wrong use medium specificity.
 The code key remains `true-subset`; singleton cases are called `true-weaker`
 or `under-specific true` in papers and reports.
 
+The sanity suite additionally creates four **measurement-validation-only**
+candidates from the same true constraint: broad-correct, medium-correct,
+narrow-correct, and narrow-biased. They use the widths and bias grid in Section
+6, are never included in the six-action benchmark set, and cannot affect full-v1
+candidate balance. They exist only to test nested coverage/sharpness behavior.
+
 ## 6. Knowledge perturbations
 
 All widths and biases use normalized valid parameter range. Broad/medium/narrow
@@ -166,8 +172,11 @@ held-out composition, held-out primitive, and held-out generator are metadata
 views/evaluation protocols over that corpus, not four subdivisions that alter
 the anatomy summaries. Their frozen definitions are:
 
-- parameter OOD: the lowest 10% plus highest 10% of each LHS coordinate,
-  evaluated against the central 60%; the intervening 20% is a guard band;
+- parameter OOD: seven coordinate-specific views compare that coordinate's
+  lowest 10% plus highest 10% against its central 60%, with the intervening
+  20% as a guard band. A supplementary joint view trains only where all seven
+  coordinates are central and tests tasks where at least one coordinate is in
+  a tail; all remaining tasks are guard;
 - composition OOD: the final 20% of registered size-2/3 compositions after
   sorting by SHA-256 of the canonical composition string;
 - primitive OOD: `inflection` and every composition containing it are held out;
@@ -190,6 +199,29 @@ basis, and ODE constructors each produce 20/20 checker-valid trajectories,
 allowing at most 1,000 attempts per trajectory. Register the first eight
 feasible triples before computing the final protocol hash.
 
+### Null-task generator
+
+Null status is assigned before model fitting and never from observed utility.
+Use a separate out-of-grammar smooth generator: a seeded mixture of 4–6 compact
+radial-basis components plus a chirp term, with no latent regime switch or
+finite-limit mechanism. Accept a draw only when the clean 401-point trajectory:
+
+1. has at least two robust `f'` sign changes and at least two robust `f''` sign
+   changes under the Section 1 tolerances;
+2. fails the global direction and curvature persistence thresholds;
+3. fails the exactly-one inflection and exactly-one turning-point definitions;
+4. has phenomenological regime `Delta BIC<10` and no mechanistic regime label;
+5. fails the operational asymptote test; and
+6. under both frozen continuation ensembles, every registered candidate with
+   structural coverage 1 has conditional sharpness `<.10`.
+
+Condition 6 prevents a trivially true but non-informative bound from making a
+task non-null. If no accepted draw is found in 2,000 seeded attempts, record a
+generator failure; do not relabel the task or use utility to decide nullness.
+Thus a null task means that the registered grammar contains no coverage-
+preserving candidate meeting the predeclared minimum information threshold,
+not that every imaginable scientific prior is absent.
+
 ## 9. Sanity pass gates
 
 Correct weak/strong coverage >=.95; wrong coverage <=.05; correct narrow median
@@ -197,6 +229,11 @@ sharpness exceeds broad; biased narrow has lower coverage and higher sharpness
 than broad; conjunction monotonicity violations zero; cross-generator truth
 agreement >=.95; mechanistic/phenomenological labels remain separate; null
 abstention and weak-prior actions are distinguishable. Failure blocks full v1.
+
+The broad/narrow checks use only the sanity-only auxiliary candidates defined
+in Section 5. Null validation additionally requires >=95% of accepted null
+tasks to satisfy all six ex-ante null conditions and zero utility-based
+relabeling.
 
 Cross-generator agreement uses paired latent structural specifications: the
 same sign, event count, normalized location, segment scope, and magnitude tier

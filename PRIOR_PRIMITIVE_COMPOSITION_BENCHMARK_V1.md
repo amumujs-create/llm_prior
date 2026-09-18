@@ -79,6 +79,12 @@ report marginal information such as `ΔS(B|A)=S(A∧B)-S(A)` and the matching
 deployment-dependent utility difference. This distinguishes redundancy,
 synergy, and harmful interactions.
 
+Operationally, null tasks come from a separate out-of-grammar oscillatory
+smooth generator and are accepted only when frozen truth checkers reject the
+registered event-count/global primitives and every coverage-preserving
+registered candidate has conditional sharpness below `.10` under both frozen
+continuation ensembles. Nullness is never defined from prediction utility.
+
 ## Future proposer evaluation
 
 Only after the grammar benchmark is established compare handcrafted grammar,
@@ -119,6 +125,10 @@ Define a practical utility threshold before results: beneficial `U>delta`,
 neutral `|U|<=delta`, harmful `U<-delta`; retain raw U as well. Sharpness uses
 Laplace-smoothed weighted survival with a predeclared probability floor.
 Sanity checks measure any Monte-Carlo violation of `S(A AND B)>=S(A)`.
+
+Sanity-only broad-, medium-, and narrow-correct plus narrow-biased candidates
+validate nested sharpness and confidently-wrong behavior; they are not part of
+the full benchmark's balanced six-action candidate set.
 
 Both realization engines receive identical data, candidates, split, and fixed
 optimization budget. Record complexity and solver failures; headline utility
