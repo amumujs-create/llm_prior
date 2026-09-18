@@ -210,7 +210,22 @@ def build():
               p("한 문장 결론", "H2K"),
               p("Retrieve plausible structural knowledge + constrain its realization + admit only when remaining uncertainty is safe.", "CalloutK"),
               Spacer(1, .55*cm), p("Artifact map", "H2K"),
-              p("전체 논리: EXPERIMENT_NOTE.md\n결과 원문: RESULTS_*.md\n재현 코드: experiments/*.py\n기계 판독: results/*/results.json\nPPT 문장: PPT_STORYBOARD.md", "SmallK")]
+              p("전체 논리: EXPERIMENT_NOTE.md\n결과 원문: RESULTS_*.md\n재현 코드: experiments/*.py\n기계 판독: results/*/results.json\nPPT 문장: PPT_STORYBOARD.md", "SmallK"), PageBreak()]
+
+    # Literature grounding
+    story += [p("8. 측정 설계를 뒷받침하는 선행 근거", "H1K"),
+              p("아래 문헌은 이 저장소의 synthetic 결과를 독립적으로 검증하는 자료가 아니다. 대신, 왜 pointwise fit만으로는 부족하고 complexity, structural validity, derivative information을 분리해 기록해야 하는지에 대한 방법론적 근거다.", "BodyK"),
+              p("A. Accuracy - complexity trade-off", "H2K"),
+              p("Desmond의 recent symbolic-regression work는 accuracy와 expression complexity를 함께 선택해야 하며, likelihood를 최대화하는 매우 복잡한 함수가 overfit되어 generalization/extrapolation이 나빠질 수 있다고 논의한다. 이 브리프의 far-OOD utility와 parameter-identifiability 기록은 prefix fit만으로 model을 선택하지 않기 위한 것이다.", "BodyK"),
+              p("Desmond, H. (2026). (Exhaustive) Symbolic Regression and model selection by minimum description length. Philosophical Transactions of the Royal Society A. DOI: 10.1098/rsta.2024.0584", "SmallK"),
+              p("B. Shape constraints and pointwise error are distinct objectives", "H2K"),
+              p("Haider et al.는 shape-constrained symbolic regression에서 prediction error와 constraint violation을 별도 objective로 다루며, low-noise setting에서 shape constraint가 training prediction error를 높이지만 test error는 소폭 낮출 수 있음을 보고한다. 이는 우리의 constrained spline/neural basis robustness check와 structural validity의 별도 기록을 뒷받침한다.", "BodyK"),
+              p("Haider, C., de Franca, F. O., Burlacu, B., & Kronberger, G. (2023). Shape-constrained multi-objective genetic programming for symbolic regression. Applied Soft Computing, 132, 109855. DOI: 10.1016/j.asoc.2022.109855", "SmallK"),
+              p("C. Derivative-aware learning", "H2K"),
+              p("Czarnecki et al.의 Sobolev Training은 function value뿐 아니라 target derivative를 맞추는 학습을 제안하고, studied settings에서 data efficiency와 generalization 개선을 보였다. 이는 slope, curvature, derivative-sign consistency를 evidence primitive로 기록하는 방법론적 precedent다. 우리의 deployment pipeline이 true derivative를 관측한다는 뜻은 아니다.", "BodyK"),
+              p("Czarnecki, W. M., Osindero, S., Jaderberg, M., Swirszcz, G., & Pascanu, R. (2017). Sobolev Training for Neural Networks. NeurIPS 2017. https://proceedings.neurips.cc/paper/2017/hash/758a06618c69880a6cee5314ee42d52f-Abstract.html", "SmallK"),
+              p("실험 기록에 주는 규칙", "H2K"),
+              p("prefix fit / function-value error, structural or derivative validity, parameter identifiability and realization uncertainty, far-OOD utility and harm risk를 분리해 기록한다. 한 점수에서 좋아 보이는 모델이 미래 continuation에서는 왜 실패하는지 드러내기 위함이다.", "CalloutK")]
 
     doc.build(story)
     print(OUT)

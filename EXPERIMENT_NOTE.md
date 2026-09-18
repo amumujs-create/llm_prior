@@ -61,6 +61,83 @@ Full definitions and legacy-key mappings are in [TERMINOLOGY.md](TERMINOLOGY.md)
 
 ---
 
+## Literature grounding - why fit error alone is not enough
+
+These papers are **external methodological grounding**, not independent
+validation of this repository's synthetic claims. They motivate what should be
+measured and constrained; our own experiments establish the specific
+observability, identifiability, and realization findings below.
+
+### A. Symbolic regression: accuracy must be traded against complexity
+
+Harry Desmond's recent work on exhaustive symbolic regression and MDL frames
+selection as an accuracy-complexity trade-off: highly complex likelihood-maximizing
+expressions can overfit and generalize or extrapolate poorly. It treats the
+accuracy-complexity plane as a Pareto problem rather than selecting by MSE alone.
+
+- Desmond, H. (2026). *[Exhaustive Symbolic Regression and model selection by
+  minimum description length](https://doi.org/10.1098/rsta.2024.0584)*,
+  Philosophical Transactions of the Royal Society A.
+
+**Use in this project.** Prefix fit cannot be the selection criterion for an
+extrapolative prior. We therefore retain far-OOD utility, parameter
+identifiability, and realization-gap measures alongside fit quality. This paper
+does not imply that our particular family priors or complexity measures are
+optimal.
+
+### B. Shape constraints: structural validity and pointwise loss are separate objectives
+
+Haider et al. study shape-constrained multi-objective symbolic regression under
+noise and extrapolation. Their constrained search treats prediction error and
+constraint violation separately; they report a low-noise setting where enforcing
+shape constraints increases training prediction error while slightly lowering
+test error. They also note that guaranteed constraints can restrict the search
+space and affect accuracy.
+
+- Haider, C., de Franca, F. O., Burlacu, B., & Kronberger, G. (2023).
+  *[Shape-constrained multi-objective genetic programming for symbolic
+  regression](https://doi.org/10.1016/j.asoc.2022.109855)*, Applied Soft
+  Computing, 132, 109855.
+
+**Use in this project.** It supports reporting structural/derivative validity
+separately from pointwise RMSE, and motivates the acceleration robustness check
+with constrained spline and neural-basis realizations. It is not evidence that
+any shape constraint is beneficial when its scientific premise is wrong or
+unobservable.
+
+### C. Derivative-aware learning: values and derivatives encode different information
+
+Sobolev Training augments value matching with target derivative matching. The
+authors give theory and experiments in which derivative supervision improves
+data efficiency and generalization in their studied settings.
+
+- Czarnecki, W. M., Osindero, S., Jaderberg, M., Swirszcz, G., & Pascanu, R.
+  (2017). *[Sobolev Training for Neural
+  Networks](https://proceedings.neurips.cc/paper_files/paper/2017/hash/758a06618c69880a6cee5314ee42d52f-Abstract.html)*,
+  NeurIPS 2017.
+
+**Use in this project.** It is methodological precedent for recording slope,
+curvature, and derivative-sign consistency as evidence primitives, rather than
+evaluating only function-value RMSE. It does not establish that Sobolev loss or
+true derivatives are available in our deployment setting; our current pipeline
+uses prefix-derived structural evidence instead.
+
+### Consequence for the experimental record
+
+Every future experiment should distinguish at least four layers:
+
+```text
+prefix fit / function-value error
+structural or derivative validity
+parameter identifiability and realization uncertainty
+far-OOD utility and harm risk
+```
+
+This makes a model that fits a prefix well but has an implausible continuation
+visible as a separate failure mode, rather than hiding it in one aggregate score.
+
+---
+
 ## 1. Generic observability sweep — the starting phenomenon
 
 **Question inherited from the initial feasibility check.** If the matching
