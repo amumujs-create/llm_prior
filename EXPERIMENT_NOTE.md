@@ -1160,3 +1160,27 @@ become conditionally informative.
 **Artifact.** [E8 supplement result](RESULTS_PRIOR_APPLICABILITY_FACTORIAL_SUPPLEMENT_V1.md) ·
 `results/prior_applicability_factorial_supplement_v1/analysis/` ·
 `figures/fig32_e8_supplement_a2_c2.png`
+
+---
+
+## 27. Prior Anatomy taxonomy — diagnostic separation
+
+The research now fixes a layered diagnostic taxonomy so that “the prior
+failed” is no longer treated as one explanation. The scientific-prior object is
+`P=(C, theta, Omega, q, pi)`: content, specification, scope, belief, and
+provenance. This is separated from evidence/identifiability, translation,
+integration, realization engine, optimization, arbitration, deployment, and
+utility.
+
+Coverage is scoped truth; sharpness is conditional on both observed data and a
+reference ensemble; realization multiplicity requires its own function-class
+measure; utility/harm is conditional on translation, integration, engine,
+optimization, context, and loss. These qualifications prevent the benchmark
+from accidentally presenting deployment outcomes as intrinsic prior quality.
+
+The next anatomy sequence is E9 minimum informational evidence → E10 prior
+scope/validity horizon → E11 structured misspecification/fragility. Prior
+Critic belongs later to arbitration/deployment and must not collapse these
+upstream distinctions.
+
+**Artifact.** [Prior Anatomy taxonomy](PRIOR_ANATOMY_TAXONOMY_V1.md)
