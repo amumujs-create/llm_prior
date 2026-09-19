@@ -1415,3 +1415,32 @@ other canonical grammar atoms are also valid in the same scope.
 
 **Artifact.** [E11 completeness protocol draft](PRIOR_COMPLETENESS_E11_PROTOCOL_DRAFT_V1.md)
 · [E11 execution freeze](E11_EXECUTION_FREEZE_V1.md)
+
+**Run and result.** The frozen full E11 run accepted all 720 requested latent
+tasks (`8 intended atom triples × 3 generators × 30`) and produced 5,760
+candidate/envelope rows with zero exhaustion, floor-hit, or nested-floor
+violations. The unique-envelope-conditioned estimand is therefore measurable
+in the planned corpus. Among 5,040 supplied candidate priors, all were
+canonical-atom-incomplete by controlled construction, but only 48.3% were
+informationally incomplete; 41.6% were atom-incomplete yet conditionally
+informationally complete, and 10.1% were ESS-unresolved. Median
+`Delta S_miss=.104 nat` (mean `.231`). This is the intended separation:
+missing grammar content need not be missing conditional information. The
+largest context-dependent mean missing-atom marginals were turning `.412 nat`
+and inflection `.352`, while lower bound averaged `.089`; these are
+corpus- and context-dependent, not intrinsic primitive rankings.
+
+![E11 content versus information completeness](figures/fig38_e11_completeness_by_supplied_size.png)
+
+![E11 marginal missing-atom information](figures/fig39_e11_marginal_information.png)
+
+**Conclusion and boundary.** E11 supports the grammar-relative statement
+`Validity != Canonical-content completeness != Conditional informational
+completeness`. It does not measure world completeness, utility, calibration,
+fragility, engine compatibility, or safety. The next distinct anatomy question
+is E12 fragility: how quickly a supplied prior loses coverage/information when
+its declared structural content is perturbed.
+
+**Artifact.** [E11 results](RESULTS_PRIOR_COMPLETENESS_E11.md)
+· `results/prior_completeness_e11/run/`
+· `results/prior_completeness_e11/analysis/`

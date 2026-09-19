@@ -1,0 +1,14 @@
+{
+  "mode": "sanity",
+  "requested_per_cell": 1,
+  "accepted_tasks": 24,
+  "candidate_rows": 192,
+  "integrity_passed": true,
+  "exhausted_cells": 0,
+  "hashes": {
+    "atom_library": "137f2ece33c161bb04e1f4ba6d7675b88fd2250d963d656f1b45b1251736326a",
+    "intent_registry": "c739bf617751bfa7555774ca8c3030b703e1a31223d15f850cb9c040b70b7cd7",
+    "compatibility_scope_registry": "9cf4d826931e56990dc3b533113199402be9a72c384fa7e0318476cc35f95d54",
+    "runner": "a7303100df4a8229adcf1378310da3b51018a40d353b82fbe08c739847279f3d"
+  }
+}

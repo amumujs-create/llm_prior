@@ -1,0 +1,4 @@
+atom_status,information_status,size
+atom_incomplete,informationally_complete,2097
+atom_incomplete,informationally_incomplete,2432
+atom_incomplete,measurement_unresolved,511

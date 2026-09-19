@@ -1,0 +1,29 @@
+{
+  "integrity": {
+    "accepted_latent_tasks": 720,
+    "candidate_rows": 5760,
+    "supplied_candidates": 5040,
+    "expected_tasks": 720,
+    "expected_rows": 5760,
+    "integrity_passed": true,
+    "exhausted_cells": 0,
+    "nested_floor_violations": 0,
+    "candidate_floor_hits": 0,
+    "oracle_floor_hits": 0
+  },
+  "estimand": "Conditional on a unique inclusion-maximal compatible coverage-preserving envelope in the frozen canonical grammar.",
+  "measurement": {
+    "delta_info_threshold_nat": 0.1,
+    "primary_ESS_threshold": 100,
+    "median_ESS": 318.99006612299644,
+    "measurement_unresolved_rate": 0.10138888888888889
+  },
+  "content_information": {
+    "atom_incomplete_rate": 1.0,
+    "informationally_complete_rate_all": 0.4160714285714286,
+    "informationally_incomplete_rate_all": 0.48253968253968255,
+    "mean_delta_S_miss": 0.23113764035145049,
+    "median_delta_S_miss": 0.1039749428844656
+  },
+  "interpretation_boundary": "No utility, prediction engine, future RMSE, or safety target is used. The corpus is a controlled grammar-relative anatomy experiment, not a population estimate of real-world priors."
+}
