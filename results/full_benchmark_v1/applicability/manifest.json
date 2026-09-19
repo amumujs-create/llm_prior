@@ -1,0 +1,21 @@
+{
+  "scope": "descriptive post-run conditional analysis of frozen full-v1 outcomes",
+  "prior_condition": "true-full/non-null for condition and complexity maps; tier comparison only for distance \u00d7 specificity",
+  "identifiability_proxy": "effect_strength, frozen as the primitive valid-range fraction",
+  "axes": [
+    "support_fraction",
+    "sample_count",
+    "noise_ratio",
+    "exposure",
+    "ood_distance",
+    "effect_strength",
+    "heterogeneity_cv"
+  ],
+  "interaction_maps": [
+    "support_fraction \u00d7 noise_ratio",
+    "exposure \u00d7 effect_strength",
+    "ood_distance \u00d7 knowledge tier"
+  ],
+  "n_true_full": 2700,
+  "n_task_action_tiers": 8100
+}

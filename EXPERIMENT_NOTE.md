@@ -1054,3 +1054,36 @@ remain the valid Coverage–Sharpness evidence.
 `results/legacy_metric_audit_v1/summary.csv` ·
 `results/legacy_metric_audit_v1/oracle_gap_closure.csv` ·
 `results/legacy_metric_audit_v1/selection_regret.csv`
+
+---
+
+## 24. Full Benchmark v1 — Conditional Prior Applicability Map
+
+**Question.** Is a prior's quality a fixed property, or does its realized
+utility depend on observed-data informativeness `D`, extrapolation horizon
+`h`, and problem complexity `C`? We write this as `U(P | D, h, C)` rather than
+`Q(P)`.
+
+**Analysis.** No new data or model was introduced. Locked full-v1 outcomes were
+engine-averaged and stratified into descriptive low/mid/high terciles of support
+fraction, sample count, noise, exposure, OOD distance, effect strength (the
+frozen identifiability proxy), and heterogeneity. The main map holds candidate
+calibration fixed by using non-null true-full priors; distance × specificity
+compares true-subset, true-full, and biased-specific knowledge tiers.
+
+**Result.** Structural truth does not yield a common safe operating region:
+true-full harmful rate ranges from .328 for direction and .346 for curvature to
+.548 for regime and .616 for turning, all at Coverage=1. Pooled two-way tables
+are non-monotone (support × noise: .371–.518 harm; exposure × effect strength:
+.429–.502). These are descriptive LHS strata, not causal estimates; therefore
+they do not license a universal rule such as “more data” or “shorter horizon”
+without conditioning on primitive and the remaining coordinates.
+
+**Decision.** This establishes `Prior Applicability Region` as the next
+measurement target, not a learned critic result. The tabled conditions become
+prefix-only candidate features for the planned Prior Critic. Any rule selected
+from this map requires an independently frozen confirmation experiment.
+
+**Artifact.** [Applicability result](RESULTS_FULL_BENCHMARK_V1_APPLICABILITY.md) ·
+`results/full_benchmark_v1/applicability/` ·
+`figures/fig30_full_v1_conditional_applicability.png`

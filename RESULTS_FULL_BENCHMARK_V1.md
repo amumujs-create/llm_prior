@@ -70,4 +70,5 @@ does or does not repeat across spline, basis, and ODE generation.
 - `figures/fig27_full_v1_anatomy_composition.png`
 - `figures/fig28_full_v1_hurdle_map.png`
 - `figures/fig29_full_v1_knowledge_null.png`
-
+- [Conditional applicability analysis](RESULTS_FULL_BENCHMARK_V1_APPLICABILITY.md)
+- `figures/fig30_full_v1_conditional_applicability.png`
