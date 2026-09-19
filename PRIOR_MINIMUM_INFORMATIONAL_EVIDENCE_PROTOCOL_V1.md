@@ -14,7 +14,7 @@ observations per unit progression (rounded), so a longer prefix has both wider
 support and the corresponding observation count. Noise is held at 1% of the
 clean prefix range. The target structural prior is true by construction.
 
-## Three difficulty axes
+## Two difficulty axes
 
 - **Structural separability (a controlled source of practical
   identifiability):** low/medium/high are *predeclared generator parameters*
@@ -27,7 +27,10 @@ clean prefix range. The target structural prior is true by construction.
   measure are frozen; only the active-coordinate count changes. This avoids
   conflating DoF with a different sampler or sharpness definition.
 The v1 scope is seven singleton primitives, three generator realizations, and
-20 deterministic latent draws per primitive × difficulty cell.
+20 deterministic latent draws per primitive × difficulty cell. For every one
+latent task, all three nested freedom levels are evaluated:
+`T_i -> {d=1, d=3, d=5} -> {s=.20,...,.70}`. They are not separately drawn
+tasks.
 
 Future consequence is **not** manipulated in E9. The same latent trajectory
 is used for every prefix in its path. Consequence/scope manipulation belongs to
@@ -36,14 +39,25 @@ prefix history.
 
 ## Information-only quantities
 
-For every prefix, sample `M=4096` candidate continuations independently of the
-candidate prior, condition them on prefix normalized MSE using a frozen
-temperature, and compute:
+For each latent task, draw **one** frozen ambient continuation bank of
+`M=4096` samples independently of the candidate prior. Reuse that exact base
+bank across all six prefixes and all three freedom levels; only the
+prefix-likelihood weights and the nested active-coordinate subset change. The
+nested activation order is fixed as `1 subset 3 subset 5 = {z1} subset
+{z1,z2,z3} subset {z1,...,z5}`. Each coordinate basis is L2-normalized on the
+fixed future grid before applying an equal influence scale, so nominal count is
+not confounded by arbitrary coordinate amplitude.
+
+Condition this shared bank on prefix normalized MSE using a frozen temperature,
+and compute:
 
 - `S(P|D) = -log P_Q(f satisfies P | D)` with the frozen Laplace/floor rule;
 - `ESS = (sum w)^2 / sum w^2`;
-- continuation dispersion / effective realization multiplicity under the same
-  weighted ambient ensemble, reported as a diagnostic alongside nominal DoF;
+- effective parameter dimension
+  `d_eff=(tr Sigma_w)^2 / tr(Sigma_w^2)`, where `Sigma_w` is the weighted
+  covariance of active ambient coordinates;
+- function-space dispersion `V_f=(1/|G|) sum_{x in G} Var_w[f(x)]` on the
+  fixed future reference grid `G`.
 - structural-evidence score `E_struct`, a frozen prefix-only likelihood contrast
   between the target constraint and its registered alternatives.
 
@@ -79,9 +93,11 @@ The operational conditions comprising `E_joint*` are:
    only as external truth).
 
 Missing endpoints are not collapsed to one label. A task is
-`informational-null-at-tested-prefix` only if reliable (`ESS >= 100`) prefixes
-remain below the sharpness threshold. A task with no `E_joint*` is
-`joint-unresolved`; persistent `ESS < 100` is separately `sampler-unresolved`.
+`informational-null-at-tested-prefix` only when `ESS_.70 >= 100` and
+`max_{s<=.70, ESS_s>=100} S(P|D_s) < .10`. If `ESS_.70 < 100`, it is
+`sampler-unresolved-at-tested-prefix`, irrespective of earlier low-sharpness
+prefixes. A task with no `E_joint*` but final reliable measurement is
+`joint-unresolved` unless it meets the stricter informational-null rule.
 The components are always reported separately; composite labels are operational
 states, not claims that their constructs are identical.
 
@@ -91,6 +107,10 @@ informative** (`S>=.10, E_struct>=.80`), **observed+redundant** (`S<.10,
 E_struct>=.80`), or **unresolved** (neither criterion). Prefixes with
 `ESS<100` receive a separate measurement-unreliable flag rather than a state.
 
+Record redundancy re-entry
+`R_reentry = I[exists s > E_red*: S(P|D_s)>=.10 and ESS_s>=100]`, so a first
+redundant episode is not silently treated as persistent redundancy.
+
 ## Outputs
 
 Report the distributions of `E_add*`, `E_obs*`, `E_joint*`, and `E_red*` by
@@ -98,3 +118,17 @@ primitive and difficulty axis; their right-censoring and unresolved-reason
 rates; component trajectories (`S`, `ESS`, `E_struct`, multiplicity); and
 lifecycle-state transitions. E9 does not test engine utility, future
 consequence, prior scope, or fragility; those belong to later E10/E11.
+
+## Frozen design constants and inference
+
+The primitive-independent separability generator coefficient is fixed at
+`eta in {.20, .50, .80}` for low/mid/high, where `eta` is the pre-generation
+mixture weight of the registered structural alternative's prefix component; it
+is never selected from observed `E_struct`. The common ambient-coordinate
+influence scale is `.10`; temperature is `.02`; and the fixed future grid has
+161 equally spaced points from `.70` to `1.00`.
+
+All uncertainty intervals and within-task DoF contrasts use 5,000 paired
+nonparametric bootstrap replicates over latent task IDs. Each resampled task
+retains its complete `{d=1,3,5} × {six prefixes}` trajectory; prefixes or DoF
+levels are never independently resampled.

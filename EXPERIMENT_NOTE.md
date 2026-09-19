@@ -1184,8 +1184,9 @@ separates first prior-added information (`E_add*`), first observed structure
 (`E_obs*`), first observed-and-informative prefix (`E_joint*`), and later
 reliable redundancy (`E_red*`). External-informative states are retained rather
 than discarded; joint-unresolved, informational-null, and sampler-unresolved
-are separate. E9 does not equate effect strength with identifiability, uses a
-shared ambient ensemble for DoF, and moves future consequence to E10. Prior
+are separate. E9 has two difficulty axes, keeps 1/3/5 DoF paired within the
+same latent task and one shared 4,096-sample ambient bank, and moves future
+consequence to E10. Prior
 Critic belongs later to arbitration/deployment and must not collapse these
 upstream distinctions.
 

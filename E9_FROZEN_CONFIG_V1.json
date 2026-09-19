@@ -1,0 +1,16 @@
+{
+  "protocol": "PRIOR_MINIMUM_INFORMATIONAL_EVIDENCE_PROTOCOL_V1",
+  "prefix_supports": [0.2, 0.3, 0.4, 0.5, 0.6, 0.7],
+  "separability_eta": {"low": 0.2, "mid": 0.5, "high": 0.8},
+  "nominal_active_dof": [1, 3, 5],
+  "nested_activation_order": [["z1"], ["z1", "z2", "z3"], ["z1", "z2", "z3", "z4", "z5"]],
+  "ambient_bank_size": 4096,
+  "ambient_coordinate_influence_scale": 0.1,
+  "prefix_likelihood_temperature": 0.02,
+  "future_reference_grid": {"start": 0.7, "end": 1.0, "n_points": 161},
+  "sharpness_threshold": 0.1,
+  "ess_threshold": 100,
+  "structural_evidence_threshold": 0.8,
+  "bootstrap_replicates": 5000,
+  "bootstrap_unit": "latent_task_id"
+}
