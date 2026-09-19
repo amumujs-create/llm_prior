@@ -1186,7 +1186,9 @@ reliable redundancy (`E_red*`). External-informative states are retained rather
 than discarded; joint-unresolved, informational-null, and sampler-unresolved
 are separate. E9 has two difficulty axes, keeps 1/3/5 DoF paired within the
 same latent task and one shared 4,096-sample ambient bank, and moves future
-consequence to E10. Prior
+consequence to E10. Prefixes reveal one nested noisy master observation path,
+and all sharpness checks use the fixed `.70–1.00` target domain; onset and
+re-entry are explicitly censored at grid boundaries. Prior
 Critic belongs later to arbitration/deployment and must not collapse these
 upstream distinctions.
 

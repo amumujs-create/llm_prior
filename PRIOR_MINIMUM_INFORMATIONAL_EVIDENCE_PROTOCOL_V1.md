@@ -11,8 +11,11 @@ information? This is deliberately upstream of realization engines and utility.
 Each latent task is generated once on `[0,1]`, then revealed at support
 fractions `.20, .30, .40, .50, .60, .70`. Sampling density is fixed at 120
 observations per unit progression (rounded), so a longer prefix has both wider
-support and the corresponding observation count. Noise is held at 1% of the
-clean prefix range. The target structural prior is true by construction.
+support and the corresponding observation count. For each task, make one master
+observation grid `x_k=k/120` through `.70`, set noise SD once to 1% of the
+clean `[0,.70]` range, and draw one noise realization. Every prefix reveals a
+nested subset of those identical noisy observations; no prefix redraws points
+or changes its noise scale. The target structural prior is true by construction.
 
 ## Two difficulty axes
 
@@ -61,6 +64,11 @@ and compute:
 - structural-evidence score `E_struct`, a frozen prefix-only likelihood contrast
   between the target constraint and its registered alternatives.
 
+For **every** prefix, both the continuation functions and the prior-satisfaction
+indicator in `S(P|D_s)` are evaluated on the same fixed target domain
+`G=[.70,1.00]` (161 points). Thus sharpness changes are not caused by shrinking
+the future region as observed support grows.
+
 Coverage is 1 by construction for the supplied true prior and is retained only
 as a checker invariant. No future target, utility, realization engine, or
 far-OOD prediction enters any E9 input or endpoint.
@@ -84,6 +92,12 @@ At a support level `s`, prior-added information is present when
 These endpoints need not exist or occur in a universal order because
 conditional sharpness is not assumed monotone. Missing endpoints are
 right-censored beyond `.70`.
+
+All endpoints are grid-resolved tested onsets, not exact continuous thresholds:
+if first success is `.40`, report `.30 < E* <= .40`; success at `.20` is
+left-censored `E* <= .20`; no success by `.70` is right-censored `E* > .70`.
+Report attainment curves `P(E* <= s)` rather than treating censored values as
+observed at `.70`; if 50% are censored, report `median > .70`.
 
 The operational conditions comprising `E_joint*` are:
 
@@ -109,7 +123,11 @@ E_struct>=.80`), or **unresolved** (neither criterion). Prefixes with
 
 Record redundancy re-entry
 `R_reentry = I[exists s > E_red*: S(P|D_s)>=.10 and ESS_s>=100]`, so a first
-redundant episode is not silently treated as persistent redundancy.
+redundant episode is not silently treated as persistent redundancy. `E_red*`
+is identifiable only at `.20` through `.60`: redundancy first seen at `.70`
+cannot be confirmed without a subsequent prefix and remains right-censored.
+If no prefix follows a confirmed `E_red*` (for example `.60` uses `.70` as its
+confirmation), re-entry is right-censored/NA rather than recorded as zero.
 
 ## Outputs
 
