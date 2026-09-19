@@ -1,0 +1,36 @@
+{
+  "n_total": 3375,
+  "n_nonnull": 2700,
+  "n_null": 675,
+  "null_counts": {
+    "structural": 338,
+    "informational": 337
+  },
+  "composition_counts": {
+    "single": 7,
+    "pair": 12,
+    "triple": 8
+  },
+  "candidate_actions": [
+    "abstain",
+    "true-subset",
+    "true-full",
+    "biased-specific",
+    "mixed-true-false",
+    "fully-wrong"
+  ],
+  "generators": {
+    "spline": 1125,
+    "basis": 1125,
+    "ode": 1125
+  },
+  "heldout_compositions": [
+    "direction+curvature",
+    "curvature+asymptote",
+    "direction+bound",
+    "inflection+bound+asymptote"
+  ],
+  "lhs_seed": 42000,
+  "manifest_sha256": "aa3277be46517340bff84cd35db242e6edccce44905fed8f9ec495c19a6aa625",
+  "registry_sha256": "2945001efae09e24879fadbc37d6a70e46f8f125aaa2e7d01367be7400ee2fbd"
+}

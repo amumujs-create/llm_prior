@@ -1,0 +1,218 @@
+[
+  {
+    "cell_id": "cell_00",
+    "composition": "direction",
+    "size": 1,
+    "heldout_composition": false,
+    "contains_heldout_primitive": false,
+    "registration_status": "registered"
+  },
+  {
+    "cell_id": "cell_01",
+    "composition": "curvature",
+    "size": 1,
+    "heldout_composition": false,
+    "contains_heldout_primitive": false,
+    "registration_status": "registered"
+  },
+  {
+    "cell_id": "cell_02",
+    "composition": "inflection",
+    "size": 1,
+    "heldout_composition": false,
+    "contains_heldout_primitive": true,
+    "registration_status": "registered"
+  },
+  {
+    "cell_id": "cell_03",
+    "composition": "turning",
+    "size": 1,
+    "heldout_composition": false,
+    "contains_heldout_primitive": false,
+    "registration_status": "registered"
+  },
+  {
+    "cell_id": "cell_04",
+    "composition": "regime",
+    "size": 1,
+    "heldout_composition": false,
+    "contains_heldout_primitive": false,
+    "registration_status": "registered"
+  },
+  {
+    "cell_id": "cell_05",
+    "composition": "bound",
+    "size": 1,
+    "heldout_composition": false,
+    "contains_heldout_primitive": false,
+    "registration_status": "registered"
+  },
+  {
+    "cell_id": "cell_06",
+    "composition": "asymptote",
+    "size": 1,
+    "heldout_composition": false,
+    "contains_heldout_primitive": false,
+    "registration_status": "registered"
+  },
+  {
+    "cell_id": "cell_07",
+    "composition": "direction+curvature",
+    "size": 2,
+    "heldout_composition": true,
+    "contains_heldout_primitive": false,
+    "registration_status": "registered"
+  },
+  {
+    "cell_id": "cell_08",
+    "composition": "direction+inflection",
+    "size": 2,
+    "heldout_composition": false,
+    "contains_heldout_primitive": true,
+    "registration_status": "registered"
+  },
+  {
+    "cell_id": "cell_09",
+    "composition": "direction+bound",
+    "size": 2,
+    "heldout_composition": true,
+    "contains_heldout_primitive": false,
+    "registration_status": "registered"
+  },
+  {
+    "cell_id": "cell_10",
+    "composition": "direction+asymptote",
+    "size": 2,
+    "heldout_composition": false,
+    "contains_heldout_primitive": false,
+    "registration_status": "registered"
+  },
+  {
+    "cell_id": "cell_11",
+    "composition": "curvature+bound",
+    "size": 2,
+    "heldout_composition": false,
+    "contains_heldout_primitive": false,
+    "registration_status": "registered"
+  },
+  {
+    "cell_id": "cell_12",
+    "composition": "curvature+asymptote",
+    "size": 2,
+    "heldout_composition": true,
+    "contains_heldout_primitive": false,
+    "registration_status": "registered"
+  },
+  {
+    "cell_id": "cell_13",
+    "composition": "inflection+turning",
+    "size": 2,
+    "heldout_composition": false,
+    "contains_heldout_primitive": true,
+    "registration_status": "registered"
+  },
+  {
+    "cell_id": "cell_14",
+    "composition": "inflection+bound",
+    "size": 2,
+    "heldout_composition": false,
+    "contains_heldout_primitive": true,
+    "registration_status": "registered"
+  },
+  {
+    "cell_id": "cell_15",
+    "composition": "inflection+asymptote",
+    "size": 2,
+    "heldout_composition": false,
+    "contains_heldout_primitive": true,
+    "registration_status": "registered"
+  },
+  {
+    "cell_id": "cell_16",
+    "composition": "turning+bound",
+    "size": 2,
+    "heldout_composition": false,
+    "contains_heldout_primitive": false,
+    "registration_status": "registered"
+  },
+  {
+    "cell_id": "cell_17",
+    "composition": "regime+bound",
+    "size": 2,
+    "heldout_composition": false,
+    "contains_heldout_primitive": false,
+    "registration_status": "registered"
+  },
+  {
+    "cell_id": "cell_18",
+    "composition": "bound+asymptote",
+    "size": 2,
+    "heldout_composition": false,
+    "contains_heldout_primitive": false,
+    "registration_status": "registered"
+  },
+  {
+    "cell_id": "cell_19",
+    "composition": "direction+curvature+bound",
+    "size": 3,
+    "heldout_composition": false,
+    "contains_heldout_primitive": false,
+    "registration_status": "pre-registered; constructor validation required"
+  },
+  {
+    "cell_id": "cell_20",
+    "composition": "direction+curvature+asymptote",
+    "size": 3,
+    "heldout_composition": false,
+    "contains_heldout_primitive": false,
+    "registration_status": "pre-registered; constructor validation required"
+  },
+  {
+    "cell_id": "cell_21",
+    "composition": "direction+inflection+bound",
+    "size": 3,
+    "heldout_composition": false,
+    "contains_heldout_primitive": true,
+    "registration_status": "pre-registered; constructor validation required"
+  },
+  {
+    "cell_id": "cell_22",
+    "composition": "direction+inflection+asymptote",
+    "size": 3,
+    "heldout_composition": false,
+    "contains_heldout_primitive": true,
+    "registration_status": "pre-registered; constructor validation required"
+  },
+  {
+    "cell_id": "cell_23",
+    "composition": "curvature+bound+asymptote",
+    "size": 3,
+    "heldout_composition": false,
+    "contains_heldout_primitive": false,
+    "registration_status": "pre-registered; constructor validation required"
+  },
+  {
+    "cell_id": "cell_24",
+    "composition": "inflection+bound+asymptote",
+    "size": 3,
+    "heldout_composition": true,
+    "contains_heldout_primitive": true,
+    "registration_status": "pre-registered; constructor validation required"
+  },
+  {
+    "cell_id": "cell_25",
+    "composition": "turning+bound+asymptote",
+    "size": 3,
+    "heldout_composition": false,
+    "contains_heldout_primitive": false,
+    "registration_status": "pre-registered; constructor validation required"
+  },
+  {
+    "cell_id": "cell_26",
+    "composition": "regime+bound+asymptote",
+    "size": 3,
+    "heldout_composition": false,
+    "contains_heldout_primitive": false,
+    "registration_status": "pre-registered; constructor validation required"
+  }
+]

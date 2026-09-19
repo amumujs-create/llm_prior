@@ -25,3 +25,17 @@ means the run is not authorized for interpretation.
    generator, and null/abstention figures;
 7. code hash and output checksum inventory.
 
+## Corpus lock
+
+- task count: `3375` (`2700` non-null + `338` structural null + `337`
+  informational null)
+- generator allocation: `1125` spline + `1125` basis + `1125` ODE
+- task manifest SHA-256:
+  `aa3277be46517340bff84cd35db242e6edccce44905fed8f9ec495c19a6aa625`
+- composition registry SHA-256:
+  `2945001efae09e24879fadbc37d6a70e46f8f125aaa2e7d01367be7400ee2fbd`
+- corpus verification: passed with zero errors
+
+The metadata corpus is immutable. Full outcome execution remains locked until
+the eight registered triples pass the frozen three-generator 20/20 constructor
+validation and the complete scoring runner receives a code hash.
