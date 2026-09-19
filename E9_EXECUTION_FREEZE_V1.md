@@ -30,6 +30,9 @@ so implementation errors cannot masquerade as lifecycle results.
 ## 3. Ambient continuation bank
 
 - Draw one `M=4096` five-coordinate ambient bank per latent task.
+- Each bank member is one full-domain function on `[0,1]`, not a function only
+  on future `G`; the same function is evaluated on `[0,.70]` for prefix
+  likelihood and on `G` for satisfaction/dispersion.
 - Reuse it unchanged across all prefixes and DoF levels.
 - Apply active-coordinate sets `{z1}`, `{z1,z2,z3}`, `{z1,...,z5}`; all
   inactive coordinates are exactly zero.
@@ -37,6 +40,12 @@ so implementation errors cannot masquerade as lifecycle results.
   continuation, prior-satisfaction check, covariance, and dispersion metric.
 - Only prefix likelihood weights and the predeclared active subset may differ.
 - For `d_eff`, if `tr(Sigma_w^2) < 1e-12`, set `d_eff=0`.
+- Store raw `V_f`, but headline cross-primitive/generator multiplicity uses
+  `V_f_norm=V_f/R_ref^2`, with the frozen task-level `[0,.70]` reference range.
+
+The generator coefficient `eta=.20/.50/.80` is a predeclared separability
+*control*, not a claim that low/mid/high have equal empirical difficulty across
+primitives. Measured `E_struct` is the observed separability outcome.
 
 ## Integrity-only sanity suite
 
