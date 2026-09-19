@@ -1,0 +1,12 @@
+{
+  "protocol_sha256": "3f97fd6eac710fffc1d8f1735c110a4f35432c3d75954763388dd5cb00c35bca",
+  "script_sha256": "50304f9c742390e27273baa6f2e0d68d76d8a0252be869170394bcdc1b2cbcef",
+  "seed_base": 82000,
+  "replicates": 20,
+  "complete": true,
+  "n_latent_tasks": 5040,
+  "n_records": 15120,
+  "solver_failures": 0,
+  "elapsed_seconds": 8.79279899597168,
+  "records_sha256": "ab446bc29d83a56aa8f33a244cbb458175952df07f662210fc4ffa6a1183fcfb"
+}

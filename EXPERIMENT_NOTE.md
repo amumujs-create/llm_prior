@@ -1129,3 +1129,34 @@ realizations.
 **Artifact.** [E8 result](RESULTS_PRIOR_APPLICABILITY_FACTORIAL_CONFIRMATION_V1.md) ·
 `results/prior_applicability_factorial_confirmation_v1/analysis/` ·
 `figures/fig31_e8_applicability_factorial.png`
+
+---
+
+## 26. E8 supplement — absolute-horizon and bias-symmetry controls
+
+**Purpose.** Close two E8 interpretation confounds before opening a new axis:
+whether support effects were mechanically caused by changing absolute horizon,
+and whether narrow-biased risk depended on the direction rather than just the
+magnitude of miscalibration.
+
+**A2.** Support × noise was rerun with absolute future gap fixed at `.21`.
+Robust-unsafe rates remained high and support-associated: `.73/.69/.58` at
+support `.35`, `.74/.71/.70` at `.525`, `.77/.72/.69` at `.70`, across noise
+`.001/.01/.05`. Thus the E8 result is not solely caused by the normalized-gap
+construction. It is not a claim that more observations are intrinsically
+harmful: later prefixes also expose a different progression region.
+
+**C2.** Positive and negative narrow biases were made parameter-space mirrors
+and evaluated on the same latent tasks. Negative bias is systematically more
+unsafe: robust rates `.774/.788/.771` versus `.729/.705/.681` for positive
+bias at distances `.10/.40/.80`. Calibration direction is therefore an
+additional prior-quality axis, not a nuisance detail.
+
+**Decision.** E8 is closed. Context/engine analysis must retain engine-specific
+or robust targets and structured calibration error. Next is E9, which moves
+back upstream of realization utility: minimum evidence for a true prior to
+become conditionally informative.
+
+**Artifact.** [E8 supplement result](RESULTS_PRIOR_APPLICABILITY_FACTORIAL_SUPPLEMENT_V1.md) ·
+`results/prior_applicability_factorial_supplement_v1/analysis/` ·
+`figures/fig32_e8_supplement_a2_c2.png`
