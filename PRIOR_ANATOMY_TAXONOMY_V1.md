@@ -46,6 +46,12 @@ All three are grammar-relative in v1. Let `G` be the registered prior grammar.
   sharpness gap versus the supplied prior measures *missed valid information*
   inside `G`, not knowledge missing from the real world outside `G`.
 
+Canonical-atom completeness is syntactic: it asks whether a supplied prior
+explicitly names all atoms in the compatible grammar-relative envelope. It is
+not set-equivalence completeness; one atom can be implied or conditionally
+redundant under another. Informational completeness must therefore remain a
+separate, reliable non-saturated conditional-sharpness gap measurement.
+
 Completeness comparisons must use the **same declared validity scope**. A
 supplied constraint that is valid only through `.70` cannot be compared directly
 to an oracle envelope evaluated through `1.00`: the resulting information gap

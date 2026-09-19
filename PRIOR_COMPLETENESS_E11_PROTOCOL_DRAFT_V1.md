@@ -52,7 +52,7 @@ candidate/envelope evaluations per task, or 5,760 shared-bank measurements.
 E11 does not collapse “contains every valid grammar atom” and “leaves little
 conditional information missing” into one label.
 
-- **Structural grammar completeness:** `C_struct(P_s)=1` iff the canonical
+- **Canonical atom completeness:** `C_atom(P_s)=1` iff the canonical
   atom set of `P_s` equals the canonical atom set of `P_star` on `Omega`.
 - **Informational completeness:** assessed from `Delta S_miss` only when its
   sharpness measurement is reliable and non-saturated. With the predeclared
@@ -61,7 +61,7 @@ conditional information missing” into one label.
 
 Thus `P_s != P_star` with a small reliable gap is **structurally incomplete but
 informationally complete**. This is an expected E11 state, not a contradiction.
-All outputs retain `C_struct`, raw `Delta S_miss`, reliability/floor flags, and
+All outputs retain `C_atom`, raw `Delta S_miss`, reliability/floor flags, and
 the thresholded informational status as separate fields.
 
 ## Canonical content atoms and oracle envelope
@@ -87,13 +87,30 @@ may not construct a narrower parameter instance after looking at the future.
 Let `V_G(f,Omega)` be every canonical primitive atom in the frozen grammar whose
 oracle checker accepts the clean latent continuation throughout `Omega`.
 
-`P_star = AND_{P in V_G(f,Omega)} P`.
+`P_star` is not constructed by blindly conjoining every individually valid
+atom. It is the **unique maximal compatible envelope** among the already
+registered compatibility table, with global/segment-local semantics inherited
+unchanged from the benchmark registry. Formally, enumerate registered
+compositions `C` such that `C subseteq V_G(f,Omega)` and the intended triple is
+a subset of `C`; retain the maximum-cardinality composition. A task is accepted
+only if this maximum is unique. If no such compatible envelope exists or two
+incomparable maxima exist, reject and deterministically redraw the latent task;
+do not choose an envelope after inspecting sharpness.
+
+This rule ensures that every supplied candidate subset remains contained in the
+same task-level `P_star`, preserving the nested probability relation used by
+`Delta S_miss`. It also prevents event-type atoms from acquiring incompatible
+conjunction semantics merely because each individual checker passed.
 
 `P_star` may contain the intended triple plus additional grammar-valid
 constraints. This is intentional: an intended-full candidate can still be
 grammar-incomplete. Mechanistic regime and latent-assisted asymptote
 constraints may enter `P_star` only under their preregistered oracle semantics;
 they are flagged and never silently treated as phenomenological labels.
+
+Every atom in `P_star` is stored with provenance: `intended_atom` if it belongs
+to the generator's intended triple, otherwise `incidental_valid_atom`. The
+latter is an observed grammar-valid consequence, not hidden generator truth.
 
 Every supplied subset must be verified coverage-preserving on `Omega` before
 it is admitted to the corpus. The candidate and `P_star` use the same task,
@@ -140,7 +157,7 @@ exposes redundancy and interaction rather than replacing the envelope gap.
 
 ## Reporting cross-classification
 
-Report structural status and information status as a cross-classification,
+Report canonical-atom status and information status as a cross-classification,
 never as one four-class label. Examples include:
 
 - subset-incomplete + reliable large gap;
@@ -166,11 +183,15 @@ sanity suite must verify:
    numerical tolerance;
 4. `Delta S_miss>=0` up to the same tolerance;
 5. when `P_s=P_star`, `Delta S_miss≈0`;
-6. `C_struct` and informational status remain distinct for a synthetically
+6. `C_atom` and informational status remain distinct for a synthetically
    redundant missing atom;
 7. candidate/oracle floor-hit handling yields lower-bound or unresolved rather
    than false informational-completeness labels;
-8. no utility, engine, prediction, future-RMSE, or far-OOD target enters
+8. nested floor consistency: `candidate floor-hit AND oracle non-floor-hit`
+   occurs zero times, up to the frozen numerical tolerance;
+9. every accepted task has one unique maximal compatible envelope and records
+   intended versus incidental atom provenance;
+10. no utility, engine, prediction, future-RMSE, or far-OOD target enters
    scoring.
 
 ## Interpretation boundary
