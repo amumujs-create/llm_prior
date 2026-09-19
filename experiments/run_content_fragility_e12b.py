@@ -109,7 +109,37 @@ def floor_status(operation: str, full: dict, candidate: dict) -> str:
     return "unresolved"
 
 
-def task_rows(task: Task, weights: np.ndarray, valid: frozenset, cell: dict) -> tuple[list[dict], list[dict]]:
+def violation_for_false_atom(atom: str, clean: np.ndarray, x: np.ndarray) -> tuple[float, str]:
+    """Return a family-local oracle violation, never for cross-family ranking."""
+    y = np.interp(OMEGA, x, clean)
+    dx = OMEGA[1] - OMEGA[0]
+    d1 = np.gradient(y, dx)
+    d2 = np.gradient(d1, dx)
+    scale = max(float(np.ptp(y)), 1e-8)
+    if atom == "direction_increasing":
+        return float(np.mean(d1 < -0.01 * scale)), "wrong_sign_derivative_fraction"
+    if atom == "direction_decreasing":
+        return float(np.mean(d1 > 0.01 * scale)), "wrong_sign_derivative_fraction"
+    if atom == "curvature_concave":
+        return float(np.mean(d2 > 0.04 * scale)), "wrong_sign_second_derivative_fraction"
+    if atom == "curvature_convex":
+        return float(np.mean(d2 < -0.04 * scale)), "wrong_sign_second_derivative_fraction"
+    if atom == "lower_bound_0":
+        return float(max(-np.min(y), 0.0) / scale), "normalized_boundary_violation"
+    if atom == "upper_bound_0":
+        return float(max(np.max(y), 0.0) / scale), "normalized_boundary_violation"
+    if atom.startswith("inflection_"):
+        return 1.0, "event_pattern_mismatch_indicator"
+    if atom.startswith("turning_"):
+        return 1.0, "event_pattern_mismatch_indicator"
+    if atom == "regime_postchange":
+        return 1.0, "latent_mechanism_mismatch_indicator"
+    if atom.startswith("asymptote_"):
+        return 1.0, "latent_mechanism_mismatch_indicator"
+    raise ValueError(f"no frozen violation semantic for {atom}")
+
+
+def task_rows(task: Task, weights: np.ndarray, valid: frozenset, cell: dict, clean: np.ndarray, x: np.ndarray) -> tuple[list[dict], list[dict]]:
     evaluate = scores(task, weights)
     full_atoms = cell["supplied_atoms"]
     full = evaluate(full_atoms)
@@ -118,6 +148,7 @@ def task_rows(task: Task, weights: np.ndarray, valid: frozenset, cell: dict) -> 
         "row_role": "baseline", "operation_id": "P_full", "operation_type": "baseline",
         "source_atom": "", "target_atom": "", "candidate_atoms": "|".join(full_atoms),
         "coverage": int(set(full_atoms) <= set(valid)), "D_violation": 0.0,
+        "D_violation_semantics": "not_applicable_valid_baseline",
         **full, "delta_S": 0.0, "floor_status": "baseline", "sharpness_class": "valid_baseline",
     }]
     audit = []
@@ -131,6 +162,7 @@ def task_rows(task: Task, weights: np.ndarray, valid: frozenset, cell: dict) -> 
         if op["type"] == "omission":
             delta = full["S"] - candidate["S"]
             sharp_class = "coverage_preserving_omission"
+            violation, violation_semantics = 0.0, "not_applicable_coverage_preserving_omission"
         else:
             delta = candidate["S"] - full["S"]
             sharp_class = (
@@ -138,12 +170,15 @@ def task_rows(task: Task, weights: np.ndarray, valid: frozenset, cell: dict) -> 
                 "induced_sharp_wrong" if full["S"] < DELTA and candidate["S"] >= DELTA else
                 "attenuated_wrong" if full["S"] >= DELTA else "false_but_weak"
             )
+            target = op.get("target_atom", op.get("added_atom", ""))
+            violation, violation_semantics = violation_for_false_atom(target, clean, x)
         rows.append({
             "task_id": task.id, "intent_name": task.intent_name, "generator": task.gen,
             "row_role": "operation", "operation_id": op["id"], "operation_type": op["type"],
             "source_atom": op.get("source_atom", ""), "target_atom": op.get("target_atom", op.get("added_atom", "")),
             "candidate_atoms": "|".join(atoms), "coverage": coverage,
-            "D_violation": float(1 - coverage), **candidate, "delta_S": delta,
+            "D_violation": violation, "D_violation_semantics": violation_semantics,
+            **candidate, "delta_S": delta,
             "floor_status": floor_status(op["type"], full, candidate), "sharpness_class": sharp_class,
         })
         audit.append({"task_id": task.id, "operation_id": op["id"], "coverage": coverage,
@@ -172,12 +207,12 @@ def main() -> None:
                 if built is None:
                     checker += 1
                     continue
-                task, _, _, weights = built
+                task, x, clean, weights = built
                 # Every false catalog operation must be actually false here.
                 if any((op["expected_coverage"] == 0 and set(op["candidate_atoms"]) <= set(task.valid_atoms)) for op in cell["operations"]):
                     accidental += 1
                     continue
-                rr, aa = task_rows(task, weights, task.valid_atoms, cell)
+                rr, aa = task_rows(task, weights, task.valid_atoms, cell, clean, x)
                 rows.extend(rr); audits.extend(aa); accepted += 1
             accounting.append({"intent_name": cell["intent_name"], "generator": generator,
                                "requested": requested, "attempts": attempts, "accepted": accepted,

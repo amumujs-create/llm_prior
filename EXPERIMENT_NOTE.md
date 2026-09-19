@@ -1621,3 +1621,25 @@ sharpness only—not prediction utility, harm, engine compatibility, or LLM
 behavior.
 
 **Artifact.** [E12-B content/composition fragility protocol draft](PRIOR_CONTENT_COMPOSITION_FRAGILITY_E12B_PROTOCOL_DRAFT_V1.md)
+
+**Execution and result.** The frozen E12-B run passed integrity sanity and
+then accepted all 720 requested base tasks without exhausted cells, producing
+the predeclared 5,130 rows: 720 baselines plus 2,160 omissions, 720 false
+additions, and 1,530 reversals. Omission coverage was 1 in every row;
+addition/reversal coverage was 0 in every row as designed. All 4,410 operation
+comparisons were floor-exact; bank, ESS, and finite-support audits passed.
+
+Omission had mean `L_omit=1.022` nat (median `.452`), false addition mean
+`Delta S_add=.699` nat (median `.499`), and reversal mean `Delta S_rev=1.578`
+nat (median `.013`, broad heterogeneous IQR `[.000,4.581]`). All 2,250 invalid
+addition/reversal rows were *inherited-sharp wrong*: the valid `P_full`
+baseline was already above `.10 nat`. Thus this corpus does not support a
+claim that false atoms newly induced sharpness. False-addition results remain
+atom-stratified primary: `regime_postchange` (630 rows, mean `.476` nat) and
+`turning_maximum` (90 rows, mean `2.257` nat); their pooled summary is only
+supplementary. The conclusion is purely informational: omission, addition,
+and reversal are non-interchangeable structural-information errors. It is not
+a utility/harm or prediction-safety result.
+
+**Artifact.** [E12-B results](RESULTS_CONTENT_COMPOSITION_FRAGILITY_E12B.md)
+· [E12-B execution freeze](E12B_EXECUTION_FREEZE_V1.md)

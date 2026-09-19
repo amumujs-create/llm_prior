@@ -1,0 +1,8 @@
+{
+  "mode": "sanity",
+  "catalog_sha256": "8e393978884374dd2c4cd68e8bbf3ae0673a064253c31a57152a96b26ba47e1c",
+  "expected_rows": 171,
+  "actual_rows": 171,
+  "exhausted_cells": 0,
+  "all_audits_pass": true
+}
