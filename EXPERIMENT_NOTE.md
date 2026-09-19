@@ -1654,8 +1654,10 @@ typical-task effect. Finally, the E12-A
 inheritance audit found all 1,350 baseline specifications already had
 `S(P_0|D)>=.10 nat`. Thus both E12-A's immediate invalid-but-sharp transition
 and E12-B's 2,250 inherited-sharp wrong cases should be read as **valid sharp
-priors becoming invalid without losing inherited sharpness**, not as errors
-newly creating confidence.
+priors becoming invalid while remaining above the sharpness threshold**, not as
+errors newly creating confidence. The persistence is a nested-set consequence
+for false additions, but an empirical observation—not a logical implication—
+for reversals and E12-A's non-nested specification shifts.
 
 **Artifact.** [E12-B results](RESULTS_CONTENT_COMPOSITION_FRAGILITY_E12B.md)
 · [E12-B execution freeze](E12B_EXECUTION_FREEZE_V1.md)

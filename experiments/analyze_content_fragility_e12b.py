@@ -134,13 +134,17 @@ reversal is non-nested and varies substantially in direction and magnitude by
 source atom and context. Coverage was designed as an integrity invariant, not
 discovered as a result.
 
-Wrong candidates were sharp because valid baselines were already sharp in every
-tested E12-B case; the E12-A baseline audit shows the same for every tested
-specification state. Neither experiment shows that misspecification itself
-generated confidence. Rather, conditional sharpness can persist after validity
-is lost. E12-B contains no predictor, utility, RMSE, prediction harm, engine
-compatibility, or LLM component. Family-local `D_violation` values are stored
-for audit and may not be pooled as a universal severity scale.
+All wrong candidates were classified as inherited-sharp rather than
+induced-sharp because their valid baselines were already above the predeclared
+threshold and the wrong candidates themselves remained above it. For false
+additions, this persistence is consistent with their nested restriction
+relation; for reversals and E12-A specification shifts, it is an empirical
+observation rather than a logical consequence. Neither experiment shows that
+misspecification itself generated confidence. Rather, conditional sharpness can
+persist after validity is lost. E12-B contains no predictor, utility, RMSE,
+prediction harm, engine compatibility, or LLM component. Family-local
+`D_violation` values are stored for audit and may not be pooled as a universal
+severity scale.
 """
     REPORT.write_text(report)
     print(f"wrote {REPORT.relative_to(ROOT)}")
