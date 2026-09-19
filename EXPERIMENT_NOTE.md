@@ -1661,3 +1661,20 @@ for reversals and E12-A's non-nested specification shifts.
 
 **Artifact.** [E12-B results](RESULTS_CONTENT_COMPOSITION_FRAGILITY_E12B.md)
 · [E12-B execution freeze](E12B_EXECUTION_FREEZE_V1.md)
+
+---
+
+## 33. Prior Anatomy Framework v1 — E9–E12 synthesis
+
+E12-B is frozen at commit `d381617`; no further E12-B variants are planned
+without a new protocol. The next artifact is not another model or experiment
+but a synthesis of the axes that E9–E12 operationally separated. The framework
+does not assign a scalar prior-quality score. It distinguishes validity,
+conditional informativeness, observability, scope, grammar-relative
+completeness, numeric specification correctness, and structural-content
+correctness, and records that loss of validity need not remove conditional
+sharpness. It separates truth/coverage anatomy, information anatomy, and
+evidence anatomy from downstream translation, realization, utility, safety,
+LLM, and RAG questions.
+
+**Artifact.** [Prior Anatomy Framework v1](PRIOR_ANATOMY_FRAMEWORK_V1.md)
