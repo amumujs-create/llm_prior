@@ -46,7 +46,7 @@ def main():
     for i,c in enumerate(COMPOSITIONS):
         registry.append({"cell_id":f"cell_{i:02d}","composition":canon(c),"size":len(c),
                          "heldout_composition":c in held,"contains_heldout_primitive":"inflection" in c,
-                         "registration_status":"pre-registered; constructor validation required" if len(c)==3 else "registered"})
+                         "registration_status":"validated-20x3" if len(c)==3 else "registered"})
     (OUT/"composition_registry.json").write_text(json.dumps(registry,indent=2)+"\n")
 
     n=3375; lhs=qmc.LatinHypercube(d=7,seed=42000).random(n)

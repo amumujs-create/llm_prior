@@ -157,7 +157,7 @@
     "size": 3,
     "heldout_composition": false,
     "contains_heldout_primitive": false,
-    "registration_status": "pre-registered; constructor validation required"
+    "registration_status": "validated-20x3"
   },
   {
     "cell_id": "cell_20",
@@ -165,7 +165,7 @@
     "size": 3,
     "heldout_composition": false,
     "contains_heldout_primitive": false,
-    "registration_status": "pre-registered; constructor validation required"
+    "registration_status": "validated-20x3"
   },
   {
     "cell_id": "cell_21",
@@ -173,7 +173,7 @@
     "size": 3,
     "heldout_composition": false,
     "contains_heldout_primitive": true,
-    "registration_status": "pre-registered; constructor validation required"
+    "registration_status": "validated-20x3"
   },
   {
     "cell_id": "cell_22",
@@ -181,7 +181,7 @@
     "size": 3,
     "heldout_composition": false,
     "contains_heldout_primitive": true,
-    "registration_status": "pre-registered; constructor validation required"
+    "registration_status": "validated-20x3"
   },
   {
     "cell_id": "cell_23",
@@ -189,7 +189,7 @@
     "size": 3,
     "heldout_composition": false,
     "contains_heldout_primitive": false,
-    "registration_status": "pre-registered; constructor validation required"
+    "registration_status": "validated-20x3"
   },
   {
     "cell_id": "cell_24",
@@ -197,7 +197,7 @@
     "size": 3,
     "heldout_composition": true,
     "contains_heldout_primitive": true,
-    "registration_status": "pre-registered; constructor validation required"
+    "registration_status": "validated-20x3"
   },
   {
     "cell_id": "cell_25",
@@ -205,7 +205,7 @@
     "size": 3,
     "heldout_composition": false,
     "contains_heldout_primitive": false,
-    "registration_status": "pre-registered; constructor validation required"
+    "registration_status": "validated-20x3"
   },
   {
     "cell_id": "cell_26",
@@ -213,6 +213,6 @@
     "size": 3,
     "heldout_composition": false,
     "contains_heldout_primitive": false,
-    "registration_status": "pre-registered; constructor validation required"
+    "registration_status": "validated-20x3"
   }
 ]

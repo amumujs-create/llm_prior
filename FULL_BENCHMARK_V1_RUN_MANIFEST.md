@@ -33,9 +33,10 @@ means the run is not authorized for interpretation.
 - task manifest SHA-256:
   `aa3277be46517340bff84cd35db242e6edccce44905fed8f9ec495c19a6aa625`
 - composition registry SHA-256:
-  `2945001efae09e24879fadbc37d6a70e46f8f125aaa2e7d01367be7400ee2fbd`
+  `bccb6d545c32168ac114bc6c2659bcdc76e563d7e18830ed6e27ed33380e687d`
 - corpus verification: passed with zero errors
+- triple constructor validation: all 8 compositions passed 20/20 under spline,
+  basis, and ODE constructors (`480/480` required validations)
 
 The metadata corpus is immutable. Full outcome execution remains locked until
-the eight registered triples pass the frozen three-generator 20/20 constructor
-validation and the complete scoring runner receives a code hash.
+the complete scoring runner receives a code hash.

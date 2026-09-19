@@ -1,0 +1,168 @@
+{
+  "seed": 40017,
+  "required_per_generator": 20,
+  "max_attempts_per_trajectory": 1000,
+  "by_composition": {
+    "direction+curvature+bound": {
+      "spline": {
+        "accepted": 20,
+        "required": 20,
+        "attempts": 35,
+        "passed": true
+      },
+      "basis": {
+        "accepted": 20,
+        "required": 20,
+        "attempts": 35,
+        "passed": true
+      },
+      "ode": {
+        "accepted": 20,
+        "required": 20,
+        "attempts": 27,
+        "passed": true
+      }
+    },
+    "direction+curvature+asymptote": {
+      "spline": {
+        "accepted": 20,
+        "required": 20,
+        "attempts": 41,
+        "passed": true
+      },
+      "basis": {
+        "accepted": 20,
+        "required": 20,
+        "attempts": 49,
+        "passed": true
+      },
+      "ode": {
+        "accepted": 20,
+        "required": 20,
+        "attempts": 28,
+        "passed": true
+      }
+    },
+    "direction+inflection+bound": {
+      "spline": {
+        "accepted": 20,
+        "required": 20,
+        "attempts": 20,
+        "passed": true
+      },
+      "basis": {
+        "accepted": 20,
+        "required": 20,
+        "attempts": 20,
+        "passed": true
+      },
+      "ode": {
+        "accepted": 20,
+        "required": 20,
+        "attempts": 20,
+        "passed": true
+      }
+    },
+    "direction+inflection+asymptote": {
+      "spline": {
+        "accepted": 20,
+        "required": 20,
+        "attempts": 20,
+        "passed": true
+      },
+      "basis": {
+        "accepted": 20,
+        "required": 20,
+        "attempts": 20,
+        "passed": true
+      },
+      "ode": {
+        "accepted": 20,
+        "required": 20,
+        "attempts": 20,
+        "passed": true
+      }
+    },
+    "curvature+bound+asymptote": {
+      "spline": {
+        "accepted": 20,
+        "required": 20,
+        "attempts": 20,
+        "passed": true
+      },
+      "basis": {
+        "accepted": 20,
+        "required": 20,
+        "attempts": 20,
+        "passed": true
+      },
+      "ode": {
+        "accepted": 20,
+        "required": 20,
+        "attempts": 20,
+        "passed": true
+      }
+    },
+    "inflection+bound+asymptote": {
+      "spline": {
+        "accepted": 20,
+        "required": 20,
+        "attempts": 20,
+        "passed": true
+      },
+      "basis": {
+        "accepted": 20,
+        "required": 20,
+        "attempts": 20,
+        "passed": true
+      },
+      "ode": {
+        "accepted": 20,
+        "required": 20,
+        "attempts": 20,
+        "passed": true
+      }
+    },
+    "turning+bound+asymptote": {
+      "spline": {
+        "accepted": 20,
+        "required": 20,
+        "attempts": 21,
+        "passed": true
+      },
+      "basis": {
+        "accepted": 20,
+        "required": 20,
+        "attempts": 22,
+        "passed": true
+      },
+      "ode": {
+        "accepted": 20,
+        "required": 20,
+        "attempts": 24,
+        "passed": true
+      }
+    },
+    "regime+bound+asymptote": {
+      "spline": {
+        "accepted": 20,
+        "required": 20,
+        "attempts": 20,
+        "passed": true
+      },
+      "basis": {
+        "accepted": 20,
+        "required": 20,
+        "attempts": 20,
+        "passed": true
+      },
+      "ode": {
+        "accepted": 20,
+        "required": 20,
+        "attempts": 20,
+        "passed": true
+      }
+    }
+  },
+  "passed": true
+}
