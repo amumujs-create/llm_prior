@@ -80,11 +80,13 @@ The scope scan uses E10's contiguous first-failure rule.
 core endpoint: first failure at `.85/.90/1.00/1.10/1.20` yields
 `.80/.85/.90/1.00/1.10`, respectively. No failure through `1.20` is recorded
 as `H_valid*>1.20` (right-censored), never as an exact value `1.20`.
-For `Delta H_scope=H_valid*(P_subset)-H_valid*(P_star)`: both observed
-endpoints give an exact difference; observed full plus censored subset gives a
-lower bound; both censored is unresolved; censored full plus observed subset is
-a nesting integrity violation. “Weak but persistent” means no scope failure
-through `1.20`, not `H_valid*>=1.20` as an exact assertion.
+For the `P_star` row itself, `Delta H_scope(P_star)=0` is exact by identity,
+even if its `H_valid*` is right-censored. For proper subsets only,
+`Delta H_scope=H_valid*(P_subset)-H_valid*(P_star)` follows this rule: both
+observed endpoints give an exact difference; observed full plus censored subset
+gives a lower bound; both censored is unresolved; censored full plus observed
+subset is a nesting integrity violation. “Weak but persistent” means no scope
+failure through `1.20`, not `H_valid*>=1.20` as an exact assertion.
 
 Every candidate row stores `delta_H_scope_status={exact,lower_bound,unresolved}`
 and either `delta_H_scope_value` or `delta_H_scope_bound`; a censored bound is
@@ -156,7 +158,11 @@ failure.
 - `P(O_P=1 | S>=.10, reliable)`;
 - `P(C_P(h)=1 | S>=.10, reliable)` for predeclared horizons;
 - `P(Delta S_miss<=.10 | C_atom=0, reliable, gap_status=exact)`;
-- candidate-size-conditioned distributions of `(S, N_obs, H_valid*, Delta S_miss)`.
+- `P(gap_status=exact | C_atom=0, reliable)` as the completeness-classification
+  audit denominator;
+- candidate-size-conditioned distributions of `(S, N_obs, Delta S_miss)` and
+  censored-aware scope profiles `P(C_P(h)=1)`. Right-censored `H_valid*>1.20`
+  is never replaced by `1.20` for a numeric mean or median.
 
 Use mixed-type association summaries and conditional distributions. Primary
 strata are `candidate size × eta × scope stratum × generator`; any pooled

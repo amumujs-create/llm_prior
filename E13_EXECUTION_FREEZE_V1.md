@@ -25,14 +25,21 @@ failures reject a task.
 ## Scope and completeness censoring
 
 `H_valid*` is last contiguous valid horizon, beginning at `.80`; no failure
-through `1.20` is stored as right-censored `>1.20`. `Delta H_scope` is exact
-only with two observed endpoints, lower bounded with observed full/censored
+through `1.20` is stored as right-censored `>1.20`, never numerically replaced
+by `1.20` for a mean, median, or other endpoint summary. Scope is reported
+primarily as the horizon profile `P(C_P(h)=1)`, where `C_P(h)` is contiguous
+validity through horizon `h`. For the oracle-full row itself,
+`delta_H_scope_status=exact` and `delta_H_scope_value=0` by identity, even if
+its own `H_valid*` is right-censored. For proper subsets only, `Delta H_scope`
+is exact with two observed endpoints, lower bounded with observed full/censored
 subset, unresolved with two censored endpoints, and an integrity failure for
 censored full/observed subset.
 
 For nested `Delta S_miss`, exact/non-floor is primary; oracle-only floor is a
 lower bound; both floor is unresolved; subset-only floor is an integrity
 failure. Informational completeness requires a reliable exact gap `<=.10 nat`.
+Report the audit denominator `P(gap_status=exact | C_atom=0, reliable)` beside
+every informational-completeness rate.
 
 ## Integrity gates
 
