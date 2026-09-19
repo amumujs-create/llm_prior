@@ -1324,3 +1324,15 @@ persistence, and strict separation of oracle scope validation from downstream
 utility/engine computations.
 
 **Artifact.** [E10 scope/validity-horizon protocol draft](PRIOR_SCOPE_VALIDITY_HORIZON_PROTOCOL_DRAFT_V1.md)
+
+### E10 execution result
+
+The frozen clean-oracle scope corpus completed: 1,890 latent tasks, 13,230
+horizon rows, zero runtime failures, and all 63 integrity strata passed. The
+result stores raw `V_P(h)` and first-failure contiguous `C_P(h)` separately, so
+a later raw-check re-entry cannot extend `H_valid*`. Event priors were already
+post-event at `.40`; later additional events determine only their scope end.
+E10 is scope anatomy only—neither utility nor safety is inferred.
+
+**Result artifact.** [E10 results](RESULTS_PRIOR_SCOPE_VALIDITY_HORIZON_E10.md) ·
+![E10 validity-horizon survival](figures/fig36_e10_validity_horizon_survival.png)

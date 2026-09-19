@@ -1,0 +1,34 @@
+{
+  "protocol": "PRIOR_SCOPE_VALIDITY_HORIZON_V1",
+  "boundary": 0.4,
+  "horizon_grid": [0.45, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+  "dense_validation_points": 401,
+  "scope_tiers": {
+    "local": {"violation_onset_range": [0.52, 0.57]},
+    "medium": {"violation_onset_range": [0.72, 0.82]},
+    "persistent_within_domain": {"violation_onset": null}
+  },
+  "generators": ["spline", "basis", "ode"],
+  "seeds_per_cell": 30,
+  "primitive_checker": {
+    "direction": {"sign_fraction": 0.95, "splice_continuity": "C2"},
+    "curvature": {"sign_fraction": 0.9, "splice_continuity": "C2"},
+    "inflection": {"max_additional_events": 0, "splice_continuity": "C2"},
+    "turning": {"max_additional_events": 0, "splice_continuity": "C2"},
+    "regime": {"post_boundary_primary_onset_required": true, "splice_continuity": "C1"},
+    "bound": {"tolerance_fraction_of_range": 0.01, "splice_continuity": "C2"},
+    "asymptote": {"latent_assisted": true, "splice_continuity": "C2"}
+  },
+  "scope_intervention_amplitude": {
+    "direction": 60.0,
+    "curvature": 12.0,
+    "inflection": 15.0,
+    "turning": 80.0,
+    "regime": 14.0,
+    "bound": 1500.0,
+    "asymptote": 20.0
+  },
+  "primary_event_before_boundary": ["inflection", "turning", "regime"],
+  "oracle_input": "clean_latent_trajectory_only",
+  "excluded": ["observation_noise", "conditional_sharpness", "utility", "rmse", "engine", "prediction"]
+}

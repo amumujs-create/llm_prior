@@ -1,0 +1,13 @@
+{
+  "integrity": {
+    "latent_tasks": 1890,
+    "scope_rows": 13230,
+    "expected_latent_tasks": 1890,
+    "expected_scope_rows": 13230,
+    "all_checks_pass": true,
+    "failures": 0,
+    "clean_oracle_only": true
+  },
+  "scope_only_boundary": "No utility, information, engine, or safety conclusion. H_valid is first-failure contiguous horizon.",
+  "terminal_persistent_rate": 0.3333333333333333
+}

@@ -102,6 +102,17 @@ The scope tier is a generator control, not a claim that the three tiers have
 equal empirical difficulty across primitives. Generator results are always
 reported separately and macro-averaged equally.
 
+## Numeric execution freeze
+
+The exact constants are stored in [E10 frozen configuration](E10_FROZEN_CONFIG_V1.json).
+The first tested horizon is `.45`; every accepted task must satisfy its raw
+scope checker there. Local violation onset is sampled in `[.52,.57]`, medium
+onset in `[.72,.82]`, and persistent-within-domain tasks have no injected
+violation through `1.00`. The clean validation grid has 401 points. Direction
+and curvature use 95% and 90% sign-fraction criteria; the bound tolerance is
+1% of the clean target range. Event-count and latent-mechanism checks are
+frozen as specified in the JSON table.
+
 ## Predeclared outputs
 
 1. Integrity: accepted task count, validation failures, per-primitive checker

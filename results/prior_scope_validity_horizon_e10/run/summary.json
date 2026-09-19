@@ -1,0 +1,19 @@
+{
+  "protocol": "E10_prior_scope_validity_horizon_v1",
+  "latent_tasks": 1890,
+  "scope_rows": 13230,
+  "expected_scope_rows": 13230,
+  "integrity_passed": true,
+  "failures": 0,
+  "boundary": 0.4,
+  "horizons": [
+    0.45,
+    0.5,
+    0.6,
+    0.7,
+    0.8,
+    0.9,
+    1.0
+  ],
+  "clean_oracle_only": true
+}

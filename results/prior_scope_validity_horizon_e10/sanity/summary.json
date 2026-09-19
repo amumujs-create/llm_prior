@@ -1,0 +1,511 @@
+{
+  "n_tasks": 63,
+  "expected": 63,
+  "passed": true,
+  "checks": [
+    {
+      "task_id": "direction:local:spline:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "direction:local:basis:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "direction:local:ode:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "direction:medium:spline:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "direction:medium:basis:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "direction:medium:ode:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "direction:persistent_within_domain:spline:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "direction:persistent_within_domain:basis:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "direction:persistent_within_domain:ode:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "curvature:local:spline:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "curvature:local:basis:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "curvature:local:ode:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "curvature:medium:spline:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "curvature:medium:basis:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "curvature:medium:ode:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "curvature:persistent_within_domain:spline:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "curvature:persistent_within_domain:basis:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "curvature:persistent_within_domain:ode:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "inflection:local:spline:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "inflection:local:basis:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "inflection:local:ode:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "inflection:medium:spline:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "inflection:medium:basis:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "inflection:medium:ode:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "inflection:persistent_within_domain:spline:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "inflection:persistent_within_domain:basis:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "inflection:persistent_within_domain:ode:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "turning:local:spline:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "turning:local:basis:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "turning:local:ode:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "turning:medium:spline:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "turning:medium:basis:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "turning:medium:ode:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "turning:persistent_within_domain:spline:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "turning:persistent_within_domain:basis:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "turning:persistent_within_domain:ode:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "regime:local:spline:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "regime:local:basis:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "regime:local:ode:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "regime:medium:spline:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "regime:medium:basis:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "regime:medium:ode:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "regime:persistent_within_domain:spline:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "regime:persistent_within_domain:basis:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "regime:persistent_within_domain:ode:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "bound:local:spline:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "bound:local:basis:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "bound:local:ode:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "bound:medium:spline:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "bound:medium:basis:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "bound:medium:ode:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "bound:persistent_within_domain:spline:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "bound:persistent_within_domain:basis:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "bound:persistent_within_domain:ode:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "asymptote:local:spline:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "asymptote:local:basis:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "asymptote:local:ode:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "asymptote:medium:spline:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "asymptote:medium:basis:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "asymptote:medium:ode:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "asymptote:persistent_within_domain:spline:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "asymptote:persistent_within_domain:basis:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    },
+    {
+      "task_id": "asymptote:persistent_within_domain:ode:0",
+      "first_interval_valid": true,
+      "event_preboundary": true,
+      "contiguous_nonincreasing": true,
+      "expected_scope_bracket": true,
+      "clean_oracle_only": true
+    }
+  ]
+}
