@@ -1,164 +1,162 @@
 # E13 — Joint Prior Anatomy Map
 
-## Question
+## 1. Question and boundary
 
-E9–E12 established separate operational axes using separate corpora. E13 asks
-the next question on a **shared latent task**:
+E13 asks, on the **same latent task, observed prefix, and continuation bank**:
 
-> Which combinations of validity, conditional information, structural
-> observability, scope, grammar-relative completeness, numeric specification
-> correctness, and structural-content correctness actually co-occur?
+> How do validity, conditional informativeness, observability, scope, and
+> grammar-relative completeness jointly occur among coverage-preserving priors?
 
-E13 estimates a joint map. It does not construct a total prior-quality score,
-fit a prediction engine, or make a utility/safety claim.
+It is not an escape from E12's wrong-prior findings. E12-A/B remain separate
+perturbation evidence about anatomy **after** numeric specification or content
+correctness has failed. E13's primary factorial contains valid priors only.
 
-## Why a new shared corpus is necessary
+E13 excludes prediction models, RMSE, utility, harm, LLMs, Prior Critic,
+recoverability, and all wrong-prior operations. It makes no scalar prior-quality
+score.
 
-Rows from E9–E12 must not be pooled into a correlation matrix: their latent
-tasks, scopes, generators, candidate banks, and acceptance rules differ. E13
-instead generates one latent task and derives all candidate-prior rows from
-that same task, prefix, clean continuation, paired ambient bank, and frozen
-canonical grammar.
+## 2. Fixed base-task semantics
 
-## Prior object and axes
+- Intended structures: the eight E11 canonical triples.
+- Observed prefix: `D=[0,.40]`.
+- Core declared scope and every sharpness/completeness target:
+  `Omega_0=[.40,.80]`.
+- Each latent trajectory is generated through `x=1.20`.
+- One task receives one master noisy observation grid, one frozen paired
+  `M=4096` continuation bank, and one likelihood-weight vector shared by all
+  seven candidate priors. ESS must consequently be byte/numerically identical
+  within a task.
+- The E11 canonical atom library and compatibility/scope registry are reused
+  unchanged. A task is accepted only if its unique inclusion-maximal compatible
+  coverage-preserving envelope is **exactly its intended three atoms**.
+  Incidental valid fourth atoms cause redraw and are counted.
 
-For `P=(C, theta, Omega, q, pi)`, E13 records the following without reducing
-them to one score.
+The exact-three-envelope restriction intentionally makes completeness legible:
+it is a selection condition, not an estimate of real-world envelope sizes.
 
-| Axis | Row-level measure | Source semantics |
+## 3. Seven valid priors per task
+
+For an accepted oracle envelope `P_star=A and B and C`, score every non-empty
+true subset on `Omega_0`:
+
+`ABC; AB, AC, BC; A, B, C`.
+
+All seven candidates have core coverage one. Their canonical atom completeness
+is deterministic (`ABC=1`, pairs omit one atom, singletons omit two), while
+their conditional informational completeness remains empirical:
+
+`Delta S_miss(P)=S(P_star|D)-S(P|D)`.
+
+No numeric perturbation, false addition, or reversal enters these seven rows.
+Where applicable, E12-A/B are cited only in final interpretation as evidence
+about what happens when this valid-prior anatomy is perturbed into invalidity.
+
+## 4. Joint measurements
+
+| Axis | Measurement | E13 semantics |
 |---|---|---|
-| Validity | coverage on clean continuation | E11/E12 oracle separation |
-| Informativeness | `S(P|D)`, ESS, `N_survive`, `p_weighted` | frozen paired bank and fixed target grid |
-| Observability | `E_struct` and thresholded `E_struct>=.80` | E9 structural-evidence checker |
-| Scope | contiguous `H_valid*` | E10 first-failure rule |
-| Completeness | `C_atom`, `Delta S_miss` | E11 unique-envelope rule |
-| Specification correctness | valid / numeric-misspecified / not-applicable | E12-A field semantics |
-| Content correctness | full / omission / false addition / reversal | E12-B operation catalog semantics |
+| Validity | core coverage | all seven rows must equal one on `Omega_0` |
+| Informativeness | `S(P|D)`, primary threshold `.10 nat` | `ESS>=100` required for reliable interpretation; record `N_survive`, `p_weighted`, and floor state |
+| Observability | atom-level `E_a` | reuse E9 checker; record `N_obs=sum I(E_a>=.80)` and `O_all=I(min E_a>=.80)` for the oracle triple; do not average atom evidence into one score |
+| Scope | contiguous `H_valid*(P)` | clean scope scan at `.85,.90,1.00,1.10,1.20`; sharpness remains fixed on `Omega_0` |
+| Completeness | `C_atom`, `Delta S_miss` | informationally complete iff reliable and `Delta S_miss<=.10 nat` |
 
-`q` and `pi` are stored as declared metadata only in v1; calibration
-provenance and open-world source reliability are not estimated.
+Scope is intentionally measured beyond `.80` while sharpness remains on
+`.40-.80`; this prevents a moving future target from confounding `S(P|D)`.
+The scope scan uses E10's contiguous first-failure rule.
 
-## Shared-task design
+## 5. Controlled variation and corpus
 
-### Base tasks
+Reuse E9's frozen structural-separability control `eta` at its existing low,
+medium, and high values; do not retune numeric values. Reuse nested realization
+freedom only as a stored multiplicity control, not as a primary factorial
+quota. Scope variation is balanced by acceptance stratification of the full
+triple `P_star`:
 
-- Start from the eight E11 intended canonical triples and the three frozen
-  generator families.
-- Use one master clean trajectory, one master noisy observation grid, and one
-  paired `M=4096` ambient bank per latent task.
-- Reveal the common prefix `[0,.40]`; score continuation constraints on one
-  fixed target grid. Scope uses the same clean trajectory and the E10
-  contiguous horizon checker.
-- Retain E11's canonical atom library, compatibility/scope registry, and
-  unique inclusion-maximal compatible envelope rule.
-- Vary predeclared structural separability and nested realization freedom to
-  create evidence/multiplicity variation. These are generator controls, not
-  universal difficulty scales.
-- Independently inject local, medium, and persistent-within-tested-domain
-  scope tiers. Scope is a controlled axis; E13 must not claim primitive
-  persistence rankings from those tiers.
+| Scope stratum | Full-prior condition |
+|---|---|
+| Limited | `H_valid*(P_star)<=.90` |
+| Intermediate | `H_valid*(P_star)` in `{1.00,1.10}` |
+| Persistent-within-tested-domain | no failure through `1.20` |
 
-The final count and parameter ranges are deliberately **not frozen** in this
-draft. They must be set only after a joint-measurement sanity suite shows that
-all inherited checkers agree on the same latent task and common domains.
+Every accepted task remains valid on `Omega_0`. Scope stratum is a controlled
+map condition—not an estimate of natural scope prevalence.
 
-### Candidate rows derived from each base task
+The frozen full corpus is:
 
-For each accepted base task, derive only candidates whose semantics apply;
-non-applicability is recorded rather than filled with a fabricated value.
+`8 triples × 3 generators × 3 eta levels × 3 scope strata × 10 seeds`
 
-1. `P_full`: supplied valid intended composition.
-2. Valid under-specific candidates: each singleton/pair subset of `P_full`.
-3. Grammar envelope `P_star`: the unique maximal compatible
-   coverage-preserving canonical envelope.
-4. E12-B candidates: pre-frozen omission, compatible false-addition, and
-   signed-reversal operations from a new E13 operation catalog.
-5. E12-A candidates: numeric perturbations only for fields whose canonical
-   instance has a frozen numeric specification. Other candidates receive
-   `specification_status=not_applicable`.
+`= 2,160 latent tasks` and `2,160 × 7 = 15,120` candidate rows.
 
-This produces valid/incomplete, valid/complete, numeric-invalid,
-content-invalid, local/persistent, observed/unobserved, and
-informative/redundant states without claiming that every Cartesian combination
-is logically or semantically feasible.
+Each fine cell has at most 2,000 generation attempts. Store `attempts`,
+`accepted`, `wrong_envelope_size_rejects`, `scope_stratum_rejects`,
+`checker_rejects`, `bank_or_ESS_rejects`, and `exhaustion`.
 
-## Measurement rules
+## 6. Primary joint outputs
 
-### Domain alignment
+Do not publish a total score or a naive all-Pearson correlation matrix. The
+primary unit is the latent task; its seven candidates are repeated measures.
 
-Before running, E13 must freeze one common target domain for sharpness,
-validity, completeness, and structural evidence. The scope scan may extend
-beyond that domain only as a separately labelled `H_valid*` measurement;
-it must never silently change the satisfaction domain used for `S(P|D)`.
+### State occupancy
 
-### Oracle/scorer separation
+Report feasible joint-state frequencies, including:
 
-Clean future data are available only to generation/validation code for
-coverage, scope, canonical-envelope selection, and violation severity. The
-sharpness scorer receives only the noisy prefix, paired bank `(f_m,z_m)`, and
-declared candidate prior. Utility, predictor outputs, RMSE, harm, and future
-targets are prohibited from scoring.
+1. **Informative but unobservable:** `S>=.10`, reliable, `O_all=0`.
+2. **Atom-incomplete but informationally complete:** `C_atom=0`, reliable,
+   `Delta S_miss<=.10`.
+3. **Informative but limited-scope:** `S>=.10`, reliable,
+   `H_valid*<=.90`.
+4. **Weak but persistent:** `S<.10`, reliable, `H_valid*>=1.20`.
+5. **Observable but informationally redundant:** for an atom-incomplete
+   subset, `O_all=1`, reliable, `Delta S_miss<=.10`.
 
-### Reliability and censoring
+The absence of a state is also a result; it must not be treated as an integrity
+failure.
 
-- Preserve `ESS>=100` as the primary reliable-information condition.
-- Record low-ESS as `measurement_unreliable`, not as weak/informational-null.
-- Preserve floor lower/upper/unresolved rules by candidate relation:
-  nested relaxation, nested restriction, or non-nested shift/reversal.
-- Store `N_survive` and `p_weighted` for every candidate row.
+### Conditional distributions and association map
 
-## Predeclared joint analyses
+- `P(S>=.10 | core coverage=1, reliable)`;
+- `P(O_all=1 | S>=.10, reliable)`;
+- `P(H_valid*>=h | S>=.10, reliable)` for predeclared horizons;
+- `P(Delta S_miss<=.10 | C_atom=0, reliable)`;
+- candidate-size-conditioned distributions of `(S, N_obs, H_valid*, Delta S_miss)`.
 
-No composite score or primitive leaderboard is allowed. All results are
-descriptive, acceptance-conditioned, and clustered by latent task.
+Use mixed-type association summaries and conditional distributions. Primary
+strata are `candidate size × eta × scope stratum × generator`; any pooled
+summary uses equal generator weighting. Latent-task clustered bootstrap is the
+sole primary uncertainty method. Associations are not causal claims because
+eta and scope strata are balanced controls.
 
-1. **Joint-state occupancy.** Report frequencies of feasible states, e.g.
-   valid/informative/unobserved/incomplete; valid/redundant/persistent; or
-   invalid-but-sharp with numeric versus content error labels.
-2. **Pairwise and conditional maps.** Report conditional proportions and
-   uncertainty for preregistered relations:
-   - `P(S>=.10 | coverage=1)`;
-   - `P(E_struct>=.80 | S>=.10, reliable)`;
-   - `P(H_valid*>=h | S>=.10)` for predeclared horizons;
-   - `P(Delta S_miss<=.10 | C_atom=0, reliable)`;
-   - `P(S>=.10 | invalid, specification_status/content_operation)`.
-3. **Association display.** Use a mixed-type association table (binary,
-   ordinal, and continuous axes reported with their appropriate statistic),
-   not a misleading all-Pearson correlation matrix.
-4. **Conditional stratification.** Stratify all central findings by intended
-   composition, generator, scope tier, separability control, and realization
-   freedom before any equal-weight summary.
-5. **Inference.** Use latent-task clustered/hierarchical bootstrap with
-   equal-weight generator aggregation. E13 supports association, not causal
-   claims about a control unless a separate factorial confirmation is run.
+## 7. Expected semantics, not discoveries
 
-## Integrity sanity before full run
+Subset nesting entails `S(P_star|D)>=S(P_subset|D)` and can allow
+`H_valid*(P_subset)>=H_valid*(P_star)`. E13 does not present these directions
+as discoveries. The empirical targets are their magnitudes, frequencies,
+heterogeneity, and co-occurrence with observability and completeness.
 
-1. One base task produces byte-identical observations, bank, weights, and ESS
-   for every derived candidate row.
-2. Every axis uses its frozen checker and records its semantic type
-   (phenomenological, mechanistic, or latent-assisted).
-3. `P_full` coverage is one; envelope coverage is one; E12-B candidates meet
-   their planned coverage pattern; inapplicable E12-A fields are explicitly
-   absent rather than imputed.
-4. Nested sharpness inequalities and all non-nested floor rules pass toy cases.
-5. The same candidate's `S(P|D)` is invariant when requested by more than one
-   derived analysis (e.g., E11 and E12-B view).
-6. Scope first-failure logic and fixed-domain sharpness remain separated.
-7. Joint-state counts, missingness, and reliability labels sum exactly to the
-   accepted candidate rows.
+## 8. Integrity sanity before full run
 
-## Interpretation boundary
+1. `P_star` is a unique maximal envelope with exactly three atom instances.
+2. All seven subsets have coverage one on `Omega_0`.
+3. Prefix, bank, weights, and ESS are identical for the seven rows of a task.
+4. Nested sharpness and `Delta S_miss>=0` pass numeric tolerance checks.
+5. `S(P|D)` is invariant when requested by completeness and joint-map views.
+6. Scope follows contiguous first failure and does not alter the sharpness
+   target or provide future truth to the sharpness scorer.
+7. E9 atom-evidence scoring receives no future target.
+8. Scope quotas and every rejection/exhaustion reason are accounted for.
+9. Floor/ESS/reliability labels sum exactly to candidate rows.
 
-E13 can establish which axis combinations occur in this frozen shared corpus
-and which associations remain after declared stratification. It cannot show
-real-world frequencies, identify one best prior, prove causal effects from
-descriptive controls, establish complexity scaling, or determine predictive
-utility/safety. Those are E14+, external validation, and downstream
-integration questions.
+No expected scientific occupancy, monotonicity beyond logical nesting, or
+association direction is a sanity gate.
 
-## Success criterion
+## 9. Interpretation boundary and handoff
 
-E13 succeeds if it turns the E9–E12 anatomy from a list of separately defined
-axes into a reproducible shared-task joint map while preserving their distinct
-semantics and reliability conditions.
+E13 can map valid-prior joint anatomy in this frozen grammar. It cannot infer
+real-world prevalence, primitive-intrinsic rankings, complexity scaling,
+multivariate transportability, prediction utility, safety, or LLM ability.
+
+E9–E11 plus E13 describe valid-prior anatomy. E12-A/B describe how that
+anatomy behaves after specification or content correctness fails. E14 should
+then test complexity scaling, followed by real-data validation and only then
+Prior Critic / LLM-RAG integration.

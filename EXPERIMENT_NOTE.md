@@ -1685,12 +1685,15 @@ LLM, and RAG questions.
 
 E13 is the next planned experiment. It is required because E9–E12 used
 different corpora and therefore establish axis non-equivalence without
-estimating their task-level joint geometry. E13 will derive valid,
-under-specific, numeric-misspecified, content-misspecified, local/persistent,
-observable/unobservable, and grammar-envelope candidates from the **same**
-latent task, prefix, paired bank, and canonical grammar. It will report joint
-state occupancy and conditional distributions, never a scalar quality score or
-naive pooled correlation. Its design remains un-frozen until shared-domain and
-shared-checker integrity sanity succeeds.
+estimating their task-level joint geometry. Its primary corpus contains valid,
+coverage-preserving priors only: the seven non-empty true subsets of an exact
+three-atom `P_star`, derived from the **same** latent task, prefix, paired bank,
+and canonical grammar. Numeric/content errors remain E12 perturbation evidence,
+not E13 factors. The frozen design is 2,160 tasks (`8 triples × 3 generators ×
+3 eta levels × 3 scope strata × 10`) and 15,120 candidate rows, with controlled
+scope-stratum quotas and task-clustered inference. E13 reports joint-state
+occupancy and conditional distributions, never a scalar quality score or naive
+pooled correlation; full execution still requires shared-domain/checker
+integrity sanity.
 
 **Artifact.** [E13 Joint Prior Anatomy Map protocol draft](JOINT_PRIOR_ANATOMY_E13_PROTOCOL_DRAFT_V1.md)
