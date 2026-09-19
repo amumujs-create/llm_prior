@@ -5,10 +5,16 @@ without adding a new axis.
 
 ## Corpus
 
-- 8 exact-three-atom E11 intended triples × 3 generators × E9 `eta={.2,.5,.8}`
+- 8 E11 intended triples × 3 generators × E9 `eta={.2,.5,.8}`
   × 3 controlled scope strata × 10 accepted seeds = 2,160 latent tasks.
-- Each task contributes exactly the seven non-empty true subsets of its oracle
-  triple: 15,120 primary candidate rows.
+- The intended triple is generator intent, not a restriction on the realized
+  oracle envelope. Every accepted task retains its unique inclusion-maximal
+  compatible coverage-preserving envelope under the unchanged E11 grammar,
+  including canonically implied atoms.
+- Each task contributes all non-empty true subsets of its realized envelope:
+  `N_rows=sum_t (2^{|P_star,t|}-1)`. Freeze this expected count and the envelope
+  size distribution from a deterministic accepted-seed preflight before full
+  scoring.
 - Core acceptance/measurement domain: `Omega_0=[.40,.80]`; observation prefix
   `[0,.40]`; latent trajectory through `1.20`.
 - Maximum attempts: 2,000 per fine cell. Store every rejection and exhaustion
@@ -18,7 +24,7 @@ without adding a new axis.
 
 Each task has one noisy prefix, one full five-coordinate paired `M=4096` bank,
 one likelihood vector, and one fixed sharpness target `Omega_0`. These objects
-must be identical over its seven rows. `ESS<100` is retained as
+must be identical over all rows within that task. `ESS<100` is retained as
 `measurement_unreliable`; only invalid banks, non-finite ESS, and scorer
 failures reject a task.
 
@@ -43,7 +49,8 @@ every informational-completeness rate.
 
 ## Integrity gates
 
-1. Exact unique three-atom oracle envelope and all seven core-covering subsets.
+1. Unique maximal oracle envelope under the unchanged E11 grammar, recorded
+   intended/envelope/implied atom IDs, and all non-empty core-covering subsets.
 2. Candidate-specific `O_P`/`N_obs(P)` and task-context `O*`/`N_obs*` agree
    with the same E9 atom-evidence outputs.
 3. Same-task bank, prefix, weights, ESS, fixed target, and score cache agree.
@@ -51,5 +58,8 @@ every informational-completeness rate.
 5. Scope/quota/censor/reliability accounting sums exactly to candidate rows.
 6. The scorer cannot access clean future truth; oracle scope/coverage code is
    separated from scoring.
+7. Primary pooled analysis uses within-task candidate weights
+   `1/(2^{|P_star|}-1)` and equal generator weighting; primary strata retain
+   oracle-envelope size and omitted-atom count.
 
 No desired joint state or association direction is an integrity gate.

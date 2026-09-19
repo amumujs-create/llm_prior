@@ -23,28 +23,25 @@ score.
   `Omega_0=[.40,.80]`.
 - Each latent trajectory is generated through `x=1.20`.
 - One task receives one master noisy observation grid, one frozen paired
-  `M=4096` continuation bank, and one likelihood-weight vector shared by all
-  seven candidate priors. The primary scorer uses one full five-active-
+  `M=4096` continuation bank, and one likelihood-weight vector shared by every
+  non-empty true subset of its realized envelope. The primary scorer uses one full five-active-
   coordinate ambient-bank convention, consistent with E11/E12; E9's
   `DoF=1/3/5` views are supplementary task metadata rather than parallel E13
   rows. ESS must consequently be byte/numerically identical within a task.
 - The E11 canonical atom library and compatibility/scope registry are reused
-  unchanged. A task is accepted only if its unique inclusion-maximal compatible
-  coverage-preserving envelope is **exactly its intended three atoms**.
-  Incidental valid fourth atoms cause redraw and are counted.
+  unchanged. The intended triple is the generator condition, not necessarily
+  the realized envelope size. A task is accepted when it has one unique
+  inclusion-maximal compatible coverage-preserving envelope `P_star`.
+  Canonically implied or otherwise incidental valid atoms are retained, not
+  suppressed. Store `generator_intended_atoms`, `oracle_envelope_atoms`,
+  `oracle_envelope_size`, and `implied_atoms=P_star-intended_atoms`.
 
-The exact-three-envelope restriction intentionally makes completeness legible:
-it is a selection condition, not an estimate of real-world envelope sizes.
+## 3. All valid subset priors per task
 
-## 3. Seven valid priors per task
-
-For an accepted oracle envelope `P_star=A and B and C`, score every non-empty
-true subset on `Omega_0`:
-
-`ABC; AB, AC, BC; A, B, C`.
-
-All seven candidates have core coverage one. Their canonical atom completeness
-is deterministic (`ABC=1`, pairs omit one atom, singletons omit two), while
+For an accepted oracle envelope of size `k_star`, score every non-empty true
+subset on `Omega_0`: `2^k_star-1` candidates. Every candidate has core coverage
+one. Its canonical atom completeness is deterministic
+(`C_atom(P)=I(P=P_star)`), while
 their conditional informational completeness remains empirical:
 
 `Delta S_miss(P)=S(P_star|D)-S(P|D)`.
@@ -55,7 +52,7 @@ unresolved; and subset-only floor-hit is an integrity violation. The `.10 nat`
 informational-completeness label is primary only for reliable, exact rows;
 censored gaps are unresolved.
 
-No numeric perturbation, false addition, or reversal enters these seven rows.
+No numeric perturbation, false addition, or reversal enters these rows.
 Where applicable, E12-A/B are cited only in final interpretation as evidence
 about what happens when this valid-prior anatomy is perturbed into invalidity.
 
@@ -66,7 +63,7 @@ an acceptance condition here, not a varying association axis.
 
 | Axis | Measurement | E13 semantics |
 |---|---|---|
-| Validity | core coverage | all seven rows must equal one on `Omega_0` |
+| Validity | core coverage | every non-empty true-subset row must equal one on `Omega_0` |
 | Informativeness | `S(P|D)`, primary threshold `.10 nat` | `ESS>=100` required for reliable interpretation; record `N_survive`, `p_weighted`, and floor state |
 | Observability | atom-level `E_a` | reuse E9 checker; record candidate-specific `N_obs(P)=sum_{a in P} I(E_a>=.80)` and `O_P=I(min_{a in P} E_a>=.80)`; store oracle `N_obs*`, `O*` as task context |
 | Scope | contiguous `H_valid*(P)` | clean scope scan at `.85,.90,1.00,1.10,1.20`; sharpness remains fixed on `Omega_0` |
@@ -102,7 +99,7 @@ Reuse E9's frozen structural-separability control `eta` at its existing low,
 medium, and high values; do not retune numeric values. Reuse nested realization
 freedom only as a stored multiplicity control, not as a primary factorial
 quota. Scope variation is balanced by acceptance stratification of the full
-triple `P_star`:
+envelope `P_star`:
 
 `eta` is a shared task-level evidence-contrast level, not a claim that the
 three atoms have equal realised difficulty. Apply the same frozen low/mid/high
@@ -123,10 +120,13 @@ The frozen full corpus is:
 
 `8 triples × 3 generators × 3 eta levels × 3 scope strata × 10 seeds`
 
-`= 2,160 latent tasks` and `2,160 × 7 = 15,120` candidate rows.
+`= 2,160 latent tasks`. A deterministic preflight over accepted task seeds
+freezes the realized-envelope-size distribution and expected candidate count:
+
+`N_rows = sum_t (2^{|P_star,t|}-1)`.
 
 Each fine cell has at most 2,000 generation attempts. Store `attempts`,
-`accepted`, `wrong_envelope_size_rejects`, `scope_stratum_rejects`,
+`accepted`, `ambiguous_envelope_rejects`, `scope_stratum_rejects`,
 `checker_rejects`, `bank_invalid_rejects`, `nonfinite_ESS_rejects`, and
 `exhaustion`. A finite `ESS<100` is never a rejection: retain the task and mark
 sharpness/completeness classifications `measurement_unreliable`.
@@ -134,7 +134,11 @@ sharpness/completeness classifications `measurement_unreliable`.
 ## 6. Primary joint outputs
 
 Do not publish a total score or a naive all-Pearson correlation matrix. The
-primary unit is the latent task; its seven candidates are repeated measures.
+primary unit is the latent task; its candidates are repeated measures. In every
+primary pooled analysis, candidate `P` in task `t` receives within-task weight
+`1/(2^{|P_star,t|}-1)`, followed by equal generator weighting. Thus tasks with
+larger envelopes do not receive extra pooled influence simply because they
+yield more subsets.
 
 ### State occupancy
 
@@ -160,13 +164,15 @@ failure.
 - `P(Delta S_miss<=.10 | C_atom=0, reliable, gap_status=exact)`;
 - `P(gap_status=exact | C_atom=0, reliable)` as the completeness-classification
   audit denominator;
-- candidate-size-conditioned distributions of `(S, N_obs, Delta S_miss)` and
+- oracle-envelope-size × omitted-count-conditioned distributions of
+  `(S, N_obs, Delta S_miss)` and
   censored-aware scope profiles `P(C_P(h)=1)`. Right-censored `H_valid*>1.20`
   is never replaced by `1.20` for a numeric mean or median.
 
 Use mixed-type association summaries and conditional distributions. Primary
-strata are `candidate size × eta × scope stratum × generator`; any pooled
-summary uses equal generator weighting. Latent-task clustered bootstrap is the
+strata are `oracle envelope size × omitted count × eta × scope stratum × generator`;
+any pooled summary uses the frozen within-task and equal-generator weights.
+Latent-task clustered bootstrap is the
 sole primary uncertainty method. Associations are not causal claims because
 eta and scope strata are balanced controls.
 
@@ -191,9 +197,10 @@ is empirical rather than the inequality direction.
 
 ## 8. Integrity sanity before full run
 
-1. `P_star` is a unique maximal envelope with exactly three atom instances.
-2. All seven subsets have coverage one on `Omega_0`.
-3. Prefix, bank, weights, and ESS are identical for the seven rows of a task.
+1. `P_star` is a unique maximal envelope under the unchanged E11 grammar;
+   realized-envelope size and implied atoms are recorded.
+2. All non-empty subsets have coverage one on `Omega_0`.
+3. Prefix, bank, weights, and ESS are identical for all rows of a task.
 4. Nested sharpness, `Delta S_miss>=0`, and
    `H_valid*(P_subset)>=H_valid*(P_star)` pass numeric tolerance checks;
    `Delta H_scope` is stored as a joint-map field.
