@@ -1250,6 +1250,11 @@ percentage, trust threshold, or prediction benefit. Its conclusion is limited
 to the information lifecycle of supplied valid structural priors in the frozen
 benchmark grammar.
 
+**Predeclared analysis order.** Integrity → measurement reliability → lifecycle
+endpoints → lifecycle states → primitive/separability/DoF/generator difficulty
+anatomy. This order prevents post-hoc primitive ranking from preceding evidence
+that the measurement itself is reliable.
+
 **Artifacts.** [Protocol](PRIOR_MINIMUM_INFORMATIONAL_EVIDENCE_PROTOCOL_V1.md) ·
 [Execution freeze](E9_EXECUTION_FREEZE_V1.md) ·
 [Numeric config](E9_FROZEN_CONFIG_V1.json)

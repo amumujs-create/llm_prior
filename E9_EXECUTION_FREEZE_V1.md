@@ -79,3 +79,19 @@ Bootstrap uses 5,000 resamples of latent task IDs **within each
 primitive × separability × generator stratum**. Generator summaries are then
 equal-weight macro averages across the three generators. Task, observation-noise,
 and ambient-bank RNG streams use separately derived deterministic seeds.
+
+## Predeclared post-run analysis order
+
+1. **Integrity:** task/row counts (1,260 / 22,680), failure count, and every
+   invariant sanity result.
+2. **Measurement reliability:** ESS distribution, sampler-unresolved rate,
+   and `d_eff` / normalized `V_f` distributions.
+3. **Lifecycle endpoints:** grid-resolved/censored `E_add*`, `E_obs*`,
+   `E_joint*`, and at-risk `E_red*` attainment curves.
+4. **Lifecycle states:** external-informative, observed+informative,
+   observed+redundant, unresolved, and measurement-unreliable fractions.
+5. **Difficulty anatomy:** primitive, eta, paired DoF, and generator robustness.
+
+Primitive ranking, prediction utility, scope, completeness, fragility, and
+engine compatibility are not E9 conclusions and are not used to reinterpret
+these outputs post hoc.
