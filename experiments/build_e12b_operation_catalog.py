@@ -24,10 +24,10 @@ def sha256(path: Path) -> str:
 def compatibility_checker(registry: dict, atom_library: dict):
     """Return the frozen compatibility checker encoded by the E11 registry.
 
-    The registry deliberately states global scope semantics and delegates its
-    listed incompatible pairs to the named canonical atom library. Assertions
-    make that delegation executable rather than treating the registry hash as
-    decorative provenance.
+    The registry makes one registry-level global-scope declaration and
+    delegates its listed incompatible pairs to the named canonical atom
+    library. Assertions make that contract executable rather than treating the
+    registry hash as decorative provenance.
     """
     if registry["source_atom_library"] != LIB.name:
         raise ValueError("compatibility registry names a different atom library")

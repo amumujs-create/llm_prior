@@ -1586,7 +1586,9 @@ per-task clean-oracle falsity validation before acceptance.
 the E11 compatibility/scope registry rather than merely hashing it: global
 scope semantics, the named source atom library, and the stated compatibility
 contract are asserted before the registry-derived pairwise rule is used; each
-accepted task then rechecks clean-scope conjunction acceptance. Seven of eight
+accepted task then rechecks clean-scope conjunction acceptance. Changes to
+these contract-relevant fields hard-fail catalog creation; unrelated registry
+metadata remains provenance-hashed but does not alter the contract. Seven of eight
 declared false additions add `regime_postchange` and one adds `turning_maximum`.
 Consequently, results are primary by added atom; a pooled false-addition value
 is supplementary only. The expected accepted corpus has 24 omissions, 8 false

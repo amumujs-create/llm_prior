@@ -109,8 +109,9 @@ hashes; it does not access a realised future when choosing an operation.
 Its builder executes the compatibility/scope registry contract: the frozen
 global-scope semantics and its named atom library are asserted before pairwise
 conflicts are checked, and clean-scope conjunction acceptance is rechecked for
-every realised task. A registry change therefore fails catalog construction
-rather than silently changing compatibility semantics.
+every realised task. A change to a contract-relevant registry field (source
+library, scope, global semantics, or compatibility rule) therefore hard-fails
+catalog construction rather than silently changing compatibility semantics.
 
 If a triple cannot support a required operation, it is not silently dropped.
 The catalog must either assign a predeclared valid alternative or explicitly
