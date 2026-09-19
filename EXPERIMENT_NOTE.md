@@ -1087,3 +1087,45 @@ from this map requires an independently frozen confirmation experiment.
 **Artifact.** [Applicability result](RESULTS_FULL_BENCHMARK_V1_APPLICABILITY.md) ·
 `results/full_benchmark_v1/applicability/` ·
 `figures/fig30_full_v1_conditional_applicability.png`
+
+---
+
+## 25. E8 — Prior Applicability Factorial Confirmation
+
+**Question.** Are the support/noise, exposure/identifiability, and
+distance/specificity patterns in the LHS map reproducible when their target
+coordinates are independently manipulated? Can safety be summarized by
+engine-average utility?
+
+**Protocol.** Seven singleton primitives × three data generators × 20 draws
+per factorial cell. E8 fixes all non-target coordinates and uses the same
+full-v1 candidate perturbation and two realization engines. It records
+engine-conditioned utility/harm and the conservative robust target: unsafe if
+either engine is harmful. The three 3×3 tests are support × noise, exposure ×
+effect strength (the frozen identifiability proxy), and distance × knowledge
+tier. See [frozen protocol](PRIOR_APPLICABILITY_FACTORIAL_CONFIRMATION_PROTOCOL_V1.md).
+
+**Execution.** 8,820 latent tasks / 22,680 engine records; zero solver
+failures; 5,000 within-stratum bootstrap replicates.
+
+**Results.** Engine harm labels disagree in 40.7% of task/action pairs, so an
+engine-average label would conceal meaningful safety failures. Robust-unsafe
+rate rises from .60–.61 at effect strength `.15` to .70–.71 at `.85`, with
+exposure held fixed. Distance × tier is strongly engine dependent: at distance
+`.80`, neural harm is .22/.50/.33 (biased/true-full/subset), whereas spline is
+.57/.59/.56. No tier is robustly safe across the tested horizon.
+
+**Qualification.** With normalized distance held fixed, support changes the
+absolute forecast span. The support × noise result therefore cannot be read as
+the isolated causal effect of data amount, and higher-noise cells must not be
+called safer. E8 confirms context dependence and engine dependence—not a
+universal threshold.
+
+**Decision.** The next Prior Critic should keep engine-conditioned and
+robust-unsafe labels separate. E8 factors are candidate prefix/context inputs;
+they must still be tested on held-out compositions, primitives, and generator
+realizations.
+
+**Artifact.** [E8 result](RESULTS_PRIOR_APPLICABILITY_FACTORIAL_CONFIRMATION_V1.md) ·
+`results/prior_applicability_factorial_confirmation_v1/analysis/` ·
+`figures/fig31_e8_applicability_factorial.png`

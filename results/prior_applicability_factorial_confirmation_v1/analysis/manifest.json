@@ -1,0 +1,8 @@
+{
+  "bootstrap_replicates": 5000,
+  "n_records": 22680,
+  "n_latent_tasks": 8820,
+  "solver_failures": 0,
+  "safety_target": "engine-conditioned harmful plus robust unsafe = harmful in either engine",
+  "records_sha256": "06a4d6594e86a03411a3f538cc87208d61951aa1bbb931ef22c02e1e34bc0d2b"
+}

@@ -1,0 +1,17 @@
+{
+  "protocol_sha256": "6c99d1d25a5699d47343fe8423234da0da100f4e9d43d77b399589368237d776",
+  "script_sha256": "97d1c6f549e7abd3c9e1b87c36f3fd342f90caa0231bda3861160e17cc17a541",
+  "seed_base": 81000,
+  "replicates": 20,
+  "n_factorial_cells": {
+    "support_noise": 9,
+    "exposure_effect": 9,
+    "distance_specificity": 3
+  },
+  "complete": true,
+  "n_latent_tasks": 8820,
+  "n_records": 22680,
+  "solver_failures": 0,
+  "elapsed_seconds": 13.448373079299927,
+  "records_sha256": "06a4d6594e86a03411a3f538cc87208d61951aa1bbb931ef22c02e1e34bc0d2b"
+}
