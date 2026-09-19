@@ -39,6 +39,8 @@ so implementation errors cannot masquerade as lifecycle results.
 - Use the same fixed grid `G=[.70,1.00]` with 161 points for every
   continuation, prior-satisfaction check, covariance, and dispersion metric.
 - Only prefix likelihood weights and the predeclared active subset may differ.
+- Conditional sharpness uses the frozen weighted Laplace estimate
+  `(sum_m w_m I_m + .5)/(sum_m w_m + 1.0)` and probability floor `1/(10M)`.
 - For `d_eff`, if `tr(Sigma_w^2) < 1e-12`, set `d_eff=0`.
 - Store raw `V_f`, but headline cross-primitive/generator multiplicity uses
   `V_f_norm=V_f/R_ref^2`, with the frozen task-level `[0,.70]` reference range.

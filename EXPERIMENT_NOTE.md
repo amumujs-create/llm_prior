@@ -1258,3 +1258,31 @@ that the measurement itself is reliable.
 **Artifacts.** [Protocol](PRIOR_MINIMUM_INFORMATIONAL_EVIDENCE_PROTOCOL_V1.md) ·
 [Execution freeze](E9_EXECUTION_FREEZE_V1.md) ·
 [Numeric config](E9_FROZEN_CONFIG_V1.json)
+
+### E9 execution result (frozen full run)
+
+**Integrity.** The complete run produced 1,260 latent tasks and 22,680
+repeated scoring rows with zero runtime failures. All 63 implementation-invariant
+strata passed: nested observations, one shared noise path, shared bank,
+inactive-coordinate handling, fixed target grid, coverage, finite measurements,
+toy endpoint logic, and future-free scoring isolation.
+
+**Reliability before interpretation.** Median ESS was 765.5, but final-prefix
+sampler-unresolved status occurred in 48.4% of task–DoF trajectories. This is
+a measurement-quality finding, not an excuse to discard prior endpoint results:
+an endpoint attained earlier remains recorded; only final-prefix-dependent
+claims are unresolved.
+
+**Lifecycle.** `E_add*` was attained in 99.3% of trajectories (median `.20`
+among attained), while `E_obs*` and `E_joint*` were attained in 9.6% and 8.3%
+(both median `.40`). No `E_red*` was confirmed under the two-consecutive-prefix
+rule. The run therefore demonstrated that the four lifecycle endpoints are
+operationally separable; it did not establish a universal required-data rule.
+
+**Interpretation boundary.** E9 is information anatomy only. Its outputs do
+not support claims about utility, safety, trust, scope, completeness, fragility,
+or realization-engine compatibility. The sparse observation/joint states and
+high unresolved tail must remain in every presentation of this result.
+
+**Result artifact.** [E9 results](RESULTS_PRIOR_INFORMATION_LIFECYCLE_E9.md) ·
+![E9 lifecycle attainment](figures/fig33_e9_lifecycle_attainment.png)

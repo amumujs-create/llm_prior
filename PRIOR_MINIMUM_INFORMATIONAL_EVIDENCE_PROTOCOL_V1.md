@@ -58,7 +58,8 @@ fixed at the common reference value zero: DoF1 sets `z2,...,z5=0`; DoF3 sets
 Condition this shared bank on prefix normalized MSE using a frozen temperature,
 and compute:
 
-- `S(P|D) = -log P_Q(f satisfies P | D)` with the frozen Laplace/floor rule;
+- `S(P|D) = -log P_Q(f satisfies P | D)` with weighted Laplace numerator
+  pseudocount `.5`, denominator offset `1.0`, and floor `1/(10M)`;
 - `ESS = (sum w)^2 / sum w^2`;
 - effective parameter dimension
   `d_eff=(tr Sigma_w)^2 / tr(Sigma_w^2)`, where `Sigma_w` is the weighted

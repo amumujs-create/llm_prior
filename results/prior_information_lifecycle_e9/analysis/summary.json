@@ -1,0 +1,79 @@
+{
+  "integrity": {
+    "latent_tasks": 1260,
+    "scoring_rows": 22680,
+    "expected_latent_tasks": 1260,
+    "expected_scoring_rows": 22680,
+    "failures": 0,
+    "full_integrity_checks": 63,
+    "all_invariants_pass": true,
+    "future_free_scoring": true
+  },
+  "measurement_reliability": {
+    "ESS": {
+      "count": 22680.0,
+      "mean": 1288.609950820599,
+      "std": 1309.2738973988048,
+      "min": 1.000000073221616,
+      "5%": 3.548537022874554,
+      "25%": 131.33837166661235,
+      "50%": 765.5215557573989,
+      "75%": 2273.6182458391913,
+      "95%": 3891.2837566458716,
+      "max": 4095.881856641262
+    },
+    "sampler_unresolved_final_rate": 0.4843915343915344,
+    "d_eff": {
+      "count": 22680.0,
+      "mean": 2.2282540875179038,
+      "std": 1.1249212812328944,
+      "min": 0.0,
+      "5%": 1.0,
+      "50%": 2.2242125066592053,
+      "95%": 4.510457433026828,
+      "max": 4.849136352251011
+    },
+    "V_f_norm": {
+      "count": 22680.0,
+      "mean": 0.571614531879571,
+      "std": 1.1068208166417806,
+      "min": 4.579849561587436e-09,
+      "5%": 0.011372167154178565,
+      "50%": 0.1733691707761711,
+      "95%": 2.4929898441283553,
+      "max": 17.839182576786495
+    }
+  },
+  "lifecycle_endpoints": {
+    "E_add": {
+      "attained_rate": 0.9928571428571429,
+      "right_censored_or_not_at_risk_rate": 0.007142857142857143,
+      "median_attained": 0.2
+    },
+    "E_obs": {
+      "attained_rate": 0.09603174603174604,
+      "right_censored_or_not_at_risk_rate": 0.903968253968254,
+      "median_attained": 0.4
+    },
+    "E_joint": {
+      "attained_rate": 0.08280423280423281,
+      "right_censored_or_not_at_risk_rate": 0.9171957671957672,
+      "median_attained": 0.4
+    },
+    "E_red": {
+      "attained_rate": 0.0,
+      "right_censored_or_not_at_risk_rate": 1.0,
+      "median_attained": null
+    },
+    "informational_null_rate": 0.0,
+    "joint_unresolved_rate": 0.4857142857142857
+  },
+  "analysis_order": [
+    "integrity",
+    "measurement reliability",
+    "lifecycle endpoints",
+    "lifecycle states",
+    "difficulty anatomy"
+  ],
+  "interpretation_boundary": "Information lifecycle only; no utility, trust, scope, completeness, fragility, or engine claim."
+}

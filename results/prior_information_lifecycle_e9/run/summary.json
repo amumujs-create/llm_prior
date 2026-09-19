@@ -1,0 +1,22 @@
+{
+  "protocol": "E9_prior_information_lifecycle_v1",
+  "latent_tasks": 1260,
+  "scoring_rows": 22680,
+  "expected_scoring_rows": 22680,
+  "integrity_checks": 63,
+  "integrity_passed": true,
+  "failures": 0,
+  "future_free_scoring": true,
+  "M": 4096,
+  "fixed_G": [
+    0.7,
+    1.0,
+    161
+  ],
+  "laplace_a": 0.5,
+  "laplace_b": 1.0,
+  "probability_floor": "1/(10*M)",
+  "temperature": 0.02,
+  "r_ref": "clean_range_[0,.70]",
+  "scoring_api": "FrozenTask only: no future target/RMSE/utility/engine fields"
+}
