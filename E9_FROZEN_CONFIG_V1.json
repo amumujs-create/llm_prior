@@ -4,6 +4,7 @@
   "master_observation_grid_step": 0.008333333333333333,
   "noise_reference_domain": [0.0, 0.7],
   "noise_sd_fraction_of_reference_range": 0.01,
+  "prefix_mse_reference_range": "clean_range_[0,.70]",
   "separability_eta": {"low": 0.2, "mid": 0.5, "high": 0.8},
   "nominal_active_dof": [1, 3, 5],
   "nested_activation_order": [["z1"], ["z1", "z2", "z3"], ["z1", "z2", "z3", "z4", "z5"]],
@@ -17,4 +18,8 @@
   "structural_evidence_threshold": 0.8,
   "bootstrap_replicates": 5000,
   "bootstrap_unit": "latent_task_id"
+  ,"d_eff_zero_denominator_epsilon": 1e-12
+  ,"bootstrap_strata": ["primitive", "separability", "generator"]
+  ,"generator_aggregation": "equal_weight_macro_average"
+  ,"rng_streams": ["latent_task", "observation_noise", "ambient_bank"]
 }
