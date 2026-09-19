@@ -49,8 +49,8 @@ their conditional informational completeness remains empirical:
 
 `Delta S_miss(P)=S(P_star|D)-S(P|D)`.
 
-E11's nested floor rule is retained: neither candidate floor-hit gives an
-exact gap; `P_star`-only floor-hit gives a lower bound; both floor-hit is
+E11's nested floor rule is retained: if neither candidate is floor-hit, the
+gap is exact; `P_star`-only floor-hit gives a lower bound; both floor-hit is
 unresolved; and subset-only floor-hit is an integrity violation. The `.10 nat`
 informational-completeness label is primary only for reliable, exact rows;
 censored gaps are unresolved.
@@ -177,8 +177,8 @@ definition, rather than presenting them as discoveries: core validity with any
 axis (all rows condition on coverage one); candidate size with `C_atom`;
 `S(P|D)` with `Delta S_miss`; `N_obs(P)` with `O_P`; and subset/full scope
 direction under nesting. The empirical association panel is restricted to
-non-definitional relations such as `S ↔ O_P`, `S ↔ H_valid*`,
-`O_P ↔ H_valid*`, and censored-aware `Delta S_miss ↔ H_valid*`.
+non-definitional relations such as `S ↔ O_P`, `S ↔ C_P(h)`,
+`O_P ↔ C_P(h)`, and censored-aware `Delta S_miss ↔ C_P(h)`.
 
 ## 7. Expected semantics, not discoveries
 
