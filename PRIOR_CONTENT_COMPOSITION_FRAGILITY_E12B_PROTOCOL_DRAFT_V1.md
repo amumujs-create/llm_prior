@@ -103,6 +103,10 @@ the clean-oracle falsity check for its planned false addition/reversal. If a
 candidate is accidentally valid for that trajectory, reject/redraw it with a
 separate per-operation rejection count.
 
+The frozen v1 catalog is [E12B_OPERATION_CATALOG_V1.json](E12B_OPERATION_CATALOG_V1.json).
+It selects only signed canonical atom instances and records source-library
+hashes; it does not access a realised future when choosing an operation.
+
 If a triple cannot support a required operation, it is not silently dropped.
 The catalog must either assign a predeclared valid alternative or explicitly
 exclude that operation family and report the denominator. This prevents false

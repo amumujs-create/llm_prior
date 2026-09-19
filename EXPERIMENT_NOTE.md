@@ -1577,6 +1577,10 @@ invalid addition from being merely a logical contradiction, and must preserve
 equal bank/observation/weight conditions across all operations. Primary results
 will be stratified by `intended composition × operation type × target/source
 atom × generator`; no single pooled “structural error” score is allowed.
+The frozen, future-independent declaration is
+[E12B_OPERATION_CATALOG_V1.json](E12B_OPERATION_CATALOG_V1.json); it stores
+the canonical-library, intent, and compatibility-registry hashes and requires
+per-task clean-oracle falsity validation before acceptance.
 
 **Conditional corpus and finite-bank audit.** The E12-B estimand is conditional
 on accepted tasks where every preregistered operation satisfies its intended

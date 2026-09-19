@@ -1,0 +1,699 @@
+{
+  "name": "E12B_OPERATION_CATALOG_V1",
+  "purpose": "future-independent structural operation declarations for E12-B",
+  "scope": [
+    0.4,
+    0.8
+  ],
+  "accepted_tasks_per_intended_triple_generator": 30,
+  "max_generation_attempts_per_cell": 1000,
+  "source_hashes": {
+    "canonical_atom_library": "137f2ece33c161bb04e1f4ba6d7675b88fd2250d963d656f1b45b1251736326a",
+    "intended_atom_intents": "c739bf617751bfa7555774ca8c3030b703e1a31223d15f850cb9c040b70b7cd7",
+    "compatibility_scope_registry": "9cf4d826931e56990dc3b533113199402be9a72c384fa7e0318476cc35f95d54"
+  },
+  "selection_rule": "The catalog selects only frozen canonical atom instances. False coverage is checked on every realised task and is not inferred from the catalog declaration.",
+  "cells": [
+    {
+      "intent_name": "direction+curvature+bound",
+      "supplied_atoms": [
+        "curvature_convex",
+        "direction_decreasing",
+        "lower_bound_0"
+      ],
+      "operations": [
+        {
+          "id": "omit:curvature_convex",
+          "type": "omission",
+          "source_atom": "curvature_convex",
+          "candidate_atoms": [
+            "direction_decreasing",
+            "lower_bound_0"
+          ],
+          "expected_coverage": 1
+        },
+        {
+          "id": "omit:direction_decreasing",
+          "type": "omission",
+          "source_atom": "direction_decreasing",
+          "candidate_atoms": [
+            "curvature_convex",
+            "lower_bound_0"
+          ],
+          "expected_coverage": 1
+        },
+        {
+          "id": "omit:lower_bound_0",
+          "type": "omission",
+          "source_atom": "lower_bound_0",
+          "candidate_atoms": [
+            "curvature_convex",
+            "direction_decreasing"
+          ],
+          "expected_coverage": 1
+        },
+        {
+          "id": "add:regime_postchange",
+          "type": "false_addition",
+          "added_atom": "regime_postchange",
+          "candidate_atoms": [
+            "curvature_convex",
+            "direction_decreasing",
+            "lower_bound_0",
+            "regime_postchange"
+          ],
+          "expected_coverage": 0,
+          "future_oracle_rule": "must be clean-oracle false per accepted task"
+        },
+        {
+          "id": "reverse:curvature_convex->curvature_concave",
+          "type": "reversal",
+          "source_atom": "curvature_convex",
+          "target_atom": "curvature_concave",
+          "candidate_atoms": [
+            "curvature_concave",
+            "direction_decreasing",
+            "lower_bound_0"
+          ],
+          "expected_coverage": 0,
+          "future_oracle_rule": "must be clean-oracle false per accepted task"
+        },
+        {
+          "id": "reverse:direction_decreasing->direction_increasing",
+          "type": "reversal",
+          "source_atom": "direction_decreasing",
+          "target_atom": "direction_increasing",
+          "candidate_atoms": [
+            "curvature_convex",
+            "direction_increasing",
+            "lower_bound_0"
+          ],
+          "expected_coverage": 0,
+          "future_oracle_rule": "must be clean-oracle false per accepted task"
+        }
+      ],
+      "excluded_reversal_sources": [
+        "lower_bound_0"
+      ]
+    },
+    {
+      "intent_name": "direction+curvature+asymptote",
+      "supplied_atoms": [
+        "asymptote_to_0_from_above",
+        "curvature_convex",
+        "direction_decreasing"
+      ],
+      "operations": [
+        {
+          "id": "omit:asymptote_to_0_from_above",
+          "type": "omission",
+          "source_atom": "asymptote_to_0_from_above",
+          "candidate_atoms": [
+            "curvature_convex",
+            "direction_decreasing"
+          ],
+          "expected_coverage": 1
+        },
+        {
+          "id": "omit:curvature_convex",
+          "type": "omission",
+          "source_atom": "curvature_convex",
+          "candidate_atoms": [
+            "asymptote_to_0_from_above",
+            "direction_decreasing"
+          ],
+          "expected_coverage": 1
+        },
+        {
+          "id": "omit:direction_decreasing",
+          "type": "omission",
+          "source_atom": "direction_decreasing",
+          "candidate_atoms": [
+            "asymptote_to_0_from_above",
+            "curvature_convex"
+          ],
+          "expected_coverage": 1
+        },
+        {
+          "id": "add:regime_postchange",
+          "type": "false_addition",
+          "added_atom": "regime_postchange",
+          "candidate_atoms": [
+            "asymptote_to_0_from_above",
+            "curvature_convex",
+            "direction_decreasing",
+            "regime_postchange"
+          ],
+          "expected_coverage": 0,
+          "future_oracle_rule": "must be clean-oracle false per accepted task"
+        },
+        {
+          "id": "reverse:asymptote_to_0_from_above->asymptote_to_0_from_below",
+          "type": "reversal",
+          "source_atom": "asymptote_to_0_from_above",
+          "target_atom": "asymptote_to_0_from_below",
+          "candidate_atoms": [
+            "asymptote_to_0_from_below",
+            "curvature_convex",
+            "direction_decreasing"
+          ],
+          "expected_coverage": 0,
+          "future_oracle_rule": "must be clean-oracle false per accepted task"
+        },
+        {
+          "id": "reverse:curvature_convex->curvature_concave",
+          "type": "reversal",
+          "source_atom": "curvature_convex",
+          "target_atom": "curvature_concave",
+          "candidate_atoms": [
+            "asymptote_to_0_from_above",
+            "curvature_concave",
+            "direction_decreasing"
+          ],
+          "expected_coverage": 0,
+          "future_oracle_rule": "must be clean-oracle false per accepted task"
+        },
+        {
+          "id": "reverse:direction_decreasing->direction_increasing",
+          "type": "reversal",
+          "source_atom": "direction_decreasing",
+          "target_atom": "direction_increasing",
+          "candidate_atoms": [
+            "asymptote_to_0_from_above",
+            "curvature_convex",
+            "direction_increasing"
+          ],
+          "expected_coverage": 0,
+          "future_oracle_rule": "must be clean-oracle false per accepted task"
+        }
+      ],
+      "excluded_reversal_sources": []
+    },
+    {
+      "intent_name": "direction+inflection+bound",
+      "supplied_atoms": [
+        "direction_decreasing",
+        "inflection_concave_to_convex",
+        "lower_bound_0"
+      ],
+      "operations": [
+        {
+          "id": "omit:direction_decreasing",
+          "type": "omission",
+          "source_atom": "direction_decreasing",
+          "candidate_atoms": [
+            "inflection_concave_to_convex",
+            "lower_bound_0"
+          ],
+          "expected_coverage": 1
+        },
+        {
+          "id": "omit:inflection_concave_to_convex",
+          "type": "omission",
+          "source_atom": "inflection_concave_to_convex",
+          "candidate_atoms": [
+            "direction_decreasing",
+            "lower_bound_0"
+          ],
+          "expected_coverage": 1
+        },
+        {
+          "id": "omit:lower_bound_0",
+          "type": "omission",
+          "source_atom": "lower_bound_0",
+          "candidate_atoms": [
+            "direction_decreasing",
+            "inflection_concave_to_convex"
+          ],
+          "expected_coverage": 1
+        },
+        {
+          "id": "add:regime_postchange",
+          "type": "false_addition",
+          "added_atom": "regime_postchange",
+          "candidate_atoms": [
+            "direction_decreasing",
+            "inflection_concave_to_convex",
+            "lower_bound_0",
+            "regime_postchange"
+          ],
+          "expected_coverage": 0,
+          "future_oracle_rule": "must be clean-oracle false per accepted task"
+        },
+        {
+          "id": "reverse:direction_decreasing->direction_increasing",
+          "type": "reversal",
+          "source_atom": "direction_decreasing",
+          "target_atom": "direction_increasing",
+          "candidate_atoms": [
+            "direction_increasing",
+            "inflection_concave_to_convex",
+            "lower_bound_0"
+          ],
+          "expected_coverage": 0,
+          "future_oracle_rule": "must be clean-oracle false per accepted task"
+        },
+        {
+          "id": "reverse:inflection_concave_to_convex->inflection_convex_to_concave",
+          "type": "reversal",
+          "source_atom": "inflection_concave_to_convex",
+          "target_atom": "inflection_convex_to_concave",
+          "candidate_atoms": [
+            "direction_decreasing",
+            "inflection_convex_to_concave",
+            "lower_bound_0"
+          ],
+          "expected_coverage": 0,
+          "future_oracle_rule": "must be clean-oracle false per accepted task"
+        }
+      ],
+      "excluded_reversal_sources": [
+        "lower_bound_0"
+      ]
+    },
+    {
+      "intent_name": "direction+inflection+asymptote",
+      "supplied_atoms": [
+        "asymptote_to_0_from_above",
+        "direction_decreasing",
+        "inflection_concave_to_convex"
+      ],
+      "operations": [
+        {
+          "id": "omit:asymptote_to_0_from_above",
+          "type": "omission",
+          "source_atom": "asymptote_to_0_from_above",
+          "candidate_atoms": [
+            "direction_decreasing",
+            "inflection_concave_to_convex"
+          ],
+          "expected_coverage": 1
+        },
+        {
+          "id": "omit:direction_decreasing",
+          "type": "omission",
+          "source_atom": "direction_decreasing",
+          "candidate_atoms": [
+            "asymptote_to_0_from_above",
+            "inflection_concave_to_convex"
+          ],
+          "expected_coverage": 1
+        },
+        {
+          "id": "omit:inflection_concave_to_convex",
+          "type": "omission",
+          "source_atom": "inflection_concave_to_convex",
+          "candidate_atoms": [
+            "asymptote_to_0_from_above",
+            "direction_decreasing"
+          ],
+          "expected_coverage": 1
+        },
+        {
+          "id": "add:regime_postchange",
+          "type": "false_addition",
+          "added_atom": "regime_postchange",
+          "candidate_atoms": [
+            "asymptote_to_0_from_above",
+            "direction_decreasing",
+            "inflection_concave_to_convex",
+            "regime_postchange"
+          ],
+          "expected_coverage": 0,
+          "future_oracle_rule": "must be clean-oracle false per accepted task"
+        },
+        {
+          "id": "reverse:asymptote_to_0_from_above->asymptote_to_0_from_below",
+          "type": "reversal",
+          "source_atom": "asymptote_to_0_from_above",
+          "target_atom": "asymptote_to_0_from_below",
+          "candidate_atoms": [
+            "asymptote_to_0_from_below",
+            "direction_decreasing",
+            "inflection_concave_to_convex"
+          ],
+          "expected_coverage": 0,
+          "future_oracle_rule": "must be clean-oracle false per accepted task"
+        },
+        {
+          "id": "reverse:direction_decreasing->direction_increasing",
+          "type": "reversal",
+          "source_atom": "direction_decreasing",
+          "target_atom": "direction_increasing",
+          "candidate_atoms": [
+            "asymptote_to_0_from_above",
+            "direction_increasing",
+            "inflection_concave_to_convex"
+          ],
+          "expected_coverage": 0,
+          "future_oracle_rule": "must be clean-oracle false per accepted task"
+        },
+        {
+          "id": "reverse:inflection_concave_to_convex->inflection_convex_to_concave",
+          "type": "reversal",
+          "source_atom": "inflection_concave_to_convex",
+          "target_atom": "inflection_convex_to_concave",
+          "candidate_atoms": [
+            "asymptote_to_0_from_above",
+            "direction_decreasing",
+            "inflection_convex_to_concave"
+          ],
+          "expected_coverage": 0,
+          "future_oracle_rule": "must be clean-oracle false per accepted task"
+        }
+      ],
+      "excluded_reversal_sources": []
+    },
+    {
+      "intent_name": "curvature+bound+asymptote",
+      "supplied_atoms": [
+        "asymptote_to_0_from_above",
+        "curvature_convex",
+        "lower_bound_0"
+      ],
+      "operations": [
+        {
+          "id": "omit:asymptote_to_0_from_above",
+          "type": "omission",
+          "source_atom": "asymptote_to_0_from_above",
+          "candidate_atoms": [
+            "curvature_convex",
+            "lower_bound_0"
+          ],
+          "expected_coverage": 1
+        },
+        {
+          "id": "omit:curvature_convex",
+          "type": "omission",
+          "source_atom": "curvature_convex",
+          "candidate_atoms": [
+            "asymptote_to_0_from_above",
+            "lower_bound_0"
+          ],
+          "expected_coverage": 1
+        },
+        {
+          "id": "omit:lower_bound_0",
+          "type": "omission",
+          "source_atom": "lower_bound_0",
+          "candidate_atoms": [
+            "asymptote_to_0_from_above",
+            "curvature_convex"
+          ],
+          "expected_coverage": 1
+        },
+        {
+          "id": "add:regime_postchange",
+          "type": "false_addition",
+          "added_atom": "regime_postchange",
+          "candidate_atoms": [
+            "asymptote_to_0_from_above",
+            "curvature_convex",
+            "lower_bound_0",
+            "regime_postchange"
+          ],
+          "expected_coverage": 0,
+          "future_oracle_rule": "must be clean-oracle false per accepted task"
+        },
+        {
+          "id": "reverse:asymptote_to_0_from_above->asymptote_to_0_from_below",
+          "type": "reversal",
+          "source_atom": "asymptote_to_0_from_above",
+          "target_atom": "asymptote_to_0_from_below",
+          "candidate_atoms": [
+            "asymptote_to_0_from_below",
+            "curvature_convex",
+            "lower_bound_0"
+          ],
+          "expected_coverage": 0,
+          "future_oracle_rule": "must be clean-oracle false per accepted task"
+        },
+        {
+          "id": "reverse:curvature_convex->curvature_concave",
+          "type": "reversal",
+          "source_atom": "curvature_convex",
+          "target_atom": "curvature_concave",
+          "candidate_atoms": [
+            "asymptote_to_0_from_above",
+            "curvature_concave",
+            "lower_bound_0"
+          ],
+          "expected_coverage": 0,
+          "future_oracle_rule": "must be clean-oracle false per accepted task"
+        }
+      ],
+      "excluded_reversal_sources": [
+        "lower_bound_0"
+      ]
+    },
+    {
+      "intent_name": "inflection+bound+asymptote",
+      "supplied_atoms": [
+        "asymptote_to_0_from_above",
+        "inflection_concave_to_convex",
+        "lower_bound_0"
+      ],
+      "operations": [
+        {
+          "id": "omit:asymptote_to_0_from_above",
+          "type": "omission",
+          "source_atom": "asymptote_to_0_from_above",
+          "candidate_atoms": [
+            "inflection_concave_to_convex",
+            "lower_bound_0"
+          ],
+          "expected_coverage": 1
+        },
+        {
+          "id": "omit:inflection_concave_to_convex",
+          "type": "omission",
+          "source_atom": "inflection_concave_to_convex",
+          "candidate_atoms": [
+            "asymptote_to_0_from_above",
+            "lower_bound_0"
+          ],
+          "expected_coverage": 1
+        },
+        {
+          "id": "omit:lower_bound_0",
+          "type": "omission",
+          "source_atom": "lower_bound_0",
+          "candidate_atoms": [
+            "asymptote_to_0_from_above",
+            "inflection_concave_to_convex"
+          ],
+          "expected_coverage": 1
+        },
+        {
+          "id": "add:regime_postchange",
+          "type": "false_addition",
+          "added_atom": "regime_postchange",
+          "candidate_atoms": [
+            "asymptote_to_0_from_above",
+            "inflection_concave_to_convex",
+            "lower_bound_0",
+            "regime_postchange"
+          ],
+          "expected_coverage": 0,
+          "future_oracle_rule": "must be clean-oracle false per accepted task"
+        },
+        {
+          "id": "reverse:asymptote_to_0_from_above->asymptote_to_0_from_below",
+          "type": "reversal",
+          "source_atom": "asymptote_to_0_from_above",
+          "target_atom": "asymptote_to_0_from_below",
+          "candidate_atoms": [
+            "asymptote_to_0_from_below",
+            "inflection_concave_to_convex",
+            "lower_bound_0"
+          ],
+          "expected_coverage": 0,
+          "future_oracle_rule": "must be clean-oracle false per accepted task"
+        },
+        {
+          "id": "reverse:inflection_concave_to_convex->inflection_convex_to_concave",
+          "type": "reversal",
+          "source_atom": "inflection_concave_to_convex",
+          "target_atom": "inflection_convex_to_concave",
+          "candidate_atoms": [
+            "asymptote_to_0_from_above",
+            "inflection_convex_to_concave",
+            "lower_bound_0"
+          ],
+          "expected_coverage": 0,
+          "future_oracle_rule": "must be clean-oracle false per accepted task"
+        }
+      ],
+      "excluded_reversal_sources": [
+        "lower_bound_0"
+      ]
+    },
+    {
+      "intent_name": "turning+bound+asymptote",
+      "supplied_atoms": [
+        "asymptote_to_0_from_above",
+        "lower_bound_0",
+        "turning_maximum"
+      ],
+      "operations": [
+        {
+          "id": "omit:asymptote_to_0_from_above",
+          "type": "omission",
+          "source_atom": "asymptote_to_0_from_above",
+          "candidate_atoms": [
+            "lower_bound_0",
+            "turning_maximum"
+          ],
+          "expected_coverage": 1
+        },
+        {
+          "id": "omit:lower_bound_0",
+          "type": "omission",
+          "source_atom": "lower_bound_0",
+          "candidate_atoms": [
+            "asymptote_to_0_from_above",
+            "turning_maximum"
+          ],
+          "expected_coverage": 1
+        },
+        {
+          "id": "omit:turning_maximum",
+          "type": "omission",
+          "source_atom": "turning_maximum",
+          "candidate_atoms": [
+            "asymptote_to_0_from_above",
+            "lower_bound_0"
+          ],
+          "expected_coverage": 1
+        },
+        {
+          "id": "add:regime_postchange",
+          "type": "false_addition",
+          "added_atom": "regime_postchange",
+          "candidate_atoms": [
+            "asymptote_to_0_from_above",
+            "lower_bound_0",
+            "regime_postchange",
+            "turning_maximum"
+          ],
+          "expected_coverage": 0,
+          "future_oracle_rule": "must be clean-oracle false per accepted task"
+        },
+        {
+          "id": "reverse:asymptote_to_0_from_above->asymptote_to_0_from_below",
+          "type": "reversal",
+          "source_atom": "asymptote_to_0_from_above",
+          "target_atom": "asymptote_to_0_from_below",
+          "candidate_atoms": [
+            "asymptote_to_0_from_below",
+            "lower_bound_0",
+            "turning_maximum"
+          ],
+          "expected_coverage": 0,
+          "future_oracle_rule": "must be clean-oracle false per accepted task"
+        },
+        {
+          "id": "reverse:turning_maximum->turning_minimum",
+          "type": "reversal",
+          "source_atom": "turning_maximum",
+          "target_atom": "turning_minimum",
+          "candidate_atoms": [
+            "asymptote_to_0_from_above",
+            "lower_bound_0",
+            "turning_minimum"
+          ],
+          "expected_coverage": 0,
+          "future_oracle_rule": "must be clean-oracle false per accepted task"
+        }
+      ],
+      "excluded_reversal_sources": [
+        "lower_bound_0"
+      ]
+    },
+    {
+      "intent_name": "regime+bound+asymptote",
+      "supplied_atoms": [
+        "asymptote_to_0_from_above",
+        "lower_bound_0",
+        "regime_postchange"
+      ],
+      "operations": [
+        {
+          "id": "omit:asymptote_to_0_from_above",
+          "type": "omission",
+          "source_atom": "asymptote_to_0_from_above",
+          "candidate_atoms": [
+            "lower_bound_0",
+            "regime_postchange"
+          ],
+          "expected_coverage": 1
+        },
+        {
+          "id": "omit:lower_bound_0",
+          "type": "omission",
+          "source_atom": "lower_bound_0",
+          "candidate_atoms": [
+            "asymptote_to_0_from_above",
+            "regime_postchange"
+          ],
+          "expected_coverage": 1
+        },
+        {
+          "id": "omit:regime_postchange",
+          "type": "omission",
+          "source_atom": "regime_postchange",
+          "candidate_atoms": [
+            "asymptote_to_0_from_above",
+            "lower_bound_0"
+          ],
+          "expected_coverage": 1
+        },
+        {
+          "id": "add:turning_maximum",
+          "type": "false_addition",
+          "added_atom": "turning_maximum",
+          "candidate_atoms": [
+            "asymptote_to_0_from_above",
+            "lower_bound_0",
+            "regime_postchange",
+            "turning_maximum"
+          ],
+          "expected_coverage": 0,
+          "future_oracle_rule": "must be clean-oracle false per accepted task"
+        },
+        {
+          "id": "reverse:asymptote_to_0_from_above->asymptote_to_0_from_below",
+          "type": "reversal",
+          "source_atom": "asymptote_to_0_from_above",
+          "target_atom": "asymptote_to_0_from_below",
+          "candidate_atoms": [
+            "asymptote_to_0_from_below",
+            "lower_bound_0",
+            "regime_postchange"
+          ],
+          "expected_coverage": 0,
+          "future_oracle_rule": "must be clean-oracle false per accepted task"
+        }
+      ],
+      "excluded_reversal_sources": [
+        "lower_bound_0",
+        "regime_postchange"
+      ]
+    }
+  ],
+  "canonical_atom_ids": [
+    "direction_decreasing",
+    "direction_increasing",
+    "curvature_convex",
+    "curvature_concave",
+    "inflection_concave_to_convex",
+    "inflection_convex_to_concave",
+    "turning_maximum",
+    "turning_minimum",
+    "regime_postchange",
+    "lower_bound_0",
+    "upper_bound_0",
+    "asymptote_to_0_from_above",
+    "asymptote_to_0_from_below"
+  ]
+}
