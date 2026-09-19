@@ -1354,3 +1354,30 @@ not combine their task-level values. The current defensible statement is
 design requirement: prior completeness must be evaluated within a **fixed,
 same declared validity scope**, so missing structural content is not conflated
 with a longer validity horizon.
+
+---
+
+## 30. E11 — Grammar-relative Prior Completeness (design record)
+
+**Question.** Within fixed `Omega=[.40,.80]`, how much valid grammar-relative
+structural information does a supplied coverage-preserving prior omit relative
+to `P_star`, the conjunction of all grammar constraints accepted by the clean
+oracle on that same scope?
+
+**Design.** Use the eight registered compatible triples. For each latent task,
+evaluate all three singletons, all three pairs, the intended full triple, and
+the grammar-oracle envelope against the same observed prefix and the same
+4,096-member continuation bank. Proposed corpus: `8 triples × 3 generators ×
+30 seeds = 720` latent tasks / 5,760 shared-bank candidate evaluations.
+
+**Primary metric.** `Delta S_miss=S(P_star|D)-S(P_s|D)`. This is missing valid
+information, not prediction benefit. Report each missing constraint's
+context-dependent marginal `Delta S(B|P_s)` separately; do not require the
+marginals to sum under interaction.
+
+**Boundary.** E11 is grammar-relative, scope-controlled completeness only.
+It cannot claim world completeness, identifiability, robustness, utility,
+safety, or engine compatibility. An intended full triple can remain incomplete
+when other grammar constraints are also valid in the same scope.
+
+**Artifact.** [E11 completeness protocol draft](PRIOR_COMPLETENESS_E11_PROTOCOL_DRAFT_V1.md)
