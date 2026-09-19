@@ -46,7 +46,7 @@ def main() -> None:
         addition[row["target_atom"]].append(float(row["delta_S"]))
     reversal = [float(row["delta_S"]) for row in by_type["reversal"]]
     reversal_sign = {
-        "negative": sum(value < 0 for value in reversal),
+        "negative_material": sum(value < -DELTA for value in reversal),
         "near_zero": sum(abs(value) <= DELTA for value in reversal),
         "positive_material": sum(value > DELTA for value in reversal),
     }
@@ -86,18 +86,18 @@ false atoms generally create sharpness.
 
 ### Reversal is heterogeneous, not a typical large increase
 
-Of {len(reversal)} reversals, `{reversal_sign['negative']}` ({f(reversal_sign['negative']/len(reversal))}) have
-`Delta S_rev<0`; `{reversal_sign['near_zero']}` ({f(reversal_sign['near_zero']/len(reversal))}) are within
+Of {len(reversal)} reversals, `{reversal_sign['negative_material']}` ({f(reversal_sign['negative_material']/len(reversal))}) have
+`Delta S_rev<-.10 nat`; `{reversal_sign['near_zero']}` ({f(reversal_sign['near_zero']/len(reversal))}) are within
 `±.10 nat`; and `{reversal_sign['positive_material']}` ({f(reversal_sign['positive_material']/len(reversal))})
 exceed `.10 nat`. The mean/median divergence therefore reflects a heterogeneous
 response, not a typical large sharpness increase.
 
-| Reversed source atom | Rows | Median `Delta S_rev` | 95th percentile |
-|---|---:|---:|---:|
+| Reversed source atom | Rows | 5th percentile | Median `Delta S_rev` | 95th percentile |
+|---|---:|---:|---:|---:|
 """
     for atom in sorted(reversal_by_source):
         values = reversal_by_source[atom]
-        report += f"| `{atom}` | {len(values)} | {f(float(np.median(values)))} | {f(float(np.quantile(values, .95)))} |\n"
+        report += f"| `{atom}` | {len(values)} | {f(float(np.quantile(values, .05)))} | {f(float(np.median(values)))} | {f(float(np.quantile(values, .95)))} |\n"
     report += f"""
 
 ### E12-A inheritance audit
@@ -126,19 +126,21 @@ a generic false-addition law.
 
 ## Interpretation and boundary
 
-The signs of omission and false-addition changes are consequences of nested
-AND semantics: removing a true atom can only relax the continuation set, and
-adding an atom can only restrict it. Their empirical content is therefore the
-magnitude and heterogeneity of the change—not its sign. Within this frozen 1D
-grammar, omission, false addition, and reversal had non-interchangeable
-conditional-information consequences. Coverage was designed as an integrity
-invariant, not discovered as a result.
+Within the frozen grammar and acceptance-conditioned corpus, omission,
+compatible false addition, and signed reversal exhibited distinct
+conditional-information profiles. The direction of omission/addition changes
+follows from nested AND semantics, whereas their magnitudes are heterogeneous;
+reversal is non-nested and varies substantially in direction and magnitude by
+source atom and context. Coverage was designed as an integrity invariant, not
+discovered as a result.
 
-E12-B contains no predictor, utility, RMSE, prediction harm, engine
-compatibility, or LLM component. Therefore it does **not** show that every
-false structural statement is predictively harmful. Family-local
-`D_violation` values are stored for audit and may not be pooled as a universal
-severity scale.
+Wrong candidates were sharp because valid baselines were already sharp in every
+tested E12-B case; the E12-A baseline audit shows the same for every tested
+specification state. Neither experiment shows that misspecification itself
+generated confidence. Rather, conditional sharpness can persist after validity
+is lost. E12-B contains no predictor, utility, RMSE, prediction harm, engine
+compatibility, or LLM component. Family-local `D_violation` values are stored
+for audit and may not be pooled as a universal severity scale.
 """
     REPORT.write_text(report)
     print(f"wrote {REPORT.relative_to(ROOT)}")

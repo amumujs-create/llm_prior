@@ -24,19 +24,19 @@ false atoms generally create sharpness.
 
 ### Reversal is heterogeneous, not a typical large increase
 
-Of 1530 reversals, `331` (0.216) have
-`Delta S_rev<0`; `482` (0.315) are within
+Of 1530 reversals, `301` (0.197) have
+`Delta S_rev<-.10 nat`; `482` (0.315) are within
 `±.10 nat`; and `747` (0.488)
 exceed `.10 nat`. The mean/median divergence therefore reflects a heterogeneous
 response, not a typical large sharpness increase.
 
-| Reversed source atom | Rows | Median `Delta S_rev` | 95th percentile |
-|---|---:|---:|---:|
-| `asymptote_to_0_from_above` | 540 | 3.833 | 7.239 |
-| `curvature_convex` | 270 | 0.000 | 4.088 |
-| `direction_decreasing` | 360 | 0.147 | 6.731 |
-| `inflection_concave_to_convex` | 270 | -0.658 | 2.781 |
-| `turning_maximum` | 90 | 6.228 | 6.948 |
+| Reversed source atom | Rows | 5th percentile | Median `Delta S_rev` | 95th percentile |
+|---|---:|---:|---:|---:|
+| `asymptote_to_0_from_above` | 540 | -6.176 | 3.833 | 7.239 |
+| `curvature_convex` | 270 | -0.579 | 0.000 | 4.088 |
+| `direction_decreasing` | 360 | -0.898 | 0.147 | 6.731 |
+| `inflection_concave_to_convex` | 270 | -5.471 | -0.658 | 2.781 |
+| `turning_maximum` | 90 | 0.684 | 6.228 | 6.948 |
 
 
 ### E12-A inheritance audit
@@ -63,16 +63,18 @@ a generic false-addition law.
 
 ## Interpretation and boundary
 
-The signs of omission and false-addition changes are consequences of nested
-AND semantics: removing a true atom can only relax the continuation set, and
-adding an atom can only restrict it. Their empirical content is therefore the
-magnitude and heterogeneity of the change—not its sign. Within this frozen 1D
-grammar, omission, false addition, and reversal had non-interchangeable
-conditional-information consequences. Coverage was designed as an integrity
-invariant, not discovered as a result.
+Within the frozen grammar and acceptance-conditioned corpus, omission,
+compatible false addition, and signed reversal exhibited distinct
+conditional-information profiles. The direction of omission/addition changes
+follows from nested AND semantics, whereas their magnitudes are heterogeneous;
+reversal is non-nested and varies substantially in direction and magnitude by
+source atom and context. Coverage was designed as an integrity invariant, not
+discovered as a result.
 
-E12-B contains no predictor, utility, RMSE, prediction harm, engine
-compatibility, or LLM component. Therefore it does **not** show that every
-false structural statement is predictively harmful. Family-local
-`D_violation` values are stored for audit and may not be pooled as a universal
-severity scale.
+Wrong candidates were sharp because valid baselines were already sharp in every
+tested E12-B case; the E12-A baseline audit shows the same for every tested
+specification state. Neither experiment shows that misspecification itself
+generated confidence. Rather, conditional sharpness can persist after validity
+is lost. E12-B contains no predictor, utility, RMSE, prediction harm, engine
+compatibility, or LLM component. Family-local `D_violation` values are stored
+for audit and may not be pooled as a universal severity scale.
