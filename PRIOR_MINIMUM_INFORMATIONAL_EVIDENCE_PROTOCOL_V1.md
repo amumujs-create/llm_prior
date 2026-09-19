@@ -73,7 +73,7 @@ indicator in `S(P|D_s)` are evaluated on the same fixed target domain
 `G=[.70,1.00]` (161 points). Thus sharpness changes are not caused by shrinking
 the future region as observed support grows.
 
-Coverage is 1 by construction for the supplied true prior and is retained only
+Coverage is 1 by construction for the supplied valid structural prior and is retained only
 as a checker invariant. No future target, utility, realization engine, or
 far-OOD prediction enters any E9 input or endpoint.
 
