@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "n_records": 40500,
+  "n_tasks": 3375,
+  "errors": [],
+  "output_sha256": "3923de3fe8443ad5572bd42a709337ba82f38ed76e8676c1c2a12b28b4fee81c",
+  "diagnostics_sha256": "fccdc282d399d06ab2668500ea8eff361b94ecff3ddd346457bbddd591d68332"
+}

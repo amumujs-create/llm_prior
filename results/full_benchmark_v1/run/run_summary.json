@@ -1,0 +1,8 @@
+{
+  "n_tasks": 3375,
+  "n_records": 40500,
+  "M": 4096,
+  "elapsed_seconds": 18.763405084609985,
+  "solver_failure_count": 0,
+  "complete": true
+}

@@ -1,0 +1,3 @@
+experiment,coverage_sharpness
+E5,coverage recoverable only by condition semantics; conditional sharpness not recoverable: no trajectories/ensemble
+E5b,logical broad/narrow coverage available; conditional sharpness not recoverable: no trajectories/ensemble

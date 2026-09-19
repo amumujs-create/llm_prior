@@ -64,3 +64,17 @@ python3 experiments/run_full_benchmark_v1.py
 
 No full-v1 outcomes were generated or inspected before these hashes were
 recorded.
+
+## Outcome inventory
+
+- execution: completed `3375` tasks / `40500` candidate-engine records
+- solver failures: `0`
+- task-candidate-engine SHA-256:
+  `3923de3fe8443ad5572bd42a709337ba82f38ed76e8676c1c2a12b28b4fee81c`
+- task diagnostics SHA-256:
+  `fccdc282d399d06ab2668500ea8eff361b94ecff3ddd346457bbddd591d68332`
+- output verifier: passed with zero errors
+
+Analysis uses paired engine aggregation, macro cell summaries, and the frozen
+5,000-replicate hierarchical bootstrap. The analysis script is versioned with
+the output artifacts; it does not alter locked outcome records.

@@ -1,0 +1,16 @@
+{
+  "bootstrap_replicates": 5000,
+  "utility_threshold": "beneficial > +0.02, harmful < -0.02 normalized utility relative to paired baseline RMSE",
+  "n_summary_rows": 271,
+  "n_gap_closure_rows": 30,
+  "n_selection_regret_rows": 54,
+  "experiments": [
+    "E1/E2",
+    "E5",
+    "E5b",
+    "partial_realization",
+    "exposure_oracle",
+    "E6"
+  ],
+  "r2": "supplementary unavailable because stored artifacts lack targets/predictions; explicitly flagged"
+}

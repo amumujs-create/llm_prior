@@ -989,3 +989,68 @@ reason for removal.
 `experiments/structural_null_validation_v1_1.py` ·
 `results/structural_null_validation_v1_1/summary.json` ·
 `figures/fig26_structural_null_validation.png`
+
+---
+
+## 22. Prior Primitive–Composition Benchmark v1 — full anatomy run
+
+**Purpose.** Map, within the frozen 1D scalar grammar, how structural coverage,
+conditional sharpness, incremental utility, harm, calibration, distance, and
+null status separate. The target is prior anatomy rather than a single winning
+model.
+
+**Execution.** Immutable corpus: 3,375 tasks (2,700 non-null; 338 structural
+null; 337 informational null), 27 registered cells, two realization engines,
+six candidate actions, and 4,096 continuation samples. This produced 40,500
+candidate-engine records; verification passed with zero solver failures.
+
+**Primary pattern.** True-full candidates have coverage 1 and more conditional
+sharpness than true-subsets, but they remain harmful on 43.2% of task-engine
+pairs. Narrow-biased candidates combine zero coverage with the highest
+sharpness (5.727), 57.8% harm, and 31.3% catastrophic harm. Thus coverage,
+logical specificity, effective conditional sharpness, and safe realization are
+empirically distinct axes in this benchmark.
+
+**Composition.** Added constraints consistently add conditional sharpness but
+have heterogeneous `DeltaU`: some are useful, some redundant, and some harmful.
+This is the desired `DeltaS–DeltaU` taxonomy rather than a best-prior ranking.
+
+**Normalization qualification.** Mean normalized utility is dominated by a
+low-baseline-RMSE tail. True-full has mean raw utility +.00489 and median
+normalized utility +.116 even though its macro normalized mean is negative.
+Report normalized utility with the frozen 5,000 hierarchical-bootstrap CI, but
+always pair it with raw DeltaRMSE, median normalized utility, utility classes,
+and catastrophic harm. Do not interpret normalized means alone.
+
+**Nulls.** Abstention is safe by construction. All non-abstain actions on
+informational nulls are harmful at least 58% of the time; structural-null
+proposals are frequently harmful as well. This validates abstention within the
+benchmark, not the real-world frequency of null situations.
+
+**Artifacts.** [Full result](RESULTS_FULL_BENCHMARK_V1.md) ·
+`results/full_benchmark_v1/analysis/` ·
+`figures/fig27_full_v1_anatomy_composition.png` ·
+`figures/fig28_full_v1_hurdle_map.png` ·
+`figures/fig29_full_v1_knowledge_null.png`
+
+---
+
+## 23. Legacy common metric audit
+
+Stored paired-RMSE artifacts from E5, E5b, partial-realization, exposure/oracle,
+and E6 were re-expressed with normalized utility, raw `DeltaRMSE`, and 5,000
+paired-bootstrap CIs for both, beneficial/neutral/harmful classification, and
+catastrophic-harm rates. E1/E2 selection-regret records and exposure-oracle
+gap-closure records are summarized separately. This is measurement
+harmonization, not a rerun or a revision of original outcomes.
+
+R²/DeltaR² were not reconstructed from RMSE-only JSON because targets and SST
+are absent; they are explicitly marked unavailable rather than guessed.
+Conditional Sharpness was likewise not retrofitted where trajectories and the
+frozen continuation ensemble were absent. Existing prior-quality audit records
+remain the valid Coverage–Sharpness evidence.
+
+**Artifact.** [Legacy audit](RESULTS_LEGACY_METRIC_AUDIT_V1.md) ·
+`results/legacy_metric_audit_v1/summary.csv` ·
+`results/legacy_metric_audit_v1/oracle_gap_closure.csv` ·
+`results/legacy_metric_audit_v1/selection_regret.csv`
