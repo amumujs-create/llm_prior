@@ -84,8 +84,9 @@ are covered by compatible false-addition operations instead.
 
 Start from the eight E11 intended triples and three generator families. For
 each exact triple × generator cell, request 30 accepted tasks. Before full
-execution, a deterministic preflight must build and hash an operation catalog
-that satisfies all of the following for every planned operation:
+execution, a deterministic preflight must build and hash an operation catalog.
+Each cell has a fixed maximum of 1,000 generation attempts. The catalog
+satisfies all of the following for every planned operation:
 
 1. the supplied `P_full` has clean coverage one;
 2. each omission uses an atom actually present in `P_full`;
@@ -107,6 +108,14 @@ The catalog must either assign a predeclared valid alternative or explicitly
 exclude that operation family and report the denominator. This prevents false
 addition difficulty from being confounded with uneven candidate-library size.
 
+The E12-B estimand is explicitly **conditional on acceptance** of tasks for
+which every registered operation meets its intended coverage/falsity and
+compatibility condition. For every intended triple × generator cell, retain
+`attempts`, `accepted`, `accidental_valid_rejects`, `compatibility_rejects`,
+`checker_rejects`, `catalog_operation_exclusions`, and `exhaustion`. The
+planned coverage pattern (`P_omit=1`, `P_add=0`, `P_rev=0`) is an integrity
+invariant of this conditional corpus, not a scientific headline endpoint.
+
 ## Oracle and scorer separation
 
 The clean trajectory may be used only to verify coverage and primitive-specific
@@ -119,12 +128,20 @@ For every operation record:
 
 - `Coverage` and primitive-specific `D_violation`;
 - `S(P|D)`, `ESS`, saturation and floor flags;
+- `N_survive` (unweighted satisfying-bank count) and `p_weighted` (weighted
+  survival probability) before sharpness flooring;
 - the operation-specific sharpness change relative to `P_full`;
 - `confidently_wrong=I(Coverage=0, ESS>=100, S>=.10 nat)`;
 - exact operation atom IDs, semantic type, and operation-catalog ID.
 
 ESS must be identical across all operations for a base task; any difference is
 an implementation failure.
+
+`N_survive` and `p_weighted` are finite-bank support audits, not substitute
+measures of sharpness. A floor-hit can reflect a restrictive candidate or
+insufficient support in the 4,096-member reference bank; floor-aware changes
+therefore remain lower/upper bounds or unresolved according to the frozen
+rules below and are never silently interpreted as exact infinite sharpness.
 
 ### Inherited versus induced sharpness
 
@@ -168,9 +185,10 @@ score.
 
 1. **Omission:** coverage-preservation integrity and `L_omit`; distinguishes
    redundant from materially informative missing content.
-2. **False addition:** invalid rate, violation severity, sharpness gain, and
-   confidently-wrong rate; distinguishes false-but-weak from false-and-sharp.
-3. **Reversal:** invalid rate, violation severity, and censored-aware
+2. **False addition:** coverage/falsity integrity, violation severity,
+   sharpness gain, and confidently-wrong rate; distinguishes false-but-weak
+   from false-and-sharp.
+3. **Reversal:** coverage/falsity integrity, violation severity, and censored-aware
    `Delta S_rev`; captures non-nested directional structural error.
 
 ## Integrity sanity before full run
@@ -189,6 +207,8 @@ score.
    pass deterministic toy cases;
 8. operation-catalog exclusions/rejections, including accidental per-task
    validity, are logged by triple × generator × operation.
+9. every operation row has finite `N_survive` and `p_weighted`, and every
+   floor-hit remains auditable through those two quantities.
 
 ## Interpretation boundary
 

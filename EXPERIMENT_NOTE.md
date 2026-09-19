@@ -1578,6 +1578,17 @@ equal bank/observation/weight conditions across all operations. Primary results
 will be stratified by `intended composition × operation type × target/source
 atom × generator`; no single pooled “structural error” score is allowed.
 
+**Conditional corpus and finite-bank audit.** The E12-B estimand is conditional
+on accepted tasks where every preregistered operation satisfies its intended
+coverage/falsity and compatibility rule. Each intended triple × generator cell
+requests 30 accepted tasks with at most 1,000 attempts; it stores attempts,
+accepted cases, accidental-valid, compatibility, checker rejects,
+operation-catalog exclusions, and exhaustion. Thus planned omission/addition/
+reversal coverage (`1/0/0`) is integrity only—not a headline result. Every
+operation row additionally stores unweighted `N_survive` and pre-floor
+weighted survival probability `p_weighted`, so a probability-floor hit can be
+audited as finite-bank support rather than silently called infinite sharpness.
+
 **Sharpness attribution and reliability.** For invalid commission/reversal
 candidates, classify the `.10 nat` sharpness state relative to the valid
 baseline: inherited-sharp, induced-sharp, attenuated, or false-but-weak. Thus
