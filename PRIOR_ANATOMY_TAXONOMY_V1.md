@@ -46,6 +46,13 @@ All three are grammar-relative in v1. Let `G` be the registered prior grammar.
   sharpness gap versus the supplied prior measures *missed valid information*
   inside `G`, not knowledge missing from the real world outside `G`.
 
+Completeness comparisons must use the **same declared validity scope**. A
+supplied constraint that is valid only through `.70` cannot be compared directly
+to an oracle envelope evaluated through `1.00`: the resulting information gap
+would mix missing structural content with longer scope. E11 therefore holds
+the scope fixed before it asks what valid grammar-relative constraints are
+missing.
+
 Therefore “true prior” is avoided in reports when it could imply a unique best
 description. Preferred terms are **supplied valid prior**,
 **coverage-preserving prior**, **informative valid prior**, and, when one

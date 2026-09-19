@@ -64,6 +64,20 @@ Consequently, these values validate that the E10 apparatus distinguishes scope
 classes; they are not evidence that direction is intrinsically more persistent
 than curvature, bound, or any other primitive in the real world.
 
+## E9–E10 relationship
+
+E9 and E10 establish different axes. E9 asks when a supplied valid prior is
+additional information relative to a data-conditioned continuation ensemble;
+E10 asks how far the constraint remains valid in a clean future trajectory.
+They do **not** share a task corpus, so no task-level `information × scope`
+quadrant analysis is justified yet. The four conceptual combinations—high/low
+information crossed with local/persistent scope—are now well-defined, but not
+empirically joint estimates.
+
+The next completeness study must compare a supplied prior and grammar-relative
+oracle envelope within the same declared scope. Otherwise a gap can reflect a
+scope-length difference as well as missing structural content.
+
 ## Interpretation boundary
 
 E10 distinguishes a highly local constraint from one that persists through the

@@ -1345,3 +1345,12 @@ asymptote. Generator scope-class agreement was 100% across matched seeds. This
 validates scope-label recovery under the frozen interventions; it is explicitly
 not a real-world primitive-persistence ranking, because scope duration was
 controlled by construction.
+
+**E9–E10 synthesis.** E9 and E10 establish separate axes rather than a joint
+four-quadrant result: E9 asks when a supplied valid prior adds conditional
+information; E10 asks how far it remains valid. Since the corpora differ, do
+not combine their task-level values. The current defensible statement is
+`Validity != Informativeness != Observability != Scope`. This creates an E11
+design requirement: prior completeness must be evaluated within a **fixed,
+same declared validity scope**, so missing structural content is not conflated
+with a longer validity horizon.
