@@ -40,3 +40,27 @@ means the run is not authorized for interpretation.
 
 The metadata corpus is immutable. Full outcome execution remains locked until
 the complete scoring runner receives a code hash.
+
+## Code lock
+
+- core engines/generators:
+  `acbe082c3c115e065bd0ae2088d1a9d7629c99041fac68ff5b3de860c19f9e5e`
+- full scoring runner:
+  `8ca8cc80fc615e9102eef228dd362321bf0f91f9b669bcb51d7867ccfb5f3b79`
+- structural-null dependency:
+  `2d09cb8512773666d3dac7a9557a2e8dfe1388b723f65462dbace60d12da9017`
+- corpus builder:
+  `cadfbfa8f03f5e9b476c67d9a3692c6b1a929e77ec3851ba3bc24dd9da7e4c78`
+- smoke verification: 30 tasks, 360 candidate-engine records, all finite,
+  exactly 12 records/task, zero solver failures
+
+Frozen execution command:
+
+```bash
+PYTHONPATH=experiments VECLIB_MAXIMUM_THREADS=1 OPENBLAS_NUM_THREADS=1 \
+MPLCONFIGDIR=/private/tmp/mpl-prior-full-v1 \
+python3 experiments/run_full_benchmark_v1.py
+```
+
+No full-v1 outcomes were generated or inspected before these hashes were
+recorded.
