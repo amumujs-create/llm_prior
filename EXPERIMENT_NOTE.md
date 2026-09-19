@@ -1444,3 +1444,40 @@ its declared structural content is perturbed.
 **Artifact.** [E11 results](RESULTS_PRIOR_COMPLETENESS_E11.md)
 · `results/prior_completeness_e11/run/`
 · `results/prior_completeness_e11/analysis/`
+
+---
+
+## 31. E12-A — Specification Fragility (frozen-design draft)
+
+**Why this follows E11.** E11 established that a supplied valid prior can be
+grammatically incomplete yet conditionally information-complete, or can omit
+material valid information. The next separate question is not whether another
+atom is missing, but how fragile an unchanged structural statement is when its
+**numeric realization** is progressively miscalibrated.
+
+**Question.** Holding structural content fixed, at what signed normalized
+numeric error does a supplied valid specification first lose coverage, how
+large is the violation, and can the resulting invalid prior remain sharp?
+
+**Frozen draft.** E12-A uses five unambiguous scalar fields only: regime onset,
+inflection location, turning location, lower-bound level, and asymptotic
+limit. It evaluates `epsilon={0,.025,.05,.10,.20,.30}`, with both signs at
+every nonzero magnitude, in a fixed `Omega=[.40,.80]`. The proposed corpus is
+450 base tasks (five fields × three generators × 30 seeds) and 4,950 repeated
+perturbation rows sharing each task's observations and 4,096-member ambient
+bank. Its primary endpoints are sign-specific grid-resolved validity-break
+thresholds, coverage/violation curves, and conditional-sharpness/ESS curves.
+
+**Critical separation.** Coverage and violation may use the clean latent truth
+only in an oracle validation stage. Conditional sharpness receives only the
+observed prefix, frozen bank, and perturbed declaration. No prediction engine,
+RMSE, utility, or harm target enters E12-A. `Coverage=0 & ESS>=100 & S>=.10`
+is called *confidently wrong* only as an information diagnostic, not as a
+prediction-safety conclusion.
+
+**Boundary.** Direction and unsigned curvature have no independent scalar
+realization field in the v1 grammar, so they are not forced into a fictional
+numeric sweep. False signs, false atoms, omissions, and composition changes
+are explicitly deferred to E12-B.
+
+**Artifact.** [E12-A specification-fragility protocol draft](PRIOR_FRAGILITY_E12A_PROTOCOL_DRAFT_V1.md)
