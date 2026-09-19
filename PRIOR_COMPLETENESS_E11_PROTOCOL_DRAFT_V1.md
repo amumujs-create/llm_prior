@@ -3,8 +3,8 @@
 ## Question
 
 Within one fixed declared scope, how much valid structural information does a
-supplied prior omit relative to the most restrictive coverage-preserving
-envelope available in the frozen grammar?
+supplied prior omit relative to the **unique inclusion-maximal compatible
+coverage-preserving envelope** available in the frozen canonical grammar?
 
 E11 is not an attempt to name the one true prior. Its object is explicitly
 grammar-relative completeness:
@@ -47,6 +47,11 @@ For each task, evaluate all nonempty supplied subsets of the intended triple:
 three singleton priors, three pairs, and the intended full triple. The
 grammar-oracle envelope is evaluated separately. Thus there are eight
 candidate/envelope evaluations per task, or 5,760 shared-bank measurements.
+Each intended triple × generator cell requests 30 accepted tasks, permits at
+most 1,000 deterministic generation attempts, and stores requested tasks,
+attempts, ambiguous-envelope rejects, coverage/checker rejects, and exhaustion.
+Rejection rates are reported by triple × generator as an integrity diagnostic
+for corpus-selection bias, not hidden by redraws.
 
 ## Two completeness axes
 
@@ -60,7 +65,7 @@ conditional information missing” into one label.
   practical threshold `delta_info=.10 nat`, informationally complete means
   `Delta S_miss <= .10`; informationally incomplete means `Delta S_miss > .10`.
 
-Thus `P_s != P_star` with a small reliable gap is **structurally incomplete but
+Thus `P_s != P_star` with a small reliable gap is **atom-incomplete but
 informationally complete**. This is an expected E11 state, not a contradiction.
 All outputs retain `C_atom`, raw `Delta S_miss`, reliability/floor flags, and
 the thresholded informational status as separate fields.
@@ -107,10 +112,6 @@ Every atom in `P_star` is stored with provenance: `intended_atom` if it belongs
 to the generator's intended triple, otherwise `incidental_valid_atom`. The
 latter is an observed grammar-valid consequence, not hidden generator truth.
 
-Every atom in `P_star` is stored with provenance: `intended_atom` if it belongs
-to the generator's intended triple, otherwise `incidental_valid_atom`. The
-latter is an observed grammar-valid consequence, not hidden generator truth.
-
 Every supplied subset must be verified coverage-preserving on `Omega` before
 it is admitted to the corpus. The candidate and `P_star` use the same task,
 prefix, scope, and bank.
@@ -141,8 +142,10 @@ numbers are explicitly supplementary. A small gap at `ESS<100` is
 
 Sharpness uses the frozen Laplace/floor estimate with `M=4096`, `.5`
 pseudocount, denominator offset `1.0`, and `p_min=1/(10M)`. Record candidate
-and oracle-envelope floor-hit flags. If `P_star` is floor-saturated,
-`Delta S_miss` is a lower bound. If both `P_s` and `P_star` floor-hit,
+and oracle-envelope floor-hit flags. If `P_star` is floor-saturated while
+`P_s` is not, `Delta S_miss` is a lower bound: classify informationally
+incomplete only if this lower bound exceeds `.10 nat`; otherwise classify the
+information status as unresolved. If both `P_s` and `P_star` floor-hit,
 informational completeness is unresolved even if the reported difference is
 zero. Floor-hit cases are never classified informationally complete from the
 truncated sharpness difference.
@@ -159,8 +162,8 @@ exposes redundancy and interaction rather than replacing the envelope gap.
 Report canonical-atom status and information status as a cross-classification,
 never as one four-class label. Examples include:
 
-- subset-incomplete + reliable large gap;
-- subset-incomplete + reliable negligible gap;
+- atom-incomplete + reliable large gap;
+- atom-incomplete + reliable negligible gap;
 - intended-full-but-extra-valid + reliable large/small gap;
 - grammar-complete + zero gap;
 - any structural status + ESS/floor unresolved information status.
@@ -190,7 +193,9 @@ sanity suite must verify:
    occurs zero times, up to the frozen numerical tolerance;
 9. every accepted task has one unique inclusion-maximal compatible envelope and records
    intended versus incidental atom provenance;
-10. no utility, engine, prediction, future-RMSE, or far-OOD target enters
+10. rejection accounting and the fixed 1,000-attempt cap are populated for
+    every intended triple × generator cell;
+11. no utility, engine, prediction, future-RMSE, or far-OOD target enters
    scoring.
 
 ## Interpretation boundary

@@ -1378,12 +1378,12 @@ marginals to sum under interaction.
 **Completeness split and measurement rule.** Canonical atom completeness
 (`C_atom`) is exact canonical-atom equality `P_s=P_star`; informational completeness is
 the reliable non-saturated gap criterion `Delta S_miss<=.10 nat`. Thus a prior
-can be structurally incomplete but informationally complete when omitted atoms
+can be atom-incomplete but informationally complete when omitted atoms
 are conditionally redundant. E11-v1 uses canonical content atoms only—no
 future-selected parameter intervals—so specificity cannot leak into the
 envelope. Primary analysis requires `ESS>=100`. An oracle floor-hit turns the
 gap into a lower bound; a joint candidate/oracle floor hit is informationally
-unresolved rather than a zero-gap result. `P_star` is a unique maximal
+unresolved rather than a zero-gap result. `P_star` is a unique inclusion-maximal
 compatible envelope from a dedicated E11 canonical atom universe, not the old
 size-≤3 registry and not an unfiltered conjunction of individually true atoms.
 All signed/bound/asymptotic atom instances are frozen before seeing a task's
@@ -1391,6 +1391,15 @@ future; the oracle can only select among them. Tasks with no unique
 inclusion-maximal compatible envelope are rejected/redrawn before scoring.
 Every envelope atom is flagged intended or incidental-valid; this makes
 intended-full-but-atom-incomplete interpretable.
+
+**Final execution semantics.** `P_star` is never called “most restrictive”; it
+is the unique inclusion-maximal compatible coverage-preserving envelope within
+the frozen canonical grammar. Each intended triple × generator cell requests 30
+accepted tasks with a fixed maximum of 1,000 generation attempts; attempts,
+ambiguity/checker rejects, and exhaustion are reported to expose selection bias.
+If oracle `P_star` floor-hits and a candidate does not, its gap is a lower
+bound: it establishes informational incompleteness only when that bound exceeds
+`.10 nat`, otherwise its information status is unresolved.
 
 **Boundary.** E11 is grammar-relative, scope-controlled completeness only. It
 cannot claim world completeness, identifiability, robustness, utility, safety,
