@@ -1500,6 +1500,17 @@ nested, `Delta S_spec` has four distinct frozen floor states: exact (neither
 floor), lower bound (perturbed only), upper bound (baseline only), and
 unresolved (both). Censored changes will not be averaged as exact values.
 
+**Ambient-bank semantics.** The 4,096-member reference ensemble is frozen as
+paired objects `(f_m,z_m)`, not functions alone. Regime onset satisfaction uses
+candidate-level `has_regime` and latent onset metadata; asymptote satisfaction
+uses candidate-level asymptotic-mechanism, limit, and approach-side metadata.
+Inflection, turning, and bound retain frozen trajectory-level checks. This
+prevents mechanistic/latent-assisted sharpness from being silently replaced by
+phenomenological function checks. The execution manifest must hash the field
+satisfaction registry. E12-A also records the censored-aware
+`Delta_epsilon_CW=epsilon_CW* - epsilon_break*` whenever both endpoints are
+observed; it distinguishes immediate from delayed confidently-wrong failure.
+
 **Boundary.** Direction and unsigned curvature have no independent scalar
 realization field in the v1 grammar, so they are not forced into a fictional
 numeric sweep. False signs, false atoms, omissions, and composition changes

@@ -92,6 +92,32 @@ fixed seed streams. The prior perturbation and baseline-margin state are
 deterministic transforms of the already accepted trajectory; neither can alter
 the latent trajectory, observations, likelihood weights, or bank.
 
+## Frozen ambient-bank satisfaction semantics
+
+The E12-A reference ensemble is a paired full-domain bank
+`Q={(f_m,z_m)}_{m=1}^{4096}`, not merely a bank of plotted functions. `f_m` is
+defined on both the observed prefix and fixed target `Omega`; `z_m` contains
+frozen latent metadata for every candidate that can support a mechanistic or
+latent-assisted claim. The scorer obtains prefix likelihood weights only from
+`f_m` on the observed prefix, then applies the following satisfaction rule to
+the declared perturbed specification. It never consults the accepted task's
+clean future or true field.
+
+| Field / structural content | Candidate satisfaction of `P_epsilon` |
+|---|---|
+| Regime onset / `regime_postchange` | `z_m.has_regime=True` and paired `z_m.regime_onset` lies in the declared onset interval. |
+| Inflection location / concave-to-convex | Frozen trajectory checker detects exactly one signed concave-to-convex inflection in `f_m` on `Omega`, and its location lies in the interval. |
+| Turning location / maximum | Frozen trajectory checker detects exactly one signed maximum turning event in `f_m` on `Omega`, and its location lies in the interval. |
+| Lower-bound relation | `min_{x in Omega} f_m(x) >= L_epsilon`. |
+| Asymptote-from-above | `z_m.has_asymptotic_mechanism=True`, paired `z_m.asymptotic_limit` lies in the declared limit interval, and its approach-side metadata is `from_above`. |
+
+Thus regime sharpness is **mechanistic** and asymptote sharpness is
+**latent-assisted** by design; neither is silently replaced by a
+phenomenological derivative test. Inflection, turning, and bound are
+trajectory-level checks. The exact event checker version, tolerances,
+metadata schema, and satisfaction-registry hash must be stored in the execution
+manifest before sanity/full execution.
+
 ## Measurements
 
 ### Oracle-only validity stage
@@ -194,6 +220,13 @@ but low-sharpness perturbation is weak; an invalid and sharp perturbation is
 potentially dangerous in an information-theoretic sense, but E12-A cannot say
 how harmful its use would be for prediction.
 
+Where both endpoints are observed, additionally record
+`Delta_epsilon_CW=epsilon_CW,s* - epsilon_break,s*`. Zero means the
+specification becomes confidently wrong at the first measured invalid point;
+a positive value means an invalid-but-not-yet-sharp interval. Retain the
+right-censoring/not-at-risk status of `epsilon_CW,s*` rather than replacing it
+with a numeric gap.
+
 ## Integrity sanity before full run
 
 The sanity suite must check implementation integrity, not preferred scientific
@@ -213,6 +246,9 @@ outcomes:
 9. All four non-nested floor cases have correct exact/lower/upper/unresolved
    status in toy cases.
 10. Endpoint censoring and signed-grid toy cases are correct.
+11. Candidate satisfaction follows the frozen field table: regime/asymptote
+    use paired metadata; event/bound fields use their stated trajectory
+    check; no scorer fallback changes the semantic type.
 
 Sharpness need not be monotone and is an empirical outcome. ESS equality is an
 integrity gate because weights are fixed before any prior-satisfaction mask is
