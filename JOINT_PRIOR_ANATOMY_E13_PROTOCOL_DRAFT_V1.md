@@ -125,6 +125,11 @@ freezes the realized-envelope-size distribution and expected candidate count:
 
 `N_rows = sum_t (2^{|P_star,t|}-1)`.
 
+The frozen deterministic preflight realizes 1,890 four-atom and 270 five-atom
+envelopes, yielding 36,720 candidate rows with no exhausted fine cell. Its
+accepted-task manifest is retained with SHA-256
+`ac2fdc8dea7294fcff3e1347f470b622a47ec7894a7d2f4eb61a28f7d50ce46d`.
+
 Each fine cell has at most 2,000 generation attempts. Store `attempts`,
 `accepted`, `ambiguous_envelope_rejects`, `scope_stratum_rejects`,
 `checker_rejects`, `bank_invalid_rejects`, `nonfinite_ESS_rejects`, and

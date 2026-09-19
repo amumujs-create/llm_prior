@@ -1,0 +1,14 @@
+{
+  "protocol": "E13_realized_oracle_envelope_preflight_v1",
+  "latent_tasks": 2160,
+  "requested_latent_tasks": 2160,
+  "expected_candidate_rows": 36720,
+  "envelope_size_distribution": {
+    "4": 1890,
+    "5": 270
+  },
+  "exhausted_cells": 0,
+  "accepted_tasks_sha256": "ac2fdc8dea7294fcff3e1347f470b622a47ec7894a7d2f4eb61a28f7d50ce46d",
+  "accounting_sha256": "ab527fda5373fe8ba126da5d446df68cf31b481660b6627ddff62522b126a97d",
+  "runner_sha256": "813574f668f533b3edcd66992cf8f39dd3bdf3634cd92982e8a20c2bf4269c94"
+}

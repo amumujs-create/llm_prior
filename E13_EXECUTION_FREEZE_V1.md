@@ -15,6 +15,12 @@ without adding a new axis.
   `N_rows=sum_t (2^{|P_star,t|}-1)`. Freeze this expected count and the envelope
   size distribution from a deterministic accepted-seed preflight before full
   scoring.
+- Frozen preflight (`results/joint_prior_anatomy_e13/preflight/summary.json`):
+  1,890 four-atom and 270 five-atom envelopes, hence **36,720** primary
+  candidate rows; no exhausted cell. The accepted-task manifest SHA-256 is
+  `ac2fdc8dea7294fcff3e1347f470b622a47ec7894a7d2f4eb61a28f7d50ce46d`.
+  Core-envelope preflight occurs on `Omega_0` before any post-`.80` scope
+  intervention, so scope control cannot change envelope membership.
 - Core acceptance/measurement domain: `Omega_0=[.40,.80]`; observation prefix
   `[0,.40]`; latent trajectory through `1.20`.
 - Maximum attempts: 2,000 per fine cell. Store every rejection and exhaustion
