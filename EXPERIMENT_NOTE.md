@@ -1296,18 +1296,21 @@ information beyond a nested observed prefix. E10 deliberately asks a different
 prior-intrinsic question: *over which future interval does that supplied prior
 remain structurally valid?*
 
-**Object.** With a fixed support boundary `b=.40`, E10 labels
-`V_P(h)=I[P is valid everywhere on [b,h]]` on the frozen horizon grid
-`.45,.50,.60,.70,.80,.90,1.00`, then records the maximum contiguous tested
-valid horizon `H_valid*`. A prior valid through `1.00` is only
+**Object.** With a fixed support boundary `b=.40`, E10 labels raw
+`V_P(h)=I[P passes its scope check everywhere on [b,h]]` on the frozen horizon
+grid `.45,.50,.60,.70,.80,.90,1.00`. Because a percentage-based raw checker
+can re-pass after a failure, E10 derives `C_P(h_j)=product_{k<=j}V_P(h_k)` and
+records `H_valid*` as the first-failure **contiguous** tested horizon. A prior
+valid through `1.00` is only
 **persistent-within-tested-domain**, never globally persistent.
 
-**Important separation.** A prior can be locally valid yet later invalidated
-by flattening, a turning point, a second regime change, a bound crossing, or a
-renewed drift away from an asymptote. This is a scope result, not a false-prior
-label. E10 uses oracle future truth only to generate/validate scope labels; it
-does not use observation noise, conditional sharpness, engines, RMSE, utility,
-or deployment loss.
+**Event and oracle semantics.** Inflection, turning, and regime primary events
+are completed before `.40`; E10 asks only whether an additional event later
+ends their post-event scope. Scope violations are compact-support interventions
+that do not alter the pre-violation trajectory and obey primitive-specific
+continuity requirements. E10's oracle sees only the clean latent trajectory;
+it does not use observation noise, conditional sharpness, engines, RMSE,
+utility, or deployment loss.
 
 **Proposed corpus.** `7 primitives × 3 intended scope tiers × 3 generators ×
 30 seeds = 1,890` independent latent tasks. Tiers are local, medium-range, and
