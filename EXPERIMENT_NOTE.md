@@ -1678,3 +1678,19 @@ evidence anatomy from downstream translation, realization, utility, safety,
 LLM, and RAG questions.
 
 **Artifact.** [Prior Anatomy Framework v1](PRIOR_ANATOMY_FRAMEWORK_V1.md)
+
+---
+
+## 34. E13 — Joint Prior Anatomy Map (design draft)
+
+E13 is the next planned experiment. It is required because E9–E12 used
+different corpora and therefore establish axis non-equivalence without
+estimating their task-level joint geometry. E13 will derive valid,
+under-specific, numeric-misspecified, content-misspecified, local/persistent,
+observable/unobservable, and grammar-envelope candidates from the **same**
+latent task, prefix, paired bank, and canonical grammar. It will report joint
+state occupancy and conditional distributions, never a scalar quality score or
+naive pooled correlation. Its design remains un-frozen until shared-domain and
+shared-checker integrity sanity succeeds.
+
+**Artifact.** [E13 Joint Prior Anatomy Map protocol draft](JOINT_PRIOR_ANATOMY_E13_PROTOCOL_DRAFT_V1.md)
