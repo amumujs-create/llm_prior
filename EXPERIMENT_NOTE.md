@@ -1691,9 +1691,13 @@ three-atom `P_star`, derived from the **same** latent task, prefix, paired bank,
 and canonical grammar. Numeric/content errors remain E12 perturbation evidence,
 not E13 factors. The frozen design is 2,160 tasks (`8 triples × 3 generators ×
 3 eta levels × 3 scope strata × 10`) and 15,120 candidate rows, with controlled
-scope-stratum quotas and task-clustered inference. E13 reports joint-state
-occupancy and conditional distributions, never a scalar quality score or naive
-pooled correlation; full execution still requires shared-domain/checker
-integrity sanity.
+scope-stratum quotas and task-clustered inference. Candidate observability is
+candidate-specific (`O_P`, rather than oracle-wide `O*`), and the primary
+scorer uses one full five-coordinate ambient-bank convention; E9 DoF views are
+supplementary metadata. E11's censored `Delta S_miss` rule is retained, while
+subset scope monotonicity is an integrity invariant and its extension magnitude
+is a joint-map outcome. E13 reports joint-state occupancy and conditional
+distributions, never a scalar quality score or naive pooled correlation; full
+execution still requires shared-domain/checker integrity sanity.
 
 **Artifact.** [E13 Joint Prior Anatomy Map protocol draft](JOINT_PRIOR_ANATOMY_E13_PROTOCOL_DRAFT_V1.md)

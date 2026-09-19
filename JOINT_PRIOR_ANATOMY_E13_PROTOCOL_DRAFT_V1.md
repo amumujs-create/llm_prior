@@ -24,8 +24,10 @@ score.
 - Each latent trajectory is generated through `x=1.20`.
 - One task receives one master noisy observation grid, one frozen paired
   `M=4096` continuation bank, and one likelihood-weight vector shared by all
-  seven candidate priors. ESS must consequently be byte/numerically identical
-  within a task.
+  seven candidate priors. The primary scorer uses one full five-active-
+  coordinate ambient-bank convention, consistent with E11/E12; E9's
+  `DoF=1/3/5` views are supplementary task metadata rather than parallel E13
+  rows. ESS must consequently be byte/numerically identical within a task.
 - The E11 canonical atom library and compatibility/scope registry are reused
   unchanged. A task is accepted only if its unique inclusion-maximal compatible
   coverage-preserving envelope is **exactly its intended three atoms**.
@@ -47,6 +49,12 @@ their conditional informational completeness remains empirical:
 
 `Delta S_miss(P)=S(P_star|D)-S(P|D)`.
 
+E11's nested floor rule is retained: neither candidate at floor yields an
+exact gap; `P_star` only at floor yields a lower bound; both at floor are
+unresolved; and a subset at floor while `P_star` is non-floor is an integrity
+violation. The `.10 nat` informational-completeness label is primary only for
+reliable, exact rows; censored gaps are unresolved.
+
 No numeric perturbation, false addition, or reversal enters these seven rows.
 Where applicable, E12-A/B are cited only in final interpretation as evidence
 about what happens when this valid-prior anatomy is perturbed into invalidity.
@@ -57,13 +65,17 @@ about what happens when this valid-prior anatomy is perturbed into invalidity.
 |---|---|---|
 | Validity | core coverage | all seven rows must equal one on `Omega_0` |
 | Informativeness | `S(P|D)`, primary threshold `.10 nat` | `ESS>=100` required for reliable interpretation; record `N_survive`, `p_weighted`, and floor state |
-| Observability | atom-level `E_a` | reuse E9 checker; record `N_obs=sum I(E_a>=.80)` and `O_all=I(min E_a>=.80)` for the oracle triple; do not average atom evidence into one score |
+| Observability | atom-level `E_a` | reuse E9 checker; record candidate-specific `N_obs(P)=sum_{a in P} I(E_a>=.80)` and `O_P=I(min_{a in P} E_a>=.80)`; store oracle `N_obs*`, `O*` as task context |
 | Scope | contiguous `H_valid*(P)` | clean scope scan at `.85,.90,1.00,1.10,1.20`; sharpness remains fixed on `Omega_0` |
 | Completeness | `C_atom`, `Delta S_miss` | informationally complete iff reliable and `Delta S_miss<=.10 nat` |
 
 Scope is intentionally measured beyond `.80` while sharpness remains on
 `.40-.80`; this prevents a moving future target from confounding `S(P|D)`.
 The scope scan uses E10's contiguous first-failure rule.
+
+Candidate states use `O_P`, not oracle-wide `O*`: an observable pair `A and B`
+is not labelled unobservable merely because omitted oracle atom `C` lacks
+evidence. Oracle-wide observability remains a task-level context field.
 
 ## 5. Controlled variation and corpus
 
@@ -101,14 +113,14 @@ primary unit is the latent task; its seven candidates are repeated measures.
 
 Report feasible joint-state frequencies, including:
 
-1. **Informative but unobservable:** `S>=.10`, reliable, `O_all=0`.
+1. **Informative but unobservable:** `S>=.10`, reliable, `O_P=0`.
 2. **Atom-incomplete but informationally complete:** `C_atom=0`, reliable,
    `Delta S_miss<=.10`.
 3. **Informative but limited-scope:** `S>=.10`, reliable,
    `H_valid*<=.90`.
 4. **Weak but persistent:** `S<.10`, reliable, `H_valid*>=1.20`.
 5. **Observable but informationally redundant:** for an atom-incomplete
-   subset, `O_all=1`, reliable, `Delta S_miss<=.10`.
+   subset, `O_P=1`, reliable, `Delta S_miss<=.10`.
 
 The absence of a state is also a result; it must not be treated as an integrity
 failure.
@@ -116,7 +128,7 @@ failure.
 ### Conditional distributions and association map
 
 - `P(S>=.10 | core coverage=1, reliable)`;
-- `P(O_all=1 | S>=.10, reliable)`;
+- `P(O_P=1 | S>=.10, reliable)`;
 - `P(H_valid*>=h | S>=.10, reliable)` for predeclared horizons;
 - `P(Delta S_miss<=.10 | C_atom=0, reliable)`;
 - candidate-size-conditioned distributions of `(S, N_obs, H_valid*, Delta S_miss)`.
@@ -129,17 +141,20 @@ eta and scope strata are balanced controls.
 
 ## 7. Expected semantics, not discoveries
 
-Subset nesting entails `S(P_star|D)>=S(P_subset|D)` and can allow
-`H_valid*(P_subset)>=H_valid*(P_star)`. E13 does not present these directions
-as discoveries. The empirical targets are their magnitudes, frequencies,
-heterogeneity, and co-occurrence with observability and completeness.
+Subset nesting entails `S(P_star|D)>=S(P_subset|D)` and
+`H_valid*(P_subset)>=H_valid*(P_star)` under common atom semantics, horizon
+grid, and first-failure rule. Both are integrity invariants. Store
+`Delta H_scope=H_valid*(P_subset)-H_valid*(P_star)`; its magnitude/frequency,
+alongside `Delta S_miss`, is empirical rather than the inequality direction.
 
 ## 8. Integrity sanity before full run
 
 1. `P_star` is a unique maximal envelope with exactly three atom instances.
 2. All seven subsets have coverage one on `Omega_0`.
 3. Prefix, bank, weights, and ESS are identical for the seven rows of a task.
-4. Nested sharpness and `Delta S_miss>=0` pass numeric tolerance checks.
+4. Nested sharpness, `Delta S_miss>=0`, and
+   `H_valid*(P_subset)>=H_valid*(P_star)` pass numeric tolerance checks;
+   `Delta H_scope` is stored as a joint-map field.
 5. `S(P|D)` is invariant when requested by completeness and joint-map views.
 6. Scope follows contiguous first failure and does not alter the sharpness
    target or provide future truth to the sharpness scorer.
