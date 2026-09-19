@@ -30,6 +30,30 @@ The compact scientific-prior object is
 same object as `C`: “decreasing” and “95% confidence in decreasing” must remain
 separate.
 
+## Validity, informativeness, and completeness
+
+All three are grammar-relative in v1. Let `G` be the registered prior grammar.
+
+- **Validity / coverage preservation:** `P` is valid relative to `G` and a
+  declared scope when the actual continuation remains in its allowed set.
+  A weak constraint such as an extremely loose bound can be valid.
+- **Informativeness:** conditional sharpness or other restriction relative to
+  the data-conditioned reference ensemble. Validity alone does not imply useful
+  additional information.
+- **Completeness:** how much valid structural information in `G` is absent from
+  the supplied prior. The grammar-relative oracle envelope is the conjunction
+  of all registered constraints that preserve the actual continuation. Its
+  sharpness gap versus the supplied prior measures *missed valid information*
+  inside `G`, not knowledge missing from the real world outside `G`.
+
+Therefore “true prior” is avoided in reports when it could imply a unique best
+description. Preferred terms are **supplied valid prior**,
+**coverage-preserving prior**, **informative valid prior**, and, when one
+valid constraint set is nested inside another over the same scope,
+**dominating valid prior**. Valid priors need not form a total order; this is
+why the intended object is a coverage-preserving information frontier rather
+than one universal best prior.
+
 ## Four uncertainty types
 
 1. **Existence uncertainty:** is the structure present at all?

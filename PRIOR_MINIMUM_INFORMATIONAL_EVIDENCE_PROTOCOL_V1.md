@@ -2,7 +2,7 @@
 
 ## Question
 
-For a true structural prior, how much of the same latent trajectory must be
+For a supplied valid structural prior, how much of the same latent trajectory must be
 observed before it offers reliable, nontrivial conditional continuation
 information? This is deliberately upstream of realization engines and utility.
 
@@ -15,7 +15,9 @@ support and the corresponding observation count. For each task, make one master
 observation grid `x_k=k/120` through `.70`, set noise SD once to 1% of the
 clean `[0,.70]` range, and draw one noise realization. Every prefix reveals a
 nested subset of those identical noisy observations; no prefix redraws points
-or changes its noise scale. The target structural prior is true by construction.
+or changes its noise scale. The supplied structural constraint is valid by
+construction within the registered grammar; it is not asserted to be the
+unique or globally best real-world prior.
 
 ## Two difficulty axes
 

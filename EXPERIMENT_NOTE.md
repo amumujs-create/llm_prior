@@ -1172,6 +1172,13 @@ provenance. This is separated from evidence/identifiability, translation,
 integration, realization engine, optimization, arbitration, deployment, and
 utility.
 
+“True prior” is replaced by grammar-relative language: a supplied constraint
+may be valid/coverage-preserving without being informative or complete.
+Validity, conditional informativeness, and grammar-relative completeness are
+separate axes; the latter is the valid-information gap to the registered
+grammar's oracle envelope, not a claim that the grammar contains all worldly
+knowledge.
+
 Coverage is scoped truth; sharpness is conditional on both observed data and a
 reference ensemble; realization multiplicity requires its own function-class
 measure; utility/harm is conditional on translation, integration, engine,
