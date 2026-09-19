@@ -1582,6 +1582,17 @@ The frozen, future-independent declaration is
 the canonical-library, intent, and compatibility-registry hashes and requires
 per-task clean-oracle falsity validation before acceptance.
 
+**Compatibility and interpretation boundary.** The catalog builder executes
+the E11 compatibility/scope registry rather than merely hashing it: global
+scope semantics, the named source atom library, and the stated compatibility
+contract are asserted before the registry-derived pairwise rule is used; each
+accepted task then rechecks clean-scope conjunction acceptance. Seven of eight
+declared false additions add `regime_postchange` and one adds `turning_maximum`.
+Consequently, results are primary by added atom; a pooled false-addition value
+is supplementary only. The expected accepted corpus has 24 omissions, 8 false
+additions, and 17 reversals, each over 90 tasks per intent: 4,410 operation
+rows plus 720 baseline rows (5,130 total).
+
 **Conditional corpus and finite-bank audit.** The E12-B estimand is conditional
 on accepted tasks where every preregistered operation satisfies its intended
 coverage/falsity and compatibility rule. Each intended triple × generator cell

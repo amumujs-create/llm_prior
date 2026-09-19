@@ -13,6 +13,22 @@
     "compatibility_scope_registry": "9cf4d826931e56990dc3b533113199402be9a72c384fa7e0318476cc35f95d54"
   },
   "selection_rule": "The catalog selects only frozen canonical atom instances. False coverage is checked on every realised task and is not inferred from the catalog declaration.",
+  "compatibility_contract": {
+    "registry_rule": "A composition is compatible iff it includes no listed incompatible atom-instance pair and its clean-scope conjunction checker accepts it.",
+    "scope_semantics": "All atom instances apply globally over the same declared scope. No segment-local reinterpretation is permitted.",
+    "realised_task_rule": "clean-scope conjunction acceptance is rechecked for every accepted task"
+  },
+  "expected_integrity_counts": {
+    "operations_by_type": {
+      "omission": 24,
+      "false_addition": 8,
+      "reversal": 17
+    },
+    "tasks_per_intent": 90,
+    "operation_scoring_rows": 4410,
+    "baseline_scoring_rows": 720,
+    "total_scoring_rows": 5130
+  },
   "cells": [
     {
       "intent_name": "direction+curvature+bound",

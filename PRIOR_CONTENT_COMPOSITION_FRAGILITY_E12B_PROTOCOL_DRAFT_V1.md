@@ -106,6 +106,11 @@ separate per-operation rejection count.
 The frozen v1 catalog is [E12B_OPERATION_CATALOG_V1.json](E12B_OPERATION_CATALOG_V1.json).
 It selects only signed canonical atom instances and records source-library
 hashes; it does not access a realised future when choosing an operation.
+Its builder executes the compatibility/scope registry contract: the frozen
+global-scope semantics and its named atom library are asserted before pairwise
+conflicts are checked, and clean-scope conjunction acceptance is rechecked for
+every realised task. A registry change therefore fails catalog construction
+rather than silently changing compatibility semantics.
 
 If a triple cannot support a required operation, it is not silently dropped.
 The catalog must either assign a predeclared valid alternative or explicitly
@@ -187,6 +192,12 @@ Primary results stratify by
 The three operation types must not be pooled into a single “structural error”
 score.
 
+False additions are intentionally unbalanced in v1: seven catalog cells add
+`regime_postchange` and one adds `turning_maximum`. Therefore the added-atom
+stratification is primary; any pooled false-addition result is supplementary
+and must be described as an equal-weight summary of these declared atoms, not
+as a general false-addition law.
+
 1. **Omission:** coverage-preservation integrity and `L_omit`; distinguishes
    redundant from materially informative missing content.
 2. **False addition:** coverage/falsity integrity, violation severity,
@@ -213,6 +224,10 @@ score.
    validity, are logged by triple × generator × operation.
 9. every operation row has finite `N_survive` and `p_weighted`, and every
    floor-hit remains auditable through those two quantities.
+10. accepted full-run row counts match the catalog: 24 omission, 8 false-addition,
+    and 17 reversal operations × 90 tasks per intent, yielding 4,410 operation
+    rows plus 720 `P_full` baseline rows (5,130 total scoring rows), unless a
+    cell exhausts its fixed attempt budget and is explicitly reported.
 
 ## Interpretation boundary
 
