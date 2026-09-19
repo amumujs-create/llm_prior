@@ -30,7 +30,8 @@ missing structural content with scope length.
 
 ## Corpus and candidates
 
-Use the eight already registered compatible triples from the benchmark grammar:
+Use the eight already registered compatible triples from the benchmark grammar
+as **generator intents**:
 
 `direction+curvature+bound`, `direction+curvature+asymptote`,
 `direction+inflection+bound`, `direction+inflection+asymptote`,
@@ -66,36 +67,30 @@ the thresholded informational status as separate fields.
 
 ## Canonical content atoms and oracle envelope
 
-E11-v1 is **content completeness only**, not specificity completeness. Each
-primitive has exactly one canonical grammar atom, with no oracle-selected
-interval center, width, onset, rate, scale, exponent, or parameter precision:
-
-| Primitive | Canonical content atom |
-|---|---|
-| Direction | declared monotone sign |
-| Curvature | declared curvature sign |
-| Inflection | one continuous curvature-sign transition |
-| Turning | one derivative-sign transition |
-| Regime | one declared post-onset regime mechanism |
-| Bound | registered one-sided bound at the frozen canonical bound value |
-| Asymptote | declared convergence-to-limit mechanism |
+E11-v1 is **content completeness only**, not specificity completeness. Its
+envelope universe is deliberately separate from the old size-≤3 benchmark
+composition registry. The frozen
+[canonical atom library](E11_CANONICAL_ATOM_LIBRARY_V1.json) contains signed
+direction/curvature/event instances, fixed `0` lower/upper bounds, and sided
+asymptotes. It contains no oracle-selected interval center, width, onset, rate,
+scale, exponent, or parameter precision.
 
 Specificity ladders such as direction-plus-rate range or regime onset intervals
-are excluded. The oracle may determine whether a canonical atom is valid; it
-may not construct a narrower parameter instance after looking at the future.
+are excluded. The oracle may determine whether a predeclared canonical atom is
+valid; it may not construct an atom instance after looking at the future.
 
-Let `V_G(f,Omega)` be every canonical primitive atom in the frozen grammar whose
+Let `V_G_E11(f,Omega)` be every canonical atom from that frozen library whose
 oracle checker accepts the clean latent continuation throughout `Omega`.
 
 `P_star` is not constructed by blindly conjoining every individually valid
-atom. It is the **unique maximal compatible envelope** among the already
-registered compatibility table, with global/segment-local semantics inherited
-unchanged from the benchmark registry. Formally, enumerate registered
-compositions `C` such that `C subseteq V_G(f,Omega)` and the intended triple is
-a subset of `C`; retain the maximum-cardinality composition. A task is accepted
-only if this maximum is unique. If no such compatible envelope exists or two
-incomparable maxima exist, reject and deterministically redraw the latent task;
-do not choose an envelope after inspecting sharpness.
+atom. It is the **unique inclusion-maximal compatible envelope** in the E11
+atom universe. Formally, enumerate all compatible subsets `C` of
+`V_G_E11(f,Omega)` such that the intended triple is a subset of `C`; retain a
+set for which no strictly larger compatible eligible superset exists. A task is
+accepted only if this maximal set is unique. If no such envelope exists or two
+incomparable maximal envelopes exist, reject and deterministically redraw the
+latent task; do not choose an envelope after inspecting sharpness or by atom
+count.
 
 This rule ensures that every supplied candidate subset remains contained in the
 same task-level `P_star`, preserving the nested probability relation used by
@@ -107,6 +102,10 @@ constraints. This is intentional: an intended-full candidate can still be
 grammar-incomplete. Mechanistic regime and latent-assisted asymptote
 constraints may enter `P_star` only under their preregistered oracle semantics;
 they are flagged and never silently treated as phenomenological labels.
+
+Every atom in `P_star` is stored with provenance: `intended_atom` if it belongs
+to the generator's intended triple, otherwise `incidental_valid_atom`. The
+latter is an observed grammar-valid consequence, not hidden generator truth.
 
 Every atom in `P_star` is stored with provenance: `intended_atom` if it belongs
 to the generator's intended triple, otherwise `incidental_valid_atom`. The
@@ -189,7 +188,7 @@ sanity suite must verify:
    than false informational-completeness labels;
 8. nested floor consistency: `candidate floor-hit AND oracle non-floor-hit`
    occurs zero times, up to the frozen numerical tolerance;
-9. every accepted task has one unique maximal compatible envelope and records
+9. every accepted task has one unique inclusion-maximal compatible envelope and records
    intended versus incidental atom provenance;
 10. no utility, engine, prediction, future-RMSE, or far-OOD target enters
    scoring.

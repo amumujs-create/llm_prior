@@ -1,0 +1,30 @@
+{
+  "name": "E11 canonical atom universe v1",
+  "scope": [0.4, 0.8],
+  "purpose": "Content-completeness atoms only; no future-selected parameter precision.",
+  "atoms": [
+    {"id": "direction_decreasing", "family": "direction", "semantics": "global non-increasing on Omega"},
+    {"id": "direction_increasing", "family": "direction", "semantics": "global non-decreasing on Omega"},
+    {"id": "curvature_convex", "family": "curvature", "semantics": "global non-negative second derivative on Omega"},
+    {"id": "curvature_concave", "family": "curvature", "semantics": "global non-positive second derivative on Omega"},
+    {"id": "inflection_concave_to_convex", "family": "inflection", "semantics": "one continuous curvature-sign transition on Omega"},
+    {"id": "inflection_convex_to_concave", "family": "inflection", "semantics": "one continuous curvature-sign transition on Omega"},
+    {"id": "turning_maximum", "family": "turning", "semantics": "one derivative-sign transition, increasing to decreasing, on Omega"},
+    {"id": "turning_minimum", "family": "turning", "semantics": "one derivative-sign transition, decreasing to increasing, on Omega"},
+    {"id": "regime_postchange", "family": "regime", "semantics": "one declared post-onset regime mechanism over Omega"},
+    {"id": "lower_bound_0", "family": "bound", "semantics": "y >= 0 on Omega"},
+    {"id": "upper_bound_0", "family": "bound", "semantics": "y <= 0 on Omega"},
+    {"id": "asymptote_to_0_from_above", "family": "asymptote", "semantics": "declared convergence to 0 from positive side"},
+    {"id": "asymptote_to_0_from_below", "family": "asymptote", "semantics": "declared convergence to 0 from negative side"}
+  ],
+  "pairwise_incompatible": [
+    ["direction_decreasing", "direction_increasing"], ["curvature_convex", "curvature_concave"], ["inflection_concave_to_convex", "inflection_convex_to_concave"], ["turning_maximum", "turning_minimum"], ["lower_bound_0", "upper_bound_0"], ["direction_decreasing", "turning_maximum"], ["direction_decreasing", "turning_minimum"], ["direction_increasing", "turning_maximum"], ["direction_increasing", "turning_minimum"], ["curvature_convex", "inflection_concave_to_convex"], ["curvature_convex", "inflection_convex_to_concave"], ["curvature_concave", "inflection_concave_to_convex"], ["curvature_concave", "inflection_convex_to_concave"], ["asymptote_to_0_from_above", "asymptote_to_0_from_below"]
+  ],
+  "global_semantics": [
+    "All atoms apply on the same full Omega; no segment-local reinterpretation is permitted in E11-v1.",
+    "A candidate composition is compatible only if it contains no frozen incompatible pair and its clean-scope conjunction checker accepts it.",
+    "Regime is mechanistic; asymptote is latent-assisted. Their flags are preserved in every envelope record.",
+    "Oracle selects among these predeclared atoms only and never creates a new signed, bound, onset, interval, rate, or shape instance after seeing the future."
+  ],
+  "envelope_rule": "Enumerate all nonempty compatible subsets of selected valid canonical atoms. Retain an inclusion-maximal subset containing the intended supplied triple. Accept a task only when exactly one such maximal subset exists; otherwise deterministically redraw."
+}

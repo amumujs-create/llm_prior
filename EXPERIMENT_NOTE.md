@@ -1384,10 +1384,13 @@ future-selected parameter intervals—so specificity cannot leak into the
 envelope. Primary analysis requires `ESS>=100`. An oracle floor-hit turns the
 gap into a lower bound; a joint candidate/oracle floor hit is informationally
 unresolved rather than a zero-gap result. `P_star` is a unique maximal
-compatible envelope from the existing registered compatibility table, not an
-unfiltered conjunction of individually true atoms. Tasks with no unique maximum
-are rejected/redrawn before scoring. Every envelope atom is flagged intended or
-incidental-valid; this makes intended-full-but-atom-incomplete interpretable.
+compatible envelope from a dedicated E11 canonical atom universe, not the old
+size-≤3 registry and not an unfiltered conjunction of individually true atoms.
+All signed/bound/asymptotic atom instances are frozen before seeing a task's
+future; the oracle can only select among them. Tasks with no unique
+inclusion-maximal compatible envelope are rejected/redrawn before scoring.
+Every envelope atom is flagged intended or incidental-valid; this makes
+intended-full-but-atom-incomplete interpretable.
 
 **Boundary.** E11 is grammar-relative, scope-controlled completeness only. It
 cannot claim world completeness, identifiability, robustness, utility, safety,

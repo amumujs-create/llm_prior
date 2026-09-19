@@ -129,3 +129,20 @@ structured misspecification and fragility.
 Translation onward is held separate until the anatomy is understood. The later
 Prior Critic is an arbitration/deployment object, not a replacement for this
 taxonomy.
+
+## Status of axes in this project
+
+| Axis | Status in this repository |
+|---|---|
+| Validity / coverage | empirically measured in synthetic benchmark work |
+| Specificity / calibration | empirically measured in E3–E5b-style studies |
+| Observability / identifiability | empirically measured in admission and oracle-decomposition studies |
+| Information lifecycle | empirically measured in E9 |
+| Scope / validity horizon | empirically measured in E10 as controlled measurement validation |
+| Completeness | E11 execution design; not yet empirically established |
+| Fragility | planned E12 axis |
+| Belief / provenance | conceptual placeholder pending external knowledge-source studies |
+| Translation / integration / engine / optimisation / deployment | later utilisation-stage axes; not claimed as validated anatomy |
+
+This table prevents the taxonomy from being read as evidence that all listed
+layers have already been experimentally verified.
