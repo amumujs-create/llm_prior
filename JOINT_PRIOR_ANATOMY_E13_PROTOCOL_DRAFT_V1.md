@@ -59,6 +59,9 @@ No numeric perturbation, false addition, or reversal enters these seven rows.
 Where applicable, E12-A/B are cited only in final interpretation as evidence
 about what happens when this valid-prior anatomy is perturbed into invalidity.
 
+E13 therefore estimates `P(S, O, H, Delta S_miss | V_Omega0=1)`. Validity is
+an acceptance condition here, not a varying association axis.
+
 ## 4. Joint measurements
 
 | Axis | Measurement | E13 semantics |
@@ -72,6 +75,16 @@ about what happens when this valid-prior anatomy is perturbed into invalidity.
 Scope is intentionally measured beyond `.80` while sharpness remains on
 `.40-.80`; this prevents a moving future target from confounding `S(P|D)`.
 The scope scan uses E10's contiguous first-failure rule.
+
+`H_valid*` is the **last contiguous valid horizon**, with `.80` as its initial
+core endpoint: first failure at `.85/.90/1.00/1.10/1.20` yields
+`.80/.85/.90/1.00/1.10`, respectively. No failure through `1.20` is recorded
+as `H_valid*>1.20` (right-censored), never as an exact value `1.20`.
+For `Delta H_scope=H_valid*(P_subset)-H_valid*(P_star)`: both observed
+endpoints give an exact difference; observed full plus censored subset gives a
+lower bound; both censored is unresolved; censored full plus observed subset is
+a nesting integrity violation. “Weak but persistent” means no scope failure
+through `1.20`, not `H_valid*>=1.20` as an exact assertion.
 
 Candidate states use `O_P`, not oracle-wide `O*`: an observable pair `A and B`
 is not labelled unobservable merely because omitted oracle atom `C` lacks
@@ -102,7 +115,9 @@ The frozen full corpus is:
 
 Each fine cell has at most 2,000 generation attempts. Store `attempts`,
 `accepted`, `wrong_envelope_size_rejects`, `scope_stratum_rejects`,
-`checker_rejects`, `bank_or_ESS_rejects`, and `exhaustion`.
+`checker_rejects`, `bank_invalid_rejects`, `nonfinite_ESS_rejects`, and
+`exhaustion`. A finite `ESS<100` is never a rejection: retain the task and mark
+sharpness/completeness classifications `measurement_unreliable`.
 
 ## 6. Primary joint outputs
 
@@ -139,6 +154,16 @@ summary uses equal generator weighting. Latent-task clustered bootstrap is the
 sole primary uncertainty method. Associations are not causal claims because
 eta and scope strata are balanced controls.
 
+### Structural/definitional dependency mask
+
+Association displays must label or mask relations fixed partly/entirely by
+definition, rather than presenting them as discoveries: core validity with any
+axis (all rows condition on coverage one); candidate size with `C_atom`;
+`S(P|D)` with `Delta S_miss`; `N_obs(P)` with `O_P`; and subset/full scope
+direction under nesting. The empirical association panel is restricted to
+non-definitional relations such as `S ↔ O_P`, `S ↔ H_valid*`,
+`O_P ↔ H_valid*`, and censored-aware `Delta S_miss ↔ H_valid*`.
+
 ## 7. Expected semantics, not discoveries
 
 Subset nesting entails `S(P_star|D)>=S(P_subset|D)` and
@@ -161,6 +186,8 @@ alongside `Delta S_miss`, is empirical rather than the inequality direction.
 7. E9 atom-evidence scoring receives no future target.
 8. Scope quotas and every rejection/exhaustion reason are accounted for.
 9. Floor/ESS/reliability labels sum exactly to candidate rows.
+10. Scope endpoint and `Delta H_scope` censor states follow the frozen table;
+    finite low-ESS rows are retained rather than rejected.
 
 No expected scientific occupancy, monotonicity beyond logical nesting, or
 association direction is a sanity gate.

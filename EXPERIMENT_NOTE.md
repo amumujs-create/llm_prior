@@ -1696,8 +1696,14 @@ candidate-specific (`O_P`, rather than oracle-wide `O*`), and the primary
 scorer uses one full five-coordinate ambient-bank convention; E9 DoF views are
 supplementary metadata. E11's censored `Delta S_miss` rule is retained, while
 subset scope monotonicity is an integrity invariant and its extension magnitude
-is a joint-map outcome. E13 reports joint-state occupancy and conditional
-distributions, never a scalar quality score or naive pooled correlation; full
-execution still requires shared-domain/checker integrity sanity.
+is a joint-map outcome. Scope uses a last-contiguous-valid endpoint with
+right-censoring beyond `1.20`; `Delta H_scope` is exact/lower-bound/unresolved
+accordingly. Finite low-ESS tasks remain measurement-unreliable rows rather
+than generation rejects. E13 estimates joint anatomy conditional on core
+validity and masks definitional associations (e.g., size/completeness,
+sharpness/missing-information) from empirical association claims. It reports
+joint-state occupancy and conditional distributions, never a scalar quality
+score or naive pooled correlation; full execution still requires shared-domain/
+checker integrity sanity.
 
 **Artifact.** [E13 Joint Prior Anatomy Map protocol draft](JOINT_PRIOR_ANATOMY_E13_PROTOCOL_DRAFT_V1.md)
