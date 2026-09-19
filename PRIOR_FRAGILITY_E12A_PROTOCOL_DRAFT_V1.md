@@ -41,7 +41,8 @@ from the canonical grammar, not literal claims that every perturbed numerical
 specification remains at zero. E12-A keeps the structural content as a
 lower-bound or asymptote-from-above relation while moving its numeric level.
 Location ranges are the width of `Omega`; level ranges use the fixed task-level
-reference range. Direction and unsigned curvature are intentionally absent:
+reference range `R_ref=max_{x in Omega} f*(x)-min_{x in Omega} f*(x)`.
+Direction and unsigned curvature are intentionally absent:
 within the v1 canonical grammar they have no separately declared scalar
 realization field. Their content fragility belongs in E12-B, not in a
 made-up numeric sweep.
@@ -79,6 +80,12 @@ margin states and then the same master observation realization and 4,096-member
 full-domain ambient continuation bank at eleven misspecifications (`0`, plus
 both signs at the other five magnitudes). The planned output is **14,850
 repeated trajectory-margin-perturbation rows**.
+
+For bound and asymptote tasks, reject/redraw a trajectory when `R_ref < .05`
+(normalized target units), rather than inserting a range floor. Each field ×
+generator cell has a fixed maximum of 1,000 generation attempts to obtain 30
+accepted latent trajectories. Store requested, attempted, accepted,
+degenerate-range rejects, other checker rejects, and exhaustion by cell.
 
 Task generation, noisy prefix creation, and ambient bank sampling use separate
 fixed seed streams. The prior perturbation and baseline-margin state are
@@ -124,6 +131,21 @@ be identical across every margin, sign, and epsilon row for that trajectory**;
 any deviation is an integrity failure, not an empirical curve. Floor results are
 reported as censored/lower-bound quantities, never converted to exact gaps.
 
+`P_epsilon` and `P_0` are shifted intervals and are not generally nested.
+Therefore the `Delta S_spec` floor rule is explicitly two-sided:
+
+| `P_epsilon` floor-hit | `P_0` floor-hit | `Delta S_spec` status |
+|---|---|---|
+| no | no | exact |
+| yes | no | lower bound |
+| no | yes | upper bound |
+| yes | yes | unresolved |
+
+No censored `Delta S_spec` is pooled as an exact signed change. The
+`S(P_epsilon)>=.10` component of the confidently-wrong diagnostic remains
+valid for a perturbed-prior floor hit because floor saturation is itself a
+lower bound on its sharpness.
+
 ## Endpoints and classifications
 
 For each trajectory × baseline-margin state × sign, the **grid-resolved
@@ -148,7 +170,14 @@ the endpoint is not-at-risk / not applicable. Comparing `epsilon_CW,s*` with
 `epsilon_break,s*` distinguishes immediate sharp-but-wrong failure from an
 initially invalid-but-weak period.
 
-Report by field and sign:
+The **primary report stratification is**
+`field × baseline specification state × sign`:
+
+- two-sided fields: `r0=-.8`, `r0=0`, and `r0=+.8`;
+- lower bound: `m0/R_ref=.005`, `.035`, and `.075`.
+
+Equal-weight aggregation over baseline states is supplementary only and must
+never replace the stratified results. Within every primary stratum report:
 
 - coverage and violation-severity curves over `epsilon`;
 - sharpness curves over `epsilon` and a separate ESS-invariance audit;
@@ -181,7 +210,9 @@ outcomes:
    `Omega=[.40,.80]` boundary. No clipping is allowed.
 7. Bound coverage is tested only by its function-level inequality.
 8. All `S`, `ESS`, and violation values are finite; floor/ESS rules are logged.
-9. Endpoint censoring and signed-grid toy cases are correct.
+9. All four non-nested floor cases have correct exact/lower/upper/unresolved
+   status in toy cases.
+10. Endpoint censoring and signed-grid toy cases are correct.
 
 Sharpness need not be monotone and is an empirical outcome. ESS equality is an
 integrity gate because weights are fixed before any prior-satisfaction mask is

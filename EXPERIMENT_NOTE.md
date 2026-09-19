@@ -1475,6 +1475,9 @@ Location/event truths are constrained to the safe interior `[.54,.66]` so the
 maximum displacement plus interval width cannot cross the declared scope.
 The one-sided bound margins are `.005/.035/.075 R_ref`, deliberately chosen
 to resolve to distinct positive-direction break grid levels `.025/.05/.10`.
+Primary reporting is always `field × baseline specification state × sign`
+(`r0=-.8/0/+.8` for two-sided fields; the three declared margins for bounds);
+only a clearly labelled equal-weight state average may be supplementary.
 
 **Critical separation.** Coverage and violation may use clean latent truth only
 in an oracle validation stage. Bound is evaluated solely as a function-level
@@ -1489,6 +1492,13 @@ only as an information diagnostic, not a prediction-safety conclusion. A
 separate signed `epsilon_CW*` endpoint records the first invalid-but-sharp row,
 allowing immediate confidently-wrong failure to be separated from invalid but
 initially weak misspecification.
+
+**Final execution semantics.** `R_ref` is the clean target range over `Omega`;
+bound/asymptote trajectories with `R_ref<.05` are rejected/redrawn and their
+cell-level rejection rate is reported. Because shifted specifications are not
+nested, `Delta S_spec` has four distinct frozen floor states: exact (neither
+floor), lower bound (perturbed only), upper bound (baseline only), and
+unresolved (both). Censored changes will not be averaged as exact values.
 
 **Boundary.** Direction and unsigned curvature have no independent scalar
 realization field in the v1 grammar, so they are not forced into a fictional
