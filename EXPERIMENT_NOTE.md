@@ -1375,9 +1375,19 @@ information, not prediction benefit. Report each missing constraint's
 context-dependent marginal `Delta S(B|P_s)` separately; do not require the
 marginals to sum under interaction.
 
-**Boundary.** E11 is grammar-relative, scope-controlled completeness only.
-It cannot claim world completeness, identifiability, robustness, utility,
-safety, or engine compatibility. An intended full triple can remain incomplete
-when other grammar constraints are also valid in the same scope.
+**Completeness split and measurement rule.** Structural grammar completeness
+is exact canonical-atom equality `P_s=P_star`; informational completeness is
+the reliable non-saturated gap criterion `Delta S_miss<=.10 nat`. Thus a prior
+can be structurally incomplete but informationally complete when omitted atoms
+are conditionally redundant. E11-v1 uses canonical content atoms only—no
+future-selected parameter intervals—so specificity cannot leak into the
+envelope. Primary analysis requires `ESS>=100`. An oracle floor-hit turns the
+gap into a lower bound; a joint candidate/oracle floor hit is informationally
+unresolved rather than a zero-gap result.
+
+**Boundary.** E11 is grammar-relative, scope-controlled completeness only. It
+cannot claim world completeness, identifiability, robustness, utility, safety,
+or engine compatibility. An intended full triple can remain incomplete when
+other canonical grammar atoms are also valid in the same scope.
 
 **Artifact.** [E11 completeness protocol draft](PRIOR_COMPLETENESS_E11_PROTOCOL_DRAFT_V1.md)

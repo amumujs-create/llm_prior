@@ -47,9 +47,44 @@ three singleton priors, three pairs, and the intended full triple. The
 grammar-oracle envelope is evaluated separately. Thus there are eight
 candidate/envelope evaluations per task, or 5,760 shared-bank measurements.
 
-## Oracle envelope
+## Two completeness axes
 
-Let `V_G(f,Omega)` be every primitive constraint in the frozen grammar whose
+E11 does not collapse “contains every valid grammar atom” and “leaves little
+conditional information missing” into one label.
+
+- **Structural grammar completeness:** `C_struct(P_s)=1` iff the canonical
+  atom set of `P_s` equals the canonical atom set of `P_star` on `Omega`.
+- **Informational completeness:** assessed from `Delta S_miss` only when its
+  sharpness measurement is reliable and non-saturated. With the predeclared
+  practical threshold `delta_info=.10 nat`, informationally complete means
+  `Delta S_miss <= .10`; informationally incomplete means `Delta S_miss > .10`.
+
+Thus `P_s != P_star` with a small reliable gap is **structurally incomplete but
+informationally complete**. This is an expected E11 state, not a contradiction.
+All outputs retain `C_struct`, raw `Delta S_miss`, reliability/floor flags, and
+the thresholded informational status as separate fields.
+
+## Canonical content atoms and oracle envelope
+
+E11-v1 is **content completeness only**, not specificity completeness. Each
+primitive has exactly one canonical grammar atom, with no oracle-selected
+interval center, width, onset, rate, scale, exponent, or parameter precision:
+
+| Primitive | Canonical content atom |
+|---|---|
+| Direction | declared monotone sign |
+| Curvature | declared curvature sign |
+| Inflection | one continuous curvature-sign transition |
+| Turning | one derivative-sign transition |
+| Regime | one declared post-onset regime mechanism |
+| Bound | registered one-sided bound at the frozen canonical bound value |
+| Asymptote | declared convergence-to-limit mechanism |
+
+Specificity ladders such as direction-plus-rate range or regime onset intervals
+are excluded. The oracle may determine whether a canonical atom is valid; it
+may not construct a narrower parameter instance after looking at the future.
+
+Let `V_G(f,Omega)` be every canonical primitive atom in the frozen grammar whose
 oracle checker accepts the clean latent continuation throughout `Omega`.
 
 `P_star = AND_{P in V_G(f,Omega)} P`.
@@ -81,6 +116,21 @@ Interpretation:
 - large `Delta S_miss`: supplied prior is coverage-preserving but omits
   substantial valid grammar-relative information.
 
+### Measurement reliability and floor saturation
+
+The shared weighted continuation bank records `ESS` for every task. The primary
+informational-completeness analysis is restricted to `ESS>=100`; all-task
+numbers are explicitly supplementary. A small gap at `ESS<100` is
+**measurement-unresolved**, not evidence of informational completeness.
+
+Sharpness uses the frozen Laplace/floor estimate with `M=4096`, `.5`
+pseudocount, denominator offset `1.0`, and `p_min=1/(10M)`. Record candidate
+and oracle-envelope floor-hit flags. If `P_star` is floor-saturated,
+`Delta S_miss` is a lower bound. If both `P_s` and `P_star` floor-hit,
+informational completeness is unresolved even if the reported difference is
+zero. Floor-hit cases are never classified informationally complete from the
+truncated sharpness difference.
+
 For every missing `B in P_star \ P_s`, report immediate marginal information
 
 `Delta S(B|P_s)=S(P_s AND B|D)-S(P_s|D)`.
@@ -88,15 +138,16 @@ For every missing `B in P_star \ P_s`, report immediate marginal information
 This is context-dependent and is not assumed to sum to `Delta S_miss`; it
 exposes redundancy and interaction rather than replacing the envelope gap.
 
-## Completeness states
+## Reporting cross-classification
 
-1. Valid, incomplete, large missing information.
-2. Valid, incomplete, small missing information (omitted constraints are
-   conditionally redundant).
-3. Intended-full but grammar-incomplete (`P_star` contains additional valid
-   grammar constraints).
-4. Grammar-complete (`P_s=P_star` or `Delta S_miss` is within frozen numerical
-   tolerance).
+Report structural status and information status as a cross-classification,
+never as one four-class label. Examples include:
+
+- subset-incomplete + reliable large gap;
+- subset-incomplete + reliable negligible gap;
+- intended-full-but-extra-valid + reliable large/small gap;
+- grammar-complete + zero gap;
+- any structural status + ESS/floor unresolved information status.
 
 None of these states claim completeness outside the frozen grammar: scaling,
 memory, conservation, interactions, and other out-of-vocabulary knowledge are
@@ -115,7 +166,11 @@ sanity suite must verify:
    numerical tolerance;
 4. `Delta S_miss>=0` up to the same tolerance;
 5. when `P_s=P_star`, `Delta S_miss≈0`;
-6. no utility, engine, prediction, future-RMSE, or far-OOD target enters
+6. `C_struct` and informational status remain distinct for a synthetically
+   redundant missing atom;
+7. candidate/oracle floor-hit handling yields lower-bound or unresolved rather
+   than false informational-completeness labels;
+8. no utility, engine, prediction, future-RMSE, or far-OOD target enters
    scoring.
 
 ## Interpretation boundary
