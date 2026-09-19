@@ -1336,3 +1336,12 @@ E10 is scope anatomy only—neither utility nor safety is inferred.
 
 **Result artifact.** [E10 results](RESULTS_PRIOR_SCOPE_VALIDITY_HORIZON_E10.md) ·
 ![E10 validity-horizon survival](figures/fig36_e10_validity_horizon_survival.png)
+
+**Observed E10 scope values.** In the controlled local / medium /
+persistent-within-domain tiers, median `H_valid*` was respectively `.60/.80/1.00`
+for direction, `.50/.80/1.00` for curvature and inflection, `.60/.80/1.00`
+for turning and bound, and `.50/.70/1.00` for latent-assisted regime and
+asymptote. Generator scope-class agreement was 100% across matched seeds. This
+validates scope-label recovery under the frozen interventions; it is explicitly
+not a real-world primitive-persistence ranking, because scope duration was
+controlled by construction.

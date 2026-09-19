@@ -33,6 +33,37 @@ integrity summary. The protocol and numeric checker/splice table are in
 [E10 protocol](PRIOR_SCOPE_VALIDITY_HORIZON_PROTOCOL_DRAFT_V1.md) and
 [frozen configuration](E10_FROZEN_CONFIG_V1.json).
 
+## Observed scope values
+
+The table reports median `H_valid*` over 90 tasks per primitive × induced scope
+tier (30 seeds × 3 generators). The persistent-within-domain endpoint rate was
+100% for every primitive in its deliberately persistent tier and 0% in local
+and medium tiers; pooled terminal persistence is therefore 33.3% by design.
+
+| Primitive | Local median | Medium median | Persistent-within-domain median |
+|---|---:|---:|---:|
+| Direction | .60 | .80 | 1.00 |
+| Curvature | .50 | .80 | 1.00 |
+| Inflection | .50 | .80 | 1.00 |
+| Turning | .60 | .80 | 1.00 |
+| Regime* | .50 | .70 | 1.00 |
+| Bound | .60 | .80 | 1.00 |
+| Asymptote* | .50 | .70 | 1.00 |
+
+`*` Regime and asymptote use the declared latent-assisted mechanism/scope
+labels and are not interchangeable with phenomenological derivative checks.
+
+Across matched primitive × tier × seed triples, spline/basis/ODE agreed on the
+coarse scope class (local: `H_valid*<=.60`; medium: `.60<H_valid*<1`; terminal
+persistent: `H_valid*=1`) for 100% of trajectories. This supports generator
+robustness of the **controlled scope-label recovery**, not a claim that real
+scientific priors have identical persistence across data-generating families.
+
+The local and medium tiers were intentionally injected into the generators.
+Consequently, these values validate that the E10 apparatus distinguishes scope
+classes; they are not evidence that direction is intrinsically more persistent
+than curvature, bound, or any other primitive in the real world.
+
 ## Interpretation boundary
 
 E10 distinguishes a highly local constraint from one that persists through the
