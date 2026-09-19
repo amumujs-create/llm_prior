@@ -72,10 +72,13 @@ counterpart while leaving the remaining true atoms unchanged:
 - maximum turning ↔ minimum turning;
 - asymptote-from-above ↔ asymptote-from-below.
 
-Reversal is not generally nested in `P_full`. It uses the E12-A two-sided
-floor rule for `Delta S_rev=S(P_rev|D)-S(P_full|D)` (exact / lower bound /
-upper bound / unresolved). Regime and lower-bound have no artificial reversal
-in v1; they are covered by compatible false-addition operations instead.
+Reversal is admitted only when the reversed composition remains
+**compatible-but-false** with its remaining true atoms. A logically
+inconsistent reversal is not a structural-error test and is excluded. Reversal
+is not generally nested in `P_full`; it uses the E12-A two-sided floor rule for
+`Delta S_rev=S(P_rev|D)-S(P_full|D)` (exact / lower bound / upper bound /
+unresolved). Regime and lower-bound have no artificial reversal in v1; they
+are covered by compatible false-addition operations instead.
 
 ## Corpus and balanced operation catalog
 
@@ -90,9 +93,14 @@ that satisfies all of the following for every planned operation:
    contradictory, and is clean-oracle false on `Omega` for the controlled
    generator family;
 4. each reversal uses a registered signed counterpart and is clean-oracle
-   false;
+   false while remaining compatible with all non-replaced atoms;
 5. no operation changes the base clean trajectory, observations, bank, or
    likelihood weights.
+
+The catalog describes an operation family, but every accepted task must repeat
+the clean-oracle falsity check for its planned false addition/reversal. If a
+candidate is accidentally valid for that trajectory, reject/redraw it with a
+separate per-operation rejection count.
 
 If a triple cannot support a required operation, it is not silently dropped.
 The catalog must either assign a predeclared valid alternative or explicitly
@@ -118,6 +126,39 @@ For every operation record:
 ESS must be identical across all operations for a base task; any difference is
 an implementation failure.
 
+### Inherited versus induced sharpness
+
+For every invalid false-addition/reversal candidate with reliable `ESS>=100`,
+classify its relation to the valid baseline (`S_full=S(P_full|D)`) using the
+predeclared `.10 nat` threshold:
+
+| Baseline `S_full` | Wrong candidate `S_wrong` | Class |
+|---|---|---|
+| `>=.10` | `>=.10` | inherited-sharp wrong |
+| `<.10` | `>=.10` | induced-sharp wrong |
+| `>=.10` | `<.10` | attenuated wrong |
+| `<.10` | `<.10` | false-but-weak |
+
+This prevents a high `S_wrong` from being interpreted as sharpness newly
+caused by a false atom when the valid baseline was already sharp.
+
+### Frozen floor and violation rules
+
+Omission and false addition are nested; reversal is not.
+
+| Operation | Exact relation | Floor rule |
+|---|---|---|
+| Omission | `P_full subset P_omit`, so `L_omit=S_full-S_omit>=0` | full-only floor: lower bound; both: unresolved; omit-only floor: integrity violation |
+| False addition | `P_add subset P_full`, so `Delta S_add=S_add-S_full>=0` | add-only floor: lower bound; both: unresolved; full-only floor: integrity violation |
+| Reversal | non-nested | E12-A four-way exact/lower/upper/unresolved rule |
+
+`D_violation` is stored with an atom-family-specific semantic and never pooled
+as a cross-family severity ranking: direction uses wrong-sign derivative
+fraction; curvature uses wrong-sign second-derivative fraction; inflection and
+turning use event-pattern mismatch; bounds use normalized boundary violation;
+regime/asymptote use latent-mechanism mismatch severity. It may be compared
+only within the same atom family and operation type.
+
 ## Primary comparisons
 
 Primary results stratify by
@@ -125,7 +166,7 @@ Primary results stratify by
 The three operation types must not be pooled into a single “structural error”
 score.
 
-1. **Omission:** coverage-preserving rate and `L_omit`; distinguishes
+1. **Omission:** coverage-preservation integrity and `L_omit`; distinguishes
    redundant from materially informative missing content.
 2. **False addition:** invalid rate, violation severity, sharpness gain, and
    confidently-wrong rate; distinguishes false-but-weak from false-and-sharp.
@@ -139,13 +180,15 @@ score.
    numerical tolerance;
 3. every false addition is compatible but clean-oracle false, rather than
    simply logically impossible;
-4. every reversal has a frozen registered counterpart and clean-oracle falsity;
+4. every reversal has a frozen registered counterpart, compatible residual
+   composition, and clean-oracle falsity;
 5. paired-bank metadata semantics match the hashed registry;
 6. prefix observations, target scope, bank, and weights are identical across
    operations of a task, including ESS equality;
 7. nested addition/omission sharpness inequalities and non-nested floor rules
    pass deterministic toy cases;
-8. operation-catalog exclusions/rejections are logged by triple × generator.
+8. operation-catalog exclusions/rejections, including accidental per-task
+   validity, are logged by triple × generator × operation.
 
 ## Interpretation boundary
 

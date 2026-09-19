@@ -1578,6 +1578,16 @@ equal bank/observation/weight conditions across all operations. Primary results
 will be stratified by `intended composition × operation type × target/source
 atom × generator`; no single pooled “structural error” score is allowed.
 
+**Sharpness attribution and reliability.** For invalid commission/reversal
+candidates, classify the `.10 nat` sharpness state relative to the valid
+baseline: inherited-sharp, induced-sharp, attenuated, or false-but-weak. Thus
+a false prior inheriting a sharp baseline is not confused with a false atom
+that newly induces sharpness. Omission/addition use their respective nested
+floor rules; reversal uses the non-nested four-way rule. Every planned false
+operation is rechecked for compatibility and clean-oracle falsity per accepted
+task; accidental validity triggers logged redraw. Violation severity is stored
+in atom-family-specific units only, with no cross-family severity ranking.
+
 **Boundary.** E12-B measures content/composition validity and conditional
 sharpness only—not prediction utility, harm, engine compatibility, or LLM
 behavior.
