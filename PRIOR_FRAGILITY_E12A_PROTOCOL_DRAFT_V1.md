@@ -33,7 +33,7 @@ field value `theta*`.
 | `regime_postchange` | first regime onset | `.40` | `.025 R_theta` |
 | `inflection_concave_to_convex` | inflection location | `.40` | `.025 R_theta` |
 | `turning_maximum` | turning location | `.40` | `.025 R_theta` |
-| `lower_bound_0` | lower-bound level | task-level clean target range `R_ref` | `.025 R_ref` |
+| `lower_bound_0` | lower-bound level | task-level clean target range `R_ref` | one-sided margins `.005/.025/.045 R_ref` |
 | `asymptote_to_0_from_above` | latent asymptotic limit | task-level clean target range `R_ref` | `.025 R_ref` |
 
 Location ranges are the width of `Omega`; level ranges use the fixed task-level
@@ -42,12 +42,26 @@ within the v1 canonical grammar they have no separately declared scalar
 realization field. Their content fragility belongs in E12-B, not in a
 made-up numeric sweep.
 
-Each specification is an interval constraint:
+### Baseline validity margin is an explicit controlled variable
 
-`P_epsilon: |theta - (theta* + s epsilon R_theta)| <= w`, where
-`s in {-1,+1}`. At `epsilon=0`, the supplied specification is valid by
-construction. For zero, only one row is written; nonzero magnitudes are
-evaluated in both signs.
+A centered interval would make the validity-break endpoint a design constant:
+with `c_0=theta*` and `w=.025 R_theta`, every two-sided field would first fail
+at the same grid location. E12-A therefore does **not** center every valid
+baseline specification on the true value.
+
+For every location/limit field, define a valid baseline interval center `c_0`
+such that `r_0=(theta*-c_0)/w` is one of the predeclared values
+`{-0.8, 0, +0.8}`. The supplied baseline is
+`P_0: |theta-c_0|<=w`, and a signed perturbation moves only its center:
+
+`P_epsilon: |theta-(c_0+s epsilon R_theta)|<=w`, where `s in {-1,+1}`.
+
+The resulting initial margin is
+`m_0=w-|theta*-c_0|=w(1-|r_0|)`. Thus the break endpoint measures
+**tolerance conditional on a declared, valid initial margin**, not an intrinsic
+property of a primitive. At `epsilon=0`, every supplied specification remains
+valid by construction. Zero is written once per margin state; nonzero
+magnitudes are evaluated in both signs.
 
 The predeclared grid is `epsilon in {0,.025,.05,.10,.20,.30}`. It is a
 normalized displacement grid, not a claim that these values represent equal
@@ -55,16 +69,17 @@ physical error across primitives.
 
 ## Corpus and repeated measures
 
-Generate `5 fields × 3 generator families × 30 latent seeds = 450` base tasks.
-For every base task, evaluate the same nested master observation realization
-and the same 4,096-member full-domain ambient continuation bank at eleven
-misspecifications (`0`, plus both signs at the other five magnitudes). The
-planned output is **4,950 repeated task-field-perturbation rows**.
+Generate `5 fields × 3 generator families × 30 latent trajectories = 450`
+latent trajectories. For each trajectory, evaluate all three frozen baseline
+margin states and then the same master observation realization and 4,096-member
+full-domain ambient continuation bank at eleven misspecifications (`0`, plus
+both signs at the other five magnitudes). The planned output is **14,850
+repeated trajectory-margin-perturbation rows**.
 
 Task generation, noisy prefix creation, and ambient bank sampling use separate
-fixed seed streams. The prior perturbation is a deterministic transform of the
-already accepted task; it cannot alter the latent trajectory, observations, or
-bank.
+fixed seed streams. The prior perturbation and baseline-margin state are
+deterministic transforms of the already accepted trajectory; neither can alter
+the latent trajectory, observations, likelihood weights, or bank.
 
 ## Measurements
 
@@ -72,16 +87,20 @@ bank.
 
 The clean latent trajectory and true scalar field are accessible only here.
 
-- `Coverage_epsilon = I(theta* satisfies P_epsilon)`.
-- `D_violation_epsilon` is the normalized amount by which the true field
-  falls outside the declared interval:
-  `max(|theta*-(theta*+s epsilon R_theta)|-w,0)/R_theta`.
+- For two-sided location/limit fields,
+  `Coverage_epsilon = I(|theta*-(c_0+s epsilon R_theta)|<=w)` and
+  `D_violation_epsilon=max(|theta*-(c_0+s epsilon R_theta)|-w,0)/R_theta`.
+- **Lower bound is a different one-sided statement**, not a unique true
+  parameter. Its baseline declared value is `L_0=min_Omega f* - m_0`, with
+  `m_0/R_ref in {.005,.025,.045}`; its perturbation is
+  `L_epsilon=L_0+s epsilon R_ref`. Bound coverage is exclusively
+  `I[f*(x)>=L_epsilon for all x in Omega]`, and its violation severity is
+  `max_x(L_epsilon-f*(x))_+/R_ref`. A negative bound shift can remain valid by
+  becoming weaker; no parameter-interval equivalence is asserted or tested.
 
-For lower bounds this must also be cross-checked against the trajectory form:
-`max_x(L_epsilon-f*(x))_+/R_ref`. The two values must agree up to numerical
-tolerance. Event fields use normalized event-location error. The asymptote
-field uses the declared latent-assisted limit, and is reported separately from
-phenomenological trajectory checks.
+Event fields use normalized event-location violation. The asymptote field uses
+the declared latent-assisted limit, and is reported separately from any
+phenomenological trajectory check.
 
 ### Data-conditioned information stage
 
@@ -95,21 +114,32 @@ With the fixed E9/E11 weighting convention, record:
 - `Delta S_spec(epsilon)=S(P_epsilon|D)-S(P_0|D)`;
 - probability-floor flags and saturation counts.
 
-Primary sharpness interpretation requires `ESS >= 100`. Floor results are
+Primary sharpness interpretation requires `ESS >= 100`. Since the prefix,
+bank, and likelihood weights are fixed within a latent trajectory, **ESS must
+be identical across every margin, sign, and epsilon row for that trajectory**;
+any deviation is an integrity failure, not an empirical curve. Floor results are
 reported as censored/lower-bound quantities, never converted to exact gaps.
 
 ## Endpoints and classifications
 
-For each task × sign, the **grid-resolved validity-break threshold** is the
-first tested nonzero `epsilon` with `Coverage_epsilon=0`. If no failure occurs
-through `.30`, it is right-censored as `> .30`; it is not called infinitely
-robust. The two signs remain separate primary endpoints:
+For each trajectory × baseline-margin state × sign, the **grid-resolved
+validity-break threshold** is the first tested nonzero `epsilon` with
+`Coverage_epsilon=0`. If no failure occurs through `.30`, it is right-censored
+as `> .30`; it is not called infinitely robust. The two signs remain separate
+primary endpoints:
 `epsilon_break,+*` and `epsilon_break,-*`.
+
+For two-sided fields, this endpoint is expected to reflect the predeclared
+margin geometry. It is therefore reported as a controlled tolerance check,
+not as a primitive ranking. The scientifically open part of E12-A is what
+happens to conditional sharpness and violation severity **at and beyond that
+known validity boundary**, including sign asymmetry and confidently-wrong
+states. The one-sided bound has inherently asymmetric validity geometry.
 
 Report by field and sign:
 
 - coverage and violation-severity curves over `epsilon`;
-- sharpness and ESS curves over `epsilon`;
+- sharpness curves over `epsilon` and a separate ESS-invariance audit;
 - attainment curves `Pr(epsilon_break* <= epsilon)`;
 - directional asymmetry, without pooling signs into a false symmetric score.
 
@@ -129,21 +159,27 @@ outcomes:
 
 1. `epsilon=0` has coverage one for every accepted base task.
 2. The clean trajectory, noisy prefix, and ambient bank are byte-identical
-   across all perturbations of a base task.
+   across all margin states and perturbations of a base trajectory.
 3. Observed prefix and target `Omega` are invariant over `epsilon`.
 4. Oracle coverage/violation code is unavailable to the sharpness scorer.
-5. Bound's parameter- and trajectory-based violation distances agree.
-6. All `S`, `ESS`, and violation values are finite; floor/ESS rules are logged.
-7. Endpoint censoring and signed-grid toy cases are correct.
+5. `ESS` is identical across all margin/sign/epsilon rows of one trajectory.
+6. Location/event truths are generated in the safe interior `[.53,.67]`; at
+   maximum displacement plus interval half-width they cannot cross the
+   `Omega=[.40,.80]` boundary. No clipping is allowed.
+7. Bound coverage is tested only by its function-level inequality.
+8. All `S`, `ESS`, and violation values are finite; floor/ESS rules are logged.
+9. Endpoint censoring and signed-grid toy cases are correct.
 
-Neither monotone sharpness nor monotone effective sample size is a sanity gate:
-they are empirical outcomes.
+Sharpness need not be monotone and is an empirical outcome. ESS equality is an
+integrity gate because weights are fixed before any prior-satisfaction mask is
+applied.
 
 ## Inference and limits
 
-All curves use base-task clustered bootstrap resampling within field ×
+All curves use latent-trajectory clustered bootstrap resampling within field ×
 generator cells, followed by equal generator weighting. The primary unit is
-the base task, not the 11 repeated perturbation rows.
+the latent trajectory, not the three margin states or 11 repeated perturbation
+rows.
 
 E12-A estimates fragility of predeclared scalar specifications in this frozen
 1D grammar and fixed scope. It does not estimate real-world calibration

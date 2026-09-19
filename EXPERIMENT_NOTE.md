@@ -1459,21 +1459,29 @@ atom is missing, but how fragile an unchanged structural statement is when its
 numeric error does a supplied valid specification first lose coverage, how
 large is the violation, and can the resulting invalid prior remain sharp?
 
-**Frozen draft.** E12-A uses five unambiguous scalar fields only: regime onset,
-inflection location, turning location, lower-bound level, and asymptotic
-limit. It evaluates `epsilon={0,.025,.05,.10,.20,.30}`, with both signs at
-every nonzero magnitude, in a fixed `Omega=[.40,.80]`. The proposed corpus is
-450 base tasks (five fields × three generators × 30 seeds) and 4,950 repeated
-perturbation rows sharing each task's observations and 4,096-member ambient
-bank. Its primary endpoints are sign-specific grid-resolved validity-break
-thresholds, coverage/violation curves, and conditional-sharpness/ESS curves.
+**Frozen draft, corrected for endpoint degeneracy.** A truth-centered numeric
+interval would force every two-sided field to break at the same preselected
+half-width, so E12-A now uses three explicitly controlled *valid baseline
+margin* states (`r0=-.8,0,+.8`) before each signed perturbation. It uses five
+fields only: regime onset, inflection location, turning location, lower-bound
+level, and asymptotic limit. It evaluates `epsilon={0,.025,.05,.10,.20,.30}`
+with both signs at every nonzero magnitude in fixed `Omega=[.40,.80]`.
+The proposed corpus is 450 latent trajectories (five fields × three generators
+× 30 seeds), three margin states per trajectory, and 14,850 repeated rows.
+The break threshold is therefore a **controlled tolerance conditional on
+initial validity margin**, not an intrinsic primitive ranking. The empirical
+focus is sharpness and violation severity at/beyond the validity boundary.
 
-**Critical separation.** Coverage and violation may use the clean latent truth
-only in an oracle validation stage. Conditional sharpness receives only the
-observed prefix, frozen bank, and perturbed declaration. No prediction engine,
-RMSE, utility, or harm target enters E12-A. `Coverage=0 & ESS>=100 & S>=.10`
-is called *confidently wrong* only as an information diagnostic, not as a
-prediction-safety conclusion.
+**Critical separation.** Coverage and violation may use clean latent truth only
+in an oracle validation stage. Bound is evaluated solely as a function-level
+one-sided constraint—not against an invented unique “true bound parameter”—so
+downward bound bias can remain valid while becoming weaker. Conditional
+sharpness receives only the observed prefix, frozen bank, and perturbed
+declaration. Since those prefix likelihood weights are shared, ESS must be
+identical over every perturbation of a base trajectory; it is an integrity
+invariant, not an E12-A outcome. No prediction engine, RMSE, utility, or harm
+target enters E12-A. `Coverage=0 & ESS>=100 & S>=.10` is *confidently wrong*
+only as an information diagnostic, not a prediction-safety conclusion.
 
 **Boundary.** Direction and unsigned curvature have no independent scalar
 realization field in the v1 grammar, so they are not forced into a fictional
