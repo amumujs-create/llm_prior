@@ -1641,5 +1641,20 @@ supplementary. The conclusion is purely informational: omission, addition,
 and reversal are non-interchangeable structural-information errors. It is not
 a utility/harm or prediction-safety result.
 
+**Post-run interpretation audit.** The omission and addition *signs* are not
+empirical discoveries: under AND semantics, omitting an atom relaxes the
+continuation set and adding one restricts it. E12-B's empirical information is
+their magnitude/heterogeneity: omission `L_omit` has IQR `[0,1.350]`, and
+addition `Delta S_add` has IQR `[0,.803]`, so both true missing content and
+false added content can be conditionally redundant in a given context.
+Reversal is particularly heterogeneous: 331/1,530 (`.216`) have negative
+`Delta S_rev`, 482 (`.315`) lie within `±.10 nat`, and 747 (`.488`) exceed
+`.10 nat`; its high mean is not a typical-task effect. Finally, the E12-A
+inheritance audit found all 1,350 baseline specifications already had
+`S(P_0|D)>=.10 nat`. Thus both E12-A's immediate invalid-but-sharp transition
+and E12-B's 2,250 inherited-sharp wrong cases should be read as **valid sharp
+priors becoming invalid without losing inherited sharpness**, not as errors
+newly creating confidence.
+
 **Artifact.** [E12-B results](RESULTS_CONTENT_COMPOSITION_FRAGILITY_E12B.md)
 · [E12-B execution freeze](E12B_EXECUTION_FREEZE_V1.md)

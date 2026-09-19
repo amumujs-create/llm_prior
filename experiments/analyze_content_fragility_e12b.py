@@ -13,7 +13,9 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
 RUN = ROOT / "results/content_fragility_e12b/full"
+E12A_ROWS = ROOT / "results/prior_fragility_e12a/run/rows.csv"
 REPORT = ROOT / "RESULTS_CONTENT_COMPOSITION_FRAGILITY_E12B.md"
+DELTA = 0.10
 
 
 def f(x: float) -> str:
@@ -42,6 +44,19 @@ def main() -> None:
     addition = defaultdict(list)
     for row in by_type["false_addition"]:
         addition[row["target_atom"]].append(float(row["delta_S"]))
+    reversal = [float(row["delta_S"]) for row in by_type["reversal"]]
+    reversal_sign = {
+        "negative": sum(value < 0 for value in reversal),
+        "near_zero": sum(abs(value) <= DELTA for value in reversal),
+        "positive_material": sum(value > DELTA for value in reversal),
+    }
+    reversal_by_source = defaultdict(list)
+    for row in by_type["reversal"]:
+        reversal_by_source[row["source_atom"]].append(float(row["delta_S"]))
+    with E12A_ROWS.open() as handle:
+        e12a = list(csv.DictReader(handle))
+    e12a_baseline = [row for row in e12a if float(row["epsilon"]) == 0.0]
+    e12a_sharp = sum(float(row["S_baseline"]) >= DELTA for row in e12a_baseline)
 
     atoms = sorted(addition)
 
@@ -69,6 +84,33 @@ All invalid false-addition/reversal rows ({classes['inherited_sharp_wrong']}) ar
 rows in this frozen corpus. This is an attribution result—not evidence that
 false atoms generally create sharpness.
 
+### Reversal is heterogeneous, not a typical large increase
+
+Of {len(reversal)} reversals, `{reversal_sign['negative']}` ({f(reversal_sign['negative']/len(reversal))}) have
+`Delta S_rev<0`; `{reversal_sign['near_zero']}` ({f(reversal_sign['near_zero']/len(reversal))}) are within
+`±.10 nat`; and `{reversal_sign['positive_material']}` ({f(reversal_sign['positive_material']/len(reversal))})
+exceed `.10 nat`. The mean/median divergence therefore reflects a heterogeneous
+response, not a typical large sharpness increase.
+
+| Reversed source atom | Rows | Median `Delta S_rev` | 95th percentile |
+|---|---:|---:|---:|
+"""
+    for atom in sorted(reversal_by_source):
+        values = reversal_by_source[atom]
+        report += f"| `{atom}` | {len(values)} | {f(float(np.median(values)))} | {f(float(np.quantile(values, .95)))} |\n"
+    report += f"""
+
+### E12-A inheritance audit
+
+Among the `{len(e12a_baseline)}` E12-A baseline specification states,
+`{e12a_sharp}` ({f(e12a_sharp/len(e12a_baseline))}) already had
+`S(P_0|D)>=.10 nat`. Thus E12-A's immediate invalid-but-sharp result must also
+be interpreted against baseline inherited sharpness; it does not by itself
+show that numeric misspecification newly created confidence.
+
+"""
+    report += """
+
 ### False additions are atom-stratified primary results
 
 | Added atom | Rows | Mean `Delta S_add` (nat) |
@@ -84,11 +126,13 @@ a generic false-addition law.
 
 ## Interpretation and boundary
 
-Within this frozen 1D grammar, removing a true atom reduced conditional
-sharpness on average, while false addition and reversal produced heterogeneous
-nonnegative/negative information changes. This establishes that omission,
-false addition, and reversal are not interchangeable *information errors*.
-Coverage was designed as an integrity invariant, not discovered as a result.
+The signs of omission and false-addition changes are consequences of nested
+AND semantics: removing a true atom can only relax the continuation set, and
+adding an atom can only restrict it. Their empirical content is therefore the
+magnitude and heterogeneity of the change—not its sign. Within this frozen 1D
+grammar, omission, false addition, and reversal had non-interchangeable
+conditional-information consequences. Coverage was designed as an integrity
+invariant, not discovered as a result.
 
 E12-B contains no predictor, utility, RMSE, prediction harm, engine
 compatibility, or LLM component. Therefore it does **not** show that every
