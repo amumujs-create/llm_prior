@@ -51,7 +51,9 @@ prefix-likelihood weights and the nested active-coordinate subset change. The
 nested activation order is fixed as `1 subset 3 subset 5 = {z1} subset
 {z1,z2,z3} subset {z1,...,z5}`. Each coordinate basis is L2-normalized on the
 fixed future grid before applying an equal influence scale, so nominal count is
-not confounded by arbitrary coordinate amplitude.
+not confounded by arbitrary coordinate amplitude. Inactive coordinates are
+fixed at the common reference value zero: DoF1 sets `z2,...,z5=0`; DoF3 sets
+`z4,z5=0`; DoF5 activates all five sampled coordinates.
 
 Condition this shared bank on prefix normalized MSE using a frozen temperature,
 and compute:
@@ -97,7 +99,9 @@ right-censored beyond `.70`.
 
 All endpoints are grid-resolved tested onsets, not exact continuous thresholds:
 if first success is `.40`, report `.30 < E* <= .40`; success at `.20` is
-left-censored `E* <= .20`; no success by `.70` is right-censored `E* > .70`.
+left-censored `E* <= .20`; first success at `.70` is a valid
+boundary-resolved endpoint `.60 < E* <= .70`; only no success by `.70` is
+right-censored `E* > .70`.
 Report attainment curves `P(E* <= s)` rather than treating censored values as
 observed at `.70`; if 50% are censored, report `median > .70`.
 

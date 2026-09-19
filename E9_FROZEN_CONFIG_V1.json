@@ -7,6 +7,7 @@
   "separability_eta": {"low": 0.2, "mid": 0.5, "high": 0.8},
   "nominal_active_dof": [1, 3, 5],
   "nested_activation_order": [["z1"], ["z1", "z2", "z3"], ["z1", "z2", "z3", "z4", "z5"]],
+  "inactive_coordinate_reference_value": 0.0,
   "ambient_bank_size": 4096,
   "ambient_coordinate_influence_scale": 0.1,
   "prefix_likelihood_temperature": 0.02,
