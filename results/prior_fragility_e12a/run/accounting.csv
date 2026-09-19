@@ -1,0 +1,16 @@
+field,generator,requested,attempts,accepted,degenerate_range_rejects,other_checker_rejects,exhaustion
+regime_onset,spline,30,30,30,0,0,0
+regime_onset,basis,30,30,30,0,0,0
+regime_onset,ode,30,30,30,0,0,0
+inflection_location,spline,30,30,30,0,0,0
+inflection_location,basis,30,30,30,0,0,0
+inflection_location,ode,30,30,30,0,0,0
+turning_location,spline,30,30,30,0,0,0
+turning_location,basis,30,30,30,0,0,0
+turning_location,ode,30,30,30,0,0,0
+lower_bound_level,spline,30,30,30,0,0,0
+lower_bound_level,basis,30,30,30,0,0,0
+lower_bound_level,ode,30,30,30,0,0,0
+asymptotic_limit,spline,30,30,30,0,0,0
+asymptotic_limit,basis,30,30,30,0,0,0
+asymptotic_limit,ode,30,30,30,0,0,0

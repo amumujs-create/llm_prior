@@ -1517,3 +1517,34 @@ numeric sweep. False signs, false atoms, omissions, and composition changes
 are explicitly deferred to E12-B.
 
 **Artifact.** [E12-A specification-fragility protocol draft](PRIOR_FRAGILITY_E12A_PROTOCOL_DRAFT_V1.md)
+
+**Run and result.** The frozen E12-A run accepted 450 latent trajectories and
+produced 14,850 perturbation rows plus 2,700 signed endpoint rows; all
+integrity checks passed, all `Delta S_spec` values were non-floor exact, and
+there were no degenerate-range rejections or exhausted cells. As designed,
+two-sided `epsilon_break*` followed baseline interval geometry. The lower bound
+showed the expected one-sided asymmetry: negative relaxation remained valid
+through `.30`, while positive tightening broke at `.025/.05/.10` for margins
+`.005/.035/.075`.
+
+For every one of the 2,430 signed cases with both endpoints observed,
+`epsilon_CW*=epsilon_break*`; the median wrong-to-confidently-wrong gap was
+zero. This means that under this frozen paired bank and `.10 nat` threshold,
+each specification was already sharp enough to be classified confidently wrong
+at its first invalid grid point. It is not a prediction-safety conclusion.
+Regime and asymptote sharpness stayed nearly flat under displacement,
+inflection shifted slightly, turning generally sharpened with displacement,
+and bound sharpness rose on tightening but fell on relaxation.
+
+![E12-A signed endpoints](figures/fig40_e12a_signed_endpoints.png)
+
+![E12-A sharpness curves](figures/fig41_e12a_sharpness_curves.png)
+
+**Conclusion and boundary.** E12-A establishes a controlled anatomy result:
+numeric misspecification need not make a prior weak when it becomes invalid.
+It does not rank primitive-intrinsic fragility, estimate real calibration
+errors, or assess utility/harm. E12-B remains the separate experiment for
+false structural additions, reversals, and omissions.
+
+**Artifact.** [E12-A results](RESULTS_PRIOR_FRAGILITY_E12A.md)
+· [E12-A execution freeze](E12A_EXECUTION_FREEZE_V1.md)

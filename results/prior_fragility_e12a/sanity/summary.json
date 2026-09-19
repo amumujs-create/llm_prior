@@ -1,0 +1,13 @@
+{
+  "mode": "sanity",
+  "accepted_latent_trajectories": 15,
+  "perturbation_rows": 495,
+  "endpoint_rows": 90,
+  "integrity_passed": true,
+  "exhausted_cells": 0,
+  "hashes": {
+    "satisfaction_registry": "2db3422e4df528a5e7ca485224d18c76e3e6458ff48c60f7a2e357e45296d554",
+    "execution_freeze": "f8e3f46080027a94dd1fae78e63655afb5564c8b4ef3fbf5bdf077e185daceed",
+    "runner": "659f2279470199e5d13c1526bb69dd4692e2a80927f3436dcd8aef2c2180fa95"
+  }
+}

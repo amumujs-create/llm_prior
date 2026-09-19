@@ -1,0 +1,22 @@
+{
+  "integrity": {
+    "latent_trajectories": 450,
+    "perturbation_rows": 14850,
+    "endpoint_rows": 2700,
+    "expected_trajectories": 450,
+    "expected_rows": 14850,
+    "integrity_passed": true,
+    "exhausted_cells": 0,
+    "ESS_invariant_pass": true
+  },
+  "estimand": "Conditional on accepted nondegenerate-range tasks and stratified by field \u00d7 baseline specification state \u00d7 sign.",
+  "floor_status_counts": {
+    "exact": 14850
+  },
+  "endpoint_result": {
+    "both_endpoints_observed_rows": 2430,
+    "immediate_CW_rate_when_both_observed": 1.0,
+    "median_delta_epsilon_CW_when_observed": 0.0
+  },
+  "boundary": "Controlled specification-fragility anatomy only; no utility, engine, prediction, or real-world calibration claim."
+}

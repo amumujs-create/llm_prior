@@ -1,0 +1,44 @@
+{
+  "version": "E12A-satisfaction-v1",
+  "target_scope": [0.4, 0.8],
+  "target_grid_points": 161,
+  "ambient_bank": {
+    "size": 4096,
+    "type": "paired_function_latent_metadata",
+    "metadata_schema": {
+      "has_regime": "boolean",
+      "regime_onset": "normalized progression coordinate or null",
+      "has_asymptotic_mechanism": "boolean",
+      "asymptotic_limit": "scalar or null",
+      "asymptote_side": "from_above | from_below | null"
+    }
+  },
+  "trajectory_event_checker": {
+    "event_count": "exactly_one_signed_event",
+    "derivative_tolerance": "1e-4 times candidate target-range",
+    "inflection": "second derivative sign changes concave_to_convex",
+    "turning": "first derivative sign changes positive_to_negative"
+  },
+  "fields": {
+    "regime_onset": {
+      "semantic_type": "mechanistic",
+      "satisfaction": "has_regime AND regime_onset_in_declared_interval"
+    },
+    "inflection_location": {
+      "semantic_type": "phenomenological_trajectory",
+      "satisfaction": "exactly_one_concave_to_convex_inflection AND location_in_declared_interval"
+    },
+    "turning_location": {
+      "semantic_type": "phenomenological_trajectory",
+      "satisfaction": "exactly_one_maximum_turning AND location_in_declared_interval"
+    },
+    "lower_bound_level": {
+      "semantic_type": "phenomenological_trajectory",
+      "satisfaction": "minimum_over_fixed_target_scope >= declared_lower_bound"
+    },
+    "asymptotic_limit": {
+      "semantic_type": "latent_assisted",
+      "satisfaction": "has_asymptotic_mechanism AND asymptote_side=from_above AND limit_in_declared_interval"
+    }
+  }
+}

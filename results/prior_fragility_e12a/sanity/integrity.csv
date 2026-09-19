@@ -1,0 +1,16 @@
+task_id,baseline_coverage_one,ESS_invariant,finite_values,paired_bank_semantics,oracle_not_in_scorer,location_safe_interior,metadata_invariant
+regime_onset:spline:0,True,True,True,True,True,True,True
+regime_onset:basis:0,True,True,True,True,True,True,True
+regime_onset:ode:0,True,True,True,True,True,True,True
+inflection_location:spline:0,True,True,True,True,True,True,True
+inflection_location:basis:0,True,True,True,True,True,True,True
+inflection_location:ode:0,True,True,True,True,True,True,True
+turning_location:spline:0,True,True,True,True,True,True,True
+turning_location:basis:0,True,True,True,True,True,True,True
+turning_location:ode:0,True,True,True,True,True,True,True
+lower_bound_level:spline:0,True,True,True,True,True,True,True
+lower_bound_level:basis:0,True,True,True,True,True,True,True
+lower_bound_level:ode:0,True,True,True,True,True,True,True
+asymptotic_limit:spline:0,True,True,True,True,True,True,True
+asymptotic_limit:basis:0,True,True,True,True,True,True,True
+asymptotic_limit:ode:0,True,True,True,True,True,True,True
