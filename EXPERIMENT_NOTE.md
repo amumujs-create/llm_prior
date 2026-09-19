@@ -1203,3 +1203,53 @@ Critic belongs later to arbitration/deployment and must not collapse these
 upstream distinctions.
 
 **Artifact.** [Prior Anatomy taxonomy](PRIOR_ANATOMY_TAXONOMY_V1.md)
+
+---
+
+## 28. E9 — Prior Information Lifecycle (pre-run record)
+
+**Why this experiment.** Earlier experiments established that validity,
+conditional information, realization safety, and utility differ. E9 deliberately
+stops before translation, integration, engines, optimization, and utility. It
+asks only how one supplied valid structural prior changes status as nested
+prefix evidence grows.
+
+**Frozen question.** For the same latent task and supplied valid prior, when
+does the constraint first provide reliable additional continuation information
+(`E_add*`), when is its structure observed in the prefix (`E_obs*`), when are
+both true (`E_joint*`), and when does the prefix absorb the additional
+information (`E_red*`)?
+
+**Design.** 7 primitives × 3 predeclared separability controls × 3 generators ×
+20 latent-task seeds = 1,260 independent latent tasks. Every task supplies a
+single nested noisy observation path, one shared 4,096-member full-domain
+ambient continuation bank, six prefix levels, and paired DoF 1/3/5 evaluations.
+This yields 22,680 repeated task–DoF–prefix measurements, not 22,680
+independent tasks. Scoring sees no future target, utility, RMSE, realization
+engine, or engine output after oracle validity checking has accepted the task.
+
+**Measurements.** `S`, `ESS`, `E_struct`, `d_eff`, raw `V_f`, and
+`V_f/R_ref^2`; lifecycle states; grid-resolved attainment/censoring;
+informational-null, joint-unresolved, sampler-unresolved, redundancy, and
+re-entry status. Inference is a 5,000-replicate paired latent-task bootstrap
+within primitive × separability × generator strata, followed by equal-weight
+generator macro aggregation.
+
+**Planned figures and numerical tables.**
+
+- Attainment curves: `P(E_add*<=s)`, `P(E_obs*<=s)`, `P(E_joint*<=s)`, and
+  at-risk `E_red*` by primitive/separability/DoF.
+- Lifecycle-state heatmap across prefix levels.
+- Multiplicity diagnostics: `d_eff` and normalized `V_f` versus prefix and DoF.
+- Endpoint/censoring table, including denominators for each risk set.
+- Integrity-sanity table; it tests implementation invariants only and never
+  gates on expected effect direction or monotonicity.
+
+**Interpretation boundary.** E9 will not claim a universal required data
+percentage, trust threshold, or prediction benefit. Its conclusion is limited
+to the information lifecycle of supplied valid structural priors in the frozen
+benchmark grammar.
+
+**Artifacts.** [Protocol](PRIOR_MINIMUM_INFORMATIONAL_EVIDENCE_PROTOCOL_V1.md) ·
+[Execution freeze](E9_EXECUTION_FREEZE_V1.md) ·
+[Numeric config](E9_FROZEN_CONFIG_V1.json)
