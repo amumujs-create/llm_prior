@@ -33,9 +33,13 @@ field value `theta*`.
 | `regime_postchange` | first regime onset | `.40` | `.025 R_theta` |
 | `inflection_concave_to_convex` | inflection location | `.40` | `.025 R_theta` |
 | `turning_maximum` | turning location | `.40` | `.025 R_theta` |
-| `lower_bound_0` | lower-bound level | task-level clean target range `R_ref` | one-sided margins `.005/.025/.045 R_ref` |
-| `asymptote_to_0_from_above` | latent asymptotic limit | task-level clean target range `R_ref` | `.025 R_ref` |
+| lower-bound relation (source atom: `lower_bound_0`) | bound level `L` | task-level clean target range `R_ref` | one-sided margins `.005/.035/.075 R_ref` |
+| asymptote-from-above relation (source atom: `asymptote_to_0_from_above`) | asymptotic limit `theta_lim` | task-level clean target range `R_ref` | `.025 R_ref` |
 
+`lower_bound_0` and `asymptote_to_0_from_above` are frozen **source atom IDs**
+from the canonical grammar, not literal claims that every perturbed numerical
+specification remains at zero. E12-A keeps the structural content as a
+lower-bound or asymptote-from-above relation while moving its numeric level.
 Location ranges are the width of `Omega`; level ranges use the fixed task-level
 reference range. Direction and unsigned curvature are intentionally absent:
 within the v1 canonical grammar they have no separately declared scalar
@@ -92,7 +96,7 @@ The clean latent trajectory and true scalar field are accessible only here.
   `D_violation_epsilon=max(|theta*-(c_0+s epsilon R_theta)|-w,0)/R_theta`.
 - **Lower bound is a different one-sided statement**, not a unique true
   parameter. Its baseline declared value is `L_0=min_Omega f* - m_0`, with
-  `m_0/R_ref in {.005,.025,.045}`; its perturbation is
+  `m_0/R_ref in {.005,.035,.075}`; its perturbation is
   `L_epsilon=L_0+s epsilon R_ref`. Bound coverage is exclusively
   `I[f*(x)>=L_epsilon for all x in Omega]`, and its violation severity is
   `max_x(L_epsilon-f*(x))_+/R_ref`. A negative bound shift can remain valid by
@@ -136,11 +140,20 @@ happens to conditional sharpness and violation severity **at and beyond that
 known validity boundary**, including sign asymmetry and confidently-wrong
 states. The one-sided bound has inherently asymmetric validity geometry.
 
+The **signed confidently-wrong onset** `epsilon_CW,s*` is the first tested
+`epsilon` satisfying `Coverage_epsilon=0`, `ESS>=100`, and
+`S(P_epsilon|D)>=.10 nat`. If validity breaks but no such row occurs through
+`.30`, the endpoint is right-censored as `> .30`; if validity never breaks,
+the endpoint is not-at-risk / not applicable. Comparing `epsilon_CW,s*` with
+`epsilon_break,s*` distinguishes immediate sharp-but-wrong failure from an
+initially invalid-but-weak period.
+
 Report by field and sign:
 
 - coverage and violation-severity curves over `epsilon`;
 - sharpness curves over `epsilon` and a separate ESS-invariance audit;
-- attainment curves `Pr(epsilon_break* <= epsilon)`;
+- attainment curves for both `Pr(epsilon_break* <= epsilon)` and
+  `Pr(epsilon_CW* <= epsilon)` within their applicable risk sets;
 - directional asymmetry, without pooling signs into a false symmetric score.
 
 A row is **confidently wrong** only when all of the following hold:
@@ -163,7 +176,7 @@ outcomes:
 3. Observed prefix and target `Omega` are invariant over `epsilon`.
 4. Oracle coverage/violation code is unavailable to the sharpness scorer.
 5. `ESS` is identical across all margin/sign/epsilon rows of one trajectory.
-6. Location/event truths are generated in the safe interior `[.53,.67]`; at
+6. Location/event truths are generated in the safe interior `[.54,.66]`; at
    maximum displacement plus interval half-width they cannot cross the
    `Omega=[.40,.80]` boundary. No clipping is allowed.
 7. Bound coverage is tested only by its function-level inequality.

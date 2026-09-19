@@ -1471,6 +1471,10 @@ The proposed corpus is 450 latent trajectories (five fields × three generators
 The break threshold is therefore a **controlled tolerance conditional on
 initial validity margin**, not an intrinsic primitive ranking. The empirical
 focus is sharpness and violation severity at/beyond the validity boundary.
+Location/event truths are constrained to the safe interior `[.54,.66]` so the
+maximum displacement plus interval width cannot cross the declared scope.
+The one-sided bound margins are `.005/.035/.075 R_ref`, deliberately chosen
+to resolve to distinct positive-direction break grid levels `.025/.05/.10`.
 
 **Critical separation.** Coverage and violation may use clean latent truth only
 in an oracle validation stage. Bound is evaluated solely as a function-level
@@ -1481,7 +1485,10 @@ declaration. Since those prefix likelihood weights are shared, ESS must be
 identical over every perturbation of a base trajectory; it is an integrity
 invariant, not an E12-A outcome. No prediction engine, RMSE, utility, or harm
 target enters E12-A. `Coverage=0 & ESS>=100 & S>=.10` is *confidently wrong*
-only as an information diagnostic, not a prediction-safety conclusion.
+only as an information diagnostic, not a prediction-safety conclusion. A
+separate signed `epsilon_CW*` endpoint records the first invalid-but-sharp row,
+allowing immediate confidently-wrong failure to be separated from invalid but
+initially weak misspecification.
 
 **Boundary.** Direction and unsigned curvature have no independent scalar
 realization field in the v1 grammar, so they are not forced into a fictional
