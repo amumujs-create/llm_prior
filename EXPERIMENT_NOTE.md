@@ -1552,3 +1552,34 @@ false structural additions, reversals, and omissions.
 
 **Artifact.** [E12-A results](RESULTS_PRIOR_FRAGILITY_E12A.md)
 · [E12-A execution freeze](E12A_EXECUTION_FREEZE_V1.md)
+
+---
+
+## 32. E12-B — Content / Composition Fragility (design record)
+
+**Why this is separate.** E12-A perturbed only numeric realization while
+holding structural content fixed. E12-B asks the orthogonal question: what
+happens when the content itself is removed, falsely added, or reversed?
+Numeric fields are frozen here.
+
+**Operations.** Starting from a true canonical triple `P_full=A∧B∧C`, E12-B
+will evaluate: (i) omission of one true atom, (ii) addition of one *compatible
+but clean-oracle-false* canonical atom, and (iii) signed reversal where a
+registered opposite atom exists. Omission should preserve coverage and can
+only lose conditional sharpness; false addition is nested but invalid and may
+be confidently wrong; reversal is non-nested and needs the E12-A two-sided
+floor rule.
+
+**Critical preflight.** Full execution is blocked until a hashed operation
+catalog gives every intended composition an explicit compatible false addition
+or records its operation-specific exclusion. The catalog must prevent an
+invalid addition from being merely a logical contradiction, and must preserve
+equal bank/observation/weight conditions across all operations. Primary results
+will be stratified by `intended composition × operation type × target/source
+atom × generator`; no single pooled “structural error” score is allowed.
+
+**Boundary.** E12-B measures content/composition validity and conditional
+sharpness only—not prediction utility, harm, engine compatibility, or LLM
+behavior.
+
+**Artifact.** [E12-B content/composition fragility protocol draft](PRIOR_CONTENT_COMPOSITION_FRAGILITY_E12B_PROTOCOL_DRAFT_V1.md)
