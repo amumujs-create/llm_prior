@@ -49,11 +49,11 @@ their conditional informational completeness remains empirical:
 
 `Delta S_miss(P)=S(P_star|D)-S(P|D)`.
 
-E11's nested floor rule is retained: neither candidate at floor yields an
-exact gap; `P_star` only at floor yields a lower bound; both at floor are
-unresolved; and a subset at floor while `P_star` is non-floor is an integrity
-violation. The `.10 nat` informational-completeness label is primary only for
-reliable, exact rows; censored gaps are unresolved.
+E11's nested floor rule is retained: neither candidate floor-hit gives an
+exact gap; `P_star`-only floor-hit gives a lower bound; both floor-hit is
+unresolved; and subset-only floor-hit is an integrity violation. The `.10 nat`
+informational-completeness label is primary only for reliable, exact rows;
+censored gaps are unresolved.
 
 No numeric perturbation, false addition, or reversal enters these seven rows.
 Where applicable, E12-A/B are cited only in final interpretation as evidence
@@ -70,7 +70,7 @@ an acceptance condition here, not a varying association axis.
 | Informativeness | `S(P|D)`, primary threshold `.10 nat` | `ESS>=100` required for reliable interpretation; record `N_survive`, `p_weighted`, and floor state |
 | Observability | atom-level `E_a` | reuse E9 checker; record candidate-specific `N_obs(P)=sum_{a in P} I(E_a>=.80)` and `O_P=I(min_{a in P} E_a>=.80)`; store oracle `N_obs*`, `O*` as task context |
 | Scope | contiguous `H_valid*(P)` | clean scope scan at `.85,.90,1.00,1.10,1.20`; sharpness remains fixed on `Omega_0` |
-| Completeness | `C_atom`, `Delta S_miss` | informationally complete iff reliable and `Delta S_miss<=.10 nat` |
+| Completeness | `C_atom`, `Delta S_miss` | informationally complete iff reliable, gap-status exact, and `Delta S_miss<=.10 nat` |
 
 Scope is intentionally measured beyond `.80` while sharpness remains on
 `.40-.80`; this prevents a moving future target from confounding `S(P|D)`.
@@ -86,6 +86,10 @@ lower bound; both censored is unresolved; censored full plus observed subset is
 a nesting integrity violation. “Weak but persistent” means no scope failure
 through `1.20`, not `H_valid*>=1.20` as an exact assertion.
 
+Every candidate row stores `delta_H_scope_status={exact,lower_bound,unresolved}`
+and either `delta_H_scope_value` or `delta_H_scope_bound`; a censored bound is
+never written as an exact numeric difference.
+
 Candidate states use `O_P`, not oracle-wide `O*`: an observable pair `A and B`
 is not labelled unobservable merely because omitted oracle atom `C` lacks
 evidence. Oracle-wide observability remains a task-level context field.
@@ -97,6 +101,12 @@ medium, and high values; do not retune numeric values. Reuse nested realization
 freedom only as a stored multiplicity control, not as a primary factorial
 quota. Scope variation is balanced by acceptance stratification of the full
 triple `P_star`:
+
+`eta` is a shared task-level evidence-contrast level, not a claim that the
+three atoms have equal realised difficulty. Apply the same frozen low/mid/high
+E9 `eta` value to each atom's own primitive-specific prefix evidence template
+and checker, retaining `E_A,E_B,E_C` separately. Realised evidence values are
+outcomes, not selected labels.
 
 | Scope stratum | Full-prior condition |
 |---|---|
@@ -130,12 +140,12 @@ Report feasible joint-state frequencies, including:
 
 1. **Informative but unobservable:** `S>=.10`, reliable, `O_P=0`.
 2. **Atom-incomplete but informationally complete:** `C_atom=0`, reliable,
-   `Delta S_miss<=.10`.
+   `gap_status=exact`, `Delta S_miss<=.10`.
 3. **Informative but limited-scope:** `S>=.10`, reliable,
    `H_valid*<=.90`.
-4. **Weak but persistent:** `S<.10`, reliable, `H_valid*>=1.20`.
+4. **Weak but persistent:** `S<.10`, reliable, no scope failure through `1.20`.
 5. **Observable but informationally redundant:** for an atom-incomplete
-   subset, `O_P=1`, reliable, `Delta S_miss<=.10`.
+   subset, `O_P=1`, reliable, `gap_status=exact`, `Delta S_miss<=.10`.
 
 The absence of a state is also a result; it must not be treated as an integrity
 failure.
@@ -144,8 +154,8 @@ failure.
 
 - `P(S>=.10 | core coverage=1, reliable)`;
 - `P(O_P=1 | S>=.10, reliable)`;
-- `P(H_valid*>=h | S>=.10, reliable)` for predeclared horizons;
-- `P(Delta S_miss<=.10 | C_atom=0, reliable)`;
+- `P(C_P(h)=1 | S>=.10, reliable)` for predeclared horizons;
+- `P(Delta S_miss<=.10 | C_atom=0, reliable, gap_status=exact)`;
 - candidate-size-conditioned distributions of `(S, N_obs, H_valid*, Delta S_miss)`.
 
 Use mixed-type association summaries and conditional distributions. Primary
@@ -169,8 +179,9 @@ non-definitional relations such as `S ↔ O_P`, `S ↔ H_valid*`,
 Subset nesting entails `S(P_star|D)>=S(P_subset|D)` and
 `H_valid*(P_subset)>=H_valid*(P_star)` under common atom semantics, horizon
 grid, and first-failure rule. Both are integrity invariants. Store
-`Delta H_scope=H_valid*(P_subset)-H_valid*(P_star)`; its magnitude/frequency,
-alongside `Delta S_miss`, is empirical rather than the inequality direction.
+`delta_H_scope_status={exact,lower_bound,unresolved}` and its corresponding
+exact value or lower bound; its magnitude/frequency, alongside `Delta S_miss`,
+is empirical rather than the inequality direction.
 
 ## 8. Integrity sanity before full run
 
