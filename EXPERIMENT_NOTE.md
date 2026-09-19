@@ -1286,3 +1286,38 @@ high unresolved tail must remain in every presentation of this result.
 
 **Result artifact.** [E9 results](RESULTS_PRIOR_INFORMATION_LIFECYCLE_E9.md) ·
 ![E9 lifecycle attainment](figures/fig33_e9_lifecycle_attainment.png)
+
+---
+
+## 29. E10 — Prior Scope / Validity Horizon (design record)
+
+**Question.** E9 measured whether a supplied valid structural prior adds
+information beyond a nested observed prefix. E10 deliberately asks a different
+prior-intrinsic question: *over which future interval does that supplied prior
+remain structurally valid?*
+
+**Object.** With a fixed support boundary `b=.40`, E10 labels
+`V_P(h)=I[P is valid everywhere on [b,h]]` on the frozen horizon grid
+`.45,.50,.60,.70,.80,.90,1.00`, then records the maximum contiguous tested
+valid horizon `H_valid*`. A prior valid through `1.00` is only
+**persistent-within-tested-domain**, never globally persistent.
+
+**Important separation.** A prior can be locally valid yet later invalidated
+by flattening, a turning point, a second regime change, a bound crossing, or a
+renewed drift away from an asymptote. This is a scope result, not a false-prior
+label. E10 uses oracle future truth only to generate/validate scope labels; it
+does not use observation noise, conditional sharpness, engines, RMSE, utility,
+or deployment loss.
+
+**Proposed corpus.** `7 primitives × 3 intended scope tiers × 3 generators ×
+30 seeds = 1,890` independent latent tasks. Tiers are local, medium-range, and
+persistent-within-domain. They are pre-generation controls, not output labels
+selected after measuring `H_valid*`.
+
+**Freeze still required.** Before the run, each primitive needs a numeric
+oracle-checker tolerance table and fixed violation parameter ranges. The E10
+sanity suite must validate endpoint brackets, non-reentry semantics, terminal
+persistence, and strict separation of oracle scope validation from downstream
+utility/engine computations.
+
+**Artifact.** [E10 scope/validity-horizon protocol draft](PRIOR_SCOPE_VALIDITY_HORIZON_PROTOCOL_DRAFT_V1.md)

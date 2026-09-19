@@ -110,8 +110,9 @@ properties.
 
 The present Prior Anatomy stage intentionally focuses on layers 1, 3–7:
 truth/content/specification/scope/belief/evidence and their measurements.
-E9 addresses minimum informational evidence; E10 should address scope/validity
-horizon; E11 should decompose structured misspecification and fragility.
+E9 addresses minimum informational evidence; E10 addresses scope/validity
+horizon; E11 will address grammar-relative completeness; E12 will decompose
+structured misspecification and fragility.
 Translation onward is held separate until the anatomy is understood. The later
 Prior Critic is an arbitration/deployment object, not a replacement for this
 taxonomy.
