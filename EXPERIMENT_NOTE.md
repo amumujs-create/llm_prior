@@ -1178,9 +1178,11 @@ measure; utility/harm is conditional on translation, integration, engine,
 optimization, context, and loss. These qualifications prevent the benchmark
 from accidentally presenting deployment outcomes as intrinsic prior quality.
 
-The next anatomy sequence is E9 minimum informational evidence → E10 prior
-scope/validity horizon → E11 structured misspecification/fragility. Prior
-Critic belongs later to arbitration/deployment and must not collapse these
-upstream distinctions.
+The next anatomy sequence is E9 information lifecycle/minimum evidence → E10
+prior scope/validity horizon → E11 structured misspecification/fragility. E9
+separates first observed structure (`E_obs*`), first reliable nontrivial
+conditional information (`E_joint*`), and later redundancy (`E_red*`), and
+does not equate effect strength with identifiability. Prior Critic belongs later
+to arbitration/deployment and must not collapse these upstream distinctions.
 
 **Artifact.** [Prior Anatomy taxonomy](PRIOR_ANATOMY_TAXONOMY_V1.md)

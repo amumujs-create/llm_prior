@@ -16,12 +16,15 @@ clean prefix range. The target structural prior is true by construction.
 
 ## Three difficulty axes
 
-- **Identifiability / effect strength:** `.15, .50, .85` of the primitive's
-  frozen valid range.
-- **Realization freedom:** low/medium/high, operationalized as 1/3/5 uncertain
-  continuation parameters in the candidate ensemble. The same prior constraint
-  is checked, but the ensemble contains progressively more unconstrained
-  realization degrees of freedom.
+- **Structural separability (a controlled source of practical
+  identifiability):** low/medium/high prefix contrast between the target
+  constraint and registered alternative continuations. It is not called effect
+  strength and is reported separately from all other axes.
+- **Realization freedom:** low/medium/high, operationalized as 1/3/5 active
+  uncertain continuation coordinates in a **single shared ambient ensemble**.
+  Ensemble basis, coefficient scale, likelihood temperature, and reference
+  measure are frozen; only the active-coordinate count changes. This avoids
+  conflating DoF with a different sampler or sharpness definition.
 - **Future consequence:** low/medium/high, operationalized by a frozen
   continuation-divergence multiplier `.5/1.0/2.0` after the observed boundary.
   This is recorded for later E10/utility linkage but does not enter E9's
@@ -45,26 +48,40 @@ Coverage is 1 by construction for the supplied true prior and is retained only
 as a checker invariant. No future target, utility, realization engine, or
 far-OOD prediction enters any E9 input or endpoint.
 
-## Minimum evidence definition
+## Information lifecycle endpoints
 
-Define the *admissible informational prefix* at a support level `s` only when
-all three predeclared conditions hold:
+At a support level `s`, structural observation is present when
+`E_struct,s >= .80`; reliable conditional information is present when it also
+has `S(P|D_s) >= .10` and `ESS_s >= 100`.
+
+- `E_obs*` is the first prefix with `E_struct >= .80`.
+- `E_joint*` is the first prefix satisfying all three conditions.
+- `E_red*` is the first prefix at or after `E_joint*` with `E_struct >= .80`,
+  `S(P|D) < .10`, and the same redundancy condition at the immediately next
+  available prefix. It marks that data has made the prior's *additional*
+  restriction practically redundant; it does not mean the prior became false.
+
+These endpoints need not exist or occur in a universal order because
+conditional sharpness is not assumed monotone. Missing endpoints are
+right-censored beyond `.70`.
+
+The operational conditions comprising `E_joint*` are:
 
 1. `S(P|D_s) >= .10` (practically nontrivial conditional restriction);
 2. `ESS_s >= 100` (sampler reliability); and
 3. `E_struct,s >= .80` (the relevant structure is observed rather than supplied
    only as external truth).
 
-`E_info*` is the first support in the ordered path satisfying all three.
-If none satisfies, it is right-censored at `> .70` and called an
+If `E_joint*` does not exist, it is right-censored at `> .70` and called an
 informational-null-at-tested-prefix task. The three components are always
 reported separately; the composite is an operational decision label, not a
 claim that they are identical constructs.
 
 ## Outputs
 
-Report the distribution of `E_info*` by primitive and difficulty axis; the
-right-censoring rate; component trajectories (`S`, `ESS`, `E_struct`); and the
+Report the distributions of `E_obs*`, `E_joint*`, and `E_red*` by primitive and
+difficulty axis; their right-censoring rates; component trajectories (`S`,
+`ESS`, `E_struct`); and the
 relationship of future consequence to these information-only quantities without
 using it in the definition. E9 does not test engine utility, prior scope, or
 fragility; those belong to later E10/E11.
