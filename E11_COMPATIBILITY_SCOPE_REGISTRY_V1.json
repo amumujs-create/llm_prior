@@ -1,0 +1,9 @@
+{
+  "name": "E11 atom-instance compatibility and scope registry v1",
+  "scope": [0.4, 0.8],
+  "source_atom_library": "E11_CANONICAL_ATOM_LIBRARY_V1.json",
+  "semantics": "All atom instances apply globally over the same declared scope. No segment-local reinterpretation is permitted.",
+  "compatibility_rule": "A composition is compatible iff it includes no listed incompatible atom-instance pair and its clean-scope conjunction checker accepts it.",
+  "envelope_rule": "Among compatible subsets of valid canonical atoms that contain the exact intended atom IDs, accept a task only if exactly one inclusion-maximal subset exists.",
+  "mechanistic_flags": {"regime_postchange": "mechanistic", "asymptote_to_0_from_above": "latent_assisted", "asymptote_to_0_from_below": "latent_assisted"}
+}

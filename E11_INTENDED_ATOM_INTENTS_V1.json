@@ -1,0 +1,14 @@
+{
+  "scope": [0.4, 0.8],
+  "generator_intents": {
+    "direction+curvature+bound": ["direction_decreasing", "curvature_convex", "lower_bound_0"],
+    "direction+curvature+asymptote": ["direction_decreasing", "curvature_convex", "asymptote_to_0_from_above"],
+    "direction+inflection+bound": ["direction_decreasing", "inflection_concave_to_convex", "lower_bound_0"],
+    "direction+inflection+asymptote": ["direction_decreasing", "inflection_concave_to_convex", "asymptote_to_0_from_above"],
+    "curvature+bound+asymptote": ["curvature_convex", "lower_bound_0", "asymptote_to_0_from_above"],
+    "inflection+bound+asymptote": ["inflection_concave_to_convex", "lower_bound_0", "asymptote_to_0_from_above"],
+    "turning+bound+asymptote": ["turning_maximum", "lower_bound_0", "asymptote_to_0_from_above"],
+    "regime+bound+asymptote": ["regime_postchange", "lower_bound_0", "asymptote_to_0_from_above"]
+  },
+  "rule": "The generator stores exact canonical atom IDs, not primitive family names. Every supplied candidate is a nonempty subset of its task's exact intended atom IDs."
+}

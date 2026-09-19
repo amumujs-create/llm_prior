@@ -198,6 +198,10 @@ sanity suite must verify:
 11. no utility, engine, prediction, future-RMSE, or far-OOD target enters
    scoring.
 
+The complete execution semantics, exact intended atom IDs, hash provenance,
+unique-envelope-conditioned estimand, and rejection accounting are frozen in
+[E11 execution freeze](E11_EXECUTION_FREEZE_V1.md).
+
 ## Interpretation boundary
 
 E11 measures missing structural information **inside a fixed scope and frozen

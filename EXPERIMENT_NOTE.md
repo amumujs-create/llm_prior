@@ -1401,9 +1401,17 @@ If oracle `P_star` floor-hits and a candidate does not, its gap is a lower
 bound: it establishes informational incompleteness only when that bound exceeds
 `.10 nat`, otherwise its information status is unresolved.
 
+**Execution identity.** Generator intent is stored as exact canonical atom IDs,
+not primitive family labels. E11 execution records hashes of the canonical atom
+library, atom-instance compatibility/scope registry, intended-intent registry,
+and runner code. Its estimand is explicitly conditional on a unique
+inclusion-maximal compatible envelope; triple × generator rejection accounting
+will report the representativeness limitation rather than hide it.
+
 **Boundary.** E11 is grammar-relative, scope-controlled completeness only. It
 cannot claim world completeness, identifiability, robustness, utility, safety,
 or engine compatibility. An intended full triple can remain incomplete when
 other canonical grammar atoms are also valid in the same scope.
 
 **Artifact.** [E11 completeness protocol draft](PRIOR_COMPLETENESS_E11_PROTOCOL_DRAFT_V1.md)
+· [E11 execution freeze](E11_EXECUTION_FREEZE_V1.md)
