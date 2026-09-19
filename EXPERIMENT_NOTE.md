@@ -1542,6 +1542,10 @@ and bound sharpness rose on tightening but fell on relaxation.
 
 **Conclusion and boundary.** E12-A establishes a controlled anatomy result:
 numeric misspecification need not make a prior weak when it becomes invalid.
+Within the frozen bank, the observed transition was commonly `valid -> invalid
++ still sharp`: **specification invalidity != specification weakness**. The
+next E12-B question is deliberately different—false structural additions,
+reversals, and omissions—not a further numeric sweep.
 It does not rank primitive-intrinsic fragility, estimate real calibration
 errors, or assess utility/harm. E12-B remains the separate experiment for
 false structural additions, reversals, and omissions.

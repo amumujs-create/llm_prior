@@ -64,6 +64,13 @@ specification need not weaken when it becomes invalid. Under the frozen bank
 and `.10 nat` rule, invalid specifications immediately met the
 confidently-wrong information criterion whenever a break occurred.
 
+Equivalently, within this controlled setting, **specification invalidity did
+not imply specification weakness**. The observed transition was often
+`valid -> invalid + still sharp`, not necessarily
+`valid -> ambiguous/weak -> invalid`. The field-specific curves further show
+that misspecification magnitude alone is insufficient: field and signed
+direction of the numeric error matter.
+
 This does **not** establish that real scientific priors always become unsafe
 at first invalidity. The break endpoint is partly determined by the deliberate
 baseline-margin geometry, and the sharpness result is conditional on the
