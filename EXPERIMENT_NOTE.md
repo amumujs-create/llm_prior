@@ -1814,13 +1814,18 @@ under the already frozen convergence rule and may not retune them.
 
 The remaining ambiguous choices are now explicit: each of the eight intended
 packets has exactly one frozen heterogeneity target field (incidental atoms do
-not choose it), and E14-A is an independent two-group-per-base-cell-per-branch
+not choose it). The heterogeneity field uses additive `r_add` geometry, not
+the entangled interaction field; E14-A is an independent
+four-group-per-base-cell-per-branch
 sanity corpus. Its p95 values are deterministic convergence diagnostics rather
 than independent-sample inference; its seed namespace, eligible-row rule, and
 constant-Spearman rule are frozen. The former “density-compensated” supplement
 is named the **reference-context-complete control**, because it expands
 observation coverage of frozen reference contexts without claiming equal
 geometric sampling density across different-dimensional context spaces.
+Within every paired latent group, `R_ref` is calculated once from unmodulated
+`f_0` over the frozen core/reference design and shared by all branches for
+both noise scale and likelihood normalization.
 
 **Artifact.** [E14 protocol draft](COMPLEXITY_SCALING_E14_PROTOCOL_DRAFT_V1.md)
 · [E14 design-freeze checklist](E14_DESIGN_FREEZE_CHECKLIST_V1.md)

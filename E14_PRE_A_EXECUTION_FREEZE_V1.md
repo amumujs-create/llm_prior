@@ -64,6 +64,11 @@ Scope horizons are `(.85,.90,1.00,1.10,1.20)`; strata are limited
 through `1.20`. Requested and measured strata are stored separately and only
 measured equality accepts a group.
 
+For each paired latent group, `R_ref` is computed once from unmodulated
+baseline `f_0` over the frozen core/reference design. This single value sets
+both the `.01 R_ref` noise scale and likelihood normalization for every branch
+condition of the group; branch-specific `R_ref` recomputation is prohibited.
+
 ## 5. Uncertainty and manifest
 
 Primary confidence intervals use **B=5,000** paired-latent-group clustered
@@ -78,10 +83,10 @@ acceptance criterion.
 
 ## 6. Independent E14-A sanity corpus and convergence diagnostics
 
-E14-A has **2 accepted paired groups per base cell per primary branch**. A
+E14-A has **4 accepted paired groups per base cell per primary branch**. A
 base cell is the 216-cell definition above; a convergence cell additionally
 indexes the realized branch condition. Its seeds are
-`e14-a-v1|branch|base-cell|group-index`, with indices `{0,1}`. The full-run
+`e14-a-v1|branch|base-cell|group-index`, with indices `{0,1,2,3}`. The full-run
 namespace is separate (`e14-full-v1`) and never reuses an E14-A group.
 
 The p95 bank diagnostics are deterministic pooled eligible-row quantiles inside

@@ -29,8 +29,8 @@ E14 cannot start a generator or a full run until each item is frozen.
 - [x] Master paired prefix-noise field, E13 inherited-artifact hashes,
   `B=5000` paired-group bootstrap, and scope-horizon/stratum values.
 - [x] Packet-specific heterogeneity-field table and an independent E14-A
-  pilot (`2` groups/base-cell/branch), including seed namespaces and p95/
-  Spearman edge-case rules.
+  pilot (`4` groups/base-cell/branch), including additive geometry, seed
+  namespaces, paired-baseline `R_ref`, and p95/Spearman edge-case rules.
 
 The following are *not* E14-A gates: monotonic ESS, lower sharpness at higher
 complexity, lower completeness, lower evidence, or any desired joint state.

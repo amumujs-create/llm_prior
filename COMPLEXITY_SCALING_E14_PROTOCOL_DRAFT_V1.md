@@ -182,7 +182,7 @@ direction and curvature signs, the zero lower bound, and a zero asymptote from
 above. `d=1` uses the null field `a=1`.
 
 Heterogeneity is a separate `d=8`, additive-background branch. It uses the
-frozen `r_ent` field and exactly one target field selected from the intended
+frozen `r_add` field and exactly one target field selected from the intended
 packet table below. Incidental realized atoms never alter this selection:
 
 | Intended packet | Frozen heterogeneity field |
@@ -198,7 +198,7 @@ packet table below. Incidental realized atoms never alter this selection:
 
 For bounded location/rate fields,
 
-`theta(z)=theta_0 + kappa_s delta_theta std_Z(r_ent)/max_Z|std_Z(r_ent)|`,
+`theta(z)=theta_0 + kappa_s delta_theta std_Z(r_add)/max_Z|std_Z(r_add)|`,
 
 where `kappa_moderate=.25`, `kappa_strong=.50`, and `delta_theta` is the
 predeclared distance from `theta_0` to the nearer edge of that field's
@@ -229,7 +229,10 @@ group, initialize one deterministic master Gaussian field
 `epsilon[k_z,k_t]` of shape `64 x 49` with seed
 `SHA256("e14-noise-v1|paired_group_id")`. Its standard deviation is
 `.01 R_ref`, where `R_ref` is the one clean core/reference-design range used
-by likelihood normalization. The common prefix-time indices are
+by likelihood normalization. For each paired latent group it is computed once
+from the unmodulated matched baseline `f_0` over the frozen core/reference
+design, then reused unchanged for every dimension, interaction, heterogeneity,
+and corner condition in that group. The common prefix-time indices are
 `{0,8,16,24,32,40,48}` of the 49-point grid. `d=3` and `d=8` take exactly the
 same first-seven context rows and these seven columns in the primary `7x7`
 layout. The master row with index zero is also assigned to the `d=1` null
@@ -248,12 +251,12 @@ deterministically into each matched field
 `xi_m -> {f_m^dim, f_m^int, f_m^het}`. Thus paired sharpness contrasts do not
 contain an avoidable Monte-Carlo-bank difference.
 
-E14-A uses an independent sanity corpus of **2 accepted paired groups per base
+E14-A uses an independent sanity corpus of **4 accepted paired groups per base
 cell per primary branch**. Its base-cell definition is `intended packet x
 generator x eta x requested full-scope stratum` (`216` cells); its convergence
 cell is `base cell x realized branch condition`. Seeds are deterministic under
 the `e14-a-v1|branch|base-cell|group-index` namespace with group indices
-`{0,1}`. E14-A groups are never reused in E14-B/C/D or the corner run, whose
+`{0,1,2,3}`. E14-A groups are never reused in E14-B/C/D or the corner run, whose
 seeds begin with the separate `e14-full-v1` namespace.
 
 E14-A selects one common `M` from the nested ladder
