@@ -132,8 +132,8 @@ no association direction is claimed.
 > observability support is too sparse to estimate a general observability
 > association.**
 
-> **Conditional informativeness does not imply broad validity scope; scope
-> must be represented as a separate, censoring-aware prior property.**
+> **Conditionally informative priors can nevertheless have limited validity
+> scope; scope therefore remains a separate, censoring-aware prior property.**
 
 ## Boundary
 
