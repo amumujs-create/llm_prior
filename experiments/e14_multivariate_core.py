@@ -21,7 +21,6 @@ from run_prior_completeness_e11 import INTENTS, envelope, valid_atoms
 Z_SEED = 20261014
 SIGMA_CONTEXT = .20
 KAPPA = {"none": 0., "moderate": .25, "strong": .50}
-SCALE_SIGMA = {"none": 0., "moderate": .10, "strong": .20}
 HET_FIELD = {
     "direction+curvature+bound": "beta",
     "direction+curvature+asymptote": "beta",
@@ -53,8 +52,10 @@ def z_ref(d: int) -> np.ndarray:
         raise ValueError(f"unsupported total dimension: {d}")
     if d == 1:
         return np.zeros((1, 0))
-    z = z_ref_max()[:, :d - 1]
-    return np.unique(z, axis=0)
+    # Sobol draws are continuous, hence these projections are non-duplicated
+    # here. Preserve master-row order: observed rows 0..6 and master-noise
+    # rows must identify the same contexts at d=3 and d=8.
+    return z_ref_max()[:, :d - 1].copy()
 
 
 def _raw_context_field(z: np.ndarray, family: str) -> np.ndarray:
@@ -89,11 +90,21 @@ def modulation(z: np.ndarray, family: str, sigma: float) -> np.ndarray:
     return a / a.mean()
 
 
-def _native_field(intent_name: str, generator: str, x: np.ndarray, theta: np.ndarray | None = None) -> np.ndarray:
+def latent_parameters(group_seed: int) -> dict[str, float]:
+    """Frozen group-level E14 base variation, shared by all paired branches."""
+    rng = np.random.default_rng(stable_seed("e14-base-latent-v1", group_seed))
+    return {"amplitude": float(np.exp(rng.uniform(-.02, .02))),
+            "rate_multiplier": float(rng.uniform(.98, 1.02)),
+            "event_shift": float(rng.uniform(-.002, .002))}
+
+
+def _native_field(intent_name: str, generator: str, x: np.ndarray, theta: dict | None = None,
+                  latent: dict[str, float] | None = None) -> np.ndarray:
     """Analytic E13 persistent families with one optional native field."""
     k = {"spline": 1., "basis": 1.03, "ode": .97}[generator]
     intent = set(INTENTS[intent_name])
     theta = {} if theta is None else theta
+    latent = latent_parameters(0) if latent is None else latent
     n = len(next(iter(theta.values()))) if theta else 1
     def value(name: str, default: float) -> np.ndarray:
         v = np.asarray(theta.get(name, default), dtype=float)
@@ -101,40 +112,43 @@ def _native_field(intent_name: str, generator: str, x: np.ndarray, theta: np.nda
     if "turning_maximum" in intent:
         # The E13 asymptote checker loses its core-domain tail criterion above
         # tau=.55.  Use the predeclared atom-preserving interior [.53,.55].
-        tau, lam, beta = value("tau", .54), value("lambda", 3.2*k), value("beta", 7.0*k)
+        tau = value("tau", .54 + latent["event_shift"])
+        lam, beta = value("lambda", 3.2*k*latent["rate_multiplier"]), value("beta", 7.0*k*latent["rate_multiplier"])
         u = x[None, :] - tau[:, None]
-        return np.exp(-lam[:, None]*u - (lam/beta)[:, None]*(np.exp(-beta[:, None]*u)-1.))
-    if "inflection_concave_to_convex" in intent:
-        iota, beta = value("iota", .55), value("beta", 7.0*k)
-        return 1. / (1. + np.exp(beta[:, None]*(x[None, :] - iota[:, None])))
-    if "regime_postchange" in intent:
+        y = np.exp(-lam[:, None]*u - (lam/beta)[:, None]*(np.exp(-beta[:, None]*u)-1.))
+    elif "inflection_concave_to_convex" in intent:
+        iota, beta = value("iota", .55 + latent["event_shift"]), value("beta", 7.0*k*latent["rate_multiplier"])
+        y = 1. / (1. + np.exp(beta[:, None]*(x[None, :] - iota[:, None])))
+    elif "regime_postchange" in intent:
         rho = value("rho", 1.2)
         u = np.clip((x - .28) / .10, 0., 1.); gate = smooth5(u)
-        return np.exp(-1.1*k*x[None, :] - rho[:, None]*gate[None, :])
-    if "asymptote_to_0_from_above" in intent:
-        lam = value("lambda", 2.1*k)
-        return np.exp(-lam[:, None]*x[None, :])
-    beta = value("beta", .01)
-    return 1.5 - .80*x[None, :] + beta[:, None]*x[None, :]**2
+        y = np.exp(-1.1*k*latent["rate_multiplier"]*x[None, :] - rho[:, None]*gate[None, :])
+    elif "asymptote_to_0_from_above" in intent:
+        lam = value("lambda", 2.1*k*latent["rate_multiplier"])
+        y = np.exp(-lam[:, None]*x[None, :])
+    else:
+        beta = value("beta", .01*latent["rate_multiplier"])
+        y = 1.5 - .80*x[None, :] + beta[:, None]*x[None, :]**2
+    return latent["amplitude"] * y
 
 
-def _theta_values(intent_name: str, generator: str, z: np.ndarray, level: str) -> tuple[dict[str, np.ndarray], dict[str, float]]:
+def _theta_values(intent_name: str, generator: str, z: np.ndarray, level: str, latent: dict[str, float]) -> tuple[dict[str, np.ndarray], dict[str, float]]:
     """Use one packet-frozen field and reject rather than clip unsafe values."""
     n = len(z); field = HET_FIELD[intent_name]; k = {"spline": 1., "basis": 1.03, "ode": .97}[generator]
     s = _standardized(z, "additive") if z.shape[1] else np.zeros(n)
     unit = s / max(float(np.max(np.abs(s))), 1e-12)
     if field == "tau":
-        base, lo, hi = .54, .53, .55
+        base, lo, hi = .54 + latent["event_shift"], .53, .55
     elif field == "iota":
-        base, lo, hi = .55, .50, .60
+        base, lo, hi = .55 + latent["event_shift"], .50, .60
     elif field == "rho":
         base, lo, hi = 1.2, .90, 1.50
     elif field == "beta" and "turning_maximum" in INTENTS[intent_name]:
-        base, lo, hi = 7.*k, 5.*k, 9.*k
+        base, lo, hi = 7.*k*latent["rate_multiplier"], 5.*k, 9.*k
     elif field == "beta" and "inflection_concave_to_convex" in INTENTS[intent_name]:
-        base, lo, hi = 7.*k, 5.*k, 9.*k
+        base, lo, hi = 7.*k*latent["rate_multiplier"], 5.*k, 9.*k
     else:  # convex quadratic coefficient
-        base, lo, hi = .01, .005, .020
+        base, lo, hi = .01*latent["rate_multiplier"], .005, .020
     margin = min(base-lo, hi-base)
     values = base + KAPPA[level]*margin*unit
     if not np.all(np.isfinite(values)) or np.any(values <= lo) or np.any(values >= hi):
@@ -152,6 +166,7 @@ class CleanField:
     y: np.ndarray
     semantic: tuple[dict, ...]
     field_audit: dict
+    latent_audit: dict
     pstar: frozenset
     rref: float
 
@@ -165,7 +180,7 @@ def _core_envelope(intent_name: str, x: np.ndarray, y: np.ndarray) -> frozenset:
     return pstar
 
 
-def build_clean(intent_name: str, generator: str, branch: str, heterogeneity: str = "none") -> CleanField:
+def build_clean(intent_name: str, generator: str, branch: str, heterogeneity: str = "none", group_seed: int = 0) -> CleanField:
     """Build a persistent multivariate base with checker-derived core envelope."""
     if branch == "dimension_d1": d, family, heterogeneity = 1, "additive", "none"
     elif branch == "dimension_d3": d, family, heterogeneity = 3, "additive", "none"
@@ -175,9 +190,9 @@ def build_clean(intent_name: str, generator: str, branch: str, heterogeneity: st
     elif branch == "heterogeneity": d, family = 8, "additive"
     else: raise ValueError(branch)
     if heterogeneity not in KAPPA: raise ValueError(heterogeneity)
-    z = z_ref(d); n = len(z)
-    theta, native_audit = _theta_values(intent_name, generator, z, heterogeneity) if heterogeneity != "none" else ({}, {"field": None, "rms": 0., "max_displacement": 0.})
-    native = _native_field(intent_name, generator, X, theta)
+    z = z_ref(d); n = len(z); latent = latent_parameters(group_seed)
+    theta, native_audit = _theta_values(intent_name, generator, z, heterogeneity, latent) if heterogeneity != "none" else ({}, {"field": None, "rms": 0., "max_displacement": 0.})
+    native = _native_field(intent_name, generator, X, theta, latent)
     amp = modulation(z, family, SIGMA_CONTEXT) if d > 1 else np.ones(n)
     y = amp[:, None] * native
     pstar = _core_envelope(intent_name, X, y)
@@ -187,10 +202,10 @@ def build_clean(intent_name: str, generator: str, branch: str, heterogeneity: st
     core = (X >= .40) & (X <= .80)
     # Paired-group R_ref is always the unmodulated f0 reference, not a branch
     # or heterogeneity-specific value.
-    rref = float(np.ptp(_native_field(intent_name, generator, X)[0, core]))
+    rref = float(np.ptp(_native_field(intent_name, generator, X, latent=latent)[0, core]))
     return CleanField(intent_name, generator, branch, X.copy(), z, y, semantic,
                       {"amplitude_centered_log_rms": float(np.sqrt(np.mean((np.log(amp)-np.log(amp).mean())**2))), **native_audit},
-                      pstar, max(rref, 1e-8))
+                      latent, pstar, max(rref, 1e-8))
 
 
 def persistent_scope_table(field: CleanField) -> tuple[dict[str, list[int]], dict[str, list[int]]]:
@@ -212,7 +227,7 @@ def apply_c2_intervention(field: CleanField, requested: str) -> CleanField:
         raise ValueError(requested)
     y = field.y.copy(); semantic = [dict(v) for v in field.semantic]
     if requested == "persistent_within_tested_domain":
-        return CleanField(field.intent_name, field.generator, field.branch, field.x, field.z_ref, y, tuple(semantic), field.field_audit, field.pstar, field.rref)
+        return CleanField(field.intent_name, field.generator, field.branch, field.x, field.z_ref, y, tuple(semantic), field.field_audit, field.latent_audit, field.pstar, field.rref)
     target = .85 if requested == "limited" else 1.10
     onset = target-.04; gate = smooth5((field.x-onset)/(target-onset))
     amp = np.asarray([np.interp(target, field.x, row) for row in field.y]) + .10
@@ -221,7 +236,7 @@ def apply_c2_intervention(field: CleanField, requested: str) -> CleanField:
         raise RuntimeError("C2 intervention changed core")
     for state in semantic:
         state["asymptote_active_through"] = target
-    return CleanField(field.intent_name, field.generator, field.branch, field.x, field.z_ref, y, tuple(semantic), field.field_audit, field.pstar, field.rref)
+    return CleanField(field.intent_name, field.generator, field.branch, field.x, field.z_ref, y, tuple(semantic), field.field_audit, field.latent_audit, field.pstar, field.rref)
 
 
 def candidate_cp(cont: dict[str, list[int]], candidate: frozenset) -> list[int]:

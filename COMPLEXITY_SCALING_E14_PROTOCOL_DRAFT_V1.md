@@ -209,6 +209,14 @@ group records realized field RMS and maximum displacement. Exact core
 `P_star` equality remains the final acceptance test; these formulae are a
 proposal family, not a metadata substitute for the oracle.
 
+`beta` is a **bounded native shape/rate field**, not the positive-scale field:
+its moderate/strong variation uses the bounded `theta(z)` rule above. Positive
+scale modulation is reserved for packets whose frozen target is amplitude.
+Each paired latent-group seed additionally draws one shared base amplitude
+`exp(U[-.02,.02])`, rate multiplier `U[.98,1.02]`, and event-location shift
+`U[-.002,.002]`; all branch members inherit the same draw. These draws are
+recorded in the manifest and are not re-sampled per branch.
+
 ## 6. Observation, bank, and evidence conventions
 
 ### Primary observation-budget condition

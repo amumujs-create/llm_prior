@@ -1834,7 +1834,12 @@ run, all 72 `8 intended packets x 3 generators x 3 requested scope strata`
 clean cells passed: exact core-envelope matching across branch members,
 base persistence through `1.20`, bitwise `t<=.80` C2-intervention invariance,
 checker-derived scope nesting, requested/measured scope agreement, and shared
-paired-baseline `R_ref`. This is implementation validation only; it is not
+paired-baseline `R_ref`. A paired-group seed now deterministically changes
+shared base amplitude/rate/event-location parameters, while every branch in
+that group receives exactly the same draw; the micro gate also verifies that a
+different group seed changes the base field. `Z_ref` preserves master Sobol row
+order, so the first seven observed contexts align with the paired master-noise
+rows at `d=3` and `d=8`. This is implementation validation only; it is not
 E14-A and does not select `M` or estimate an E14 result.
 
 **Artifact.** [E14 protocol draft](COMPLEXITY_SCALING_E14_PROTOCOL_DRAFT_V1.md)

@@ -17,8 +17,9 @@ PRIMARY = ("dimension_d1", "dimension_d3", "dimension_d8", "interaction_additive
 
 
 def check(intent: str, generator: str, requested: str) -> dict:
-    fields = [build_clean(intent, generator, branch) for branch in PRIMARY]
-    fields += [build_clean(intent, generator, "heterogeneity", level) for level in ("none", "moderate", "strong")]
+    group_seed = 0
+    fields = [build_clean(intent, generator, branch, group_seed=group_seed) for branch in PRIMARY]
+    fields += [build_clean(intent, generator, "heterogeneity", level, group_seed=group_seed) for level in ("none", "moderate", "strong")]
     base_raw_cont = [persistent_scope_table(f) for f in fields]
     pstars_equal = exact_envelope_match(*fields)
     persistent = all(all(all(v) for v in cont.values()) for _, cont in base_raw_cont)
@@ -36,7 +37,8 @@ def check(intent: str, generator: str, requested: str) -> dict:
             "base_persistent": persistent, "core_bit_identical": core_equal,
             "scope_nesting": nesting, "requested_equals_measured": all(m == requested for m in measured),
             "pstar": "|".join(sorted(fields[0].pstar)), "measured": measured,
-            "rref_shared": len({f.rref for f in fields}) == 1}
+            "rref_shared": len({f.rref for f in fields}) == 1,
+            "group_seed_changes_base": not (fields[0].y == build_clean(intent, generator, "dimension_d1", group_seed=1).y).all()}
 
 
 def main() -> None:
