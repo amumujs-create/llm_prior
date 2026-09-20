@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Predeclared descriptive analysis for frozen corrected E13 outputs."""
 from __future__ import annotations
-import csv,json
+import csv,json,random
 from collections import Counter,defaultdict
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]; IN=ROOT/'results/joint_prior_anatomy_e13/corrected_run/run'; OUT=ROOT/'results/joint_prior_anatomy_e13/corrected_analysis'
@@ -12,6 +12,15 @@ def write(name,rows):
  with (OUT/name).open('w',newline='') as f:w=csv.DictWriter(f,fieldnames=list(rows[0]));w.writeheader();w.writerows(rows)
 def mean(x):return sum(x)/len(x) if x else None
 def atoms(s):return frozenset(x for x in s.split('|') if x)
+def q50(x):return sorted(x)[len(x)//2] if x else None
+def boot_rate(rows, key, n=1000):
+ by=defaultdict(list)
+ for r in rows:by[r['task_id']].append(r)
+ ids=list(by); vals=[]; rng=random.Random(20260920)
+ for _ in range(n):
+  sample=[r for _id in [rng.choice(ids) for _ in ids] for r in by[_id]]
+  vals.append(mean([key(r) for r in sample]))
+ vals.sort();return vals[25],vals[974]
 def main():
  r=read(IN/'rows.csv');
  for x in r:
@@ -44,8 +53,19 @@ def main():
   p=atoms(x['candidate_atoms']); star=atoms(x['pstar_atoms']); omitted=star-p; implied=atoms(manifest[x['task_id']]['realized_P_star_atoms'])-atoms(manifest[x['task_id']]['intended_atoms'])
   for a in omitted: dec[(a,int(a in implied),x['oracle_size'],x['omitted_count'])].append(float(x['delta_S_miss']))
  out=[]
- for k,v in dec.items():out.append({'omitted_atom':k[0],'is_implied_atom':k[1],'oracle_size':k[2],'omitted_count':k[3],'n':len(v),'mean_delta_S_miss':mean(v),'info_complete_rate':mean([z<=.10 for z in v])})
+ for k,v in dec.items():out.append({'omitted_atom':k[0],'is_implied_atom':k[1],'oracle_size':k[2],'omitted_count':k[3],'n':len(v),'mean_delta_S_miss':mean(v),'median_delta_S_miss':q50(v),'info_complete_rate':mean([z<=.10 for z in v])})
  write('completeness_by_omitted_atom.csv',out)
+ # Mutually exclusive all-implied / mixed / no-implied omission classes.
+ coarse=[]
+ for klass in ('all_implied','mixed','no_implied'):
+  rr=[]
+  for x in exact:
+   p=atoms(x['candidate_atoms']);star=atoms(x['pstar_atoms']); implied=atoms(manifest[x['task_id']]['realized_P_star_atoms'])-atoms(manifest[x['task_id']]['intended_atoms'])
+   omitted=star-p; flags=[a in implied for a in omitted]
+   if (klass=='all_implied' and all(flags)) or (klass=='no_implied' and not any(flags)) or (klass=='mixed' and any(flags) and not all(flags)):rr.append(x)
+  lo,hi=boot_rate(rr,lambda z:float(z['delta_S_miss'])<=.10)
+  vv=[float(z['delta_S_miss']) for z in rr];coarse.append({'omission_class':klass,'rows':len(rr),'latent_tasks':len({z['task_id'] for z in rr}),'mean_delta_S_miss':mean(vv),'median_delta_S_miss':q50(vv),'info_complete_rate':mean([z<=.10 for z in vv]),'cluster_bootstrap_95ci_low':lo,'cluster_bootstrap_95ci_high':hi})
+ write('completeness_by_implied_status.csv',coarse)
  summary={'rows':len(r),'reliable_rate':mean([x['reliable'] for x in r]),'observable_rate':mean([x['observable'] for x in r]),'states':{x['state']:x['count'] for x in states},'completeness':comp[0],'association_boundary':'Observability associations are descriptive-only because O_P is degenerate in this corpus; primary empirical decomposition is omitted-atom delta_S_miss by scope profile.'}
  (OUT/'summary.json').write_text(json.dumps(summary,indent=2)+'\n');print(json.dumps(summary,indent=2))
 if __name__=='__main__':main()
