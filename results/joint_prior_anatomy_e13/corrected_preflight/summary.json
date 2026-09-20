@@ -1,0 +1,8 @@
+{
+  "protocol": "E13_scope_aware_preflight_v1",
+  "latent_tasks": 2160,
+  "expected_candidate_rows": 34560,
+  "exhausted_cells": 0,
+  "manifest_sha256": "87f421b1ed686423b4fba7dc4f21969fc0d0a72eb17d10b34b71d68a1fe844e2",
+  "accounting_sha256": "3ce97d9fd1d378f5fb0c937b759afbf2e41020d91a25caf9e438ba1b4b6b592c"
+}

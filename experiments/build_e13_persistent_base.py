@@ -45,7 +45,7 @@ def raw_valid(x,y,atom,h,z):
  if atom=='turning_maximum':
   nz=d1[np.abs(d1)>.02*r];return _changes(d1,.02*r)==1 and len(nz)>1 and nz[0]>0 and nz[-1]<0
  if atom=='regime_postchange': return bool(z['regime_active'])
- if atom=='asymptote_to_0_from_above': return bool(z['asymptote_active'] and np.min(yy)>0)
+ if atom=='asymptote_to_0_from_above': return bool(z['asymptote_active'] and h<=z.get('asymptote_active_through',np.inf) and np.min(yy)>0)
  raise ValueError(atom)
 
 def contiguous_table(x,y,pstar,z):
@@ -61,6 +61,7 @@ def build(intent,generator,seed):
  if pstar is None or not set(INTENTS[intent])<=set(pstar): return None,'core_envelope_failure'
  z={'regime_active':'regime_postchange' in pstar,
     'asymptote_active':'asymptote_to_0_from_above' in pstar,
+    'asymptote_active_through':np.inf,
     'asymptotic_limit':0.0 if 'asymptote_to_0_from_above' in pstar else None,
     'approach_side':'from_above' if 'asymptote_to_0_from_above' in pstar else None,
     'turning_type':'maximum' if 'turning_maximum' in pstar else None,

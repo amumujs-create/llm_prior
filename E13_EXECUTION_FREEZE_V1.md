@@ -19,6 +19,9 @@ without adding a new axis.
   final E13 corpus. A new persistent-base scope-aware preflight freezes the
   accepted manifest, envelope-size distribution, and expected row count only
   after clean-oracle measured-stratum acceptance.
+- Frozen corrected preflight: 2,160 accepted latent tasks, 34,560 candidate
+  rows, zero exhausted cells; manifest SHA-256
+  `87f421b1ed686423b4fba7dc4f21969fc0d0a72eb17d10b34b71d68a1fe844e2`.
 - Core acceptance/measurement domain: `Omega_0=[.40,.80]`; observation prefix
   `[0,.40]`; latent trajectory through `1.20`.
 - Maximum attempts: 2,000 per fine cell. Store every rejection and exhaustion
