@@ -1812,6 +1812,16 @@ scope horizons/strata, and paired-group clustered bootstrap `B=5,000`.
 These values are a pre-A generator contract; E14-A may select bank size only
 under the already frozen convergence rule and may not retune them.
 
+The remaining ambiguous choices are now explicit: each of the eight intended
+packets has exactly one frozen heterogeneity target field (incidental atoms do
+not choose it), and E14-A is an independent two-group-per-base-cell-per-branch
+sanity corpus. Its p95 values are deterministic convergence diagnostics rather
+than independent-sample inference; its seed namespace, eligible-row rule, and
+constant-Spearman rule are frozen. The former “density-compensated” supplement
+is named the **reference-context-complete control**, because it expands
+observation coverage of frozen reference contexts without claiming equal
+geometric sampling density across different-dimensional context spaces.
+
 **Artifact.** [E14 protocol draft](COMPLEXITY_SCALING_E14_PROTOCOL_DRAFT_V1.md)
 · [E14 design-freeze checklist](E14_DESIGN_FREEZE_CHECKLIST_V1.md)
 · [E14 pre-A execution freeze](E14_PRE_A_EXECUTION_FREEZE_V1.md)

@@ -96,8 +96,9 @@ validity, scope, and continuation-bank scoring.
 Observation contexts are distinct from oracle reference contexts. Primary
 fixed-budget observations use `N=49`: one null context with 49 prefix points
 for `d=1`, and the first seven nested `Z_ref^(d)` contexts with seven common
-prefix `t` points each for `d in {3,8}`. The supplementary density-compensated
-control observes every reference context with the 49-point prefix grid
+prefix `t` points each for `d in {3,8}`. The supplementary
+**reference-context-complete control** observes every reference context with
+the 49-point prefix grid
 (`N(d)=49*|Z_ref^(d)|`). Evidence aggregation gives observed contexts equal
 weight; oracle validity never substitutes `Z_obs` for `Z_ref`.
 
@@ -176,15 +177,26 @@ Dimension and interaction branches use `f(t,z)=a_r(z;.20) f_0(t)`. The
 dimension branch uses `r_add` at `d=3` and `d=8`; the interaction branch at
 `d=8` uses `r_add`, `r_pair`, and `r_ent` for additive, pairwise, and
 entangled levels respectively. Consequently their nonzero context fields have
-the same log-amplitude RMS `.20`, while `a_r(z)>0` preserves t-direction
+the same **centered log-amplitude RMS** `.20`, while `a_r(z)>0` preserves t-direction
 direction and curvature signs, the zero lower bound, and a zero asymptote from
 above. `d=1` uses the null field `a=1`.
 
 Heterogeneity is a separate `d=8`, additive-background branch. It uses the
-frozen `r_ent` field and a single semantic numeric field selected by this
-lookup: turning -> `tau`; inflection -> `iota`; regime -> `rho`; asymptote ->
-`lambda`; curvature -> `beta`; and packets with only direction/bound use the
-positive amplitude field `a_r`. For bounded location/rate fields,
+frozen `r_ent` field and exactly one target field selected from the intended
+packet table below. Incidental realized atoms never alter this selection:
+
+| Intended packet | Frozen heterogeneity field |
+|---|---|
+| `direction+curvature+bound` | `beta` |
+| `direction+curvature+asymptote` | `beta` |
+| `direction+inflection+bound` | `iota` |
+| `direction+inflection+asymptote` | `iota` |
+| `curvature+bound+asymptote` | `beta` |
+| `inflection+bound+asymptote` | `iota` |
+| `turning+bound+asymptote` | `tau` |
+| `regime+bound+asymptote` | `rho` |
+
+For bounded location/rate fields,
 
 `theta(z)=theta_0 + kappa_s delta_theta std_Z(r_ent)/max_Z|std_Z(r_ent)|`,
 
@@ -204,9 +216,11 @@ proposal family, not a metadata substitute for the oracle.
 The primary comparison fixes the total observation budget `N` across all
 dimensions. Observations are allocated by a frozen context-balanced design, so
 higher dimension includes the realistic sampling-density cost of representing
-more context. A supplementary density-compensated control increases `N` by a
-predeclared rule; it separates this sampling-density component from the
-dimension comparison but is not pooled with the primary estimand.
+more context. A supplementary reference-context-complete control increases
+`N` by a predeclared rule; it tests the contribution of observing only a subset
+of `Z_ref` in the primary layout, but does not claim to equalize geometric
+sampling density per unit volume across dimensions. It is not pooled with the
+primary estimand.
 
 ### Frozen paired-noise field
 
@@ -234,6 +248,14 @@ deterministically into each matched field
 `xi_m -> {f_m^dim, f_m^int, f_m^het}`. Thus paired sharpness contrasts do not
 contain an avoidable Monte-Carlo-bank difference.
 
+E14-A uses an independent sanity corpus of **2 accepted paired groups per base
+cell per primary branch**. Its base-cell definition is `intended packet x
+generator x eta x requested full-scope stratum` (`216` cells); its convergence
+cell is `base cell x realized branch condition`. Seeds are deterministic under
+the `e14-a-v1|branch|base-cell|group-index` namespace with group indices
+`{0,1}`. E14-A groups are never reused in E14-B/C/D or the corner run, whose
+seeds begin with the separate `e14-full-v1` namespace.
+
 E14-A selects one common `M` from the nested ladder
 `4096 subset 8192 subset 16384`, using `16384` as the convergence reference.
 The smallest candidate `M` is accepted only if, in every E14-A cell,
@@ -244,12 +266,22 @@ The smallest candidate `M` is accepted only if, in every E14-A cell,
 - floor-state agreement is exactly 100%; and
 - within-task candidate sharpness-rank Spearman agreement is at least `.99`.
 
+The two p95 quantities are empirical 95th percentiles of all eligible
+candidate-row differences inside that deterministic convergence cell, not
+inferential statistics. `S` includes all non-floor candidate rows; `Delta
+S_miss` includes only exact, non-floor proper-subset rows and requires at least
+20 eligible rows per cell, otherwise that `M` fails the cell. For rank
+agreement, a pair of identical constant candidate-sharpness vectors is defined
+as agreement `1`; a constant vector paired with a non-identical vector, or any
+other undefined Spearman value, is agreement `0` and fails the cell. Counts of
+constant-vector and no-eligible-gap cases are retained in the E14-A audit.
+
 If none passes, `M=16384` is retained; expanding beyond that ladder requires a
 new protocol freeze. ESS is explicitly **not** an `M` selection criterion and
 remains a reliability outcome.
 
 The prefix likelihood is an equal-context mean of within-context MSE, so a
-density-compensated condition does not mechanically add evidence solely by
+reference-context-complete condition does not mechanically add evidence solely by
 adding observations. It uses one task-level clean reference range evaluated
 over the frozen core/reference design; prefix-specific normalization is
 prohibited.
@@ -270,8 +302,9 @@ to E13 saturation.
 
 ## 7. E14-A — Measurement-Scaling Sanity
 
-Before any factorial run, execute a small, balanced pilot across every level
-of each axis. It may only test implementation integrity:
+Before any factorial run, execute the independent, balanced pilot specified
+above across every level of each axis. It may only test implementation
+integrity:
 
 1. all core candidates have coverage one on `Omega_0`;
 2. realized `P_star` is core-frozen, includes implied atoms, and is exactly

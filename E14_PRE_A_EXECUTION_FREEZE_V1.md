@@ -9,16 +9,18 @@ sanity stage.
 - Dimension anchor: `d=1 -> d=3` is a zero-context-to-contextual bridge to
   E13. It is **not** called energy-matched dimension scaling.
 - Primary matched dimension contrast: `d=3 <-> d=8`, additive background,
-  no heterogeneity, log-amplitude RMS `sigma_g=.20`.
+  no heterogeneity, centered log-amplitude RMS `sigma_g=.20`.
 - Interaction contrast: `d=8`, additive vs pairwise vs entangled,
   `sigma_g=.20`, no heterogeneity.
 - Heterogeneity contrast: `d=8`, additive background, none/moderate/strong;
   `kappa={0,.25,.50}` for bounded native fields and log-scale
   `sigma={0,.10,.20}` for positive amplitude fields.
 
-The precise functions, normalization, admissible-interval rule, and rejection
-rule are in the protocol's **Frozen context-field generator** section. They
-are scientific generator parameters and may not be changed after E14-A.
+The exact packet-to-field table, functions, normalization, admissible-interval
+rule, and rejection rule are in the protocol's **Frozen context-field
+generator** section. Incidental atoms are included in `P_star` matching but
+never change the heterogeneity-field target. These are scientific generator
+parameters and may not be changed after E14-A.
 
 ## 2. Paired-group quota and exhaustion
 
@@ -73,3 +75,18 @@ accounting; its SHA-256 is frozen before E14-B/C/D.
 
 No effect direction, effect size, ESS pattern, or state frequency is an E14-A
 acceptance criterion.
+
+## 6. Independent E14-A sanity corpus and convergence diagnostics
+
+E14-A has **2 accepted paired groups per base cell per primary branch**. A
+base cell is the 216-cell definition above; a convergence cell additionally
+indexes the realized branch condition. Its seeds are
+`e14-a-v1|branch|base-cell|group-index`, with indices `{0,1}`. The full-run
+namespace is separate (`e14-full-v1`) and never reuses an E14-A group.
+
+The p95 bank diagnostics are deterministic pooled eligible-row quantiles inside
+each convergence cell, not confidence intervals. Exact non-floor
+`Delta S_miss` needs at least 20 eligible proper-subset rows; otherwise that
+bank size fails that cell. Rank agreement defines identical constant vectors as
+`1`, and a constant/non-identical or otherwise undefined comparison as `0`.
+All edge-case counts are saved in the E14-A audit.
