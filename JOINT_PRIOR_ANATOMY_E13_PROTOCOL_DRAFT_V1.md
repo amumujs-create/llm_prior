@@ -22,6 +22,9 @@ score.
 - Core declared scope and every sharpness/completeness target:
   `Omega_0=[.40,.80]`.
 - Each latent trajectory is generated through `x=1.20`.
+- E13 uses the dedicated persistent-base and smooth post-`.80` scope generator
+  frozen in `E13_SCOPE_GENERATOR_FREEZE_V1.md`; E11's generator is not reused
+  as a scope corpus.
 - One task receives one master noisy observation grid, one frozen paired
   `M=4096` continuation bank, and one likelihood-weight vector shared by every
   non-empty true subset of its realized envelope. The primary scorer uses one full five-active-
@@ -125,10 +128,9 @@ freezes the realized-envelope-size distribution and expected candidate count:
 
 `N_rows = sum_t (2^{|P_star,t|}-1)`.
 
-The frozen deterministic preflight realizes 1,890 four-atom and 270 five-atom
-envelopes, yielding 36,720 candidate rows with no exhausted fine cell. Its
-accepted-task manifest is retained with SHA-256
-`ac2fdc8dea7294fcff3e1347f470b622a47ec7894a7d2f4eb61a28f7d50ce46d`.
+The earlier E11-derived envelope preflight is retained only as a debug
+provenance artifact. The final expected row count is frozen only after the
+dedicated scope-aware persistent-base preflight accepts measured strata.
 
 Each fine cell has at most 2,000 generation attempts. Store `attempts`,
 `accepted`, `ambiguous_envelope_rejects`, `scope_stratum_rejects`,

@@ -15,12 +15,10 @@ without adding a new axis.
   `N_rows=sum_t (2^{|P_star,t|}-1)`. Freeze this expected count and the envelope
   size distribution from a deterministic accepted-seed preflight before full
   scoring.
-- Frozen preflight (`results/joint_prior_anatomy_e13/preflight/summary.json`):
-  1,890 four-atom and 270 five-atom envelopes, hence **36,720** primary
-  candidate rows; no exhausted cell. The accepted-task manifest SHA-256 is
-  `ac2fdc8dea7294fcff3e1347f470b622a47ec7894a7d2f4eb61a28f7d50ce46d`.
-  Core-envelope preflight occurs on `Omega_0` before any post-`.80` scope
-  intervention, so scope control cannot change envelope membership.
+- The earlier E11-derived 36,720-row preflight is a debug artifact, not the
+  final E13 corpus. A new persistent-base scope-aware preflight freezes the
+  accepted manifest, envelope-size distribution, and expected row count only
+  after clean-oracle measured-stratum acceptance.
 - Core acceptance/measurement domain: `Omega_0=[.40,.80]`; observation prefix
   `[0,.40]`; latent trajectory through `1.20`.
 - Maximum attempts: 2,000 per fine cell. Store every rejection and exhaustion
@@ -33,6 +31,19 @@ one likelihood vector, and one fixed sharpness target `Omega_0`. These objects
 must be identical over all rows within that task. `ESS<100` is retained as
 `measurement_unreliable`; only invalid banks, non-finite ESS, and scorer
 failures reject a task.
+
+## Scope-aware acceptance contract
+
+The post-`.80` intervention is a frozen generation input only. Scope scoring
+does not receive its breaker metadata: it receives the resulting clean latent
+trajectory and the frozen atom-oracle semantics. The pre/post clean trajectory
+must be bit-identical on `x<=.80`; failure is an integrity violation. For
+latent-assisted/mechanistic atoms, the scope checker reuses the corresponding
+frozen E11 metadata semantics rather than silently substituting a new
+trajectory-only rule. Store both `requested_scope_stratum` and
+`measured_scope_stratum`; only the latter determines acceptance. The scope-aware
+preflight stores intervention metadata, atomwise `C_a(h)`, full `C_Pstar(h)`,
+measured `H_valid*`, core-equality audit, and every rejection reason.
 
 ## Scope and completeness censoring
 
