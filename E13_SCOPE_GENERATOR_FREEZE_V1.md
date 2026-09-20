@@ -29,6 +29,10 @@ acceptance. Subset scope is not designed or quota-balanced.
 - Store base persistence, pre/post core hashes, intervention family/seed/
   parameters, atomwise `C_a(h)`, full `C_Pstar(h)`, censor state, envelope
   atoms, and every rejection reason.
+- Extended `[.40,h]` atom semantics are frozen in
+  `E13_EXTENDED_SCOPE_ORACLE_SEMANTICS_V1.md`. Event atoms retain their one
+  core event and fail only with an absent/reversed/additional event; regime and
+  asymptote retain paired latent semantic state.
 - Freeze intervention families and parameter ranges before acceptance; do not
   tune them after observing joint-anatomy outcomes.
 
