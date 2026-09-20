@@ -1743,6 +1743,13 @@ observability association nor a binary informativeness–scope association is
 identified in this corpus. These are support limitations, not failed integrity
 checks.
 
+The predeclared informative-but-unobservable occupancy (`31,453` rows) equals
+`reliable & O_P=0` here because every reliable row is binary-informative. It is
+an operational-separability example, not a general observability association.
+The scope-extension percentages are explicitly among proper-subset candidate
+rows with `C_P(h)=1` and `C_Pstar(h)=0`; the scope–completeness profile remains
+direction-free descriptive evidence, not an effect of persistence.
+
 ![E13 censoring-aware scope profile](figures/fig42_e13_censored_scope_profile.png)
 
 ![E13 completeness by scope status](figures/fig43_e13_completeness_scope_profile.png)

@@ -33,6 +33,12 @@ binary informativeness-versus-scope relation cannot be estimated here. The
 continuous sharpness summaries are retained descriptively but are not causal
 claims.
 
+The predeclared `informative-but-unobservable` state occurred in 31,453 rows.
+Because every reliable row is binary-informative in this corpus, this occupancy
+is numerically identical to `reliable & O_P=0`. It is evidence that the two
+measurements can be operationally separated on the same task, **not** evidence
+for a general empirical relation between informativeness and observability.
+
 ## 1. Completeness is marginal and conditional
 
 Among 29,580 reliable atom-incomplete rows, all had an exact missing-information
@@ -76,7 +82,7 @@ natural prevalence of short scope. The empirical quantity is the *magnitude*
 of subset scope extension, not its direction (which is guaranteed by AND
 nesting).
 
-| Horizon | All candidates `P(C_P=1)` | Oracle-full `P(C_P=1)` | Proper subset extends beyond full |
+| Horizon | All candidates `P(C_P=1)` | Oracle-full `P(C_P=1)` | Among proper-subset candidate rows: `C_P=1` and `C_P*=0` |
 |---|---:|---:|---:|
 | .85 / .90 / 1.00 | 72.2% | 66.7% | 5.9% (95% CI 5.5–6.4%) |
 | 1.10 / 1.20 | 44.3% | 33.3% | 11.9% (95% CI 11.3–12.4%) |
@@ -98,7 +104,8 @@ pattern (`.232` versus `.194` early; `.252` versus `.196` late).
 
 These are censored-aware, task-clustered descriptive profiles. They should not
 be read as an effect of persistence: omitted-atom identity, envelope size, and
-the controlled scope intervention may all differ between the two groups.
+the controlled scope intervention may all differ between the two groups. Their
+direction is therefore not emphasized as an E13 finding.
 
 ![E13 completeness by scope status](figures/fig43_e13_completeness_scope_profile.png)
 
@@ -116,6 +123,17 @@ scope survival among those rows is therefore simply 72.3% through `.85–1.00`
 and 44.2% through `.1.20` (clustered 95% CIs 70.6–74.1% and 42.6–46.0%).
 The thresholded label cannot distinguish an informativeness–scope association;
 no association direction is claimed.
+
+## Frozen E13 conclusions
+
+> **Completeness is marginal and conditional, not merely syntactic.**
+
+> **Informativeness can exist without current observability, but E13's
+> observability support is too sparse to estimate a general observability
+> association.**
+
+> **Conditional informativeness does not imply broad validity scope; scope
+> must be represented as a separate, censoring-aware prior property.**
 
 ## Boundary
 
