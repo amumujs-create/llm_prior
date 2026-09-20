@@ -1,9 +1,16 @@
 # E13 extended-scope atom oracle semantics v1
 
-For each horizon `h`, every atom is evaluated on the common declared interval
-`[.40,h]`. This extends the frozen E11 core semantics without changing atom IDs.
+`P_star` membership is frozen once on the core domain `Omega_0=[.40,.80]`.
+Atoms which become true only after `.80` never alter this envelope. For each
+horizon `h`, every frozen envelope atom is evaluated on `[.40,h]`.
 
-| Atom | `C_a(h)=1` rule |
+First compute raw atom validity
+`V_a(h_j)=I(raw atom checker passes on [.40,h_j])`. Then define contiguous
+atom validity `C_a(h_j)=product_{k<=j} V_a(h_k)`. A later raw pass can therefore
+never repair an earlier scope failure. Candidate validity is
+`C_P(h_j)=product_{a in P} C_a(h_j)`.
+
+| Atom | `V_a(h)=1` raw checker rule |
 |---|---|
 | `direction_decreasing` | non-increasing derivative fraction meets the frozen E11 tolerance on `[.40,h]` |
 | `curvature_convex` | non-negative curvature fraction meets the frozen E11 tolerance on `[.40,h]` |
@@ -13,7 +20,10 @@ For each horizon `h`, every atom is evaluated on the common declared interval
 | `regime_postchange` | paired frozen latent regime metadata declares the original post-change mechanism still active through `h`, with no second switch |
 | `asymptote_to_0_from_above` | paired frozen latent asymptotic mechanism still targets zero from above through `h`; realized trajectory remains positive on `[.40,h]` |
 
-The paired latent fields are semantic oracle state, not intervention proposal or
-breaker metadata. The scorer receives only the clean trajectory plus this
-atom-specific frozen semantic state. Candidate scope is the atomwise AND:
-`C_P(h)=product_{a in P} C_a(h)`.
+Generation carries paired semantic state:
+`(f_base,z_base) -> (f_int,z_int)` under frozen intervention `T_phi`.
+`z_int` is the post-intervention clean generative state, not a breaker label.
+The scorer receives only `(f_int,z_int)` and never requested stratum, proposed
+onset, intended breaker atom, or desired failure horizon. This lets regime and
+asymptote use their frozen mechanistic/latent-assisted semantics after an
+intervention without silently relying on proposal metadata.

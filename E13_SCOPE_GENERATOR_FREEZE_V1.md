@@ -5,18 +5,22 @@ generator as a scope corpus.
 
 ## Two-stage generation
 
-1. Generate a persistent base `f_base` whose realized maximal E11 envelope
+1. Freeze the realized maximal E11 envelope `P_star(Omega_0)` on the core
+   domain, then generate a persistent base `(f_base,z_base)` whose frozen
+   envelope
    `P_star` is valid on `[.40,1.20]`. It must retain the intended prefix,
    core-domain envelope, and E9 evidence condition.
-2. Apply one frozen smooth post-`.80` intervention family to obtain `f_int`.
+2. Apply one frozen smooth post-`.80` intervention family to obtain
+   `(f_int,z_int)`.
    The gate is zero on `x<=.80` and has at least C2 continuity at its onset.
    Requested scope is a proposal label only.
 
 ## Acceptance and measurement
 
-The scope scorer receives `f_int` and frozen atom-oracle semantics only; it
-never receives breaker metadata. For every atom it computes `C_a(h)` on the
-clean trajectory, then forms `C_P(h)=product_{a in P} C_a(h)`. Full-envelope
+The scope scorer receives `(f_int,z_int)` and frozen atom-oracle semantics only;
+it never receives breaker metadata. For every atom it computes raw `V_a(h)`,
+then contiguous `C_a(h)=product_{k<=j}V_a(h_k)`, and finally forms
+`C_P(h)=product_{a in P} C_a(h)`. Full-envelope
 `H_valid*` produces the measured scope stratum, which alone determines quota
 acceptance. Subset scope is not designed or quota-balanced.
 
