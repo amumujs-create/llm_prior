@@ -11,6 +11,7 @@ def write(name,rows):
  OUT.mkdir(parents=True,exist_ok=True)
  with (OUT/name).open('w',newline='') as f:w=csv.DictWriter(f,fieldnames=list(rows[0]));w.writeheader();w.writerows(rows)
 def mean(x):return sum(x)/len(x) if x else None
+def atoms(s):return frozenset(x for x in s.split('|') if x)
 def main():
  r=read(IN/'rows.csv');
  for x in r:
@@ -36,6 +37,15 @@ def main():
  inc=[x for x in r if x['incomplete'] and x['reliable']]; exact=[x for x in inc if x['exact']]
  comp=[{'incomplete_reliable_rows':len(inc),'exact_gap_rows':len(exact),'exact_gap_rate':len(exact)/len(inc) if inc else None,'info_complete_exact_rows':sum(float(x['delta_S_miss'])<=.10 for x in exact),'info_complete_rate_given_exact':mean([float(x['delta_S_miss'])<=.10 for x in exact])}]
  write('completeness_audit.csv',comp)
- summary={'rows':len(r),'reliable_rate':mean([x['reliable'] for x in r]),'observable_rate':mean([x['observable'] for x in r]),'states':{x['state']:x['count'] for x in states},'completeness':comp[0]}
+ # Omission decomposition: implied atom redundancy vs conditional redundancy.
+ manifest={x['task_id']:x for x in read(ROOT/'results/joint_prior_anatomy_e13/corrected_preflight/accepted_manifest.csv')}
+ dec=defaultdict(list)
+ for x in exact:
+  p=atoms(x['candidate_atoms']); star=atoms(x['pstar_atoms']); omitted=star-p; implied=atoms(manifest[x['task_id']]['realized_P_star_atoms'])-atoms(manifest[x['task_id']]['intended_atoms'])
+  for a in omitted: dec[(a,int(a in implied),x['oracle_size'],x['omitted_count'])].append(float(x['delta_S_miss']))
+ out=[]
+ for k,v in dec.items():out.append({'omitted_atom':k[0],'is_implied_atom':k[1],'oracle_size':k[2],'omitted_count':k[3],'n':len(v),'mean_delta_S_miss':mean(v),'info_complete_rate':mean([z<=.10 for z in v])})
+ write('completeness_by_omitted_atom.csv',out)
+ summary={'rows':len(r),'reliable_rate':mean([x['reliable'] for x in r]),'observable_rate':mean([x['observable'] for x in r]),'states':{x['state']:x['count'] for x in states},'completeness':comp[0],'association_boundary':'Observability associations are descriptive-only because O_P is degenerate in this corpus; primary empirical decomposition is omitted-atom delta_S_miss by scope profile.'}
  (OUT/'summary.json').write_text(json.dumps(summary,indent=2)+'\n');print(json.dumps(summary,indent=2))
 if __name__=='__main__':main()

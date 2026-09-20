@@ -16,5 +16,6 @@
     "exact_gap_rate": 1.0,
     "info_complete_exact_rows": 16125,
     "info_complete_rate_given_exact": 0.545131845841785
-  }
+  },
+  "association_boundary": "Observability associations are descriptive-only because O_P is degenerate in this corpus; primary empirical decomposition is omitted-atom delta_S_miss by scope profile."
 }
