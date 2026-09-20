@@ -32,6 +32,8 @@ E14 cannot start a generator or a full run until each item is frozen.
 - [x] Packet-specific heterogeneity-field table and an independent E14-A
   pilot (`4` groups/base-cell/branch), including additive geometry, seed
   namespaces, paired-baseline `R_ref`, and p95/Spearman edge-case rules.
+- [x] Master-bank scorer smoke test: shared weights/ESS, AND-derived
+  satisfaction, floor-gap states, and direct-candidate audit.
 
 The following are *not* E14-A gates: monotonic ESS, lower sharpness at higher
 complexity, lower completeness, lower evidence, or any desired joint state.

@@ -1842,6 +1842,15 @@ order, so the first seven observed contexts align with the paired master-noise
 rows at `d=3` and `d=8`. This is implementation validation only; it is not
 E14-A and does not select `M` or estimate an E14 result.
 
+**E14 scorer layer.** `experiments/e14_master_scorer.py` now supplies the
+frozen finite-bank primitives: one master latent matrix with prefix banks,
+deterministic `64 x 49` master noise, equal-context MSE likelihoods, one
+task/branch weight vector and ESS shared by every candidate, atom satisfaction
+matrices with AND-derived candidates, exact/lower-bound/unresolved
+completeness gaps, and a small direct-candidate equivalence audit. A scorer
+smoke test with `M=128` passed on the d=3 direction/curvature/bound field;
+this is an implementation check only, not the E14-A convergence result.
+
 **Artifact.** [E14 protocol draft](COMPLEXITY_SCALING_E14_PROTOCOL_DRAFT_V1.md)
 · [E14 design-freeze checklist](E14_DESIGN_FREEZE_CHECKLIST_V1.md)
 · [E14 pre-A execution freeze](E14_PRE_A_EXECUTION_FREEZE_V1.md)
