@@ -27,7 +27,8 @@ from e14_master_scorer import (
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "results" / "complexity_scaling_e14" / "e14a"
-M_LEVELS = (128, 4096, 8192, 16384)
+M_LEVELS = (4096, 8192, 16384)
+SMOKE_M = 128
 ETAS = (("low", .20), ("mid", .50), ("high", .80))
 GENS = ("spline", "basis", "ode")
 INTENT_NAMES = tuple(INTENTS)
@@ -116,6 +117,7 @@ def run(args):
                  "direct_audit_failures": 0, "pstar_mismatch": 0,
                  "scope_or_base_failures": 0, "exceptions": 0}
     selections = []
+    run_levels = (SMOKE_M,) if args.max_M == SMOKE_M else tuple(m for m in M_LEVELS if m <= args.max_M)
     cells = [(intent, gen, eta_name, eta, scope)
              for intent in INTENT_NAMES for gen in GENS
              for eta_name, eta in ETAS for scope in SCOPES]
@@ -149,7 +151,7 @@ def run(args):
                     if not audit_ok:
                         integrity["direct_audit_failures"] += 1
                     row_by_m = {}
-                    for M in M_LEVELS:
+                    for M in run_levels:
                         if M > args.max_M:
                             continue
                         scores = score_bank(field, f"{axis}|{cell_id}|{j}", xi[:M], cands, M)
@@ -209,7 +211,7 @@ def run(args):
                     selected = 16384
                 selections.append({"cell_id": cell_id, "axis": axis, "branch": branch_name, "selected_M": selected,
                                    "selection_basis": "first_predeclared_M_passing_all_rules" if selected in (4096,8192) else ("largest_frozen_reference_after_failure" if selected == 16384 else "not_evaluated")})
-    with (OUT / "e14a_manifest.json").open("w") as f: json.dump({"config":{"M_levels":M_LEVELS,"max_M":args.max_M,"groups":args.groups,"cell_limit":args.cell_limit,"offset":args.offset},"rows":manifest_rows}, f, indent=2)
+    with (OUT / "e14a_manifest.json").open("w") as f: json.dump({"config":{"M_levels":run_levels,"primary_M_levels":M_LEVELS,"max_M":args.max_M,"groups":args.groups,"cell_limit":args.cell_limit,"offset":args.offset},"rows":manifest_rows}, f, indent=2)
     fields = sorted({k for r in cell_rows for k in r})
     with (OUT / "e14a_convergence_by_cell.csv").open("w", newline="") as f:
         w=csv.DictWriter(f, fieldnames=fields); w.writeheader(); w.writerows(cell_rows)
@@ -231,7 +233,7 @@ def main():
     p.add_argument("--cell-limit", type=int, default=0)
     p.add_argument("--offset", type=int, default=0)
     p.add_argument("--groups", type=int, default=4)
-    p.add_argument("--max-M", type=int, default=16384, choices=M_LEVELS)
+    p.add_argument("--max-M", type=int, default=16384, choices=(SMOKE_M,) + M_LEVELS)
     p.add_argument("--audit-n", type=int, default=128)
     args=p.parse_args(); run(args)
 
