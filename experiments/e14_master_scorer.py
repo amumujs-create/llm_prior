@@ -126,6 +126,29 @@ def _branch_bank(field: CleanField, xi: np.ndarray, x: np.ndarray) -> np.ndarray
     return base[None, :, :] * np.exp(mod)
 
 
+def _one_robust_sign_change(d: np.ndarray, tol: np.ndarray, first: int, last: int) -> np.ndarray:
+    """Vectorized E13 `_changes` plus first/last nonzero-sign contract.
+
+    ``d`` has shape (bank member, context, grid point).  Zero runs are
+    discarded before counting transitions, exactly as the frozen scalar
+    checker does.
+    """
+    signs = np.where(d > tol[..., None], 1, np.where(d < -tol[..., None], -1, 0))
+    nz = signs != 0
+    n = signs.shape[-1]
+    idx = np.arange(n)[None, None, :]
+    prior = np.maximum.accumulate(np.where(nz, idx, -1), axis=-1)
+    prior = np.concatenate([np.full_like(prior[..., :1], -1), prior[..., :-1]], axis=-1)
+    prev = np.take_along_axis(signs, np.maximum(prior, 0), axis=-1)
+    changes = np.sum(nz & (prior >= 0) & (signs != prev), axis=-1)
+    count = np.sum(nz, axis=-1)
+    first_i = np.argmax(nz, axis=-1)
+    last_i = n - 1 - np.argmax(nz[..., ::-1], axis=-1)
+    first_sign = np.take_along_axis(signs, first_i[..., None], axis=-1)[..., 0]
+    last_sign = np.take_along_axis(signs, last_i[..., None], axis=-1)[..., 0]
+    return (changes == 1) & (count > 1) & (first_sign == first) & (last_sign == last)
+
+
 def _satisfaction(chunk: np.ndarray, field: CleanField, atoms: tuple[str, ...]) -> np.ndarray:
     """Return A[m,a] using the E13 frozen raw-validity semantics."""
     dx = float(X[1] - X[0]); core = (X >= .4) & (X <= .8)
@@ -137,24 +160,13 @@ def _satisfaction(chunk: np.ndarray, field: CleanField, atoms: tuple[str, ...]) 
     out = {}
     out['direction_decreasing'] = np.mean(d1 <= .01*r[:, :, None], axis=-1).min(axis=1) >= .95
     out['curvature_convex'] = np.mean(d2 >= -.04*r[:, :, None], axis=-1).min(axis=1) >= .90
-    out['lower_bound_0'] = np.min(y, axis=-1).min(axis=1) >= -.01*r.min(axis=1)
-    signs1 = np.sign(d1); signs2 = np.sign(d2)
-    n1 = np.sum(signs1[:, :, 1:] * signs1[:, :, :-1] < 0, axis=-1) == 1
-    n2 = np.sum(signs2[:, :, 1:] * signs2[:, :, :-1] < 0, axis=-1) == 1
-    out['turning_maximum'] = (n1 & (d1[:, :, 0] > 0) & (d1[:, :, -1] < 0)).all(axis=1)
-    out['inflection_concave_to_convex'] = (n2 & (d2[:, :, 0] < 0) & (d2[:, :, -1] > 0)).all(axis=1)
-    early = np.mean(np.abs(d1[:, :, :40]), axis=-1); late = np.mean(np.abs(d1[:, :, -40:]), axis=-1)
+    # The frozen checker evaluates the bound independently in every
+    # reference context, each with that context's own target range.
+    out['lower_bound_0'] = (np.min(y, axis=-1) >= -.01 * r).all(axis=1)
+    out['turning_maximum'] = _one_robust_sign_change(d1, .02 * r, 1, -1).all(axis=1)
+    out['inflection_concave_to_convex'] = _one_robust_sign_change(d2, .03 * r, -1, 1).all(axis=1)
     out['asymptote_to_0_from_above'] = (np.min(y, axis=-1) > 0).all(axis=1)
     out['regime_postchange'] = np.ones(len(chunk), dtype=bool) if 'regime_postchange' in field.pstar else np.zeros(len(chunk), dtype=bool)
-    # Event atoms use the exact frozen sign-change/tolerance implementation,
-    # including zero-run handling, rather than a simplified sign product.
-    for atom in ('inflection_concave_to_convex', 'turning_maximum'):
-        if atom in atoms:
-            exact = np.ones(len(chunk), dtype=bool)
-            for i in range(len(chunk)):
-                for k in range(chunk.shape[1]):
-                    exact[i] &= raw_valid(X, chunk[i, k], atom, .80, field.semantic[k])
-            out[atom] = exact
     return np.column_stack([out[a] for a in atoms])
 
 

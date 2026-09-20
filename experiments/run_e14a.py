@@ -14,6 +14,7 @@ import itertools
 import json
 import math
 import statistics
+from datetime import datetime, timezone
 from pathlib import Path
 
 import numpy as np
@@ -134,6 +135,26 @@ def _metrics(scores, field, xi, candidates):
     return d_eff, vf, vf / max(field.rref ** 2, 1e-12)
 
 
+def _write_progress(completed_cells, total_cells, cell_id, integrity, rejection_counts, groups_per_cell):
+    """Persist operational status without changing corpus membership or scoring."""
+    payload = {
+        "completed_cells": completed_cells,
+        "total_cells": total_cells,
+        "last_completed_cell": cell_id,
+        "accepted_groups": integrity["groups"],
+        "expected_accepted_groups": total_cells * len(BRANCHES) * groups_per_cell,
+        "direct_audit_failures": integrity["direct_audit_failures"],
+        "rejection_counts": rejection_counts,
+        "updated_at_utc": datetime.now(timezone.utc).isoformat(),
+    }
+    (OUT / "e14a_progress.json").write_text(json.dumps(payload, indent=2) + "\n")
+    print(
+        f"[E14-A] {completed_cells}/{total_cells} cells complete; "
+        f"accepted groups={integrity['groups']}",
+        flush=True,
+    )
+
+
 def run(args):
     OUT.mkdir(parents=True, exist_ok=True)
     cell_rows = []
@@ -151,7 +172,7 @@ def run(args):
              for intent in INTENT_NAMES for gen in GENS
              for eta_name, eta in ETAS for scope in SCOPES]
     cells = cells[args.offset: args.offset + args.cell_limit if args.cell_limit else None]
-    for intent, gen, eta_name, eta, scope in cells:
+    for cell_index, (intent, gen, eta_name, eta, scope) in enumerate(cells, start=1):
         cell_id = f"{intent}|{gen}|{eta_name}|{scope}"
         integrity["cells"] += 1
         vals = {axis: [] for axis in BRANCHES}
@@ -247,6 +268,7 @@ def run(args):
                         "floor_agreement": float(np.mean(floor_agree)) if floor_agree else None,
                         "min_spearman": float(min(ranks)) if ranks else None, "eligible_exact_gap_rows": exact_n,
                         "pass": bool(sdiff and gdiff and exact_n >= 20 and np.quantile(sdiff,.95) <= .02 and np.quantile(gdiff,.95) <= .02 and np.mean(floor_agree) == 1 and min(ranks) >= .99)})
+        _write_progress(cell_index, len(cells), cell_id, integrity, rejection_counts, args.groups)
     with (OUT / "e14a_manifest.json").open("w") as f: json.dump({"config":{"M_levels":run_levels,"primary_M_levels":M_LEVELS,"max_M":args.max_M,"groups":args.groups,"cell_limit":args.cell_limit,"offset":args.offset},"rows":manifest_rows}, f, indent=2)
     fields = sorted({k for r in cell_rows for k in r})
     with (OUT / "e14a_convergence_by_cell.csv").open("w", newline="") as f:
