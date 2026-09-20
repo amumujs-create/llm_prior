@@ -169,19 +169,9 @@ class BankScores:
     support: dict[frozenset, int]
 
 
-def score_bank(field: CleanField, group_id: str, xi: np.ndarray, candidates: list[frozenset], M: int,
-               density_complete: bool = False, chunk_size: int = 256) -> BankScores:
-    """Score all candidates using one shared likelihood weight vector."""
-    obs_t, obs_y, R_ref, rows = noisy_observation(field, group_id, density_complete)
-    # Equal-context MSE; each context contributes once regardless of point count.
-    losses = np.empty(M, dtype=float)
-    atom_list = tuple(sorted(field.pstar))
-    sat = np.zeros((M, len(atom_list)), dtype=bool)
-    for lo in range(0, M, chunk_size):
-        hi = min(M, lo + chunk_size); q = _branch_bank(field, xi[lo:hi], obs_t)
-        pred = q[:, rows, :]
-        losses[lo:hi] = np.mean(np.mean((pred - obs_y[None, :, :])**2, axis=-1), axis=-1) / max(R_ref**2, 1e-12)
-        sat[lo:hi] = _satisfaction(_branch_bank(field, xi[lo:hi], X), field, atom_list)
+def _summarize_prefix(losses: np.ndarray, sat: np.ndarray, candidates: list[frozenset], atom_list: tuple[str, ...]) -> BankScores:
+    """Apply the frozen estimator to one prefix of a shared master bank."""
+    M = len(losses)
     logw = -(losses - losses.min()) / LIKELIHOOD_TEMPERATURE
     weights = np.exp(np.clip(logw, -745, 0)); weights /= weights.sum()
     ess = float(1. / np.sum(weights*weights))
@@ -197,6 +187,40 @@ def score_bank(field: CleanField, group_id: str, xi: np.ndarray, candidates: lis
         sharpness[candidate] = float(-np.log(p)); raw_probability[candidate] = raw
         floor[candidate] = bool(raw <= 1./(PMIN_FACTOR*M)); support[candidate] = int(ok.sum())
     return BankScores(weights, sat, ess, floor, sharpness, raw_probability, support)
+
+
+def score_bank_ladder(field: CleanField, group_id: str, xi: np.ndarray,
+                      candidates: list[frozenset], M_levels: tuple[int, ...],
+                      density_complete: bool = False, chunk_size: int = 256) -> dict[int, BankScores]:
+    """Evaluate a nested bank ladder once, then apply prefix reductions.
+
+    Each requested M recomputes its own prefix loss minimum and weights, but
+    trajectory generation and atom satisfaction are performed only once at the
+    largest requested M.
+    """
+    levels = tuple(sorted(set(M_levels)))
+    if not levels:
+        return {}
+    max_m = levels[-1]
+    if len(xi) < max_m:
+        raise ValueError("master bank shorter than requested prefix")
+    obs_t, obs_y, R_ref, rows = noisy_observation(field, group_id, density_complete)
+    losses = np.empty(max_m, dtype=float)
+    atom_list = tuple(sorted(field.pstar))
+    sat = np.zeros((max_m, len(atom_list)), dtype=bool)
+    for lo in range(0, max_m, chunk_size):
+        hi = min(max_m, lo + chunk_size)
+        q = _branch_bank(field, xi[lo:hi], obs_t)
+        pred = q[:, rows, :]
+        losses[lo:hi] = np.mean(np.mean((pred - obs_y[None, :, :])**2, axis=-1), axis=-1) / max(R_ref**2, 1e-12)
+        sat[lo:hi] = _satisfaction(_branch_bank(field, xi[lo:hi], X), field, atom_list)
+    return {M: _summarize_prefix(losses[:M], sat[:M], candidates, atom_list) for M in levels}
+
+
+def score_bank(field: CleanField, group_id: str, xi: np.ndarray, candidates: list[frozenset], M: int,
+               density_complete: bool = False, chunk_size: int = 256) -> BankScores:
+    """Compatibility wrapper for one frozen master-bank prefix."""
+    return score_bank_ladder(field, group_id, xi, candidates, (M,), density_complete, chunk_size)[M]
 
 
 def completeness_gap(scores: BankScores, pstar: frozenset, candidate: frozenset) -> tuple[float | None, str]:

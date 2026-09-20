@@ -22,7 +22,7 @@ from scipy.stats import spearmanr
 from e14_multivariate_core import H, INTENTS, build_clean, apply_c2_intervention, exact_envelope_match, stable_seed, persistent_scope_table, measured_stratum
 from e14_master_scorer import (
     direct_candidate_audit, master_latents, score_bank, completeness_gap,
-    continuous_evidence,
+    continuous_evidence, score_bank_ladder,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -82,6 +82,17 @@ def branch_fields(intent: str, gen: str, axis: str, seed: int, scope: str):
     return out
 
 
+def rejection_category(reason: str) -> str:
+    """Map frozen generator/checker failures into predeclared accounting bins."""
+    if reason in {"pstar_mismatch", "base_not_persistent", "scope_mismatch"}:
+        return reason
+    if "admissible range" in reason or "numeric" in reason:
+        return "numeric_field_rejection"
+    if "envelope" in reason or "semantic" in reason or "checker" in reason:
+        return "semantic_failure"
+    return "exceptions_other"
+
+
 def _rank_agreement(a: np.ndarray, b: np.ndarray) -> float:
     if len(a) < 2:
         return 1.0
@@ -126,7 +137,7 @@ def _metrics(scores, field, xi, candidates):
 def run(args):
     OUT.mkdir(parents=True, exist_ok=True)
     cell_rows = []
-    measurement_rows = []
+    accounting_rows = []
     manifest_rows = []
     integrity = {"cells": 0, "groups": 0, "branch_conditions": 0,
                  "direct_audit_failures": 0, "pstar_mismatch": 0,
@@ -146,14 +157,15 @@ def run(args):
         vals = {axis: [] for axis in BRANCHES}
         for axis in BRANCHES:
             accepted = 0; proposal = 0
+            local_rejections = {k: 0 for k in rejection_counts if k != "exhaustion"}
             while accepted < args.groups and proposal < MAX_GROUP_PROPOSALS:
                 seed = group_seed(axis, cell_id, proposal)
                 try:
                     members = branch_fields(intent, gen, axis, seed, scope)
                 except Exception as exc:
                     reason = str(exc)
-                    if reason in rejection_counts: rejection_counts[reason] += 1
-                    else: rejection_counts["exceptions_other"] += 1
+                    category = rejection_category(reason)
+                    rejection_counts[category] += 1; local_rejections[category] += 1
                     proposal += 1
                     continue
                 group_index = accepted
@@ -174,10 +186,11 @@ def run(args):
                     if not audit_ok:
                         integrity["direct_audit_failures"] += 1
                     row_by_m = {}
+                    ladder_scores = score_bank_ladder(field, group_id, xi, cands, run_levels)
                     for M in run_levels:
                         if M > args.max_M:
                             continue
-                        scores = score_bank(field, group_id, xi[:M], cands, M)
+                        scores = ladder_scores[M]
                         d_eff, vf, vf_norm = _metrics(scores, field, xi[:M], cands)
                         gaps = {"|".join(sorted(c)): completeness_gap(scores, pstar, c) for c in cands}
                         row_by_m[M] = (scores, gaps, d_eff, vf, vf_norm)
@@ -200,6 +213,9 @@ def run(args):
                 rejection_counts["exhaustion"] += 1
                 cell_rows.append({"cell_id": cell_id, "axis": axis, "status": "exhaustion",
                                   "accepted": accepted, "proposals": proposal})
+            accounting_rows.append({"cell_id": cell_id, "axis": axis, "requested_groups": args.groups,
+                                    "accepted_groups": accepted, "proposals": proposal,
+                                    **local_rejections, "exhausted": int(accepted < args.groups)})
         for axis, records in vals.items():
             if not records:
                 continue
@@ -244,12 +260,45 @@ def run(args):
     elif args.max_M >= 16384 and diagnostics:
         common_selected = 16384; selection_basis = "largest_frozen_reference_after_any_lower_M_failure"
     integrity["rejection_counts"] = rejection_counts
+    integrity["pstar_mismatch"] = rejection_counts["pstar_mismatch"]
+    integrity["scope_or_base_failures"] = rejection_counts["scope_mismatch"] + rejection_counts["base_not_persistent"]
+    integrity["exceptions"] = rejection_counts["exceptions_other"]
     integrity["common_selected_M"] = common_selected
     integrity["common_selection_basis"] = selection_basis
+    integrity["expected_accepted_groups"] = len(cells) * len(BRANCHES) * args.groups
+    integrity["accepted_groups_complete"] = integrity["groups"] == integrity["expected_accepted_groups"]
+    integrity["global_sanity_pass"] = bool(integrity["accepted_groups_complete"] and integrity["direct_audit_failures"] == 0 and rejection_counts["exhaustion"] == 0 and rejection_counts["exceptions_other"] == 0)
     with (OUT / "e14a_integrity_summary.json").open("w") as f: json.dump(integrity, f, indent=2)
+    accounting_fields = ["cell_id", "axis", "requested_groups", "accepted_groups", "proposals",
+                         "pstar_mismatch", "base_not_persistent", "scope_mismatch", "semantic_failure",
+                         "numeric_field_rejection", "exceptions_other", "exhausted"]
+    with (OUT / "e14a_rejection_accounting.csv").open("w", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=accounting_fields); w.writeheader(); w.writerows(accounting_rows)
+    chosen_m = common_selected if common_selected is not None else (max(run_levels) if run_levels else None)
+    support = {}
+    if chosen_m is not None:
+        for row in manifest_rows:
+            if row["M"] != chosen_m:
+                continue
+            key = (row["axis"], row["branch"])
+            s = support.setdefault(key, {"axis": row["axis"], "branch": row["branch"], "M": chosen_m,
+                                         "rows": 0, "reliable": 0, "floor": 0, "exact_gap": 0,
+                                         "E_min": [], "d_eff": [], "V_f_norm": []})
+            s["rows"] += 1; s["reliable"] += int(row["ESS"] >= 100); s["floor"] += int(row["floor"])
+            s["exact_gap"] += int(row["gap_status"] == "exact")
+            s["E_min"].append(row["E_min"]); s["d_eff"].append(row["d_eff"]); s["V_f_norm"].append(row["V_f_norm"])
+    support_rows = []
+    for s in support.values():
+        n = max(s.pop("rows"), 1)
+        support_rows.append({"axis": s["axis"], "branch": s["branch"], "M": s["M"], "candidate_rows": n,
+                             "reliable_rate": s.pop("reliable") / n, "floor_rate": s.pop("floor") / n,
+                             "exact_gap_rate": s.pop("exact_gap") / n,
+                             "mean_E_min": float(np.nanmean(s.pop("E_min"))),
+                             "mean_d_eff": float(np.nanmean(s.pop("d_eff"))),
+                             "mean_V_f_norm": float(np.nanmean(s.pop("V_f_norm")))})
     with (OUT / "e14a_measurement_support.csv").open("w", newline="") as f:
-        w=csv.DictWriter(f, fieldnames=["cell_id","axis","branch","status","M","p95_S_abs_diff","p95_gap_abs_diff","floor_agreement","min_spearman","eligible_exact_gap_rows","pass"])
-        w.writeheader(); w.writerows([r for r in cell_rows if r.get("status")=="diagnostic"])
+        w=csv.DictWriter(f, fieldnames=["axis","branch","M","candidate_rows","reliable_rate","floor_rate","exact_gap_rate","mean_E_min","mean_d_eff","mean_V_f_norm"])
+        w.writeheader(); w.writerows(support_rows)
     (OUT / "E14A_MEASUREMENT_SCALING_SANITY_RESULT.md").write_text(
         "# E14-A measurement-scaling sanity\n\n"
         f"Cells processed: {integrity['cells']}\n\n"
