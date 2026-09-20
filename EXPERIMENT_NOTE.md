@@ -1802,3 +1802,4 @@ may be frozen after it.
 
 **Artifact.** [E14 protocol draft](COMPLEXITY_SCALING_E14_PROTOCOL_DRAFT_V1.md)
 · [E14 design-freeze checklist](E14_DESIGN_FREEZE_CHECKLIST_V1.md)
+· [E9–E14 isolation registry](PRIOR_ANATOMY_ISOLATION_REGISTRY_V1.md)
