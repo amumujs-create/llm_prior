@@ -1827,6 +1827,16 @@ Within every paired latent group, `R_ref` is calculated once from unmodulated
 `f_0` over the frozen core/reference design and shared by all branches for
 both noise scale and likelihood normalization.
 
+**Implementation micro sanity.** The frozen multivariate clean-field core is
+implemented in `experiments/e14_multivariate_core.py`, with a separate
+`experiments/run_e14a_micro_sanity.py` smoke test. Before any bank/scoring
+run, all 72 `8 intended packets x 3 generators x 3 requested scope strata`
+clean cells passed: exact core-envelope matching across branch members,
+base persistence through `1.20`, bitwise `t<=.80` C2-intervention invariance,
+checker-derived scope nesting, requested/measured scope agreement, and shared
+paired-baseline `R_ref`. This is implementation validation only; it is not
+E14-A and does not select `M` or estimate an E14 result.
+
 **Artifact.** [E14 protocol draft](COMPLEXITY_SCALING_E14_PROTOCOL_DRAFT_V1.md)
 · [E14 design-freeze checklist](E14_DESIGN_FREEZE_CHECKLIST_V1.md)
 · [E14 pre-A execution freeze](E14_PRE_A_EXECUTION_FREEZE_V1.md)

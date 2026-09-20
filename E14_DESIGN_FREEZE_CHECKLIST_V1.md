@@ -16,9 +16,10 @@ E14 cannot start a generator or a full run until each item is frozen.
   and heterogeneity levels, including positive multiplicative modulation,
   `d=1` anchor handling, RMS/bounds, and no-clipping rejection; see
   `E14_PRE_A_EXECUTION_FREEZE_V1.md`.
-- [ ] Multivariate persistent-base acceptance and post-`.80` C2 intervention
+- [x] Multivariate persistent-base acceptance and post-`.80` C2 intervention
   contracts, including post-intervention latent semantic state for regime and
-  asymptote.
+  asymptote. The clean-field micro sanity passed all 72
+  `packet x generator x requested-scope` cells before E14-A.
 - [x] Exact paired realized-envelope equality, orthogonal branch backgrounds,
   and matched full-envelope scope as a control; subset extension is the scope
   estimand.
