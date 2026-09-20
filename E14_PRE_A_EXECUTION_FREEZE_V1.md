@@ -95,3 +95,8 @@ each convergence cell, not confidence intervals. Exact non-floor
 bank size fails that cell. Rank agreement defines identical constant vectors as
 `1`, and a constant/non-identical or otherwise undefined comparison as `0`.
 All edge-case counts are saved in the E14-A audit.
+
+The finite-bank estimand is conditional on the realized context geometry:
+`z` and semantic `theta(z)` are known, while bank uncertainty varies only the
+`t` continuation. The frozen likelihood uses `T=.02` and inherited `.5/.5`
+smoothing; floor state is checked on the unsmoothed weighted mass.

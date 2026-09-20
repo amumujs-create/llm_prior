@@ -259,6 +259,13 @@ deterministically into each matched field
 `xi_m -> {f_m^dim, f_m^int, f_m^het}`. Thus paired sharpness contrasts do not
 contain an avoidable Monte-Carlo-bank difference.
 
+E14-A treats the realization `f(t,z)` and its context-dependent semantic state
+as **known conditional structure**. Finite-bank uncertainty is frozen
+`t`-continuation uncertainty conditional on that realized context field; the
+bank does not resample the `z` geometry or redraw `theta(z)` independently.
+The fourth master latent coordinate is consumed by the smooth t-only bank
+basis without changing this estimand.
+
 E14-A uses an independent sanity corpus of **4 accepted paired groups per base
 cell per primary branch**. Its base-cell definition is `intended packet x
 generator x eta x requested full-scope stratum` (`216` cells); its convergence
@@ -296,6 +303,15 @@ reference-context-complete condition does not mechanically add evidence solely b
 adding observations. It uses one task-level clean reference range evaluated
 over the frozen core/reference design; prefix-specific normalization is
 prohibited.
+
+The E14-specific estimator is frozen as follows. For normalized equal-context
+loss `L_m`, `w_m` is proportional to
+`exp(-(L_m-min_m L_m)/T)` with `T=.02`. For a candidate satisfaction indicator
+`A_{m,P}`, first form the weighted raw mass `q_P=sum_m w_m A_{m,P}` and then
+apply inherited `.5/.5` smoothing:
+`p_hat_P=(q_P+.5)/(sum_m w_m+1)`. Report `S(P|D)=-log(p_hat_P)` and define
+finite-bank floor state from the unsmoothed mass `q_P <= 1/(10M)`. The same
+weights and one ESS are used for every candidate in a branch.
 
 ### Continuous evidence is primary
 

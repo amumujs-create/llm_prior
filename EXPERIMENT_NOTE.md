@@ -1849,7 +1849,12 @@ task/branch weight vector and ESS shared by every candidate, atom satisfaction
 matrices with AND-derived candidates, exact/lower-bound/unresolved
 completeness gaps, and a small direct-candidate equivalence audit. A scorer
 smoke test with `M=128` passed on the d=3 direction/curvature/bound field;
-this is an implementation check only, not the E14-A convergence result.
+the direct audit now recomputes frozen atom semantics on bank trajectories and
+compares them to the AND-derived matrix. The finite-bank estimand is
+conditional on realized context geometry (`z` and `theta(z)` are known), with
+uncertainty varying only the `t` continuation. The E14 weighting is explicitly
+`T=.02` with inherited `.5/.5` smoothing and unsmoothed floor state. This is
+an implementation check only, not the E14-A convergence result.
 
 **Artifact.** [E14 protocol draft](COMPLEXITY_SCALING_E14_PROTOCOL_DRAFT_V1.md)
 · [E14 design-freeze checklist](E14_DESIGN_FREEZE_CHECKLIST_V1.md)
