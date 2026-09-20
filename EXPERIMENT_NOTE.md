@@ -1786,5 +1786,19 @@ on integrity—not desired effect size. Low ESS remains a measurement status,
 not a task rejection. Full E14 then proceeds in order: dimension, interaction,
 heterogeneity, and only predeclared combined-corner stress cells.
 
+**E14 preflight corrections.** Primary paired groups require exact equality of
+the realized core `P_star`, including incidental/implied atoms; an envelope
+mismatch rejects the entire group. The three axes branch from one baseline
+rather than accumulating. Dimension and interaction effects are mean-zero and
+RMS-matched, while heterogeneity alone varies parameter-field RMS around the
+same mean realization. Full-envelope scope is a matched control, so the E14
+scope estimand is proper-subset extension conditional on it—not generic full
+scope scaling. The bank is paired by master latent draws across conditions and
+uses a fixed nested `4096/8192/16384` convergence ladder; ESS is never used to
+select `M`. Oracle contexts (`Z_ref`) are separate from observed contexts
+(`Z_obs`), preventing `d=1` pseudo-replication. Scientific generator ranges
+must be frozen before E14-A; only selected `M` and accepted execution artifacts
+may be frozen after it.
+
 **Artifact.** [E14 protocol draft](COMPLEXITY_SCALING_E14_PROTOCOL_DRAFT_V1.md)
 · [E14 design-freeze checklist](E14_DESIGN_FREEZE_CHECKLIST_V1.md)
