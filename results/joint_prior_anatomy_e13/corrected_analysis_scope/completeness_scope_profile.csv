@@ -1,0 +1,11 @@
+horizon,scope_status,candidate_rows,latent_tasks,mean_delta_S_miss,P_info_complete_exact_reliable,info_complete_cluster_bootstrap_95ci_low,info_complete_cluster_bootstrap_95ci_high,note
+.85,survives,21385,1982,0.2315381840816141,0.5026859047952063,0.4890481332047953,0.5164947611421722,"descriptive, exact-gap only; delta_S_miss is not correlated with S here"
+.85,failed,8195,659,0.19377764669850775,0.5631109636645734,0.5392603008934977,0.5873236391863447,"descriptive, exact-gap only; delta_S_miss is not correlated with S here"
+.90,survives,21385,1982,0.2315381840816141,0.5026859047952063,0.4890481332047953,0.5164947611421722,"descriptive, exact-gap only; delta_S_miss is not correlated with S here"
+.90,failed,8195,659,0.19377764669850775,0.5631109636645734,0.5392603008934977,0.5873236391863447,"descriptive, exact-gap only; delta_S_miss is not correlated with S here"
+1.00,survives,21385,1982,0.2315381840816141,0.5026859047952063,0.4890481332047953,0.5164947611421722,"descriptive, exact-gap only; delta_S_miss is not correlated with S here"
+1.00,failed,8195,659,0.19377764669850775,0.5631109636645734,0.5392603008934977,0.5873236391863447,"descriptive, exact-gap only; delta_S_miss is not correlated with S here"
+1.10,survives,13061,1982,0.25206294302846366,0.47510882114171477,0.45889755059990167,0.4916363058960687,"descriptive, exact-gap only; delta_S_miss is not correlated with S here"
+1.10,failed,16519,1329,0.19596631045833698,0.5552878230700841,0.5381520114234852,0.5710857558899194,"descriptive, exact-gap only; delta_S_miss is not correlated with S here"
+1.20,survives,13061,1982,0.25206294302846366,0.47510882114171477,0.45889755059990167,0.4916363058960687,"descriptive, exact-gap only; delta_S_miss is not correlated with S here"
+1.20,failed,16519,1329,0.19596631045833698,0.5552878230700841,0.5381520114234852,0.5710857558899194,"descriptive, exact-gap only; delta_S_miss is not correlated with S here"

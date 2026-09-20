@@ -1,0 +1,6 @@
+horizon,P_scope_survives_given_informative_reliable,survival_given_informative_cluster_bootstrap_95ci_low,survival_given_informative_cluster_bootstrap_95ci_high,mean_S_if_survives,mean_S_if_failed,P_informative_if_survives,P_informative_if_failed,note
+.85,0.7230834809756598,0.7058264782427421,0.7413914167600593,1.1328868325194512,1.1715199653125277,1.0,1.0,"descriptive association; eta and full-prior scope are controlled, not causal treatments"
+.90,0.7230834809756598,0.7058264782427421,0.7413914167600593,1.1328868325194512,1.1715199653125277,1.0,1.0,"descriptive association; eta and full-prior scope are controlled, not causal treatments"
+1.00,0.7230834809756598,0.7058264782427421,0.7413914167600593,1.1328868325194512,1.1715199653125277,1.0,1.0,"descriptive association; eta and full-prior scope are controlled, not causal treatments"
+1.10,0.4418745669552717,0.42560215518779,0.459995566860589,1.1121481529226849,1.1684739004829707,1.0,1.0,"descriptive association; eta and full-prior scope are controlled, not causal treatments"
+1.20,0.4418745669552717,0.42560215518779,0.459995566860589,1.1121481529226849,1.1684739004829707,1.0,1.0,"descriptive association; eta and full-prior scope are controlled, not causal treatments"

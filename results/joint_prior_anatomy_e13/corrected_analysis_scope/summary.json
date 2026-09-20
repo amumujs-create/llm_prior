@@ -1,0 +1,9 @@
+{
+  "run_manifest_sha256": "a45ea724f2442ba919035ff73e65fc643ac732d48e15a550feb9d4b483579298",
+  "manifest_source_commit": "8ea0a9c",
+  "task_count": 2160,
+  "candidate_rows": 34560,
+  "scope_endpoint_policy": "censoring-aware C_P(h) profiles only; H_valid* is not numerically summarized",
+  "association_policy": "within-task candidate weights plus latent-task clustered bootstrap (B=1000); descriptive/non-causal",
+  "observability_policy": "support audit only because O_P positives are sparse"
+}

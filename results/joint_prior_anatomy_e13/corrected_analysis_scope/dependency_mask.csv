@@ -1,0 +1,9 @@
+relation,status,reason
+core validity <-> any axis,masked,all E13 rows condition on core coverage=1
+candidate size <-> C_atom,masked,partly definitional
+S <-> delta_S_miss,masked,shared sharpness term by definition
+N_obs <-> O_P,masked,both derive from the same atom evidence
+subset/full scope direction,masked,AND/nesting invariant
+S <-> C_P(h),descriptive empirical panel,"controlled eta and scope, not causal"
+delta_S_miss <-> C_P(h),descriptive empirical panel,exact-gap reliable incomplete candidates only
+O_P <-> C_P(h),support-limited,only 117 observable rows in this corpus

@@ -1,0 +1,16 @@
+scope_stratum,horizon,all_candidate_survival,full_survival,note
+limited,.85,0.16513056835637588,0.0,full-prior scope stratum was quota-balanced by design
+limited,.90,0.16513056835637588,0.0,full-prior scope stratum was quota-balanced by design
+limited,1.00,0.16513056835637588,0.0,full-prior scope stratum was quota-balanced by design
+limited,1.10,0.16513056835637588,0.0,full-prior scope stratum was quota-balanced by design
+limited,1.20,0.16513056835637588,0.0,full-prior scope stratum was quota-balanced by design
+intermediate,.85,1.0,1.0,full-prior scope stratum was quota-balanced by design
+intermediate,.90,1.0,1.0,full-prior scope stratum was quota-balanced by design
+intermediate,1.00,1.0,1.0,full-prior scope stratum was quota-balanced by design
+intermediate,1.10,0.16513056835637588,0.0,full-prior scope stratum was quota-balanced by design
+intermediate,1.20,0.16513056835637588,0.0,full-prior scope stratum was quota-balanced by design
+persistent_within_tested_domain,.85,1.0,1.0,full-prior scope stratum was quota-balanced by design
+persistent_within_tested_domain,.90,1.0,1.0,full-prior scope stratum was quota-balanced by design
+persistent_within_tested_domain,1.00,1.0,1.0,full-prior scope stratum was quota-balanced by design
+persistent_within_tested_domain,1.10,1.0,1.0,full-prior scope stratum was quota-balanced by design
+persistent_within_tested_domain,1.20,1.0,1.0,full-prior scope stratum was quota-balanced by design

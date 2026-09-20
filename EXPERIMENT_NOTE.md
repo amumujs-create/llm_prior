@@ -1707,3 +1707,45 @@ score or naive pooled correlation; full execution still requires shared-domain/
 checker integrity sanity.
 
 **Artifact.** [E13 Joint Prior Anatomy Map protocol draft](JOINT_PRIOR_ANATOMY_E13_PROTOCOL_DRAFT_V1.md)
+
+---
+
+## 35. E13 — Corrected execution and interpretation record
+
+The early exact-three-atom / 15,120-row E13 draft above was superseded before
+scientific use. The corrected E13 corpus uses a core-frozen realized canonical
+envelope, all of its non-empty true subsets, a persistent base, and a clean
+post-`.80` C2 intervention. Scope is measured by the frozen clean oracle as
+`V_a(h) -> C_a(h) -> C_P(h)`, not by a requested breaker label. The corrected
+read-only scorer is bound to manifest SHA-256
+`a45ea724f2442ba919035ff73e65fc643ac732d48e15a550feb9d4b483579298` and
+produced 2,160 latent tasks and 34,560 candidate rows.
+
+**Completeness conclusion (frozen).** Among reliable, atom-incomplete,
+exact-gap candidates, 54.5% were informationally complete. More importantly,
+even when no omitted atom was logically implied by retained content, 59.9%
+remained informationally complete (`Delta S_miss<=.10 nat`, latent-task
+clustered 95% CI 58.7–61.2%; 1,982 tasks). Thus **completeness is marginal and
+conditional, not merely syntactic**. The operational claim is only that the
+omitted atom adds little continuation restriction *given the observed prefix
+and retained prior content*; E13 does not attribute that redundancy separately
+to the prefix or remaining atoms. The mixed implied/non-implied class remains
+descriptive until omitted count and realized-envelope size are standardized.
+
+**Scope and association record.** Scope is reported as censored-aware
+`P(C_P(h)=1)`, never as a mean of censored endpoints. Because full-envelope
+scope strata were quota-balanced, full survival is design provenance; the
+empirical quantity is the magnitude of proper-subset extension: 5.9% (95% CI
+5.5–6.4%) through `.85–1.00` and 11.9% (11.3–12.4%) through `.1.20`. The
+association map masks definitional relations. Observability is sparse
+(`117/34,560` rows) and every reliable row exceeds `.10 nat`, so neither an
+observability association nor a binary informativeness–scope association is
+identified in this corpus. These are support limitations, not failed integrity
+checks.
+
+![E13 censoring-aware scope profile](figures/fig42_e13_censored_scope_profile.png)
+
+![E13 completeness by scope status](figures/fig43_e13_completeness_scope_profile.png)
+
+**Artifact.** [E13 corrected results](RESULTS_JOINT_PRIOR_ANATOMY_E13.md)
+· [scope/association analysis](experiments/analyze_e13_scope_association.py)

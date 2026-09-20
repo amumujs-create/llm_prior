@@ -1,0 +1,6 @@
+horizon,all_candidate_survival,full_survival,proper_subset_scope_extension_rate,extension_cluster_bootstrap_95ci_low,extension_cluster_bootstrap_95ci_high,interpretation
+.85,0.7217101894522934,0.6666666666666785,0.05930707271324394,0.05455924547441348,0.06394655780224823,extension is empirical magnitude; subset>=full direction is masked as nesting-defined
+.90,0.7217101894522934,0.6666666666666785,0.05930707271324394,0.05455924547441348,0.06394655780224823,extension is empirical magnitude; subset>=full direction is masked as nesting-defined
+1.00,0.7217101894522934,0.6666666666666785,0.05930707271324394,0.05455924547441348,0.06394655780224823,extension is empirical magnitude; subset>=full direction is masked as nesting-defined
+1.10,0.44342037890443264,0.33333333333334547,0.11861414542648523,0.11322933279152984,0.1243931629797808,extension is empirical magnitude; subset>=full direction is masked as nesting-defined
+1.20,0.44342037890443264,0.33333333333334547,0.11861414542648523,0.11322933279152984,0.1243931629797808,extension is empirical magnitude; subset>=full direction is masked as nesting-defined
