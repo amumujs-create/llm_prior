@@ -1756,3 +1756,35 @@ direction-free descriptive evidence, not an effect of persistence.
 
 **Artifact.** [E13 corrected results](RESULTS_JOINT_PRIOR_ANATOMY_E13.md)
 · [scope/association analysis](experiments/analyze_e13_scope_association.py)
+
+---
+
+## 36. E14 — Complexity Scaling (design record)
+
+E14 follows frozen E13 (`36b8be2`) without reopening its thresholds, grammar,
+or corpus. Its question is whether the anatomy remains measurable as **world
+realization complexity** increases while declared `t`-direction prior content
+and core-validity semantics stay matched. Complexity is explicitly a vector,
+not one score: dimensionality (`d=1,3,8`), interaction (additive/pairwise/
+entangled), and structural heterogeneity (none/moderate/strong) are manipulated
+in separate paired contrasts. Path dependence and latent dynamics are excluded
+because they change the semantic object rather than merely scaling static-field
+complexity.
+
+The high-dimensional object is `x=(t,z)`, with the same extrapolation axis
+`t`, core domain `Omega_0=[.40,.80] x Z_ref`, and frozen E13 atom IDs. Core
+`P_star(Omega_0)` is determined once, including implied atoms; all non-empty
+true subsets are still candidates. Scope preserves E13's clean-oracle
+first-failure semantics over `Z_ref`: `V_a -> C_a -> C_P`, with right
+censoring. Continuous atom evidence `E_a` and continuous sharpness `S` become
+primary; the E13 threshold labels remain state summaries only.
+
+E14-A is a separate Measurement-Scaling Sanity before any full factorial run.
+It will freeze the nested context reference design, context-balanced noisy
+observation/evidence aggregation, and one common continuation-bank size based
+on integrity—not desired effect size. Low ESS remains a measurement status,
+not a task rejection. Full E14 then proceeds in order: dimension, interaction,
+heterogeneity, and only predeclared combined-corner stress cells.
+
+**Artifact.** [E14 protocol draft](COMPLEXITY_SCALING_E14_PROTOCOL_DRAFT_V1.md)
+· [E14 design-freeze checklist](E14_DESIGN_FREEZE_CHECKLIST_V1.md)
