@@ -21,7 +21,7 @@ without adding a new axis.
   after clean-oracle measured-stratum acceptance.
 - Frozen corrected preflight: 2,160 accepted latent tasks, 34,560 candidate
   rows, zero exhausted cells; manifest SHA-256
-  `87f421b1ed686423b4fba7dc4f21969fc0d0a72eb17d10b34b71d68a1fe844e2`.
+  `a45ea724f2442ba919035ff73e65fc643ac732d48e15a550feb9d4b483579298`.
 - Core acceptance/measurement domain: `Omega_0=[.40,.80]`; observation prefix
   `[0,.40]`; latent trajectory through `1.20`.
 - Maximum attempts: 2,000 per fine cell. Store every rejection and exhaustion

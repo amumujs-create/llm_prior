@@ -5,6 +5,7 @@ import csv, hashlib, json
 from pathlib import Path
 import numpy as np
 from build_e13_persistent_base import H, INTENTS, GENS, build, contiguous_table
+from run_prior_information_lifecycle_e9 import _template
 
 ROOT=Path(__file__).resolve().parents[1]; OUT=ROOT/'results/joint_prior_anatomy_e13/corrected_preflight'
 ETAS=('low','mid','high'); STRATA=('limited','intermediate','persistent_within_tested_domain'); QUOTA=10; MAX=2000
@@ -29,6 +30,19 @@ def label(h,c):
  if c:return 'persistent_within_tested_domain'
  if h<=.90:return 'limited'
  return 'intermediate' if h in (1.,1.1) else 'out_of_quota'
+def atom_evidence(x,y,pstar,eta,seed):
+ """E9 template-contrast evidence: eta enters computation, never copied out."""
+ m=x<=.40; xx=x[m]; yy=y[m]; r=max(float(np.ptp(yy)),1e-8); rng=np.random.default_rng(seed); obs=yy+rng.normal(0,.01*r,len(yy)); slope=(obs[1]-obs[0])/(xx[1]-xx[0])
+ primitive={'direction_decreasing':'direction','curvature_convex':'curvature','inflection_concave_to_convex':'inflection','turning_maximum':'turning','regime_postchange':'regime','lower_bound_0':'bound','asymptote_to_0_from_above':'asymptote'}
+ sign={'direction_decreasing':-1,'curvature_convex':1,'inflection_concave_to_convex':-1,'turning_maximum':1,'regime_postchange':-1,'lower_bound_0':1,'asymptote_to_0_from_above':-1}
+ out={}
+ for a in pstar:
+  target=_template(primitive[a],xx,obs[0],slope,sign[a],0.,0.); lt=np.mean(((obs-target)/r)**2); alts=[]
+  for q in ('direction','curvature','inflection','turning','regime','bound','asymptote'):
+   if q==primitive[a]:continue
+   alt=_template(q,xx,obs[0],slope,sign[a],0.,0.); mix=(1-eta)*target+eta*alt;alts.append(np.mean(((obs-mix)/r)**2))
+  out[a]=float(1/(1+np.exp(-np.clip((min(alts)-lt)/.02,-60,60))))
+ return out
 def write(p,rows):
  p.parent.mkdir(parents=True,exist_ok=True)
  with p.open('w',newline='',encoding='utf-8') as f:w=csv.DictWriter(f,fieldnames=list(rows[0]));w.writeheader();w.writerows(rows)
@@ -49,7 +63,8 @@ def main():
        if not np.array_equal(task['y'][core],y[core]):corechange+=1;continue
        raw,cont=contiguous_table(task['x'],y,task['pstar'],z);hv,cens,cp=h_from(cont);measured=label(hv,cens)
        if measured!=requested:mismatch+=1;continue
-       size=len(task['pstar']); rows.append({'task_id':f'{intent}:{gen}:{eta}:{requested}:{q}','generator_family':gen,'eta':eta,'intended_atoms':'|'.join(task['intent']),'realized_P_star_atoms':'|'.join(sorted(task['pstar'])),'P_star_size':size,'base_hash':task['base_hash'],'intervened_core_hash':hashv(y[core]),'core_equal':1,'intervention_family':params['family'],'intervention_seed':seed,'intervention_parameters':json.dumps(params,sort_keys=True),'requested_scope_stratum':requested,'measured_scope_stratum':measured,'atom_Va_json':json.dumps(raw,sort_keys=True),'atom_Ca_json':json.dumps(cont,sort_keys=True),'full_CP_star':'|'.join(map(str,cp)),'measured_H_valid':hv,'censored':int(cens),'candidate_count':2**size-1,'accepted_attempt':attempt+1,'acceptance':'accepted','rejection_reason':''});accepted+=1;break
+       size=len(task['pstar']); eta_value={'low':.20,'mid':.50,'high':.80}[eta]; ea=atom_evidence(task['x'],task['y'],task['pstar'],eta_value,seed)
+       rows.append({'task_id':f'{intent}:{gen}:{eta}:{requested}:{q}','generator_family':gen,'eta':eta,'eta_value':eta_value,'intended_atoms':'|'.join(task['intent']),'realized_P_star_atoms':'|'.join(sorted(task['pstar'])),'P_star_size':size,'base_hash':task['base_hash'],'intervened_core_hash':hashv(y[core]),'core_equal':1,'intervention_family':params['family'],'intervention_seed':seed,'intervention_parameters':json.dumps(params,sort_keys=True),'requested_scope_stratum':requested,'measured_scope_stratum':measured,'atom_Ea_json':json.dumps(ea,sort_keys=True),'atom_Va_json':json.dumps(raw,sort_keys=True),'atom_Ca_json':json.dumps(cont,sort_keys=True),'full_CP_star':'|'.join(map(str,cp)),'measured_H_valid':hv,'censored':int(cens),'candidate_count':2**size-1,'accepted_attempt':attempt+1,'acceptance':'accepted','rejection_reason':''});accepted+=1;break
      acct.append({'intent':intent,'generator':gen,'eta':eta,'requested_scope_stratum':requested,'requested':QUOTA,'accepted':accepted,'attempts':attempts,'requested_measured_scope_mismatch':mismatch,'base_not_persistent':basefail,'core_changed':corechange,'exhaustion':int(accepted!=QUOTA)})
  write(OUT/'accepted_manifest.csv',rows);write(OUT/'accounting.csv',acct)
  s={'protocol':'E13_scope_aware_preflight_v1','latent_tasks':len(rows),'expected_candidate_rows':sum(r['candidate_count'] for r in rows),'exhausted_cells':sum(r['exhaustion'] for r in acct),'manifest_sha256':hashlib.sha256((OUT/'accepted_manifest.csv').read_bytes()).hexdigest(),'accounting_sha256':hashlib.sha256((OUT/'accounting.csv').read_bytes()).hexdigest()}
