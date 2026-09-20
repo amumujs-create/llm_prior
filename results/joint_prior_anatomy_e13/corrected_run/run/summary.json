@@ -1,0 +1,8 @@
+{
+  "mode": "full",
+  "manifest_sha256": "a45ea724f2442ba919035ff73e65fc643ac732d48e15a550feb9d4b483579298",
+  "latent_tasks": 2160,
+  "candidate_rows": 34560,
+  "expected_candidate_rows": 34560,
+  "integrity_passed": true
+}
