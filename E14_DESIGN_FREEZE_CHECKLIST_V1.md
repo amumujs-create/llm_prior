@@ -12,19 +12,22 @@ E14 cannot start a generator or a full run until each item is frozen.
   context.
 - [x] Common nested bank ladder `4096 subset 8192 subset 16384` and convergence
   criteria against `16384`; ESS is excluded from the bank-selection rule.
-- [ ] Exact context-field parameterizations for additive, pairwise, entangled,
-  and heterogeneity levels, including mean-zero/RMS matching and bounds that
-  preserve the same atom semantics over all `Z_ref`.
+- [x] Exact context-field parameterizations for additive, pairwise, entangled,
+  and heterogeneity levels, including positive multiplicative modulation,
+  `d=1` anchor handling, RMS/bounds, and no-clipping rejection; see
+  `E14_PRE_A_EXECUTION_FREEZE_V1.md`.
 - [ ] Multivariate persistent-base acceptance and post-`.80` C2 intervention
   contracts, including post-intervention latent semantic state for regime and
   asymptote.
 - [x] Exact paired realized-envelope equality, orthogonal branch backgrounds,
   and matched full-envelope scope as a control; subset extension is the scope
   estimand.
-- [ ] Balanced paired-group quota, requested/measured scope acceptance, and
+- [x] Balanced paired-group quota, requested/measured scope acceptance, and
   maximum attempt accounting.
-- [ ] Fixed selected combined-corner cells and an explicit declaration that
-  they are supplementary.
+- [x] Fixed selected combined-corner cell and an explicit declaration that it
+  is supplementary.
+- [x] Master paired prefix-noise field, E13 inherited-artifact hashes,
+  `B=5000` paired-group bootstrap, and scope-horizon/stratum values.
 
 The following are *not* E14-A gates: monotonic ESS, lower sharpness at higher
 complexity, lower completeness, lower evidence, or any desired joint state.

@@ -1800,6 +1800,19 @@ select `M`. Oracle contexts (`Z_ref`) are separate from observed contexts
 must be frozen before E14-A; only selected `M` and accepted execution artifacts
 may be frozen after it.
 
+**E14-A execution closure.** The apparent `d=1` energy-matching conflict is
+resolved by retaining `d=1` only as the E13 zero-context anchor; the primary
+energy-matched dimensional estimand is `d=3 <-> d=8`. E14 now freezes a
+positive, mean-one multiplicative context field, so inherited t-direction
+atoms (including lower-bound and asymptote semantics) are not silently changed
+by an additive context offset. It also freezes a deterministic `64 x 49`
+master prefix-noise field, paired-group quotas/attempt accounting, one
+`d=8 entangled + strong` supplementary corner, inherited E13 hashes,
+scope horizons/strata, and paired-group clustered bootstrap `B=5,000`.
+These values are a pre-A generator contract; E14-A may select bank size only
+under the already frozen convergence rule and may not retune them.
+
 **Artifact.** [E14 protocol draft](COMPLEXITY_SCALING_E14_PROTOCOL_DRAFT_V1.md)
 · [E14 design-freeze checklist](E14_DESIGN_FREEZE_CHECKLIST_V1.md)
+· [E14 pre-A execution freeze](E14_PRE_A_EXECUTION_FREEZE_V1.md)
 · [E9–E14 isolation registry](PRIOR_ANATOMY_ISOLATION_REGISTRY_V1.md)

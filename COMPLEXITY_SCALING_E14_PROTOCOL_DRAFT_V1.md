@@ -72,11 +72,15 @@ cumulative chain:
 Only predeclared corner cells combining high levels of the three axes are
 reported as supplementary stress tests.
 
-For dimension and interaction scaling, the context field is centered and
-energy-matched across levels: `E_Z[g(z)]=0` and
-`RMS_Z[g(z)]=sigma_g`, with the same frozen `sigma_g` within an axis. Dimension
-uses a matched coefficient norm; interaction uses matched total context-field
-RMS. Heterogeneity intentionally changes the RMS of fields such as
+`d=1` has no context coordinate and therefore necessarily has `g(z)=0`; it
+cannot be energy-matched to a nonzero context field. It is retained as the
+**E13 anchor / zero-context-to-contextual transition**, not as the primary
+energy-matched dimensional effect. The primary dimensional scaling estimand is
+the matched `d=3 <-> d=8` contrast. Within that contrast, the context field is
+centered and energy-matched: `E_Z[g(z)]=0` and
+`RMS_Z[g(z)]=sigma_g=.20`. Dimension uses a matched coefficient norm;
+interaction uses matched total context-field RMS. Heterogeneity intentionally
+changes the RMS of fields such as
 `tau(z)-tau_0` or `rho(z)-rho_0`, but each field remains mean-zero so the mean
 baseline realization is not shifted.
 
@@ -151,6 +155,48 @@ extension scaling given matched full-envelope scope**: `C_P(h)` and
 `I[C_P(h)=1, C_Pstar(h)=0]` among proper subsets. Full `P_star` survival is
 reported as control provenance only.
 
+### Frozen context-field generator
+
+The scientific generator is fixed before E14-A. Let `q=d-1`; all centering and
+RMS normalizations below are calculated on the relevant frozen `Z_ref^(d)`,
+not on realized observations. For `q>=1`, define raw fields
+
+`r_add(z) = sum_j z_j / sqrt(q)`,
+
+`r_pair(z) = sqrt(2/(q(q-1))) sum_{j<k} z_j z_k` for `q>=2`, and
+`r_ent(z) = sin(pi sum_j z_j / sqrt(q))`.
+
+For a usable raw field `r`, write
+`std_Z(r)=(r-E_Z[r])/RMS_Z[r-E_Z[r]]`, and define the positive, mean-one
+multiplicative modulation
+
+`a_r(z;sigma) = exp(sigma std_Z(r)) / E_Z[exp(sigma std_Z(r))]`.
+
+Dimension and interaction branches use `f(t,z)=a_r(z;.20) f_0(t)`. The
+dimension branch uses `r_add` at `d=3` and `d=8`; the interaction branch at
+`d=8` uses `r_add`, `r_pair`, and `r_ent` for additive, pairwise, and
+entangled levels respectively. Consequently their nonzero context fields have
+the same log-amplitude RMS `.20`, while `a_r(z)>0` preserves t-direction
+direction and curvature signs, the zero lower bound, and a zero asymptote from
+above. `d=1` uses the null field `a=1`.
+
+Heterogeneity is a separate `d=8`, additive-background branch. It uses the
+frozen `r_ent` field and a single semantic numeric field selected by this
+lookup: turning -> `tau`; inflection -> `iota`; regime -> `rho`; asymptote ->
+`lambda`; curvature -> `beta`; and packets with only direction/bound use the
+positive amplitude field `a_r`. For bounded location/rate fields,
+
+`theta(z)=theta_0 + kappa_s delta_theta std_Z(r_ent)/max_Z|std_Z(r_ent)|`,
+
+where `kappa_moderate=.25`, `kappa_strong=.50`, and `delta_theta` is the
+predeclared distance from `theta_0` to the nearer edge of that field's
+atom-preserving admissible interval. For positive scale fields the corresponding
+levels use `a_r(z;.10)` and `a_r(z;.20)`. There is no clipping: a non-finite,
+out-of-interval, or checker-failing realization is rejected. Each accepted
+group records realized field RMS and maximum displacement. Exact core
+`P_star` equality remains the final acceptance test; these formulae are a
+proposal family, not a metadata substitute for the oracle.
+
 ## 6. Observation, bank, and evidence conventions
 
 ### Primary observation-budget condition
@@ -161,6 +207,24 @@ higher dimension includes the realistic sampling-density cost of representing
 more context. A supplementary density-compensated control increases `N` by a
 predeclared rule; it separates this sampling-density component from the
 dimension comparison but is not pooled with the primary estimand.
+
+### Frozen paired-noise field
+
+Noise is paired separately from the continuation bank. For each paired latent
+group, initialize one deterministic master Gaussian field
+`epsilon[k_z,k_t]` of shape `64 x 49` with seed
+`SHA256("e14-noise-v1|paired_group_id")`. Its standard deviation is
+`.01 R_ref`, where `R_ref` is the one clean core/reference-design range used
+by likelihood normalization. The common prefix-time indices are
+`{0,8,16,24,32,40,48}` of the 49-point grid. `d=3` and `d=8` take exactly the
+same first-seven context rows and these seven columns in the primary `7x7`
+layout. The master row with index zero is also assigned to the `d=1` null
+context, so `d=1` shares its seven common t-location noise values with the
+first contextual observation row; it takes all 49 columns. The density control
+takes the required rows and all 49 columns. Noise-row reuse is a coupling
+device, not an assertion that the null and contextual locations are the same
+oracle context. No condition may resample noise after a paired group is
+accepted.
 
 ### Common continuation-bank rule
 
@@ -269,9 +333,10 @@ validity with all axes, candidate size with `C_atom`, `S` with `Delta S_miss`,
 5. Run E14-B (dimension), E14-C (interaction), and E14-D (heterogeneity)
    separately; only then run predeclared combined-corner stress cells.
 
-The unresolved numerical values in step 1 are not scientific degrees of
-freedom after E14-A. They must be recorded in an execution freeze before the
-first full E14 run.
+All scientific numeric generator choices are recorded in the pre-A execution
+freeze. After E14-A, only the selected common `M` under the frozen convergence
+rule and the accepted manifest may be frozen; neither permits generator
+retuning.
 
 ## 10. Interpretation boundary
 
