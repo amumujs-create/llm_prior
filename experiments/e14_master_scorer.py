@@ -190,9 +190,10 @@ def score_bank(field: CleanField, group_id: str, xi: np.ndarray, candidates: lis
         cols = [atom_list.index(a) for a in candidate]
         ok = np.all(sat[:, cols], axis=1)
         raw = float(np.sum(weights*ok))
-        # Frozen E13/E11 Jeffreys/Laplace-style .5/.5 smoothing is applied
-        # before the finite-bank floor check and remains common to candidates.
-        p = (raw + JEFFREYS_ALPHA) / (float(np.sum(weights)) + JEFFREYS_ALPHA + JEFFREYS_BETA)
+        # weights are normalized for likelihood/ESS, so restore the bank
+        # cardinality before applying the frozen Jeffreys prior.  This is
+        # equivalent to using unnormalized masses with denominator M+1.
+        p = (M * raw + JEFFREYS_ALPHA) / (M + JEFFREYS_ALPHA + JEFFREYS_BETA)
         sharpness[candidate] = float(-np.log(p)); raw_probability[candidate] = raw
         floor[candidate] = bool(raw <= 1./(PMIN_FACTOR*M)); support[candidate] = int(ok.sum())
     return BankScores(weights, sat, ess, floor, sharpness, raw_probability, support)
@@ -203,7 +204,9 @@ def completeness_gap(scores: BankScores, pstar: frozenset, candidate: frozenset)
     if cand_floor and not star_floor: return None, "integrity_violation"
     if star_floor and cand_floor: return None, "unresolved"
     if star_floor:
-        floor_sharpness = -np.log(1./(PMIN_FACTOR*len(scores.weights)))
+        floor_raw = 1. / (PMIN_FACTOR * len(scores.weights))
+        floor_probability = (len(scores.weights) * floor_raw + JEFFREYS_ALPHA) / (len(scores.weights) + JEFFREYS_ALPHA + JEFFREYS_BETA)
+        floor_sharpness = -np.log(floor_probability)
         return float(floor_sharpness - scores.sharpness[candidate]), "lower_bound"
     return scores.sharpness[pstar] - scores.sharpness[candidate], "exact"
 

@@ -19,7 +19,7 @@ from pathlib import Path
 import numpy as np
 from scipy.stats import spearmanr
 
-from e14_multivariate_core import H, INTENTS, build_clean, apply_c2_intervention, exact_envelope_match, stable_seed
+from e14_multivariate_core import H, INTENTS, build_clean, apply_c2_intervention, exact_envelope_match, stable_seed, persistent_scope_table, measured_stratum
 from e14_master_scorer import (
     direct_candidate_audit, master_latents, score_bank, completeness_gap,
     continuous_evidence,
@@ -46,8 +46,11 @@ def subsets(pstar: frozenset) -> list[frozenset]:
             for q in itertools.combinations(atoms, n)]
 
 
-def group_seed(axis: str, cell_id: str, j: int) -> int:
-    return stable_seed("e14-a-v1", axis, cell_id, j)
+MAX_GROUP_PROPOSALS = 2000
+
+
+def group_seed(axis: str, cell_id: str, proposal_index: int) -> int:
+    return stable_seed("e14-a-v1", axis, cell_id, proposal_index)
 
 
 def branch_fields(intent: str, gen: str, axis: str, seed: int, scope: str):
@@ -62,16 +65,19 @@ def branch_fields(intent: str, gen: str, axis: str, seed: int, scope: str):
         levels = ("none", "moderate", "strong")
         hs = [(build_clean(intent, gen, "heterogeneity", heterogeneity=l, group_seed=seed), b)
               for l, b in zip(levels, names)]
+    if not exact_envelope_match(*[q[0] for q in hs]):
+        raise ValueError("pstar_mismatch")
     out = []
     for field, name in hs:
         base = field
-        if not exact_envelope_match(*[q[0] for q in hs]):
-            raise ValueError("pstar_mismatch")
-        if any(v != 1 for atom in field.pstar for v in __import__("e14_multivariate_core", fromlist=["persistent_scope_table"]).persistent_scope_table(field)[1][atom]):
+        _, base_cont = persistent_scope_table(base)
+        if any(v != 1 for atom in field.pstar for v in base_cont[atom]):
             raise ValueError("base_not_persistent")
         intervention = apply_c2_intervention(base, scope)
-        # Measurement is recomputed by the clean scope layer; requested labels
-        # are never passed to the scorer.
+        _, int_cont = persistent_scope_table(intervention)
+        measured = measured_stratum(int_cont, intervention.pstar)
+        if measured != scope:
+            raise ValueError("scope_mismatch")
         out.append((name, base, intervention))
     return out
 
@@ -99,13 +105,22 @@ def _metrics(scores, field, xi, candidates):
     tr = float(np.trace(cov_xi))
     den = float(np.trace(cov_xi @ cov_xi))
     d_eff = 0.0 if den < 1e-12 or not np.isfinite(den) else tr * tr / den
-    # V_f remains function-space dispersion on the inherited 49-point grid.
-    x_eval = np.arange(49, dtype=float) / 120.
-    f = _branch_bank(field, xi, x_eval)
-    mu = np.sum(scores.weights[:, None, None] * f, axis=0)
-    cen = f - mu[None, :, :]
-    vf = float(np.mean(np.sum(scores.weights[:, None, None] * cen * cen, axis=0)))
-    return d_eff, vf
+    # V_f remains function-space dispersion, evaluated on the frozen
+    # continuation domain [.40, 1.20] at the inherited 49-point resolution.
+    # Accumulate first and second weighted moments in chunks so M=16384 never
+    # materializes a large bank-by-context-by-time cube.
+    x_eval = np.linspace(.40, 1.20, 49)
+    mu = np.zeros((len(field.z_ref), len(x_eval)), dtype=float)
+    second = np.zeros_like(mu)
+    chunk = 256
+    for lo in range(0, len(xi), chunk):
+        hi = min(len(xi), lo + chunk)
+        f = _branch_bank(field, xi[lo:hi], x_eval)
+        w = scores.weights[lo:hi]
+        mu += np.sum(w[:, None, None] * f, axis=0)
+        second += np.sum(w[:, None, None] * f * f, axis=0)
+    vf = float(np.mean(second - mu * mu))
+    return d_eff, vf, vf / max(field.rref ** 2, 1e-12)
 
 
 def run(args):
@@ -116,7 +131,10 @@ def run(args):
     integrity = {"cells": 0, "groups": 0, "branch_conditions": 0,
                  "direct_audit_failures": 0, "pstar_mismatch": 0,
                  "scope_or_base_failures": 0, "exceptions": 0}
-    selections = []
+    rejection_counts = {"pstar_mismatch": 0, "base_not_persistent": 0,
+                        "scope_mismatch": 0, "semantic_failure": 0,
+                        "numeric_field_rejection": 0, "exceptions_other": 0,
+                        "exhaustion": 0}
     run_levels = (SMOKE_M,) if args.max_M == SMOKE_M else tuple(m for m in M_LEVELS if m <= args.max_M)
     cells = [(intent, gen, eta_name, eta, scope)
              for intent in INTENT_NAMES for gen in GENS
@@ -127,15 +145,19 @@ def run(args):
         integrity["cells"] += 1
         vals = {axis: [] for axis in BRANCHES}
         for axis in BRANCHES:
-            for j in range(args.groups):
-                integrity["groups"] += 1
-                seed = group_seed(axis, cell_id, j)
+            accepted = 0; proposal = 0
+            while accepted < args.groups and proposal < MAX_GROUP_PROPOSALS:
+                seed = group_seed(axis, cell_id, proposal)
                 try:
                     members = branch_fields(intent, gen, axis, seed, scope)
                 except Exception as exc:
-                    integrity["exceptions"] += 1
-                    cell_rows.append({"cell_id": cell_id, "axis": axis, "status": "reject", "reason": str(exc), "group_index": j})
+                    reason = str(exc)
+                    if reason in rejection_counts: rejection_counts[reason] += 1
+                    else: rejection_counts["exceptions_other"] += 1
+                    proposal += 1
                     continue
+                group_index = accepted
+                accepted += 1; proposal += 1; integrity["groups"] += 1
                 pstar = members[0][1].pstar
                 cands = subsets(pstar)
                 for branch_name, base, field in members:
@@ -143,9 +165,10 @@ def run(args):
                     # Ensure scope is measured from the field; no proposal
                     # metadata is used in scoring.
                     xi = master_latents(seed, M=max(M_LEVELS))
-                    e_mean, e_raw = continuous_evidence(field, f"{axis}|{cell_id}|{j}", eta)
+                    group_id = f"{axis}|{cell_id}|proposal{proposal-1}"
+                    e_mean, e_raw = continuous_evidence(field, group_id, eta)
                     audit_ok = direct_candidate_audit(
-                        score_bank(field, f"{axis}|{cell_id}|{j}", xi[:min(args.audit_n, max(M_LEVELS))], cands,
+                        score_bank(field, group_id, xi[:min(args.audit_n, max(M_LEVELS))], cands,
                                    min(args.audit_n, max(M_LEVELS))),
                         field, xi[:min(args.audit_n, max(M_LEVELS))], pstar, cands, n=min(args.audit_n, max(M_LEVELS)))
                     if not audit_ok:
@@ -154,43 +177,50 @@ def run(args):
                     for M in run_levels:
                         if M > args.max_M:
                             continue
-                        scores = score_bank(field, f"{axis}|{cell_id}|{j}", xi[:M], cands, M)
-                        d_eff, vf = _metrics(scores, field, xi[:M], cands)
+                        scores = score_bank(field, group_id, xi[:M], cands, M)
+                        d_eff, vf, vf_norm = _metrics(scores, field, xi[:M], cands)
                         gaps = {"|".join(sorted(c)): completeness_gap(scores, pstar, c) for c in cands}
-                        row_by_m[M] = (scores, gaps, d_eff, vf)
+                        row_by_m[M] = (scores, gaps, d_eff, vf, vf_norm)
                         for c in cands:
                             gap, status = gaps["|".join(sorted(c))]
-                            manifest_rows.append({"cell_id": cell_id, "axis": axis, "group_index": j,
+                            manifest_rows.append({"cell_id": cell_id, "axis": axis, "group_index": group_index, "proposal_index": proposal-1,
                                 "branch": branch_name, "M": M, "candidate": "|".join(sorted(c)),
                                 "pstar": "|".join(sorted(pstar)), "S": scores.sharpness[c],
                                 "ESS": scores.ess, "N_survive": scores.support[c],
                                 "floor": int(scores.floor_by_candidate[c]), "delta_S_miss": gap,
-                                "gap_status": status, "d_eff": d_eff, "V_f": vf,
+                                "gap_status": status, "d_eff": d_eff, "V_f": vf, "V_f_norm": vf_norm,
                                 "E_a": json.dumps({a: e_mean.get(a) for a in sorted(c)}, sort_keys=True),
                                 "E_a_raw": json.dumps({a: e_raw.get(a) for a in sorted(c)}, sort_keys=True),
                                 "E_min": float(min(e_mean.get(a, float("nan")) for a in c)),
                                 "direct_audit": int(audit_ok), "eta": eta, "requested_scope": scope})
-                    vals[axis].append((branch_name, row_by_m))
+                    vals[axis].append({"branch": branch_name, "rows": row_by_m,
+                                       "pstar": pstar, "cands": cands,
+                                       "group_index": group_index})
+            if accepted < args.groups:
+                rejection_counts["exhaustion"] += 1
+                cell_rows.append({"cell_id": cell_id, "axis": axis, "status": "exhaustion",
+                                  "accepted": accepted, "proposals": proposal})
         for axis, records in vals.items():
             if not records:
                 continue
             # Convergence cells are base-cell x primary axis x realized branch
             # condition. Never pool d=1/d=3/d=8 (or add/pair/ent) here.
             by_branch = {}
-            for branch_name, rb in records:
-                by_branch.setdefault(branch_name, []).append(rb)
+            for rec in records:
+                by_branch.setdefault(rec["branch"], []).append(rec)
             for branch_name, branch_records in by_branch.items():
-                ref_records = [rb for rb in branch_records if 16384 in rb]
+                ref_records = [rec for rec in branch_records if 16384 in rec["rows"]]
                 for M in (4096, 8192):
                     if M > args.max_M or not ref_records:
                         continue
                     sdiff = []; gdiff = []; floor_agree = []; ranks = []; exact_n = 0
-                    for rb in ref_records:
-                        a_s, a_g, _, _ = rb[M]; b_s, b_g, _, _ = rb[16384]
-                        keys = [c for c in cands if c in a_s.sharpness and c in b_s.sharpness]
+                    for rec in ref_records:
+                        rb = rec["rows"]; group_cands = rec["cands"]; group_pstar = rec["pstar"]
+                        a_s, a_g, _, _, _ = rb[M]; b_s, b_g, _, _, _ = rb[16384]
+                        keys = [c for c in group_cands if c in a_s.sharpness and c in b_s.sharpness]
                         sdiff.extend(abs(a_s.sharpness[c] - b_s.sharpness[c]) for c in keys)
                         floor_agree.extend(a_s.floor_by_candidate[c] == b_s.floor_by_candidate[c] for c in keys)
-                        proper = [c for c in keys if c != pstar]
+                        proper = [c for c in keys if c != group_pstar]
                         ex = [c for c in proper if a_g["|".join(sorted(c))][1] == "exact" and b_g["|".join(sorted(c))][1] == "exact"]
                         gdiff.extend(abs(a_g["|".join(sorted(c))][0] - b_g["|".join(sorted(c))][0]) for c in ex)
                         exact_n += len(ex)
@@ -201,21 +231,21 @@ def run(args):
                         "floor_agreement": float(np.mean(floor_agree)) if floor_agree else None,
                         "min_spearman": float(min(ranks)) if ranks else None, "eligible_exact_gap_rows": exact_n,
                         "pass": bool(sdiff and gdiff and exact_n >= 20 and np.quantile(sdiff,.95) <= .02 and np.quantile(gdiff,.95) <= .02 and np.mean(floor_agree) == 1 and min(ranks) >= .99)})
-                diagnostics = [r for r in cell_rows if r.get("cell_id") == cell_id and r.get("axis") == axis and r.get("branch") == branch_name and r.get("status") == "diagnostic"]
-                selected = None
-                if args.max_M >= 4096 and any(r.get("M") == 4096 and r.get("pass") for r in diagnostics):
-                    selected = 4096
-                elif args.max_M >= 8192 and any(r.get("M") == 8192 and r.get("pass") for r in diagnostics):
-                    selected = 8192
-                elif args.max_M >= 16384:
-                    selected = 16384
-                selections.append({"cell_id": cell_id, "axis": axis, "branch": branch_name, "selected_M": selected,
-                                   "selection_basis": "first_predeclared_M_passing_all_rules" if selected in (4096,8192) else ("largest_frozen_reference_after_failure" if selected == 16384 else "not_evaluated")})
     with (OUT / "e14a_manifest.json").open("w") as f: json.dump({"config":{"M_levels":run_levels,"primary_M_levels":M_LEVELS,"max_M":args.max_M,"groups":args.groups,"cell_limit":args.cell_limit,"offset":args.offset},"rows":manifest_rows}, f, indent=2)
     fields = sorted({k for r in cell_rows for k in r})
     with (OUT / "e14a_convergence_by_cell.csv").open("w", newline="") as f:
         w=csv.DictWriter(f, fieldnames=fields); w.writeheader(); w.writerows(cell_rows)
-    integrity["M_selection"] = selections
+    diagnostics = [r for r in cell_rows if r.get("status") == "diagnostic"]
+    common_selected = None; selection_basis = "not_evaluated"
+    if args.max_M >= 4096 and diagnostics and all(r.get("M") == 4096 and r.get("pass") for r in diagnostics if r.get("M") == 4096) and sum(r.get("M") == 4096 for r in diagnostics) == len({(r.get("cell_id"), r.get("axis"), r.get("branch")) for r in diagnostics}):
+        common_selected = 4096; selection_basis = "all_convergence_cells_pass_4096"
+    elif args.max_M >= 8192 and diagnostics and all(r.get("M") == 8192 and r.get("pass") for r in diagnostics if r.get("M") == 8192) and sum(r.get("M") == 8192 for r in diagnostics) == len({(r.get("cell_id"), r.get("axis"), r.get("branch")) for r in diagnostics}):
+        common_selected = 8192; selection_basis = "all_convergence_cells_pass_8192"
+    elif args.max_M >= 16384 and diagnostics:
+        common_selected = 16384; selection_basis = "largest_frozen_reference_after_any_lower_M_failure"
+    integrity["rejection_counts"] = rejection_counts
+    integrity["common_selected_M"] = common_selected
+    integrity["common_selection_basis"] = selection_basis
     with (OUT / "e14a_integrity_summary.json").open("w") as f: json.dump(integrity, f, indent=2)
     with (OUT / "e14a_measurement_support.csv").open("w", newline="") as f:
         w=csv.DictWriter(f, fieldnames=["cell_id","axis","branch","status","M","p95_S_abs_diff","p95_gap_abs_diff","floor_agreement","min_spearman","eligible_exact_gap_rows","pass"])
