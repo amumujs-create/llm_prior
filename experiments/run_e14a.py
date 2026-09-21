@@ -50,8 +50,8 @@ def subsets(pstar: frozenset) -> list[frozenset]:
 MAX_GROUP_PROPOSALS = 2000
 
 
-def group_seed(axis: str, cell_id: str, proposal_index: int) -> int:
-    return stable_seed("e14-a-v1", axis, cell_id, proposal_index)
+def group_seed(namespace: str, axis: str, cell_id: str, proposal_index: int) -> int:
+    return stable_seed(namespace, axis, cell_id, proposal_index)
 
 
 def branch_fields(intent: str, gen: str, axis: str, seed: int, scope: str):
@@ -135,7 +135,7 @@ def _metrics(scores, field, xi, candidates):
     return d_eff, vf, vf / max(field.rref ** 2, 1e-12)
 
 
-def _write_progress(completed_cells, total_cells, cell_id, integrity, rejection_counts, groups_per_cell):
+def _write_progress(completed_cells, total_cells, cell_id, integrity, rejection_counts, groups_per_cell, run_label):
     """Persist operational status without changing corpus membership or scoring."""
     payload = {
         "completed_cells": completed_cells,
@@ -149,13 +149,15 @@ def _write_progress(completed_cells, total_cells, cell_id, integrity, rejection_
     }
     (OUT / "e14a_progress.json").write_text(json.dumps(payload, indent=2) + "\n")
     print(
-        f"[E14-A] {completed_cells}/{total_cells} cells complete; "
+        f"[{run_label}] {completed_cells}/{total_cells} cells complete; "
         f"accepted groups={integrity['groups']}",
         flush=True,
     )
 
 
 def run(args):
+    global OUT
+    OUT = Path(args.out_dir).resolve()
     OUT.mkdir(parents=True, exist_ok=True)
     cell_rows = []
     accounting_rows = []
@@ -167,7 +169,12 @@ def run(args):
                         "scope_mismatch": 0, "semantic_failure": 0,
                         "numeric_field_rejection": 0, "exceptions_other": 0,
                         "exhaustion": 0}
-    run_levels = (SMOKE_M,) if args.max_M == SMOKE_M else tuple(m for m in M_LEVELS if m <= args.max_M)
+    if args.selected_M_only:
+        if args.max_M != 16384:
+            raise ValueError("--selected-M-only requires --max-M 16384")
+        run_levels = (16384,)
+    else:
+        run_levels = (SMOKE_M,) if args.max_M == SMOKE_M else tuple(m for m in M_LEVELS if m <= args.max_M)
     cells = [(intent, gen, eta_name, eta, scope)
              for intent in INTENT_NAMES for gen in GENS
              for eta_name, eta in ETAS for scope in SCOPES]
@@ -180,7 +187,7 @@ def run(args):
             accepted = 0; proposal = 0
             local_rejections = {k: 0 for k in rejection_counts if k != "exhaustion"}
             while accepted < args.groups and proposal < MAX_GROUP_PROPOSALS:
-                seed = group_seed(axis, cell_id, proposal)
+                seed = group_seed(args.seed_namespace, axis, cell_id, proposal)
                 try:
                     members = branch_fields(intent, gen, axis, seed, scope)
                 except Exception as exc:
@@ -248,7 +255,7 @@ def run(args):
             for branch_name, branch_records in by_branch.items():
                 ref_records = [rec for rec in branch_records if 16384 in rec["rows"]]
                 for M in (4096, 8192):
-                    if M > args.max_M or not ref_records:
+                    if args.selected_M_only or M > args.max_M or not ref_records:
                         continue
                     sdiff = []; gdiff = []; floor_agree = []; ranks = []; exact_n = 0
                     for rec in ref_records:
@@ -268,8 +275,8 @@ def run(args):
                         "floor_agreement": float(np.mean(floor_agree)) if floor_agree else None,
                         "min_spearman": float(min(ranks)) if ranks else None, "eligible_exact_gap_rows": exact_n,
                         "pass": bool(sdiff and gdiff and exact_n >= 20 and np.quantile(sdiff,.95) <= .02 and np.quantile(gdiff,.95) <= .02 and np.mean(floor_agree) == 1 and min(ranks) >= .99)})
-        _write_progress(cell_index, len(cells), cell_id, integrity, rejection_counts, args.groups)
-    with (OUT / "e14a_manifest.json").open("w") as f: json.dump({"config":{"M_levels":run_levels,"primary_M_levels":M_LEVELS,"max_M":args.max_M,"groups":args.groups,"cell_limit":args.cell_limit,"offset":args.offset},"rows":manifest_rows}, f, indent=2)
+        _write_progress(cell_index, len(cells), cell_id, integrity, rejection_counts, args.groups, args.run_label)
+    with (OUT / "e14a_manifest.json").open("w") as f: json.dump({"config":{"M_levels":run_levels,"primary_M_levels":M_LEVELS,"max_M":args.max_M,"groups":args.groups,"cell_limit":args.cell_limit,"offset":args.offset,"seed_namespace":args.seed_namespace,"selected_M_only":args.selected_M_only,"run_label":args.run_label},"rows":manifest_rows}, f, indent=2)
     fields = sorted({k for r in cell_rows for k in r})
     with (OUT / "e14a_convergence_by_cell.csv").open("w", newline="") as f:
         w=csv.DictWriter(f, fieldnames=fields); w.writeheader(); w.writerows(cell_rows)
@@ -281,6 +288,8 @@ def run(args):
         common_selected = 8192; selection_basis = "all_convergence_cells_pass_8192"
     elif args.max_M >= 16384 and diagnostics:
         common_selected = 16384; selection_basis = "largest_frozen_reference_after_any_lower_M_failure"
+    elif args.selected_M_only:
+        common_selected = 16384; selection_basis = "frozen_from_E14-A"
     integrity["rejection_counts"] = rejection_counts
     integrity["pstar_mismatch"] = rejection_counts["pstar_mismatch"]
     integrity["scope_or_base_failures"] = rejection_counts["scope_mismatch"] + rejection_counts["base_not_persistent"]
@@ -336,6 +345,11 @@ def main():
     p.add_argument("--groups", type=int, default=4)
     p.add_argument("--max-M", type=int, default=16384, choices=(SMOKE_M,) + M_LEVELS)
     p.add_argument("--audit-n", type=int, default=128)
+    p.add_argument("--seed-namespace", default="e14-a-v1")
+    p.add_argument("--out-dir", default=str(OUT))
+    p.add_argument("--run-label", default="E14-A")
+    p.add_argument("--selected-M-only", action="store_true",
+                   help="score only frozen M=16384; used after E14-A selection")
     args=p.parse_args(); run(args)
 
 
