@@ -113,6 +113,53 @@ def _equality_constrained_ls(design: np.ndarray, y: np.ndarray, active: tuple[in
     return solution[:3], solution[3:]
 
 
+def _active_set_qp(
+    hessian: np.ndarray,
+    linear: np.ndarray,
+    constraints: np.ndarray,
+    lower: np.ndarray,
+    *,
+    tolerance: float,
+    slack_index: int | None = None,
+) -> tuple[np.ndarray, float, tuple[int, ...], float, float]:
+    """Solve a tiny deterministic convex QP by enumerating active sets.
+
+    Constraints are ``C x >= lower``.  Objective ties within ``1e-12`` are
+    resolved by smaller slack, then lexicographic active-set index, as frozen
+    for E15-B's secondary relaxation policies.
+    """
+    n_constraints = len(constraints)
+    feasible = []
+    for size in range(n_constraints + 1):
+        for active in combinations(tuple(range(n_constraints)), size):
+            if active:
+                c_active = constraints[list(active)]
+                kkt = np.block([[hessian, c_active.T], [c_active, np.zeros((size, size))]])
+                rhs = np.concatenate((linear, lower[list(active)]))
+                solution, *_ = np.linalg.lstsq(kkt, rhs, rcond=LINEAR_LSTSQ_RCOND)
+                x, multipliers = solution[: len(linear)], solution[len(linear):]
+            else:
+                x, *_ = np.linalg.lstsq(hessian, linear, rcond=LINEAR_LSTSQ_RCOND)
+                multipliers = np.empty(0)
+            values = constraints @ x - lower
+            if np.min(values) < -tolerance:
+                continue
+            # KKT form is Hx + C'lambda = linear.  For Cx>=lower, lambda must
+            # be non-positive in this convention.
+            if len(multipliers) and np.max(multipliers) > tolerance:
+                continue
+            stationarity = hessian @ x - linear
+            if active:
+                stationarity += constraints[list(active)].T @ multipliers
+            objective = float(.5 * x @ hessian @ x - linear @ x)
+            feasible.append((x, objective, active, float(np.min(values)), float(np.max(np.abs(stationarity)))))
+    if not feasible:
+        raise RuntimeError("no feasible active-set QP solution")
+    best_objective = min(item[1] for item in feasible)
+    tied = [item for item in feasible if abs(item[1] - best_objective) <= 1e-12]
+    return min(tied, key=lambda item: (float(item[0][slack_index]) if slack_index is not None else 0.0, item[2]))
+
+
 def fit_quadratic_with_direction_constraint(
     t: np.ndarray, y: np.ndarray, endpoint: float, *, tolerance: float = 1e-10
 ) -> ConstrainedQuadraticFit:
@@ -160,3 +207,56 @@ def fit_quadratic_with_direction_constraint(
 def quadratic_prediction(t: np.ndarray, coefficients: np.ndarray) -> np.ndarray:
     t = np.asarray(t, dtype=float)
     return coefficients[0] + coefficients[1] * t + coefficients[2] * t**2
+
+
+def fit_quadratic_with_direction_slack(
+    t: np.ndarray, y: np.ndarray, endpoint: float, slack: float, *, tolerance: float = 1e-10
+) -> ConstrainedQuadraticFit:
+    """Least-squares quadratic with fixed global directional slack ``s``."""
+    if slack < 0.0:
+        raise ValueError("slack must be nonnegative")
+    t = np.asarray(t, dtype=float)
+    y = np.asarray(y, dtype=float)
+    t_prefix = float(np.max(t))
+    design = np.column_stack((np.ones_like(t), t, t**2))
+    constraints = np.asarray(((0.0, 1.0, 2.0 * t_prefix), (0.0, 1.0, 2.0 * endpoint)))
+    hessian, linear = design.T @ design, design.T @ y
+    coef, _, active, min_value, stationarity = _active_set_qp(
+        hessian, linear, constraints, np.full(2, -float(slack)), tolerance=tolerance
+    )
+    residual = design @ coef - y
+    return ConstrainedQuadraticFit(coef, float(residual @ residual), active, min_value, stationarity)
+
+
+def fit_quadratic_soft_global(
+    t: np.ndarray,
+    y: np.ndarray,
+    endpoint: float,
+    *,
+    reference_y_scale: float,
+    reference_slope: float,
+    penalty_lambda: float = 1.0,
+    tolerance: float = 1e-10,
+) -> tuple[ConstrainedQuadraticFit, float]:
+    """Frozen E15-B soft-global QP with learned nonnegative violation slack."""
+    if reference_y_scale <= 0 or reference_slope <= 0 or penalty_lambda < 0:
+        raise ValueError("reference scales must be positive and penalty nonnegative")
+    t = np.asarray(t, dtype=float)
+    y = np.asarray(y, dtype=float)
+    t_prefix = float(np.max(t))
+    design = np.column_stack((np.ones_like(t), t, t**2))
+    n = len(t)
+    # Objective is mean normalized SSE plus lambda*(xi/b_ref)^2.  The common
+    # factor 1/2 leaves its minimizer unchanged and gives a standard QP form.
+    h_beta = design.T @ design / (n * reference_y_scale**2)
+    hessian = np.zeros((4, 4))
+    hessian[:3, :3] = h_beta
+    hessian[3, 3] = penalty_lambda / reference_slope**2
+    linear = np.zeros(4)
+    linear[:3] = design.T @ y / (n * reference_y_scale**2)
+    constraints = np.asarray(((0.0, 1.0, 2.0 * t_prefix, 1.0), (0.0, 1.0, 2.0 * endpoint, 1.0), (0.0, 0.0, 0.0, 1.0)))
+    x, _, active, min_value, stationarity = _active_set_qp(
+        hessian, linear, constraints, np.zeros(3), tolerance=tolerance, slack_index=3
+    )
+    residual = design @ x[:3] - y
+    return ConstrainedQuadraticFit(x[:3], float(residual @ residual), active, min_value, stationarity), float(x[3])

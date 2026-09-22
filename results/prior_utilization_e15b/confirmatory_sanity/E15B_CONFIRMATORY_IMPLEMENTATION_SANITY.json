@@ -1,0 +1,20 @@
+{
+  "checks": {
+    "audit_prefix_records": 216,
+    "evaluation_reference_windows": "PASS",
+    "evidence_enforcement_separation": "PASS",
+    "exact_support_equivalence": "PASS",
+    "existence_grid_audit": "PASS",
+    "expected_policy_rows": 317520,
+    "manifest_immutability": "PASS",
+    "no_future_leakage": "PASS",
+    "paired_repeated_measure_tasks": 2520,
+    "protected_quota_fixed": true,
+    "scope_semantics": "PASS",
+    "solver_audit": "PASS"
+  },
+  "failures": [],
+  "manifest_sha256": "b5d12de2c27db01823a905f03bd8523a1a8461fab69077da5d37db40edc0f413",
+  "note": "No prediction loss, contrast, CRPS, winner, or outcome direction is calculated or emitted.",
+  "status": "PASS"
+}

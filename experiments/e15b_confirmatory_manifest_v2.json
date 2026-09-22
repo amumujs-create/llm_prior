@@ -1,0 +1,83 @@
+{
+  "experiment_id": "e15-b-confirmatory-v2",
+  "status": "frozen_before_confirmatory_outcomes",
+  "seed_namespace": "e15-b-confirmatory-v1",
+  "seed": 151601,
+  "a0_is_discarded": true,
+  "generator": {
+    "normalized_scope_domain": [0.0, 1.0],
+    "a_uniform": [-0.25, 0.25],
+    "b_uniform_positive": [0.25, 0.55],
+    "gamma0_times_W_h": 4.0,
+    "post_scope_modes_balanced": {"reverse": -2.0, "persist": 0.0, "strengthen": 1.0},
+    "h_star_semantics": "warranted endpoint, not actual first direction violation",
+    "h_viol_semantics": "clean first direction-violation horizon; separately stored and right-censored when absent"
+  },
+  "observation_and_evaluation": {
+    "observation_start": 0.0,
+    "prefix_points": 49,
+    "evaluation_points_per_window": 321,
+    "exposure_end_before_h_star_over_W_h": {"low": 0.30, "medium": 0.12, "high": 0.03},
+    "noise_ratio_sigma_over_R_ref": 0.05,
+    "common_reference_window_over_W_h": {"start_before_h_star": 0.30, "end_after_h_star": 0.80},
+    "far_horizon_after_h_star_over_W_h": 0.80,
+    "within_scope_window": "(common high-prefix end, h_star]",
+    "post_scope_window": "(h_star, h_star+.80W_h]",
+    "shared_standardized_noise_across_exposures": true
+  },
+  "scope_support_and_profiles": {
+    "knowledge_states": ["exact", "narrow", "broad", "existence_only", "covered_biased", "uncovered_biased"],
+    "narrow_half_width_over_W_h": 0.10,
+    "broad_half_width_over_W_h": 0.30,
+    "covered_bias_over_W_h": 0.05,
+    "uncovered_bias_over_W_h": 0.15,
+    "scope_grid_step_over_W_h": 0.025,
+    "no_support_clipping": true,
+    "scope_evidence_profile": "prefix-only unconstrained deterministic linear least squares in (a,b) for f=a+b*q_h(t)",
+    "scope_evidence_is_separate_from_enforcement": true,
+    "forecast_engine": "quadratic least squares with deterministic active-set enumeration",
+    "local_constraint": "f_hat'(prefix_end)>=0 and f_hat'(h)>=0"
+  },
+  "secondary_policy_contract": {
+    "reference_slope": 0.40,
+    "reference_y_scale": 0.40,
+    "global_enforcement_endpoint": 1.80,
+    "global_endpoint_semantics": "h_max + .80W_h; public common endpoint, not a true validity or task-specific scoring endpoint",
+    "soft_global_lambda": 1.0,
+    "soft_global_objective": "mean normalized prefix SSE plus lambda*(xi/b_ref)^2, with q'(t)>=-xi through h_global",
+    "slack_ratios_over_b_ref": [0.0, 0.125, 0.25, 0.5],
+    "slack_values": [0.0, 0.05, 0.10, 0.20],
+    "slack_component_weights": [0.25, 0.25, 0.25, 0.25],
+    "tie_rule": "objective within 1e-12: smaller learned slack, then lexicographic active-set index",
+    "secondary_interpretation": "secondary relaxation policies only; excluded from D1, D2, quota selection, and exact-support representation equivalence"
+  },
+  "policies": {
+    "primary": ["hard_local_MAP", "scope_hypothesis_ensemble", "evidence_weighted_scope_mixture"],
+    "stress": ["hard_global"],
+    "secondary": ["free_baseline", "soft_global", "slack_distribution"]
+  },
+  "primary_contrasts": {
+    "D1": "evidence_weighted_scope_mixture - hard_local_MAP",
+    "D2": "evidence_weighted_scope_mixture - scope_hypothesis_ensemble"
+  },
+  "acceptance_gates": {
+    "min_reference_range": 0.05,
+    "max_normalized_reference_window_slope": 4.0,
+    "max_precursor_condition": 1000000.0,
+    "constraint_tolerance": 1e-09,
+    "max_stationarity_residual": 1e-09,
+    "minimum_window_points": 50,
+    "minimum_median_unique_scope_solutions": 4
+  },
+  "precision_and_feasibility": {
+    "metric": "paired post-scope NRMSE",
+    "target_ci_half_width": 0.025,
+    "minimum_confirmatory_quota": 125,
+    "confirmatory_quota": 2520,
+    "max_attempts": 2578,
+    "max_attempt_failure_probability": 0.0001,
+    "wilson_lower_acceptance_probability": 0.9866528393452244,
+    "quota_is_fixed_not_adaptive": true
+  },
+  "analysis": {"paired_bootstrap_replicates": 5000, "bootstrap_unit": "latent task", "cellwise_ci_only": true}
+}

@@ -101,6 +101,23 @@ The primary decomposition parallels E15-A but concerns scope rather than onset:
 primary scope-uncertainty estimand: it changes the asserted scope by extending
 the directional claim beyond the supplied support.
 
+## Frozen secondary relaxation policies
+
+All global-enforcement policies use the public common endpoint
+`h_global = h_max + .80W_h`; it is neither the true validity horizon nor a
+task-specific scoring endpoint.  No policy uses `h*`, `h_viol`, or a future
+label to choose its enforcement scope.
+
+For `soft_global`, with `b_ref=.40`, `Y_ref=b_ref W_h`, and `lambda=1`, fit
+the common quadratic forecast by mean normalized prefix SSE plus
+`lambda (xi/b_ref)^2`, subject to `q'(t)>=-xi`, `xi>=0`, at both endpoints of
+`[t_prefix,h_global]`.  For `slack_distribution`, solve the same deterministic
+constrained quadratic separately for fixed slacks `{0,.05,.10,.20}` and return
+their exact equal-weight mean.  They are secondary relaxation policies only:
+they are excluded from D1, D2, quota selection, and exact-support
+representation-equivalence claims.  Objective ties within `1e-12` resolve by
+smaller slack then lexicographic active-set index.
+
 ## Factors
 
 1. **Scope knowledge:** exact local horizon, narrow valid interval, broad valid
