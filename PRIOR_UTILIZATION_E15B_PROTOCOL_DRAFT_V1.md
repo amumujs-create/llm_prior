@@ -184,6 +184,16 @@ The longest horizon meeting finite, window-coverage, reference-range, and
 normalized-slope gates is then selected. These choices do not inspect policy
 forecast outcomes.
 
+### Frozen B0 numerical geometry
+
+The completed numerical calibration fixes `gamma_0 W_h=4`,
+`rho=sigma/R_ref=.05`, and `h_far-h*=.80W_h`. `gamma_0 W_h=2` failed the
+effective scope-solution gate; `.05` is the largest noise candidate satisfying
+the ordered adjacent-overlap and solver-geometry rules; and `.80W_h` is the
+longest admissible horizon. The frozen full-domain scope grid has spacing
+`.025W_h`. These numerical values are not revisited during protected quota
+calibration or the confirmatory run.
+
 ## Interpretation boundary
 
 E15-B can establish a controlled utilization result for the frozen
