@@ -21,8 +21,6 @@ from pathlib import Path
 from typing import Any
 
 import numpy as np
-from scipy.optimize import least_squares
-
 try:  # Supports both `python experiments/run_e15a_a0.py` and `python -m ...`.
     from .e15a_a0_contract import (
         A0SupportContract,
@@ -94,31 +92,34 @@ def _stable_softplus(x: np.ndarray) -> np.ndarray:
     return np.maximum(x, 0.0) + np.log1p(np.exp(-np.abs(x)))
 
 
-def _profile_nll(
+LINEAR_LSTSQ_RCOND = 1e-12
+
+
+def _profile_nll_and_condition(
     t: np.ndarray,
     y: np.ndarray,
     tau_grid: np.ndarray,
     s_fixed: float,
     sigma: float,
-    nuisance_bounds: dict[str, tuple[float, float]],
-    max_nfev: int,
-) -> np.ndarray:
-    """Common profiled `ell_k=min_phi NLL(...)` used by MAP and mixture later."""
-    lower = np.array([nuisance_bounds[key][0] for key in ("a", "b", "c")])
-    upper = np.array([nuisance_bounds[key][1] for key in ("a", "b", "c")])
-    start = (lower + upper) / 2.0
+) -> tuple[np.ndarray, np.ndarray]:
+    """Deterministic linear profile for every onset hypothesis.
+
+    At fixed `tau_k` and task-level fixed `s_0`, the smooth-regime model is
+    linear in `(a,b,c)`.  There is intentionally no nonlinear optimizer or
+    budget: `np.linalg.lstsq` with frozen `rcond` is the entire profile rule.
+    """
     result: list[float] = []
+    conditions: list[float] = []
     for tau in tau_grid:
         transition = s_fixed * _stable_softplus((t - tau) / s_fixed)
-
-        def residual(phi: np.ndarray) -> np.ndarray:
-            return (phi[0] + phi[1] * t + phi[2] * transition - y) / sigma
-
-        fit = least_squares(residual, start, bounds=(lower, upper), max_nfev=max_nfev)
+        design = np.column_stack((np.ones_like(t), t, transition))
+        coefficients, *_ = np.linalg.lstsq(design, y, rcond=LINEAR_LSTSQ_RCOND)
+        residual = (design @ coefficients - y) / sigma
         # The Gaussian constant is included for a genuine NLL, though it cancels
         # in the T=1 evidence weights.
-        result.append(float(.5 * np.sum(fit.fun**2) + len(t) * np.log(sigma * np.sqrt(2.0 * np.pi))))
-    return np.asarray(result, dtype=float)
+        result.append(float(.5 * np.sum(residual**2) + len(t) * np.log(sigma * np.sqrt(2.0 * np.pi))))
+        conditions.append(float(np.linalg.cond(design)))
+    return np.asarray(result, dtype=float), np.asarray(conditions, dtype=float)
 
 
 def _draw_task(
@@ -173,23 +174,19 @@ def run(config: dict[str, Any], blinded_contrast_csv: Path | None = None) -> dic
         config,
         "contract_id", "seed", "pilot_tasks", "max_attempts", "onset_domain",
         "observation_domain", "prefix_points", "eval_points", "parameter_ranges",
-        "nuisance_bounds", "noise_ratios", "horizon_candidates", "optimizer_budgets",
+        "noise_ratios", "horizon_candidates",
         "min_reference_range", "min_post_onset_fraction", "slope_scale", "min_c_ratio",
-        "max_abs_slope", "profile_convergence",
+        "max_abs_slope", "max_design_condition",
     )
     support = A0SupportContract(
         *_pair(config["onset_domain"], "onset_domain"),
         *_pair(config["observation_domain"], "observation_domain"),
     )
     ranges = {key: _pair(config["parameter_ranges"][key], f"parameter_ranges.{key}") for key in ("a", "b", "c", "s")}
-    nuisance_bounds = {key: _pair(config["nuisance_bounds"][key], f"nuisance_bounds.{key}") for key in ("a", "b", "c")}
     noise_ratios = [float(x) for x in config["noise_ratios"]]
     horizons = [float(x) for x in config["horizon_candidates"]]
-    budgets = sorted({int(x) for x in config["optimizer_budgets"]})
-    if not noise_ratios or not horizons or len(budgets) < 2 or min(budgets) < 1:
-        raise ValueError("need nonempty noise/horizon candidates and at least two positive budgets")
-    profile_gate = config["profile_convergence"]
-    _require(profile_gate, "relative_nll_max", "evidence_delta_max", "map_agreement_min")
+    if not noise_ratios or not horizons:
+        raise ValueError("need nonempty noise and horizon candidates")
     if int(config["pilot_tasks"]) < 1 or int(config["max_attempts"]) < int(config["pilot_tasks"]):
         raise ValueError("invalid pilot_tasks/max_attempts")
 
@@ -220,7 +217,7 @@ def run(config: dict[str, Any], blinded_contrast_csv: Path | None = None) -> dic
     evidence: dict[str, dict[str, list[float]]] = {
         str(noise): {level: [] for level in EXPOSURE_ENDPOINT_RATIOS} for noise in noise_ratios
     }
-    optimizer = {
+    design_condition = {
         str(noise): {level: [] for level in EXPOSURE_ENDPOINT_RATIOS} for noise in noise_ratios
     }
     horizon_audit = {
@@ -249,22 +246,11 @@ def run(config: dict[str, Any], blinded_contrast_csv: Path | None = None) -> dic
                 endpoint = support.exposure_endpoint(task.params.tau, level)
                 t_prefix = np.linspace(support.observation_min, endpoint, int(config["prefix_points"]))
                 y_prefix = smooth_regime(t_prefix, task.params) + noise_rng.normal(0.0, sigma, size=t_prefix.size)
-                losses_by_budget = {
-                    budget: _profile_nll(t_prefix, y_prefix, full_grid, task.params.s, sigma, nuisance_bounds, budget)
-                    for budget in budgets
-                }
-                final_losses = losses_by_budget[budgets[-1]]
-                evidence[str(noise_ratio)][level].append(onset_evidence_concentration(final_losses))
-                for lo, hi in zip(budgets[:-1], budgets[1:]):
-                    loss_lo, loss_hi = losses_by_budget[lo], losses_by_budget[hi]
-                    relative = float(np.max(np.abs(loss_hi - loss_lo) / (1.0 + np.abs(loss_hi))))
-                    optimizer[str(noise_ratio)][level].append({
-                        "from_budget": lo,
-                        "to_budget": hi,
-                        "relative_nll_change": relative,
-                        "evidence_delta": abs(onset_evidence_concentration(loss_hi) - onset_evidence_concentration(loss_lo)),
-                        "map_agreement": int(np.argmin(loss_hi) == np.argmin(loss_lo)),
-                    })
+                losses, conditions = _profile_nll_and_condition(
+                    t_prefix, y_prefix, full_grid, task.params.s, sigma
+                )
+                evidence[str(noise_ratio)][level].append(onset_evidence_concentration(losses))
+                design_condition[str(noise_ratio)][level].extend(conditions.tolist())
 
     horizon_summary = {}
     for key, audit in horizon_audit.items():
@@ -280,26 +266,15 @@ def run(config: dict[str, Any], blinded_contrast_csv: Path | None = None) -> dic
             and all(audit["slope_admissible"])
             and all(audit["finite"])
         )
-    convergence_summary: dict[str, dict[str, dict[str, float | int | bool]]] = {}
-    for noise, levels in optimizer.items():
-        convergence_summary[noise] = {}
-        for level, rows in levels.items():
-            if not rows:
-                convergence_summary[noise][level] = {"n": 0, "passed": False}
-                continue
-            rel = [row["relative_nll_change"] for row in rows]
-            delta_e = [row["evidence_delta"] for row in rows]
-            agreement = float(np.mean([row["map_agreement"] for row in rows]))
-            convergence_summary[noise][level] = {
-                "n": len(rows),
-                "relative_nll_change_q95": float(np.quantile(rel, .95)),
-                "evidence_delta_q95": float(np.quantile(delta_e, .95)),
-                "map_agreement_rate": agreement,
-                "passed": bool(
-                    np.quantile(rel, .95) <= float(profile_gate["relative_nll_max"])
-                    and np.quantile(delta_e, .95) <= float(profile_gate["evidence_delta_max"])
-                    and agreement >= float(profile_gate["map_agreement_min"])
-                ),
+    condition_summary = {}
+    for noise, levels in design_condition.items():
+        condition_summary[noise] = {}
+        for level, values in levels.items():
+            summary = _quantiles(values)
+            condition_summary[noise][level] = {
+                **summary,
+                "max": float(np.max(values)) if values else None,
+                "all_within_bound": bool(values and np.max(values) <= float(config["max_design_condition"])),
             }
 
     quota = None
@@ -320,7 +295,7 @@ def run(config: dict[str, Any], blinded_contrast_csv: Path | None = None) -> dic
         "all_requested_tasks_accepted": len(accepted) == int(config["pilot_tasks"]),
         "evidence_geometry": {noise: {level: _quantiles(values) for level, values in levels.items()} for noise, levels in evidence.items()},
         "horizon_admissibility": horizon_summary,
-        "optimizer_convergence": convergence_summary,
+        "linear_profile_condition_number": condition_summary,
         "blinded_quota_calibration": quota,
         "config_sha256": hashlib.sha256(json.dumps(config, sort_keys=True).encode()).hexdigest(),
     }

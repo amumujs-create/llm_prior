@@ -17,7 +17,8 @@ of `I`, not an information-preserving representation. A uniform density over
 
 - Prior family: one mechanistic regime change with onset `tau`.
 - Common predictive family: the frozen regime continuation family and the same
-  nuisance-parameter bounds/optimizer for every policy.
+  fixed transition width and deterministic linear profile solve for every
+  policy.
 - Same noisy observed prefix, train/test split, noise realization, onset-grid,
   task seeds, and far-OOD evaluation points within each latent task.
 - No policy receives future observations, the true onset, or support beyond
@@ -88,8 +89,9 @@ be representation-equivalent. This is an audit, not a primary policy contrast.
 
 For every frozen grid hypothesis `tau_k`, all evidence-using policies first
 compute the identical profile score
-`ell_k = min_phi NLL(D_prefix | tau_k, phi)`, using the same nuisance bounds,
-optimizer, and budget. `evidence_MAP_point` uses
+`ell_k = min_(a,b,c) NLL(D_prefix | tau_k, a,b,c,s_0)`, using the same fixed
+transition width `s_0` and deterministic linear least-squares rule.
+`evidence_MAP_point` uses
 `tau_MAP = argmin_k ell_k`; `evidence_weighted_mixture` uses
 `w_k=exp[-(ell_k-ell_min)] / sum_j exp[-(ell_j-ell_min)]`. Therefore C1 differs
 only in point commitment versus retention of the same likelihood-derived
@@ -102,15 +104,17 @@ information-preserving interval representation.
 
 ## Required implementation freezes before execution
 
-1. Regime generator equation, nuisance-parameter ranges, prefix endpoints,
-   far-OOD horizon, noise scale, task quota, and maximum generation attempts.
+1. Regime generator equation, nuisance-parameter ranges, fixed transition
+   width `s_0`, prefix endpoints, far-OOD horizon, noise scale, task quota,
+   and maximum generation attempts.
 2. The following normalized numerical choices, where
    `W_tau=tau_max-tau_min`: narrow half-width `.10W_tau`, broad half-width
    `.30W_tau`, covered bias `+/- .05W_tau`, uncovered bias `+/- .15W_tau`,
    hypothesis-grid spacing `.025W_tau`, and wrong-onset tolerance
    `delta_tau=.05W_tau`.
-3. Common nuisance-fit objective and optimizer budget. No policy-specific
-   tuning, validation selection, or future-dependent calibration.
+3. Common noise-normalized linear least-squares profile rule and frozen
+   design-matrix condition-number audit. No policy-specific tuning, validation
+   selection, nonlinear optimizer, or future-dependent calibration.
 4. Noise-normalized Gaussian prefix NLL. The soft objective is
    `L=NLL_prefix+lambda[((tau_L-tau)_+/h_n)^2+((tau-tau_U)_+/h_n)^2]`, with
    `lambda=1`; evidence-mixture weights use the untempered likelihood `T=1`.
@@ -210,12 +214,12 @@ collapse rates.
 E15-A0 may inspect only: (1) generator admissibility and numerical stability;
 (2) the spread and overlap of `E_tau` across the three prefix-exposure settings
 at one common noise scale; (3) a common far-OOD horizon with post-onset support
-and no numerical saturation; (4) convergence of the shared profiled `ell_k`
-under increasing optimizer budget; and (5) paired-contrast variance solely to
-choose a task quota for a prespecified confidence-interval half-width. It then
-freezes the regime equation, nuisance ranges, `sigma/R_ref`, far-OOD horizon,
-optimizer/budget, task quota, maximum attempts, and all seeds/rules in a
-manifest. The E15-A0 tasks are excluded from E15-A.
+and no numerical saturation; (4) the frozen linear-profile design-matrix
+condition number; and (5) paired-contrast variance solely to choose a task
+quota for a prespecified confidence-interval half-width. It then freezes the
+regime equation, nuisance ranges, `s_0`, `sigma/R_ref`, far-OOD horizon, task
+quota, maximum attempts, and all seeds/rules in a manifest. The E15-A0 tasks
+are excluded from E15-A.
 
 For sample-size calibration, E15-A0 may access only the variance (or standard
 deviation) of prespecified paired loss contrasts on discarded pilot tasks.
