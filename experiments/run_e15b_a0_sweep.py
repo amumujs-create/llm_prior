@@ -21,7 +21,7 @@ except ImportError:  # pragma: no cover
     from run_e15b_a0 import run
 
 
-def _candidate_summary(result: dict[str, Any], gamma: float) -> dict[str, Any]:
+def _candidate_summary(result: dict[str, Any], gamma: float, noise_ratio: float) -> dict[str, Any]:
     evidence = result["scope_evidence_E_h"]
     # Keep only policy-free selection diagnostics prominent in the index. Full
     # candidate artifacts remain available for audit.
@@ -38,6 +38,7 @@ def _candidate_summary(result: dict[str, Any], gamma: float) -> dict[str, Any]:
     }
     return {
         "gamma0_times_scope_width": gamma,
+        "noise_ratio": noise_ratio,
         "status": result["status"],
         "accepted_tasks": result["accepted_tasks"],
         "attempts": result["attempts"],
@@ -49,17 +50,22 @@ def _candidate_summary(result: dict[str, Any], gamma: float) -> dict[str, Any]:
 
 def run_sweep(config: dict[str, Any]) -> dict[str, Any]:
     candidates = [float(value) for value in config.pop("gamma0_times_scope_width_candidates")]
+    noise_candidates = [float(value) for value in config.pop("noise_ratios")]
     if not candidates or any(value <= 0.0 for value in candidates):
         raise ValueError("gamma0_times_scope_width_candidates must be nonempty and positive")
+    if not noise_candidates or any(value <= 0.0 for value in noise_candidates):
+        raise ValueError("noise_ratios must be nonempty and positive")
     if "gamma0_times_scope_width" in config:
         raise ValueError("sweep contract must not also fix gamma0_times_scope_width")
     candidate_results = []
     for gamma in candidates:
-        candidate = dict(config)
-        candidate["gamma0_times_scope_width"] = gamma
-        candidate["contract_id"] = f'{config["contract_id"]}:gamma0Wh={gamma:g}'
-        result = run(candidate)
-        candidate_results.append({"summary": _candidate_summary(result, gamma), "artifact": result})
+        for noise_ratio in noise_candidates:
+            candidate = dict(config)
+            candidate["gamma0_times_scope_width"] = gamma
+            candidate["noise_ratios"] = [noise_ratio]
+            candidate["contract_id"] = f'{config["contract_id"]}:gamma0Wh={gamma:g}:rho={noise_ratio:g}'
+            result = run(candidate)
+            candidate_results.append({"summary": _candidate_summary(result, gamma, noise_ratio), "artifact": result})
     return {
         "contract_id": config["contract_id"],
         "base_contract_sha256": hashlib.sha256(json.dumps(config, sort_keys=True, separators=(",", ":")).encode()).hexdigest(),

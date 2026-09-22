@@ -173,12 +173,16 @@ the separately stored `h_viol`.
 The policy-free numerical selection order is `gamma_0`, then noise ratio, then
 far horizon. Candidate `gamma_0 W_h` values are `{2,4,6,8}`; B0 retains only
 candidates with finite non-saturated low/high `E_h`, higher median concentration
-at greater exposure with retained overlap, stable precursor/KKT diagnostics,
-and median effective distinct constrained-solution count of at least four.
-At the selected `gamma_0`, the largest noise ratio preserving the same evidence
-geometry is selected; the longest horizon meeting finite, window-coverage,
-reference-range, and normalized-slope gates is then selected. These choices do
-not inspect policy forecast outcomes.
+at greater exposure, stable precursor/KKT diagnostics, and median effective
+distinct constrained-solution count of at least four. Retained overlap is
+defined on adjacent exposure levels: the 5--95% `E_h` intervals must overlap
+for low--medium and for medium--high. Direct low--high central-interval overlap
+is not required because those are intentionally separated endpoint conditions;
+medium exposure supplies the bridging support. At the selected `gamma_0`, the
+largest noise ratio satisfying this ordered adjacent-overlap rule is selected.
+The longest horizon meeting finite, window-coverage, reference-range, and
+normalized-slope gates is then selected. These choices do not inspect policy
+forecast outcomes.
 
 ## Interpretation boundary
 
