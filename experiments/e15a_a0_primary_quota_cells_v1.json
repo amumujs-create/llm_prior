@@ -1,0 +1,14 @@
+[
+  "narrow::low::C1", "narrow::low::C2", "narrow::low::C3",
+  "narrow::medium::C1", "narrow::medium::C2", "narrow::medium::C3",
+  "narrow::high::C1", "narrow::high::C2", "narrow::high::C3",
+  "broad::low::C1", "broad::low::C2", "broad::low::C3",
+  "broad::medium::C1", "broad::medium::C2", "broad::medium::C3",
+  "broad::high::C1", "broad::high::C2", "broad::high::C3",
+  "existence_only::low::C1", "existence_only::low::C2", "existence_only::low::C3",
+  "existence_only::medium::C1", "existence_only::medium::C2", "existence_only::medium::C3",
+  "existence_only::high::C1", "existence_only::high::C2", "existence_only::high::C3",
+  "covered_biased::low::C1", "covered_biased::low::C2", "covered_biased::low::C3",
+  "covered_biased::medium::C1", "covered_biased::medium::C2", "covered_biased::medium::C3",
+  "covered_biased::high::C1", "covered_biased::high::C2", "covered_biased::high::C3"
+]

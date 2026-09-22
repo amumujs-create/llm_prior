@@ -14,7 +14,7 @@ from math import ceil, log
 from typing import Iterable
 
 import numpy as np
-from scipy.stats import chi2
+from scipy.stats import binom, chi2, norm
 
 
 N_QUAD = 201
@@ -186,6 +186,18 @@ class BlindedVarianceSummary:
     normal_approx_required_tasks: int
 
 
+@dataclass(frozen=True)
+class AttemptBudgetSummary:
+    """Policy-free proposal budget derived from A0 acceptance feasibility."""
+
+    accepted: int
+    proposals: int
+    wilson_lower_probability: float
+    confirmatory_quota: int
+    failure_probability_target: float
+    minimum_attempts: int
+
+
 class BlindedContrastAccumulator:
     """Streaming A0-only dispersion accumulator that never retains contrasts.
 
@@ -233,3 +245,59 @@ class BlindedContrastAccumulator:
             minimum_quota=int(minimum_quota),
             normal_approx_required_tasks=required,
         )
+
+
+def conservative_wilson_lower_bound(
+    accepted: int, proposals: int, z_value: float = 1.96
+) -> float:
+    """Conservative Wilson lower bound; `1.96` matches the frozen 95% convention."""
+    if not 0 <= accepted <= proposals or proposals < 1 or z_value <= 0:
+        raise ValueError("invalid accepted/proposals/z_value")
+    p_hat = accepted / proposals
+    denominator = 1.0 + z_value**2 / proposals
+    center = p_hat + z_value**2 / (2.0 * proposals)
+    radius = z_value * np.sqrt(p_hat * (1.0 - p_hat) / proposals + z_value**2 / (4.0 * proposals**2))
+    return float((center - radius) / denominator)
+
+
+def minimum_attempts_for_quota(
+    confirmatory_quota: int,
+    lower_acceptance_probability: float,
+    failure_probability_target: float = 1e-4,
+) -> int:
+    """Smallest N satisfying P[Binomial(N,p_L) < quota] < target."""
+    if confirmatory_quota < 1 or not 0 < lower_acceptance_probability <= 1:
+        raise ValueError("invalid quota or lower acceptance probability")
+    if not 0 < failure_probability_target < 1:
+        raise ValueError("failure_probability_target must lie in (0,1)")
+    lo = confirmatory_quota
+    hi = max(confirmatory_quota, int(np.ceil(confirmatory_quota / lower_acceptance_probability)))
+    while binom.cdf(confirmatory_quota - 1, hi, lower_acceptance_probability) >= failure_probability_target:
+        hi *= 2
+    while lo < hi:
+        mid = (lo + hi) // 2
+        if binom.cdf(confirmatory_quota - 1, mid, lower_acceptance_probability) < failure_probability_target:
+            hi = mid
+        else:
+            lo = mid + 1
+    return lo
+
+
+def attempt_budget_from_a0(
+    accepted: int,
+    proposals: int,
+    confirmatory_quota: int,
+    failure_probability_target: float = 1e-4,
+) -> AttemptBudgetSummary:
+    """Freeze max attempts from feasibility, without reference to policy outcomes."""
+    lower = conservative_wilson_lower_bound(accepted, proposals)
+    return AttemptBudgetSummary(
+        accepted=accepted,
+        proposals=proposals,
+        wilson_lower_probability=lower,
+        confirmatory_quota=confirmatory_quota,
+        failure_probability_target=failure_probability_target,
+        minimum_attempts=minimum_attempts_for_quota(
+            confirmatory_quota, lower, failure_probability_target
+        ),
+    )

@@ -241,6 +241,19 @@ variance-only initial quota may use `n≈(1.96*s_delta/epsilon)^2`, followed by 
 clustered-bootstrap precision check, where neither the mean nor sign of the
 contrast is revealed.
 
+Before any protected variance is accessed, E15-A0 freezes a target 95% CI
+half-width `epsilon` for the paired far-OOD `NRMSE=RMSE/R_ref` contrast. The
+primary quota cells are `C1/C2/C3 × knowledge state × prefix exposure`, limited
+to covered knowledge states; uncovered-biased rows remain in `Worst-all` but do
+not determine the core utilization-contrast quota. Exact-support rows are a
+representation-equivalence audit with degenerate contrasts and are excluded
+from this precision calculation. The final quota is the largest blinded
+cellwise requirement. Given the A0 generator acceptance count,
+`max_attempts` is then the smallest `N` with
+`P[Binomial(N,p_L)<n_confirm]<1e-4`, where `p_L` is the conservative 95%
+Wilson lower acceptance bound. Neither calculation may access a contrast mean,
+sign, policy ranking, or winner.
+
 ## Interpretation boundary
 
 E15-A evaluates a single event-prior family under controlled onset uncertainty.
