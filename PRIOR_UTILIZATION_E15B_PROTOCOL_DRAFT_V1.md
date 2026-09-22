@@ -39,11 +39,28 @@ observed prefix, while its slope pattern supplies information about the scope
 endpoint. Post-scope behavior is generated separately and is not used by any
 policy to fit or select a scope hypothesis.
 
-For the full admissible scope grid, prefix-only profile scores define
+`E_h` is not computed from the loss of fitting a nested local constraint.
+That loss would mechanically favor shorter horizons: an `h_2` constraint
+contains an `h_1<h_2` constraint. Instead, a separate prefix-only
+scope-precursor likelihood profiles the in-scope trajectory model. For every
+full-domain candidate `h_k`, it fits
+`f(t)=a+b q_{h_k}(t)`, where
+`q_h(t)=t+gamma(h*t-t^2/2)`, by deterministic unconstrained linear least
+squares in `(a,b)`. The resulting precursor profile scores define
 `w_k^full ∝ exp[-(ell_k-ell_min)]` and
 `E_h=1-H(w^full)/log(K_full)`. `E_h` is computed on the full admissible scope
 domain, never on the supplied support `H`; it is a continuous descriptor rather
-than an additional design label.
+than an additional design label. Thus scope identifiability is separated from
+scope enforcement.
+
+The forecast engine is deliberately distinct. It fits the same unconstrained
+quadratic continuation family for every policy and changes only directional
+enforcement: for a candidate `h_k`, it requires
+`f_hat'(t_prefix)>=0` and `f_hat'(h_k)>=0`. Since the derivative of a quadratic
+is affine, these two endpoint inequalities guarantee monotonicity on the whole
+interval. The small convex constrained least-squares problem is solved by a
+deterministic active-set enumeration; there is no optimizer-budget degree of
+freedom. `hard_global` replaces `h_k` with the far-horizon endpoint.
 
 ## Held fixed
 
@@ -93,6 +110,13 @@ the directional claim beyond the supplied support.
 3. **True scope:** task-specific `h*`, evaluated only after predictions have
    been fixed. It determines coverage and scope violation, not policy input.
 
+The post-scope derivative is generated separately as
+`f'(t)=b+r*b*(t-h*)/W_h` for `t>h*`, with frozen balanced modes such as
+`r in {-2,0,+1}`. Thus `h*` remains a knowledge-warrant endpoint rather than a
+turning point. The clean actual first direction-violation horizon `h_viol` is
+stored separately and is right-censored when no violation occurs in the tested
+domain.
+
 ## Predeclared hypotheses
 
 1. With broad scope uncertainty and weak prefix evidence, retaining multiple
@@ -125,7 +149,12 @@ constraint solver, quota, and maximum attempts without inspecting directional
 policy winners or contrast signs. Its primary construct-validity sanity is that
 `E_h` changes across prefix exposures with retained overlap; if scope evidence
 is absent at every exposure, the generator is inadequate rather than a reason
-to tune policy outcomes.
+to tune policy outcomes. B0 additionally verifies that every prefix remains
+strictly direction-valid, precursor profiles are finite on the full domain,
+distinct scope hypotheses yield nondegenerate forecast solutions, deterministic
+constraint residuals are within tolerance, both oracle-scored windows have
+enough points, post-scope modes are balanced, and `h*` is never substituted for
+the separately stored `h_viol`.
 
 ## Interpretation boundary
 
