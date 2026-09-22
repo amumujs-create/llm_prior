@@ -1,0 +1,26 @@
+{
+  "exposures": [
+    "low",
+    "medium",
+    "high"
+  ],
+  "global_policies": [
+    "free_baseline",
+    "hard_global",
+    "soft_global",
+    "slack_distribution"
+  ],
+  "manifest_sha256": "b5d12de2c27db01823a905f03bd8523a1a8461fab69077da5d37db40edc0f413",
+  "note": "No outcome scores or policy rankings were calculated.",
+  "prediction_comparisons": 1800,
+  "sampled_tasks": 30,
+  "states_compared_against_exact": [
+    "narrow",
+    "broad",
+    "existence_only",
+    "covered_biased",
+    "uncovered_biased"
+  ],
+  "status": "PASS",
+  "support_dependence_failures": 0
+}
