@@ -178,7 +178,7 @@ def run(config: dict[str, Any], blinded_contrast_csv: Path | None = None) -> dic
         config,
         "contract_id", "seed", "pilot_tasks", "max_attempts", "onset_domain",
         "observation_domain", "prefix_points", "eval_points", "parameter_ranges",
-        "s0", "noise_ratios", "horizon_candidates",
+        "s0", "noise_ratios", "horizon_candidates", "noise_reference_horizon",
         "min_reference_range", "min_post_onset_fraction", "slope_scale", "min_c_ratio",
         "max_abs_slope", "max_design_condition",
     )
@@ -192,8 +192,11 @@ def run(config: dict[str, Any], blinded_contrast_csv: Path | None = None) -> dic
         raise ValueError("s0 must be a positive finite common transition width")
     noise_ratios = [float(x) for x in config["noise_ratios"]]
     horizons = [float(x) for x in config["horizon_candidates"]]
+    noise_reference_horizon = float(config["noise_reference_horizon"])
     if not noise_ratios or not horizons:
         raise ValueError("need nonempty noise and horizon candidates")
+    if noise_reference_horizon not in horizons:
+        raise ValueError("noise_reference_horizon must be one frozen horizon candidate")
     if int(config["pilot_tasks"]) < 1 or int(config["max_attempts"]) < int(config["pilot_tasks"]):
         raise ValueError("invalid pilot_tasks/max_attempts")
 
@@ -247,7 +250,11 @@ def run(config: dict[str, Any], blinded_contrast_csv: Path | None = None) -> dic
             horizon_audit[str(horizon)]["finite"].append(bool(np.all(np.isfinite(y))))
         # The common full-domain onset grid makes E_tau independent of supplied I.
         for noise_ratio in noise_ratios:
-            sigma = noise_ratio * reference_range(t_eval_by_horizon[horizons[-1]], task.params)
+            # Task-specific normalized SNR, fixed once per task/noise ratio and
+            # shared across prefix exposures without candidate-horizon rescaling.
+            sigma = noise_ratio * reference_range(
+                t_eval_by_horizon[noise_reference_horizon], task.params
+            )
             noise_rng = np.random.default_rng(task.seed)
             for level in EXPOSURE_ENDPOINT_RATIOS:
                 endpoint = support.exposure_endpoint(task.params.tau, level)

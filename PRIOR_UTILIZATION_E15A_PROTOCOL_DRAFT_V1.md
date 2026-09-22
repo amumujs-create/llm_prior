@@ -19,6 +19,9 @@ of `I`, not an information-preserving representation. A uniform density over
 - Common predictive family: the frozen regime continuation family and the same
   fixed transition width and deterministic linear profile solve for every
   policy.
+- The `a/b/c` ranges are generator sampling ranges only. Conditional on each
+  fixed onset hypothesis `tau_k`, `a/b/c` are profiled by unconstrained,
+  deterministic linear least squares; generator ranges are not fitting bounds.
 - Same noisy observed prefix, train/test split, noise realization, onset-grid,
   task seeds, and far-OOD evaluation points within each latent task.
 - No policy receives future observations, the true onset, or support beyond
@@ -137,7 +140,11 @@ information-preserving interval representation.
    recorded, not repaired by boundary clipping.
 9. `R_ref=max_{t in Omega_eval} f_clean(t)-min_{t in Omega_eval} f_clean(t)`.
    It is a synthetic evaluation-scale constant only: it is never supplied to
-   a policy or fitted model.
+   a policy or fitted model. For a fixed noise ratio `rho=sigma/R_ref`, every
+   latent task receives task-specific noise `sigma_i=rho*R_ref,i`, computed once
+   from its clean reference trajectory on the frozen common reference horizon.
+   The same `sigma_i` and standardized noise realization are shared by that
+   task's prefix-exposure conditions; a candidate horizon never rescales noise.
 
 ## Realized onset evidence
 
