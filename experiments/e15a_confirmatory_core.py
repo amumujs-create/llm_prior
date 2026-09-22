@@ -129,12 +129,22 @@ def evaluate_prefix(manifest: dict, task: ConfirmatoryTask, exposure: str, state
         "uniform_hypothesis_ensemble": predictions.mean(axis=0),
         "evidence_weighted_mixture": np.average(predictions, axis=0, weights=weights),
     }
+    policy_components = {
+        "free_onset_baseline": (full_predictions[[int(np.argmin(full_losses))]], np.array([1.0])),
+        "hard_midpoint": (midpoint_predictions, np.array([1.0])),
+        "evidence_MAP_point": (predictions[[int(np.argmin(losses))]], np.array([1.0])),
+        "soft_constraint": (full_predictions[[soft_index]], np.array([1.0])),
+        "distributional_prior": (quadrature_predictions, quad_weights),
+        "uniform_hypothesis_ensemble": (predictions, np.full(len(grid), 1.0 / len(grid))),
+        "evidence_weighted_mixture": (predictions, weights),
+    }
     map_index = int(np.argmin(losses))
     return {
         "task_id": task.task_id, "exposure": exposure, "knowledge_state": state,
         "tau_star": params.tau, "interval": interval, "t_prefix": t_prefix, "t_far": t_far,
         "r_ref": r_ref, "sigma": sigma, "profile_losses": losses, "mixture_weights": weights,
         "full_profile_losses": full_losses, "policy_predictions": policy_predictions,
+        "policy_components": policy_components,
         "grid": grid, "quadrature_nodes": quad_nodes, "quadrature_weights": quad_weights,
         "map_tau": float(grid[map_index]),
         "E_tau": onset_evidence_concentration(full_losses),
