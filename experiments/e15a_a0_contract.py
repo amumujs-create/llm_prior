@@ -14,13 +14,26 @@ from math import ceil, log
 from typing import Iterable
 
 import numpy as np
+from scipy.stats import chi2
 
 
 N_QUAD = 201
 GRID_STEP_RATIO = 0.025
 NARROW_HALF_WIDTH_RATIO = 0.10
 BROAD_HALF_WIDTH_RATIO = 0.30
+COVERED_BIAS_RATIO = 0.05
+UNCOVERED_BIAS_RATIO = 0.15
+WRONG_ONSET_TOLERANCE_RATIO = 0.05
+ENTROPY_COLLAPSE_THRESHOLD = 0.25
 EXPOSURE_ENDPOINT_RATIOS = {"low": -0.20, "medium": -0.05, "high": 0.10}
+KNOWLEDGE_STATES = (
+    "exact",
+    "narrow",
+    "broad",
+    "existence_only",
+    "covered_biased",
+    "uncovered_biased",
+)
 
 
 @dataclass(frozen=True)
@@ -55,6 +68,14 @@ class A0SupportContract:
     @property
     def grid_step(self) -> float:
         return self.grid_step_ratio * self.width
+
+    @property
+    def narrow_half_width(self) -> float:
+        return NARROW_HALF_WIDTH_RATIO * self.width
+
+    @property
+    def wrong_onset_tolerance(self) -> float:
+        return WRONG_ONSET_TOLERANCE_RATIO * self.width
 
     def accepts_true_onset(self, tau_star: float) -> bool:
         """Reject rather than clip any support or exposure boundary violation."""
@@ -104,6 +125,35 @@ class A0SupportContract:
         weights = base_weights / base_weights.sum()
         return nodes, weights
 
+    def knowledge_interval(
+        self, tau_star: float, state: str, bias_sign: int | None = None
+    ) -> tuple[float, float]:
+        """Single source of truth for all six declared onset-support states.
+
+        Intervals are never clipped.  A caller must reject a task whose requested
+        state cannot be represented within the frozen admissible domain.
+        """
+        if state not in KNOWLEDGE_STATES:
+            raise ValueError(f"unknown knowledge state: {state}")
+        if state == "exact":
+            interval = (tau_star, tau_star)
+        elif state == "narrow":
+            interval = (tau_star - self.narrow_half_width, tau_star + self.narrow_half_width)
+        elif state == "broad":
+            interval = (tau_star - self.broad_half_width, tau_star + self.broad_half_width)
+        elif state == "existence_only":
+            interval = (self.tau_min, self.tau_max)
+        else:
+            if bias_sign not in {-1, 1}:
+                raise ValueError("biased knowledge states require bias_sign in {-1, +1}")
+            shift_ratio = COVERED_BIAS_RATIO if state == "covered_biased" else UNCOVERED_BIAS_RATIO
+            center = tau_star + bias_sign * shift_ratio * self.width
+            interval = (center - self.narrow_half_width, center + self.narrow_half_width)
+        lo, hi = interval
+        if not self.tau_min <= lo <= hi <= self.tau_max:
+            raise ValueError("knowledge support would require clipping; reject this task")
+        return float(lo), float(hi)
+
 
 def profile_weights(profile_nll: Iterable[float]) -> np.ndarray:
     """Un-tempered (T=1) stable likelihood weights for a shared profile score."""
@@ -119,7 +169,8 @@ def onset_evidence_concentration(full_domain_profile_nll: Iterable[float]) -> fl
     weights = profile_weights(full_domain_profile_nll)
     if weights.size < 2:
         raise ValueError("full admissible onset grid must contain at least two hypotheses")
-    entropy = -float(np.sum(weights * np.log(weights)))
+    positive = weights > 0.0  # avoid 0 * log(0) after legitimate underflow.
+    entropy = -float(np.sum(weights[positive] * np.log(weights[positive])))
     return float(1.0 - entropy / log(weights.size))
 
 
@@ -129,24 +180,56 @@ class BlindedVarianceSummary:
 
     n_tasks: int
     paired_sd: float
+    paired_sd_upper_95: float
     target_half_width: float
+    minimum_quota: int
     normal_approx_required_tasks: int
 
 
-def blinded_paired_variance_summary(
-    paired_loss_contrasts: Iterable[float], target_half_width: float
-) -> BlindedVarianceSummary:
-    """Return only dispersion and a conservative normal-approximation quota."""
-    contrast = np.asarray(list(paired_loss_contrasts), dtype=float)
-    if contrast.ndim != 1 or contrast.size < 2 or not np.all(np.isfinite(contrast)):
-        raise ValueError("need at least two finite paired contrasts")
-    if target_half_width <= 0:
-        raise ValueError("target_half_width must be positive")
-    paired_sd = float(np.std(contrast, ddof=1))
-    required = int(ceil((1.96 * paired_sd / target_half_width) ** 2))
-    return BlindedVarianceSummary(
-        n_tasks=int(contrast.size),
-        paired_sd=paired_sd,
-        target_half_width=float(target_half_width),
-        normal_approx_required_tasks=required,
-    )
+class BlindedContrastAccumulator:
+    """Streaming A0-only dispersion accumulator that never retains contrasts.
+
+    The internal running mean is required by Welford's variance identity but is
+    private and deliberately never exposed.  This object must be the sole sink
+    for A0 paired losses; callers should not write raw contrasts to disk.
+    """
+
+    def __init__(self) -> None:
+        self._n = 0
+        self._mean = 0.0
+        self._m2 = 0.0
+
+    def update(self, paired_loss_contrast: float) -> None:
+        if not np.isfinite(paired_loss_contrast):
+            raise ValueError("paired loss contrast must be finite")
+        self._n += 1
+        delta = paired_loss_contrast - self._mean
+        self._mean += delta / self._n
+        self._m2 += delta * (paired_loss_contrast - self._mean)
+
+    def summary(self, target_half_width: float, minimum_quota: int) -> BlindedVarianceSummary:
+        if self._n < 2:
+            raise ValueError("need at least two pilot tasks for a variance-only quota")
+        if target_half_width <= 0 or minimum_quota < 1:
+            raise ValueError("invalid quota calibration settings")
+        paired_sd = float(np.sqrt(self._m2 / (self._n - 1)))
+        if paired_sd == 0.0:
+            # A zero pilot SD is a degeneracy, not evidence that zero tasks suffice.
+            raise ValueError("zero paired pilot SD: treat as a degeneracy and investigate")
+        # One-sided 95% upper confidence limit under the standard normal-variance
+        # approximation: (n-1)s^2 / chi2_{0.05,n-1}.
+        paired_sd_upper = float(
+            np.sqrt((self._n - 1) * paired_sd**2 / chi2.ppf(0.05, self._n - 1))
+        )
+        required = max(
+            minimum_quota,
+            int(ceil((1.96 * paired_sd_upper / target_half_width) ** 2)),
+        )
+        return BlindedVarianceSummary(
+            n_tasks=self._n,
+            paired_sd=paired_sd,
+            paired_sd_upper_95=paired_sd_upper,
+            target_half_width=float(target_half_width),
+            minimum_quota=int(minimum_quota),
+            normal_approx_required_tasks=required,
+        )
