@@ -49,7 +49,11 @@ def smooth_regime_slope(t: np.ndarray, params: SmoothRegimeParams) -> np.ndarray
     """Derivative, used only for generator/horizon admissibility checks."""
     time = np.asarray(t, dtype=float)
     x = (time - params.tau) / params.s
-    logistic = np.where(x >= 0.0, 1.0 / (1.0 + np.exp(-x)), np.exp(x) / (1.0 + np.exp(x)))
+    logistic = np.empty_like(x)
+    positive = x >= 0.0
+    logistic[positive] = 1.0 / (1.0 + np.exp(-x[positive]))
+    exp_negative = np.exp(x[~positive])
+    logistic[~positive] = exp_negative / (1.0 + exp_negative)
     return params.b + params.c * logistic
 
 
