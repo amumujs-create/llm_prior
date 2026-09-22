@@ -208,11 +208,49 @@ def build_clean(intent_name: str, generator: str, branch: str, heterogeneity: st
                       latent, pstar, max(rref, 1e-8))
 
 
+def _robust_event(y: np.ndarray, x: np.ndarray, tolerance: np.ndarray,
+                  first: int, last: int) -> np.ndarray:
+    """Vectorized frozen event checker for context rows of one clean field."""
+    signs = np.where(y > tolerance[:, None], 1, np.where(y < -tolerance[:, None], -1, 0))
+    nz = signs != 0
+    n = signs.shape[1]
+    grid = np.arange(n)[None, :]
+    previous = np.maximum.accumulate(np.where(nz, grid, -1), axis=1)
+    previous = np.concatenate([np.full_like(previous[:, :1], -1), previous[:, :-1]], axis=1)
+    prev_sign = np.take_along_axis(signs, np.maximum(previous, 0), axis=1)
+    changes = np.sum(nz & (previous >= 0) & (signs != prev_sign), axis=1)
+    count = np.sum(nz, axis=1)
+    first_i = np.argmax(nz, axis=1)
+    last_i = n - 1 - np.argmax(nz[:, ::-1], axis=1)
+    first_sign = np.take_along_axis(signs, first_i[:, None], axis=1)[:, 0]
+    last_sign = np.take_along_axis(signs, last_i[:, None], axis=1)[:, 0]
+    return (changes == 1) & (count > 1) & (first_sign == first) & (last_sign == last)
+
+
 def persistent_scope_table(field: CleanField) -> tuple[dict[str, list[int]], dict[str, list[int]]]:
+    """Frozen E13 scope semantics, vectorized across reference contexts."""
     raw = {a: [] for a in field.pstar}
-    for atom in field.pstar:
-        for h in H:
-            raw[atom].append(int(all(raw_valid(field.x, field.y[k], atom, float(h), field.semantic[k]) for k in range(len(field.z_ref)))))
+    ranges = np.maximum(np.ptp(field.y, axis=1), 1e-8)
+    for h in H:
+        mask = (field.x >= .40) & (field.x <= h)
+        xx = field.x[mask]
+        yy = field.y[:, mask]
+        d1 = np.gradient(yy, xx, axis=1)
+        d2 = np.gradient(d1, xx, axis=1)
+        values = {
+            "direction_decreasing": np.mean(d1 <= .01 * ranges[:, None], axis=1) >= .95,
+            "curvature_convex": np.mean(d2 >= -.04 * ranges[:, None], axis=1) >= .90,
+            "lower_bound_0": np.min(yy, axis=1) >= -.01 * ranges,
+            "turning_maximum": _robust_event(d1, xx, .02 * ranges, 1, -1),
+            "inflection_concave_to_convex": _robust_event(d2, xx, .03 * ranges, -1, 1),
+            "regime_postchange": np.asarray([s.get("regime_active", False) for s in field.semantic]),
+            "asymptote_to_0_from_above": np.asarray([
+                s.get("asymptote_active", False) and h <= s.get("asymptote_active_through", -np.inf) and np.min(yy[i]) > 0
+                for i, s in enumerate(field.semantic)
+            ]),
+        }
+        for atom in field.pstar:
+            raw[atom].append(int(np.all(values[atom])))
     cont = {}
     for atom, values in raw.items():
         alive = 1; cont[atom] = []
