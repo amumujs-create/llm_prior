@@ -27,8 +27,9 @@ Primary `d8 - d3` changes were essentially stable for conditional sharpness
 and mean atom evidence: `Delta S = +0.000011` (95% CI `[-0.000006,
 +0.000028]`) and `Delta mean(E_a) = -0.000017` (`[-0.000059,+0.000026]`).
 The completeness-gap change was positive but numerically tiny, `+0.000016`
-(`[+0.0000002,+0.000031]`). Effective dimension and normalized continuation
-dispersion changed by `+0.00116` and `+0.00000294`, respectively.
+(`[+0.0000002,+0.000031]`), or roughly `0.02%` of the predeclared `.10 nat`
+practical-information threshold. Effective dimension and normalized
+continuation dispersion changed by `+0.00116` and `+0.00000294`, respectively.
 
 `d1 - d3` is retained as the predeclared E13 anchor rather than an
 energy-matched dimensional effect. It shows lower context-balanced evidence
@@ -49,7 +50,9 @@ monotone as a single “more interaction” effect:
   (`[+0.000213,+0.000517]`).
 
 Thus the controlled realization form, rather than a scalar interaction-order
-ranking, determines which continuous anatomy coordinates move.
+ranking, determines which continuous anatomy coordinates move. The largest
+absolute sharpness contrast (`0.000890`) is only about `0.9%` of `.10 nat`;
+these changes do not reverse the anatomy classifications.
 
 ## E14-D — structural heterogeneity
 
@@ -65,7 +68,7 @@ Heterogeneity also did not yield a monotone deterioration pattern:
 The strong condition increased mean atom evidence slightly (`+0.000457`),
 whereas the moderate condition's increase was `+0.000273`. These are
 controlled realization effects, not estimates of a universal heterogeneity
-law.
+law. The largest sharpness change (`0.000618`) is about `0.6%` of `.10 nat`.
 
 ## Stable anatomy coordinates
 
@@ -76,14 +79,25 @@ recomputed `V_a -> C_a -> C_P` from frozen clean fields rather than requested
 scope labels. Its candidate survival profiles and proper-subset extension
 profiles were also exactly unchanged across every matched contrast.
 
+The candidate minimum atom evidence, `E_{a,min}`, is retained as the direct
+observability-bottleneck supplement. Its interaction contrasts followed the
+same form-specific pattern: `+0.00313` for pairwise minus additive and
+`-0.00201` for entangled minus additive. These are continuous evidence shifts,
+not changes to the binary observability classification.
+
 ## Conclusion and boundary
 
-Under the frozen realized-context, `t`-continuation-uncertainty estimand, the
-tested complexity axes leave binary completeness and scope anatomy stable.
-Some continuous coordinates move, but their direction depends on the specific
-dimension/interaction/heterogeneity construction. E14 therefore supports
-axis-specific sensitivity rather than the blanket claim that greater
+**Within the tested complexity range, prior anatomy is largely stable at the
+binary level, while some continuous anatomy coordinates exhibit small,
+construction-specific shifts.** More specifically, binary informational
+completeness and censoring-aware scope status were stable under the tested
+matched constructions. Continuous coordinates moved in an axis-specific,
+non-monotone way; E14 therefore rejects the blanket claim that greater
 realization complexity uniformly weakens a structural prior.
+
+These results characterize the frozen realized-context,
+`t`-continuation-uncertainty construction only. They do not establish universal
+complexity invariance.
 
 The machine-readable paired estimates are in
 `results/complexity_scaling_e14/e14bcd/analysis/paired_effects.csv`.
