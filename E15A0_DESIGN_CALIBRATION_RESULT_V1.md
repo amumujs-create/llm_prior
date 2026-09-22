@@ -2,17 +2,18 @@
 
 ## Scope
 
-This discarded-seed calibration used no policy forecasts, RMSE, CRPS, policy
-rankings, contrast means/signs, catastrophic-rate comparisons, or
-concentration/commitment outcomes. It assessed only the frozen candidate
-generator, evidence geometry, horizon admissibility, and linear-profile
-numerics.
+Policy outcomes were never inspected or used directionally. Protected paired
+NRMSE contrasts were computed only internally for variance-based quota
+calibration; their values, means, signs, rankings, and winners were never
+exposed or persisted. The calibration otherwise assessed only the frozen
+candidate generator, evidence geometry, horizon admissibility, and
+linear-profile numerics.
 
 Candidate contract SHA-256:
-`f92531f4258ba0b29e25aa8897b3297e681982da7a22ffe7c2f82c886f2e80f2`.
+`b4f09caf4706e07db9888f8e97a330adbba73895f232a1de6538da59e8dc7c33`.
 
 The corresponding numerical-calibration result SHA-256 is
-`d8dc018ac474f65ba83e27fe927e184d9888ea6d04226a0dbee63e9f3eb86033`.
+`7eb7c25c69d95da5e2628d848f80417c235005a76e8bf35f159957741ed2e7af`.
 
 ## Candidate generator and acceptance
 
@@ -20,7 +21,7 @@ The corresponding numerical-calibration result SHA-256 is
 - `a ~ Uniform[-.25, .25]`; `|b| ~ Uniform[.25, .55]` with balanced sign.
 - `c=kappa*b`, `kappa=1`, and common `s0=.05W_tau`.
 - Requested/accepted discarded pilot tasks: `200/200`.
-- Proposals: `468`; boundary/exposure rejections: `268`; no other rejection
+- Proposals: `480`; boundary/exposure rejections: `280`; no other rejection
   category occurred.
 
 The accepted pilot therefore passed the generator-only finite-range and
@@ -33,15 +34,15 @@ supplied knowledge interval. Median `(low, medium, high)` values were:
 
 | `rho=sigma/R_ref` | Low | Medium | High |
 |---|---:|---:|---:|
-| `.01` | `.073` | `.133` | `.617` |
-| `.025` | `.014` | `.052` | `.154` |
-| `.05` | `.003` | `.013` | `.034` |
-| `.10` | `.001` | `.003` | `.008` |
+| `.01` | `.089` | `.184` | `.751` |
+| `.025` | `.024` | `.089` | `.381` |
+| `.05` | `.005` | `.025` | `.103` |
+| `.10` | `.001` | `.007` | `.025` |
 
 `rho=.025` is selected for the confirmatory numerical contract: it is the
 largest candidate that retains a visibly diffuse-to-concentrated exposure
-gradient while keeping central low/high overlap (low 5--95%: `.000--.078`;
-high 5--95%: `.043--.376`). At `.05` and `.10`, even high-exposure evidence is
+gradient while keeping central low/high overlap (low 5--95%: `.000--.118`;
+high 5--95%: `.129--.531`). At `.05` and `.10`, even high-exposure evidence is
 nearly diffuse; at `.01`, low/high central distributions no longer overlap.
 
 ## Horizon and linear-profile numerics
@@ -53,8 +54,9 @@ All candidate horizons `.40W_tau`, `.60W_tau`, and `.80W_tau` had:
 - normalized-slope admissibility rate `1.00`.
 
 The longest candidate, `.80W_tau`, is selected. Its median post-onset fraction
-was `.618`, median `R_ref` was `.822`, and its normalized maximum slope median
-was `.956` (95th percentile `1.045`).
+was `.617`, median `R_ref` on the common far-OOD window
+`(tau*+.10W_tau, tau*+.80W_tau]` was `.567`, and its normalized maximum slope
+median was `1.439` (95th percentile `1.439`).
 
 The two-column deterministic profile design `[1, t+kappa*g_tau(t)]` was well
 conditioned. Across all candidate onsets, noises, and exposure levels its
@@ -72,14 +74,14 @@ bounds, and required quotas.
 
 - Frozen target 95% CI half-width: `epsilon=.025` NRMSE, half of the `.05`
   practical policy-contrast scale.
-- Final confirmatory quota: `90` latent tasks.
-- A0 feasibility: `200/468` accepted, with 95% Wilson lower acceptance
-  probability `.383301`.
-- Frozen maximum proposals: `316`, the smallest integer for which
-  `P[Binomial(316, .383301) < 90] = 9.54e-5 < 1e-4`.
+- Final confirmatory quota: `125` latent tasks.
+- A0 feasibility: `200/480` accepted, with 95% Wilson lower acceptance
+  probability `.373394`.
+- Frozen maximum proposals: `432`, the smallest integer for which
+  `P[Binomial(432, .373394) < 125] = 9.76e-5 < 1e-4`.
 
 The current protected quota-result SHA-256 is
-`d9f9d07af928ad4aacffbd285da1d5cc7421876b858479c66733ebbc10cbdbe4`.
+`d4c633c0d22e00d419df127cc2f5f0d93218ba5e332670d9e288846165aa543e`.
 The frozen confirmatory manifest SHA-256 is
-`51a13eb5cc05b19d59299f21fd4f73aa5799eb4bf4a7bd164e673b0391842747`.
+`c13519c7e7f5e8c0b4af4d8a550d5b36a4735de60354c2a998e6c0017bf736b3`.
 E15-A0 is complete: its discarded tasks are excluded from confirmatory E15-A.

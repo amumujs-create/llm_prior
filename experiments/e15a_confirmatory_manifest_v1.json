@@ -5,9 +5,9 @@
   "seed": 151501,
   "a0_is_discarded": true,
   "a0_artifacts": {
-    "candidate_contract_sha256": "f92531f4258ba0b29e25aa8897b3297e681982da7a22ffe7c2f82c886f2e80f2",
-    "geometry_result_sha256": "d8dc018ac474f65ba83e27fe927e184d9888ea6d04226a0dbee63e9f3eb86033",
-    "protected_quota_result_sha256": "d9f9d07af928ad4aacffbd285da1d5cc7421876b858479c66733ebbc10cbdbe4"
+    "candidate_contract_sha256": "b4f09caf4706e07db9888f8e97a330adbba73895f232a1de6538da59e8dc7c33",
+    "geometry_result_sha256": "7eb7c25c69d95da5e2628d848f80417c235005a76e8bf35f159957741ed2e7af",
+    "protected_quota_result_sha256": "d4c633c0d22e00d419df127cc2f5f0d93218ba5e332670d9e288846165aa543e"
   },
   "generator": {
     "normalized_onset_domain": [0.0, 1.0],
@@ -29,6 +29,7 @@
     },
     "noise_ratio_sigma_over_R_ref": 0.025,
     "noise_reference_horizon_after_onset_over_W_tau": 0.8,
+    "far_ood_window_after_onset_over_W_tau": {"open_start": 0.1, "closed_end": 0.8},
     "far_ood_horizon_after_onset_over_W_tau": 0.8,
     "shared_standardized_noise_across_exposures": true
   },
@@ -69,10 +70,10 @@
     "target_ci_half_width": 0.025,
     "practical_contrast_scale": 0.05,
     "primary_quota_population": "C1/C2/C3 x narrow/broad/existence_only/covered_biased x low/medium/high",
-    "confirmatory_quota": 90,
-    "max_attempts": 316,
+    "confirmatory_quota": 125,
+    "max_attempts": 432,
     "max_attempt_failure_probability": 0.0001,
-    "wilson_lower_acceptance_probability": 0.38330105199893383
+    "wilson_lower_acceptance_probability": 0.3733937336776973
   },
   "analysis": {
     "paired_bootstrap_replicates": 5000,

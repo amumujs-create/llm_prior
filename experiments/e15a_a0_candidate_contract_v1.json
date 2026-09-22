@@ -17,6 +17,7 @@
   "selected_noise_ratio": 0.025,
   "horizon_after_onset_ratios": [0.4, 0.6, 0.8],
   "noise_reference_horizon_after_onset_ratio": 0.8,
+  "far_ood_start_after_onset_ratio": 0.1,
   "selected_horizon_after_onset_ratio": 0.8,
   "min_reference_range": 0.05,
   "min_post_onset_fraction": 0.3,

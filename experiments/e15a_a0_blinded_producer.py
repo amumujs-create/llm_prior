@@ -50,7 +50,8 @@ def _accepted_tasks(config: dict) -> Iterator:
         tau = float(rng.uniform(support.tau_min, support.tau_max))
         if not support.accepts_true_onset(tau):
             continue
-        task = _draw_task(rng, ranges, tau, s0, int(rng.integers(0, 2**32 - 1)))
+        b_sign = 1.0 if accepted % 2 else -1.0
+        task = _draw_task(rng, ranges, tau, s0, int(rng.integers(0, 2**32 - 1)), b_sign)
         if abs(task.params.c) / float(config["slope_scale"]) <= float(config["min_c_ratio"]):
             continue
         t_eval = np.linspace(support.observation_min, task.params.tau + horizon, grid_points)
@@ -90,12 +91,17 @@ def produce(config_path: str | Path) -> Iterator[tuple[str, str, str, float]]:
     support = A0SupportContract(*_pair(config["onset_domain"]), *_pair(config["observation_domain"]))
     noise_ratio = float(config["selected_noise_ratio"])
     horizon = float(config["selected_horizon_after_onset_ratio"]) * support.width
+    far_start = float(config["far_ood_start_after_onset_ratio"]) * support.width
     if noise_ratio not in [float(v) for v in config["noise_ratios"]]:
         raise ValueError("selected_noise_ratio was not an A0 candidate")
     if horizon not in [float(v) * support.width for v in config["horizon_after_onset_ratios"]]:
         raise ValueError("selected_horizon_after_onset_ratio was not an A0 candidate")
+    if not 0.0 <= far_start < horizon:
+        raise ValueError("far_ood_start_after_onset_ratio must precede the selected horizon")
     for task_index, task in enumerate(_accepted_tasks(config)):
-        t_reference = np.linspace(support.observation_min, task.params.tau + horizon, int(config["eval_points"]))
+        t_reference = np.linspace(
+            task.params.tau + far_start, task.params.tau + horizon, int(config["eval_points"]) + 1
+        )[1:]
         r_ref = reference_range(t_reference, task.params)
         sigma = noise_ratio * r_ref
         # Reuse one standardized noise realization for every exposure of this
@@ -108,8 +114,7 @@ def produce(config_path: str | Path) -> Iterator[tuple[str, str, str, float]]:
             endpoint = support.exposure_endpoint(task.params.tau, exposure)
             t_prefix = np.linspace(support.observation_min, endpoint, int(config["prefix_points"]))
             y_prefix = smooth_regime(t_prefix, task.params) + sigma * standardized_noise
-            far_start = endpoint + .70 * (task.params.tau + horizon - endpoint)
-            t_far = np.linspace(far_start, task.params.tau + horizon, int(config["eval_points"]))
+            t_far = t_reference
             y_far = smooth_regime(t_far, task.params)
             for state in PRIMARY_STATES:
                 # Bias sign is deterministically balanced across discarded tasks.

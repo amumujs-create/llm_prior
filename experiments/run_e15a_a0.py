@@ -126,11 +126,17 @@ def _draw_task(
     tau: float,
     s0: float,
     seed: int,
+    b_sign: float | None = None,
 ) -> CandidateTask:
+    if b_sign is not None and b_sign not in {-1.0, 1.0}:
+        raise ValueError("b_sign must be -1.0 or +1.0")
     return CandidateTask(
         params=SmoothRegimeParams(
             a=float(rng.uniform(*ranges["a"])),
-            b=float(rng.choice((-1.0, 1.0)) * rng.uniform(*ranges["b_magnitude"])),
+            b=float(
+                (rng.choice((-1.0, 1.0)) if b_sign is None else b_sign)
+                * rng.uniform(*ranges["b_magnitude"])
+            ),
             tau=tau,
             s=s0,
             kappa=float(ranges["kappa"]),
@@ -145,7 +151,7 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
         "contract_id", "seed", "pilot_tasks", "max_attempts", "onset_domain",
         "observation_domain", "prefix_points", "eval_points", "parameter_ranges",
         "s0", "kappa", "noise_ratios", "horizon_after_onset_ratios",
-        "noise_reference_horizon_after_onset_ratio",
+        "noise_reference_horizon_after_onset_ratio", "far_ood_start_after_onset_ratio",
         "min_reference_range", "min_post_onset_fraction", "slope_scale", "min_c_ratio",
         "max_normalized_slope", "max_design_condition",
     )
@@ -164,10 +170,13 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
     noise_ratios = [float(x) for x in config["noise_ratios"]]
     horizons_after_onset = [float(x) * support.width for x in config["horizon_after_onset_ratios"]]
     noise_reference_horizon = float(config["noise_reference_horizon_after_onset_ratio"]) * support.width
+    far_start = float(config["far_ood_start_after_onset_ratio"]) * support.width
     if not noise_ratios or not horizons_after_onset:
         raise ValueError("need nonempty noise and horizon candidates")
     if noise_reference_horizon not in horizons_after_onset:
         raise ValueError("noise_reference_horizon_after_onset_ratio must be a frozen candidate")
+    if not 0.0 <= far_start < min(horizons_after_onset):
+        raise ValueError("far_ood_start_after_onset_ratio must precede every candidate horizon")
     if int(config["pilot_tasks"]) < 1 or int(config["max_attempts"]) < int(config["pilot_tasks"]):
         raise ValueError("invalid pilot_tasks/max_attempts")
 
@@ -182,7 +191,9 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
         if not support.accepts_true_onset(tau):
             reject["support_or_exposure_boundary"] += 1
             continue
-        task = _draw_task(rng, ranges, tau, s0, int(rng.integers(0, 2**32 - 1)))
+        # Balance signs across accepted tasks, not merely across proposals.
+        b_sign = 1.0 if len(accepted) % 2 else -1.0
+        task = _draw_task(rng, ranges, tau, s0, int(rng.integers(0, 2**32 - 1)), b_sign)
         if abs(task.params.c) / float(config["slope_scale"]) <= float(config["min_c_ratio"]):
             reject["degenerate_regime_effect"] += 1
             continue
@@ -221,7 +232,10 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
             y = smooth_regime(grid, task.params)
             post_fraction = post_onset_fraction(grid, task.params.tau)
             max_abs_slope = float(np.max(np.abs(smooth_regime_slope(grid, task.params))))
-            r_ref = reference_range(grid, task.params)
+            far_grid = np.linspace(
+                task.params.tau + far_start, task.params.tau + horizon, int(config["eval_points"]) + 1
+            )[1:]
+            r_ref = reference_range(far_grid, task.params)
             normalized_max_slope = support.width * max_abs_slope / r_ref
             horizon_audit[str(horizon)]["post_onset_fraction"].append(post_fraction)
             horizon_audit[str(horizon)]["reference_range"].append(r_ref)
@@ -237,9 +251,12 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
         for noise_ratio in noise_ratios:
             # Task-specific normalized SNR, fixed once per task/noise ratio and
             # shared across prefix exposures without candidate-horizon rescaling.
-            sigma = noise_ratio * reference_range(
-                t_eval_by_horizon[noise_reference_horizon], task.params
-            )
+            noise_reference_grid = np.linspace(
+                task.params.tau + far_start,
+                task.params.tau + noise_reference_horizon,
+                int(config["eval_points"]) + 1,
+            )[1:]
+            sigma = noise_ratio * reference_range(noise_reference_grid, task.params)
             for level in EXPOSURE_ENDPOINT_RATIOS:
                 endpoint = support.exposure_endpoint(task.params.tau, level)
                 t_prefix = np.linspace(support.observation_min, endpoint, int(config["prefix_points"]))

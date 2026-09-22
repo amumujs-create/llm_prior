@@ -28,6 +28,10 @@ of `I`, not an information-preserving representation. A uniform density over
   common constant `s_0=.05W_tau`.
 - Same noisy observed prefix, train/test split, noise realization, onset-grid,
   task seeds, and far-OOD evaluation points within each latent task.
+- The common far-OOD evaluation window is
+  `Omega_far=(tau*+.10W_tau, tau*+.80W_tau]`. It begins strictly after the
+  high-exposure endpoint, so neither forecast distance nor evaluation labels
+  vary with prefix exposure.
 - No policy receives future observations, the true onset, or support beyond
   `I`. Discrete policies use one common frozen onset grid on `I`; the
   continuous distributional policy uses a separately frozen numerical
@@ -142,7 +146,9 @@ information-preserving interval representation.
    `[tau*-.20W_tau, tau*+.10W_tau]` lie inside the frozen observation domain.
    The acceptance region is their intersection; failures are rejected and
    recorded, not repaired by boundary clipping.
-9. `R_ref=max_{t in Omega_eval} f_clean(t)-min_{t in Omega_eval} f_clean(t)`.
+9. `R_ref=max_{t in Omega_far} f_clean(t)-min_{t in Omega_far} f_clean(t)`,
+   using the common far-OOD window
+   `Omega_far=(tau*+.10W_tau, tau*+.80W_tau]` for every prefix exposure.
    It is a synthetic evaluation-scale constant only: it is never supplied to
    a policy or fitted model. For a fixed noise ratio `rho=sigma/R_ref`, every
    latent task receives task-specific noise `sigma_i=rho*R_ref,i`, computed once
@@ -218,9 +224,10 @@ penalty `soft_constraint` is explicitly excluded from that equality audit.
 ## E15-A0 design-only calibration
 
 Before the confirmatory run, an independent, discarded-seed E15-A0 pilot fixes
-the remaining numerical generator and computation contract. It must not inspect
-or compare the seven-policy prediction outcomes, rankings, RMSE, CRPS, or
-collapse rates.
+the remaining numerical generator and computation contract. Policy outcomes are
+never inspected or used directionally. Protected paired NRMSE contrasts are
+computed only internally for variance-based quota calibration; their values,
+means, signs, rankings, and winners are never exposed or persisted.
 
 E15-A0 may inspect only: (1) generator admissibility and numerical stability;
 (2) the spread and overlap of `E_tau` across the three prefix-exposure settings
