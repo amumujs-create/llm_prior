@@ -123,6 +123,14 @@ turning point. The clean actual first direction-violation horizon `h_viol` is
 stored separately and is right-censored when no violation occurs in the tested
 domain.
 
+For each task, the synthetic scale is frozen as
+`R_ref=max_{t in Omega_ref} f(t)-min_{t in Omega_ref} f(t)`, with
+`Omega_ref=[h*-.30W_h,h*+.80W_h]`. It is used only for task-normalized noise,
+NRMSE, and the normalized-slope audit; it is never supplied to a policy. Both
+the numerator and denominator of the slope audit use this same window:
+`G_slope=W_h max_{t in Omega_ref}|f'(t)|/R_ref`. This common window prevents a
+reverse realization's post-scope range from acting as a mode-specific scale.
+
 ## Predeclared hypotheses
 
 1. With broad scope uncertainty and weak prefix evidence, retaining multiple

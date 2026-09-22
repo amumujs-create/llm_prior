@@ -80,6 +80,17 @@ def _reference_range(t: np.ndarray, params: ScopeTaskParams) -> float:
     return result
 
 
+def _reference_window_grid(
+    h_star: float, width: float, start_before_scope_ratio: float, end_after_scope_ratio: float, points: int
+) -> np.ndarray:
+    """Frozen common task-scale window, independent of forecast horizon."""
+    return np.linspace(
+        h_star - start_before_scope_ratio * width,
+        h_star + end_after_scope_ratio * width,
+        points,
+    )
+
+
 def _draw_task(rng: np.random.Generator, config: dict[str, Any], h_star: float, mode: float) -> CandidateTask:
     ranges = config["parameter_ranges"]
     a_lo, a_hi = _pair(ranges["a"], "parameter_ranges.a")
@@ -104,6 +115,7 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
         "scope_width", "support_margin_ratio", "parameter_ranges", "post_scope_modes", "prefix_points",
         "gamma0_times_scope_width",
         "eval_points", "exposure_offsets", "noise_ratios", "noise_reference_horizon_ratio",
+        "reference_window_start_before_scope_ratio",
         "horizon_after_scope_ratios", "far_start_after_scope_ratio", "scope_grid_points",
         "min_reference_range", "max_precursor_condition", "constraint_tolerance", "max_stationarity_residual",
         "min_window_points", "min_unique_scope_solutions", "max_normalized_slope",
@@ -130,11 +142,14 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
     if not horizon_ratios or any(value <= 0.0 for value in horizon_ratios):
         raise ValueError("horizon_after_scope_ratios must be positive")
     noise_reference_ratio = float(config["noise_reference_horizon_ratio"])
+    reference_start_ratio = float(config["reference_window_start_before_scope_ratio"])
     if noise_reference_ratio not in horizon_ratios:
         raise ValueError("noise_reference_horizon_ratio must be one of horizon_after_scope_ratios")
     far_start_ratio = float(config["far_start_after_scope_ratio"])
     if not 0.0 <= far_start_ratio < min(horizon_ratios):
         raise ValueError("far_start_after_scope_ratio must precede every horizon candidate")
+    if reference_start_ratio < 0.0:
+        raise ValueError("reference_window_start_before_scope_ratio must be nonnegative")
     margin = float(config["support_margin_ratio"]) * width
     if margin <= 0.0 or h_min + margin >= h_max - margin:
         raise ValueError("support_margin_ratio leaves no unclipped true-scope interval")
@@ -165,7 +180,9 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
             rejections["nonfinite_trajectory"] += 1
             rejections_by_mode[str(mode)]["nonfinite_trajectory"] += 1
             continue
-        ref_grid = np.linspace(h_star + far_start_ratio * width, h_star + noise_reference_ratio * width, int(config["eval_points"]) + 1)[1:]
+        ref_grid = _reference_window_grid(
+            h_star, width, reference_start_ratio, noise_reference_ratio, int(config["eval_points"])
+        )
         try:
             r_ref = _reference_range(ref_grid, task.params)
         except ValueError:
@@ -176,8 +193,7 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
             rejections["reference_range_below_minimum"] += 1
             rejections_by_mode[str(mode)]["reference_range_below_minimum"] += 1
             continue
-        slope_grid = np.linspace(float(config["observation_start"]), far_end, int(config["eval_points"]))
-        normalized_max_slope = width * float(np.max(np.abs(clean_scope_slope(slope_grid, task.params)))) / r_ref
+        normalized_max_slope = width * float(np.max(np.abs(clean_scope_slope(ref_grid, task.params)))) / r_ref
         if normalized_max_slope > float(config["max_normalized_slope"]):
             rejections["normalized_slope_above_maximum"] += 1
             rejections_by_mode[str(mode)]["normalized_slope_above_maximum"] += 1
@@ -185,18 +201,28 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
         accepted.append(task)
 
     evidence: dict[str, dict[str, list[float]]] = {str(ratio): {exposure: [] for exposure in EXPOSURES} for ratio in noise_ratios}
+    evidence_by_mode: dict[str, dict[str, dict[str, list[float]]]] = {
+        str(ratio): {str(mode): {exposure: [] for exposure in EXPOSURES} for mode in modes}
+        for ratio in noise_ratios
+    }
     precursor_conditions: dict[str, dict[str, list[float]]] = {str(ratio): {exposure: [] for exposure in EXPOSURES} for ratio in noise_ratios}
     solver_geometry = {exposure: {"unique_solutions": [], "max_stationarity_residual": [], "min_constraint": []} for exposure in EXPOSURES}
     horizon_audit = {str(ratio): {"finite": [], "valid_points": [], "post_points": [], "normalized_max_slope": []} for ratio in horizon_ratios}
     mode_counts = Counter()
     violation_counts = Counter()
+    normalized_slope_by_mode: dict[str, list[float]] = {str(mode): [] for mode in modes}
 
     for task in accepted:
         params = task.params
         mode_counts[str(params.post_scope_mode)] += 1
         standardized_noise = np.random.default_rng(task.seed).normal(0.0, 1.0, int(config["prefix_points"]))
-        reference_grid = np.linspace(params.h_star + far_start_ratio * width, params.h_star + noise_reference_ratio * width, int(config["eval_points"]) + 1)[1:]
+        reference_grid = _reference_window_grid(
+            params.h_star, width, reference_start_ratio, noise_reference_ratio, int(config["eval_points"])
+        )
         r_ref = _reference_range(reference_grid, params)
+        normalized_slope_by_mode[str(params.post_scope_mode)].append(
+            width * float(np.max(np.abs(clean_scope_slope(reference_grid, params)))) / r_ref
+        )
         for horizon_ratio in horizon_ratios:
             h_far = params.h_star + horizon_ratio * width
             # The two oracle-scored windows are evaluated on their own frozen
@@ -205,7 +231,7 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
             valid_grid = np.linspace(params.h_star - min(exposure_offsets.values()), params.h_star, int(config["eval_points"]) + 1)[1:]
             post_grid = np.linspace(params.h_star, h_far, int(config["eval_points"]) + 1)[1:]
             combined = np.concatenate((valid_grid, post_grid))
-            max_slope = float(np.max(np.abs(clean_scope_slope(combined, params))))
+            max_slope = float(np.max(np.abs(clean_scope_slope(reference_grid, params))))
             horizon_audit[str(horizon_ratio)]["finite"].append(bool(np.all(np.isfinite(clean_scope_trajectory(combined, params)))))
             horizon_audit[str(horizon_ratio)]["valid_points"].append(len(valid_grid))
             horizon_audit[str(horizon_ratio)]["post_points"].append(len(post_grid))
@@ -224,6 +250,7 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
                 losses, conditions = profile_scope_precursor(t_prefix, y_prefix, h_grid, params.gamma, sigma)
                 _, concentration = normalized_entropy_concentration(losses)
                 evidence[str(noise_ratio)][exposure].append(concentration)
+                evidence_by_mode[str(noise_ratio)][str(params.post_scope_mode)][exposure].append(concentration)
                 precursor_conditions[str(noise_ratio)][exposure].extend(conditions.tolist())
 
                 # Label-free forecast-solver geometry: how many different local
@@ -244,7 +271,13 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
         horizon_summary[ratio] = {metric: _quantiles(values) for metric, values in audit.items() if metric != "finite"}
         horizon_summary[ratio]["finite_rate"] = float(np.mean(audit["finite"])) if audit["finite"] else 0.0
         horizon_summary[ratio]["reference_range_pass"] = bool(
-            all(value >= float(config["min_reference_range"]) for value in [_reference_range(np.linspace(task.params.h_star + far_start_ratio * width, task.params.h_star + noise_reference_ratio * width, int(config["eval_points"]) + 1)[1:], task.params) for task in accepted])
+            all(
+                _reference_range(
+                    _reference_window_grid(task.params.h_star, width, reference_start_ratio, noise_reference_ratio, int(config["eval_points"])),
+                    task.params,
+                ) >= float(config["min_reference_range"])
+                for task in accepted
+            )
         )
         horizon_summary[ratio]["normalized_slope_pass"] = bool(
             all(value <= float(config["max_normalized_slope"]) for value in audit["normalized_max_slope"])
@@ -262,6 +295,13 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
         for noise, by_exposure in precursor_conditions.items()
     }
     solver_summary = {exposure: {metric: _quantiles(values) for metric, values in metrics.items()} for exposure, metrics in solver_geometry.items()}
+    evidence_by_mode_summary = {
+        noise: {
+            mode: {exposure: _quantiles(values) for exposure, values in by_exposure.items()}
+            for mode, by_exposure in modes_map.items()
+        }
+        for noise, modes_map in evidence_by_mode.items()
+    }
     all_evidence_finite = all(
         all(np.all(np.isfinite(values)) for values in by_exposure.values())
         for by_exposure in evidence.values()
@@ -309,10 +349,20 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
             mode: dict(sorted(counts.items())) for mode, counts in sorted(rejections_by_mode.items())
         },
         "scope_evidence_E_h": evidence_summary,
+        "scope_evidence_E_h_by_post_scope_mode": evidence_by_mode_summary,
         "precursor_condition_number": condition_summary,
         "solver_geometry": solver_summary,
         "horizon_audit": horizon_summary,
         "post_scope_mode_counts": dict(sorted(mode_counts.items())),
+        "normalized_slope_by_post_scope_mode": {
+            mode: _quantiles(values) for mode, values in normalized_slope_by_mode.items()
+        },
+        "reference_window": {
+            "definition": "[h_star-reference_window_start_before_scope_ratio*W_h, h_star+noise_reference_horizon_ratio*W_h]",
+            "start_before_scope_ratio": reference_start_ratio,
+            "end_after_scope_ratio": noise_reference_ratio,
+            "policy_input": False,
+        },
         "actual_violation_horizon": {"counts": dict(sorted(violation_counts.items())), "definition": "separate from h_star; right_censored means no observed violation through h_far"},
         "gates": {
             "prefix_direction_violation_count": 0,

@@ -1,0 +1,36 @@
+{
+  "contract_id": "e15-b0-candidate-v1",
+  "seed": 151600,
+  "pilot_tasks": 200,
+  "max_attempts": 10000,
+  "scope_domain": [0.0, 1.0],
+  "observation_start": 0.0,
+  "scope_width": 1.0,
+  "support_margin_ratio": 0.45,
+  "parameter_ranges": {
+    "a": [-0.25, 0.25],
+    "b": [0.25, 0.55]
+  },
+  "post_scope_modes": [-2.0, 0.0, 1.0],
+  "prefix_points": 49,
+  "eval_points": 321,
+  "exposure_offsets": {
+    "low": 0.30,
+    "medium": 0.12,
+    "high": 0.03
+  },
+  "gamma0_times_scope_width_candidates": [2.0, 4.0, 6.0, 8.0],
+  "noise_ratios": [0.01, 0.025, 0.05, 0.1],
+  "noise_reference_horizon_ratio": 0.8,
+  "reference_window_start_before_scope_ratio": 0.30,
+  "horizon_after_scope_ratios": [0.4, 0.6, 0.8],
+  "far_start_after_scope_ratio": 0.0,
+  "scope_grid_points": 41,
+  "min_reference_range": 0.05,
+  "max_normalized_slope": 4.0,
+  "max_precursor_condition": 1000000.0,
+  "constraint_tolerance": 1e-09,
+  "max_stationarity_residual": 1e-09,
+  "min_window_points": 50,
+  "min_unique_scope_solutions": 4
+}
