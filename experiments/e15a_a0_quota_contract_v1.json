@@ -1,0 +1,8 @@
+{
+  "metric": "paired_far_ood_nrmse_contrast",
+  "target_ci_half_width": 0.025,
+  "practical_contrast_scale": 0.05,
+  "minimum_confirmatory_quota": 50,
+  "failure_probability_target": 0.0001,
+  "primary_population": "C1/C2/C3 × narrow/broad/existence_only/covered_biased × low/medium/high; exact and uncovered_biased excluded"
+}

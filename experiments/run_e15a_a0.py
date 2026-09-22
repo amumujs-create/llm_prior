@@ -12,10 +12,9 @@ Run with an explicit JSON contract; there are no scientific default values.
 from __future__ import annotations
 
 import argparse
-import csv
 import hashlib
 import json
-from collections import Counter, defaultdict
+from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -24,7 +23,6 @@ import numpy as np
 try:  # Supports both `python experiments/run_e15a_a0.py` and `python -m ...`.
     from .e15a_a0_contract import (
         A0SupportContract,
-        BlindedContrastAccumulator,
         EXPOSURE_ENDPOINT_RATIOS,
         onset_evidence_concentration,
     )
@@ -39,7 +37,6 @@ try:  # Supports both `python experiments/run_e15a_a0.py` and `python -m ...`.
 except ImportError:  # pragma: no cover - direct script execution path
     from e15a_a0_contract import (
         A0SupportContract,
-        BlindedContrastAccumulator,
         EXPOSURE_ENDPOINT_RATIOS,
         onset_evidence_concentration,
     )
@@ -142,39 +139,7 @@ def _draw_task(
     )
 
 
-def _read_blinded_contrasts(
-    path: Path, target_half_width: float, minimum_quota: int, required_cells: list[str] | None
-) -> dict[str, Any]:
-    """Consume raw protected input once; emit only dispersion/quota summaries.
-
-    Expected CSV fields: `cell_id`, `contrast_id`, `value`.  Raw values are not
-    retained or emitted by this runner.
-    """
-    groups: dict[tuple[str, str], BlindedContrastAccumulator] = defaultdict(BlindedContrastAccumulator)
-    with path.open(newline="") as handle:
-        for row in csv.DictReader(handle):
-            groups[(row["cell_id"], row["contrast_id"])].update(float(row["value"]))
-    output: dict[str, dict[str, float | int]] = {}
-    for (cell_id, contrast_id), accumulator in sorted(groups.items()):
-        summary = accumulator.summary(target_half_width, minimum_quota)
-        output[f"{cell_id}::{contrast_id}"] = {
-            "n_pilot_tasks": summary.n_tasks,
-            "paired_sd": summary.paired_sd,
-            "paired_sd_upper_95": summary.paired_sd_upper_95,
-            "required_quota": summary.normal_approx_required_tasks,
-        }
-    required = required_cells or sorted(output)
-    missing = sorted(set(required) - set(output))
-    if missing:
-        raise ValueError(f"missing blinded quota cells: {missing}")
-    return {
-        "by_primary_cell_contrast": output,
-        "required_confirmatory_quota": max(output[key]["required_quota"] for key in required),
-        "primary_cells_used": required,
-    }
-
-
-def run(config: dict[str, Any], blinded_contrast_csv: Path | None = None) -> dict[str, Any]:
+def run(config: dict[str, Any]) -> dict[str, Any]:
     _require(
         config,
         "contract_id", "seed", "pilot_tasks", "max_attempts", "onset_domain",
@@ -265,17 +230,20 @@ def run(config: dict[str, Any], blinded_contrast_csv: Path | None = None) -> dic
             horizon_audit[str(horizon)]["slope_admissible"].append(normalized_max_slope <= float(config["max_normalized_slope"]))
             horizon_audit[str(horizon)]["finite"].append(bool(np.all(np.isfinite(y))))
         # The common full-domain onset grid makes E_tau independent of supplied I.
+        # All exposures of one task receive this same standardized realization.
+        standardized_noise = np.random.default_rng(task.seed).normal(
+            0.0, 1.0, int(config["prefix_points"])
+        )
         for noise_ratio in noise_ratios:
             # Task-specific normalized SNR, fixed once per task/noise ratio and
             # shared across prefix exposures without candidate-horizon rescaling.
             sigma = noise_ratio * reference_range(
                 t_eval_by_horizon[noise_reference_horizon], task.params
             )
-            noise_rng = np.random.default_rng(task.seed)
             for level in EXPOSURE_ENDPOINT_RATIOS:
                 endpoint = support.exposure_endpoint(task.params.tau, level)
                 t_prefix = np.linspace(support.observation_min, endpoint, int(config["prefix_points"]))
-                y_prefix = smooth_regime(t_prefix, task.params) + noise_rng.normal(0.0, sigma, size=t_prefix.size)
+                y_prefix = smooth_regime(t_prefix, task.params) + sigma * standardized_noise
                 losses, conditions = _profile_nll_and_condition(
                 t_prefix, y_prefix, full_grid, task.params.s, task.params.kappa, sigma
             )
@@ -307,15 +275,6 @@ def run(config: dict[str, Any], blinded_contrast_csv: Path | None = None) -> dic
                 "all_within_bound": bool(values and np.max(values) <= float(config["max_design_condition"])),
             }
 
-    quota = None
-    if blinded_contrast_csv is not None:
-        _require(config, "target_ci_half_width", "minimum_confirmatory_quota")
-        quota = _read_blinded_contrasts(
-            blinded_contrast_csv,
-            float(config["target_ci_half_width"]),
-            int(config["minimum_confirmatory_quota"]),
-            config.get("primary_quota_cells"),
-        )
     return {
         "contract_id": config["contract_id"],
         "runner": "E15-A0 numerical calibration only; no policy-outcome metrics emitted",
@@ -326,7 +285,6 @@ def run(config: dict[str, Any], blinded_contrast_csv: Path | None = None) -> dic
         "evidence_geometry": {noise: {level: _quantiles(values) for level, values in levels.items()} for noise, levels in evidence.items()},
         "horizon_admissibility": horizon_summary,
         "linear_profile_condition_number": condition_summary,
-        "blinded_quota_calibration": quota,
         "config_sha256": hashlib.sha256(json.dumps(config, sort_keys=True).encode()).hexdigest(),
     }
 
@@ -335,10 +293,9 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", required=True, type=Path)
     parser.add_argument("--out", required=True, type=Path)
-    parser.add_argument("--blinded-contrast-csv", type=Path)
     args = parser.parse_args()
     config = json.loads(args.config.read_text())
-    result = run(config, args.blinded_contrast_csv)
+    result = run(config)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n")
 

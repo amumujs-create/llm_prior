@@ -9,7 +9,10 @@ generator, evidence geometry, horizon admissibility, and linear-profile
 numerics.
 
 Candidate contract SHA-256:
-`2f25df1536573ff26c4e8f1595c62ab49618c966e11e04a82148e62620afd5ef`.
+`f92531f4258ba0b29e25aa8897b3297e681982da7a22ffe7c2f82c886f2e80f2`.
+
+The corresponding numerical-calibration result SHA-256 is
+`d8dc018ac474f65ba83e27fe927e184d9888ea6d04226a0dbee63e9f3eb86033`.
 
 ## Candidate generator and acceptance
 
@@ -58,10 +61,25 @@ conditioned. Across all candidate onsets, noises, and exposure levels its
 largest observed condition number was `33.33`, well below the frozen numerical
 gate `1e6`; no low-exposure task was rejected because of conditioning.
 
-## Remaining A0 step
+## Protected quota calibration and final A0 freeze
 
-Task quota and maximum attempts are not frozen by this artifact. They require
-the separately protected, variance-only C1/C2/C3 cellwise calibration. That
-adapter must emit only blinded paired-SD upper bounds and required quota, never
-policy-loss means, signs, ranks, or winners. Until then, this is a partial A0
-geometry/numerics freeze, not the final confirmatory manifest.
+The separate in-process protected adapter evaluated discarded tasks and passed
+each signed paired NRMSE contrast directly to a streaming accumulator. No raw
+contrast, policy loss, mean, sign, ranking, or winner was persisted. Each of
+the 36 prespecified covered primary cells received 200 discarded tasks. The
+adapter persisted only cellwise task counts, paired SDs, one-sided 95% SD upper
+bounds, and required quotas.
+
+- Frozen target 95% CI half-width: `epsilon=.025` NRMSE, half of the `.05`
+  practical policy-contrast scale.
+- Final confirmatory quota: `90` latent tasks.
+- A0 feasibility: `200/468` accepted, with 95% Wilson lower acceptance
+  probability `.383301`.
+- Frozen maximum proposals: `316`, the smallest integer for which
+  `P[Binomial(316, .383301) < 90] = 9.54e-5 < 1e-4`.
+
+The current protected quota-result SHA-256 is
+`d9f9d07af928ad4aacffbd285da1d5cc7421876b858479c66733ebbc10cbdbe4`.
+The frozen confirmatory manifest SHA-256 is
+`51a13eb5cc05b19d59299f21fd4f73aa5799eb4bf4a7bd164e673b0391842747`.
+E15-A0 is complete: its discarded tasks are excluded from confirmatory E15-A.

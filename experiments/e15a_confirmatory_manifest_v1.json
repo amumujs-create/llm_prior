@@ -1,0 +1,83 @@
+{
+  "experiment_id": "e15-a-confirmatory-v1",
+  "status": "frozen_before_confirmatory_outcomes",
+  "seed_namespace": "e15-a-confirmatory-v1",
+  "seed": 151501,
+  "a0_is_discarded": true,
+  "a0_artifacts": {
+    "candidate_contract_sha256": "f92531f4258ba0b29e25aa8897b3297e681982da7a22ffe7c2f82c886f2e80f2",
+    "geometry_result_sha256": "d8dc018ac474f65ba83e27fe927e184d9888ea6d04226a0dbee63e9f3eb86033",
+    "protected_quota_result_sha256": "d9f9d07af928ad4aacffbd285da1d5cc7421876b858479c66733ebbc10cbdbe4"
+  },
+  "generator": {
+    "normalized_onset_domain": [0.0, 1.0],
+    "observation_domain": [0.0, 1.0],
+    "a_uniform": [-0.25, 0.25],
+    "abs_b_uniform": [0.25, 0.55],
+    "b_sign": "balanced",
+    "c_definition": "c=kappa*b",
+    "kappa": 1.0,
+    "s0_over_W_tau": 0.05
+  },
+  "observation_and_evaluation": {
+    "prefix_points": 49,
+    "evaluation_points": 321,
+    "exposure_endpoint_offsets_over_W_tau": {
+      "low": -0.2,
+      "medium": -0.05,
+      "high": 0.1
+    },
+    "noise_ratio_sigma_over_R_ref": 0.025,
+    "noise_reference_horizon_after_onset_over_W_tau": 0.8,
+    "far_ood_horizon_after_onset_over_W_tau": 0.8,
+    "shared_standardized_noise_across_exposures": true
+  },
+  "onset_support_and_profiles": {
+    "knowledge_states": [
+      "exact",
+      "narrow",
+      "broad",
+      "existence_only",
+      "covered_biased",
+      "uncovered_biased"
+    ],
+    "narrow_half_width_over_W_tau": 0.1,
+    "broad_half_width_over_W_tau": 0.3,
+    "covered_bias_over_W_tau": 0.05,
+    "uncovered_bias_over_W_tau": 0.15,
+    "onset_grid_step_over_W_tau": 0.025,
+    "quadrature": "Gauss-Legendre, 201 nodes; exact support is a point mass",
+    "profile_fit": "unconstrained deterministic linear least squares in (a,b)",
+    "lstsq_rcond": 1e-12,
+    "likelihood_temperature": 1.0,
+    "soft_constraint_lambda": 1.0
+  },
+  "acceptance_gates": {
+    "min_reference_range": 0.05,
+    "min_post_onset_fraction": 0.3,
+    "max_normalized_slope": 2.0,
+    "max_design_condition": 1000000.0,
+    "no_support_clipping": true
+  },
+  "primary_contrasts": {
+    "C1": "evidence_weighted_mixture - evidence_MAP_point",
+    "C2": "evidence_weighted_mixture - uniform_hypothesis_ensemble",
+    "C3": "evidence_MAP_point - hard_midpoint"
+  },
+  "precision_and_feasibility": {
+    "metric": "paired far-OOD NRMSE",
+    "target_ci_half_width": 0.025,
+    "practical_contrast_scale": 0.05,
+    "primary_quota_population": "C1/C2/C3 x narrow/broad/existence_only/covered_biased x low/medium/high",
+    "confirmatory_quota": 90,
+    "max_attempts": 316,
+    "max_attempt_failure_probability": 0.0001,
+    "wilson_lower_acceptance_probability": 0.38330105199893383
+  },
+  "analysis": {
+    "paired_bootstrap_replicates": 5000,
+    "wrong_onset_tolerance_over_W_tau": 0.05,
+    "entropy_collapse_threshold": 0.25,
+    "catastrophic_far_ood_nrmse_threshold": 0.5
+  }
+}

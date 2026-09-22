@@ -1,7 +1,7 @@
 """Protected E15-A0 quota calibration.
 
-The input has one blinded paired far-OOD NRMSE contrast per discarded pilot
-task.  This script streams those values into per-cell accumulators and emits
+This script evaluates the discarded pilot in-process and streams each blinded
+paired far-OOD NRMSE contrast immediately into a per-cell accumulator. It emits
 only SD, conservative SD upper bound, quota, and feasibility-derived maximum
 attempts. It never writes a contrast, mean, sign, policy name, or winner.
 """
@@ -9,19 +9,19 @@ attempts. It never writes a contrast, mean, sign, policy name, or winner.
 from __future__ import annotations
 
 import argparse
-import csv
 import json
-from collections import defaultdict
 from pathlib import Path
 
 try:
     from .e15a_a0_contract import BlindedContrastAccumulator, attempt_budget_from_a0
+    from .e15a_a0_blinded_producer import produce
 except ImportError:  # pragma: no cover - direct script execution
     from e15a_a0_contract import BlindedContrastAccumulator, attempt_budget_from_a0
+    from e15a_a0_blinded_producer import produce
 
 
 def run(
-    contrast_csv: Path,
+    candidate_contract: Path,
     primary_cells: list[str],
     target_half_width: float,
     minimum_quota: int,
@@ -30,14 +30,14 @@ def run(
 ) -> dict:
     if target_half_width <= 0 or minimum_quota < 1:
         raise ValueError("target_half_width and minimum_quota must be positive")
-    accumulators: dict[str, BlindedContrastAccumulator] = defaultdict(BlindedContrastAccumulator)
-    with contrast_csv.open(newline="") as handle:
-        for row in csv.DictReader(handle):
-            # The protected producer uses this canonical identifier.
-            key = f"{row['knowledge_state']}::{row['prefix_exposure']}::{row['contrast_id']}"
-            if key in primary_cells:
-                accumulators[key].update(float(row["blinded_paired_nrmse_contrast"]))
-    missing = sorted(set(primary_cells) - set(accumulators))
+    accumulators = {cell: BlindedContrastAccumulator() for cell in primary_cells}
+    # Policy evaluation -> scalar contrast -> accumulator happens in this
+    # process. No CSV, raw contrast array, mean, or sign is written to disk.
+    for knowledge_state, prefix_exposure, contrast_id, value in produce(candidate_contract):
+        key = f"{knowledge_state}::{prefix_exposure}::{contrast_id}"
+        if key in accumulators:
+            accumulators[key].update(value)
+    missing = sorted(cell for cell, accumulator in accumulators.items() if accumulator.count == 0)
     if missing:
         raise ValueError(f"missing protected variance cells: {missing}")
     by_cell = {}
@@ -75,7 +75,7 @@ def run(
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--blinded-contrast-csv", type=Path, required=True)
+    parser.add_argument("--candidate-contract", type=Path, required=True)
     parser.add_argument("--primary-cells", type=Path, required=True)
     parser.add_argument("--a0-result", type=Path, required=True)
     parser.add_argument("--target-ci-half-width", type=float, required=True)
@@ -83,7 +83,7 @@ def main() -> None:
     parser.add_argument("--out", type=Path, required=True)
     args = parser.parse_args()
     result = run(
-        args.blinded_contrast_csv,
+        args.candidate_contract,
         json.loads(args.primary_cells.read_text()),
         args.target_ci_half_width,
         args.minimum_quota,

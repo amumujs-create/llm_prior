@@ -14,7 +14,7 @@ from math import ceil, log
 from typing import Iterable
 
 import numpy as np
-from scipy.stats import binom, chi2, norm
+from scipy.stats import binom, chi2
 
 
 N_QUAD = 201
@@ -218,6 +218,11 @@ class BlindedContrastAccumulator:
         delta = paired_loss_contrast - self._mean
         self._mean += delta / self._n
         self._m2 += delta * (paired_loss_contrast - self._mean)
+
+    @property
+    def count(self) -> int:
+        """Number of absorbed contrasts; safe to disclose for support audits."""
+        return self._n
 
     def summary(self, target_half_width: float, minimum_quota: int) -> BlindedVarianceSummary:
         if self._n < 2:

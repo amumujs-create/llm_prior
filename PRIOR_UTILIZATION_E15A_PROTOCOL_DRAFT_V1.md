@@ -20,8 +20,8 @@ of `I`, not an information-preserving representation. A uniform density over
 - Common predictive family: the frozen regime continuation family and the same
   fixed transition width and deterministic linear profile solve for every
   policy.
-- The `a/b/c` ranges are generator sampling ranges only. Conditional on each
-  fixed onset hypothesis `tau_k`, `a/b/c` are profiled by unconstrained,
+- The `a/b` ranges are generator sampling ranges only. Conditional on each
+  fixed onset hypothesis `tau_k`, `a/b` are profiled by unconstrained,
   deterministic linear least squares; generator ranges are not fitting bounds.
 - To isolate onset uncertainty, E15-A fixes `c=kappa*b` with `kappa=1`; only
   `a` and `b` are profiled at a candidate onset. The transition width is the
@@ -96,7 +96,7 @@ be representation-equivalent. This is an audit, not a primary policy contrast.
 
 For every frozen grid hypothesis `tau_k`, all evidence-using policies first
 compute the identical profile score
-`ell_k = min_(a,b,c) NLL(D_prefix | tau_k, a,b,c,s_0)`, using the same fixed
+`ell_k = min_(a,b) NLL(D_prefix | tau_k, a,b,c=kappa*b,s_0)`, using the same fixed
 transition width `s_0` and deterministic linear least-squares rule.
 `evidence_MAP_point` uses
 `tau_MAP = argmin_k ell_k`; `evidence_weighted_mixture` uses
@@ -241,8 +241,17 @@ variance-only initial quota may use `n≈(1.96*s_delta/epsilon)^2`, followed by 
 clustered-bootstrap precision check, where neither the mean nor sign of the
 contrast is revealed.
 
+The protected adapter performs policy evaluation, forms one signed paired
+contrast as an in-memory scalar, and immediately passes it to a streaming
+`BlindedContrastAccumulator`. It never writes a raw contrast CSV, contrast
+array, contrast mean, sign, policy loss, ranking, or winner. Its only persisted
+cellwise fields are discarded-task count, paired SD, one-sided 95% SD upper
+bound, and the resulting required quota.
+
 Before any protected variance is accessed, E15-A0 freezes a target 95% CI
-half-width `epsilon` for the paired far-OOD `NRMSE=RMSE/R_ref` contrast. The
+half-width `epsilon=.025` for the paired far-OOD `NRMSE=RMSE/R_ref` contrast.
+This is half of the predeclared practical policy-contrast scale `.05` NRMSE.
+The
 primary quota cells are `C1/C2/C3 × knowledge state × prefix exposure`, limited
 to covered knowledge states; uncovered-biased rows remain in `Worst-all` but do
 not determine the core utilization-contrast quota. Exact-support rows are a
