@@ -1,0 +1,17 @@
+{
+  "accepted_tasks": 2520,
+  "duplicate_rows": 0,
+  "exact_support_equivalence_failures": 0,
+  "expected_policy_rows": 317520,
+  "far_label_leakage_count": 0,
+  "manifest_sha256": "b5d12de2c27db01823a905f03bd8523a1a8461fab69077da5d37db40edc0f413",
+  "max_attempts": 2578,
+  "missing_rows": 0,
+  "nonfinite_predictions": 0,
+  "note": "Integrity artifact only; no outcome summaries, contrasts, rankings, or winner claims are emitted.",
+  "prefix_only_policy_records": 45360,
+  "rows_csv_sha256": "05093edf39d1bf7a4b49851756b982c1c80d2824a3411522494eefebf22ee858",
+  "solver_failures": 0,
+  "status": "PASS",
+  "written_policy_rows": 317520
+}
