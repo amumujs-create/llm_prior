@@ -15,13 +15,17 @@ of `I`, not an information-preserving representation. A uniform density over
 
 ## Scope and held-fixed components
 
-- Prior family: one mechanistic regime change with onset `tau`.
+- Prior family: one mechanistic regime change with onset `tau`, represented on
+  normalized time `u=(t-tau_min)/W_tau`.
 - Common predictive family: the frozen regime continuation family and the same
   fixed transition width and deterministic linear profile solve for every
   policy.
 - The `a/b/c` ranges are generator sampling ranges only. Conditional on each
   fixed onset hypothesis `tau_k`, `a/b/c` are profiled by unconstrained,
   deterministic linear least squares; generator ranges are not fitting bounds.
+- To isolate onset uncertainty, E15-A fixes `c=kappa*b` with `kappa=1`; only
+  `a` and `b` are profiled at a candidate onset. The transition width is the
+  common constant `s_0=.05W_tau`.
 - Same noisy observed prefix, train/test split, noise realization, onset-grid,
   task seeds, and far-OOD evaluation points within each latent task.
 - No policy receives future observations, the true onset, or support beyond

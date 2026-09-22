@@ -1,0 +1,27 @@
+{
+  "contract_id": "e15-a0-candidate-v1",
+  "seed": 151500,
+  "pilot_tasks": 200,
+  "max_attempts": 10000,
+  "onset_domain": [0.0, 1.0],
+  "observation_domain": [0.0, 1.0],
+  "prefix_points": 49,
+  "eval_points": 321,
+  "parameter_ranges": {
+    "a": [-0.25, 0.25],
+    "b_magnitude": [0.25, 0.55]
+  },
+  "s0": 0.05,
+  "kappa": 1.0,
+  "noise_ratios": [0.01, 0.025, 0.05, 0.1],
+  "horizon_after_onset_ratios": [0.4, 0.6, 0.8],
+  "noise_reference_horizon_after_onset_ratio": 0.8,
+  "min_reference_range": 0.05,
+  "min_post_onset_fraction": 0.3,
+  "slope_scale": 1.0,
+  "min_c_ratio": 0.2,
+  "max_normalized_slope": 2.0,
+  "max_design_condition": 1000000.0,
+  "noise_selection_rule": "Select the largest rho with non-saturated low/high E_tau, high median E_tau greater than low median E_tau, and retained low/high overlap.",
+  "horizon_selection_rule": "Select the longest candidate horizon with all accepted tasks finite, post-onset admissible, and within normalized-slope bound."
+}

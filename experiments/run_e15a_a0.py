@@ -100,19 +100,20 @@ def _profile_nll_and_condition(
     y: np.ndarray,
     tau_grid: np.ndarray,
     s_fixed: float,
+    kappa: float,
     sigma: float,
 ) -> tuple[np.ndarray, np.ndarray]:
     """Deterministic linear profile for every onset hypothesis.
 
-    At fixed `tau_k` and task-level fixed `s_0`, the smooth-regime model is
-    linear in `(a,b,c)`.  There is intentionally no nonlinear optimizer or
+    At fixed `tau_k`, task-level fixed `s_0`, and fixed `kappa`, the smooth
+    regime is linear in `(a,b)`.  There is intentionally no nonlinear optimizer or
     budget: `np.linalg.lstsq` with frozen `rcond` is the entire profile rule.
     """
     result: list[float] = []
     conditions: list[float] = []
     for tau in tau_grid:
-        transition = s_fixed * _stable_softplus((t - tau) / s_fixed)
-        design = np.column_stack((np.ones_like(t), t, transition))
+        basis = t + kappa * s_fixed * _stable_softplus((t - tau) / s_fixed)
+        design = np.column_stack((np.ones_like(t), basis))
         coefficients, *_ = np.linalg.lstsq(design, y, rcond=LINEAR_LSTSQ_RCOND)
         residual = (design @ coefficients - y) / sigma
         # The Gaussian constant is included for a genuine NLL, though it cancels
@@ -132,10 +133,10 @@ def _draw_task(
     return CandidateTask(
         params=SmoothRegimeParams(
             a=float(rng.uniform(*ranges["a"])),
-            b=float(rng.uniform(*ranges["b"])),
-            c=float(rng.uniform(*ranges["c"])),
+            b=float(rng.choice((-1.0, 1.0)) * rng.uniform(*ranges["b_magnitude"])),
             tau=tau,
             s=s0,
+            kappa=float(ranges["kappa"]),
         ),
         seed=seed,
     )
@@ -178,33 +179,34 @@ def run(config: dict[str, Any], blinded_contrast_csv: Path | None = None) -> dic
         config,
         "contract_id", "seed", "pilot_tasks", "max_attempts", "onset_domain",
         "observation_domain", "prefix_points", "eval_points", "parameter_ranges",
-        "s0", "noise_ratios", "horizon_candidates", "noise_reference_horizon",
+        "s0", "kappa", "noise_ratios", "horizon_after_onset_ratios",
+        "noise_reference_horizon_after_onset_ratio",
         "min_reference_range", "min_post_onset_fraction", "slope_scale", "min_c_ratio",
-        "max_abs_slope", "max_design_condition",
+        "max_normalized_slope", "max_design_condition",
     )
     support = A0SupportContract(
         *_pair(config["onset_domain"], "onset_domain"),
         *_pair(config["observation_domain"], "observation_domain"),
     )
-    ranges = {key: _pair(config["parameter_ranges"][key], f"parameter_ranges.{key}") for key in ("a", "b", "c")}
+    ranges = {
+        "a": _pair(config["parameter_ranges"]["a"], "parameter_ranges.a"),
+        "b_magnitude": _pair(config["parameter_ranges"]["b_magnitude"], "parameter_ranges.b_magnitude"),
+        "kappa": float(config["kappa"]),
+    }
     s0 = float(config["s0"])
-    if not np.isfinite(s0) or s0 <= 0.0:
-        raise ValueError("s0 must be a positive finite common transition width")
+    if not np.isfinite(s0) or s0 <= 0.0 or not np.isfinite(ranges["kappa"]):
+        raise ValueError("s0 and kappa must be finite; s0 must be positive")
     noise_ratios = [float(x) for x in config["noise_ratios"]]
-    horizons = [float(x) for x in config["horizon_candidates"]]
-    noise_reference_horizon = float(config["noise_reference_horizon"])
-    if not noise_ratios or not horizons:
+    horizons_after_onset = [float(x) * support.width for x in config["horizon_after_onset_ratios"]]
+    noise_reference_horizon = float(config["noise_reference_horizon_after_onset_ratio"]) * support.width
+    if not noise_ratios or not horizons_after_onset:
         raise ValueError("need nonempty noise and horizon candidates")
-    if noise_reference_horizon not in horizons:
-        raise ValueError("noise_reference_horizon must be one frozen horizon candidate")
+    if noise_reference_horizon not in horizons_after_onset:
+        raise ValueError("noise_reference_horizon_after_onset_ratio must be a frozen candidate")
     if int(config["pilot_tasks"]) < 1 or int(config["max_attempts"]) < int(config["pilot_tasks"]):
         raise ValueError("invalid pilot_tasks/max_attempts")
 
     rng = np.random.default_rng(int(config["seed"]))
-    t_eval_by_horizon = {
-        horizon: np.linspace(support.observation_min, horizon, int(config["eval_points"]))
-        for horizon in horizons
-    }
     full_grid = support.frozen_grid((support.tau_min, support.tau_max))
     accepted: list[CandidateTask] = []
     reject = Counter()
@@ -219,7 +221,13 @@ def run(config: dict[str, Any], blinded_contrast_csv: Path | None = None) -> dic
         if abs(task.params.c) / float(config["slope_scale"]) <= float(config["min_c_ratio"]):
             reject["degenerate_regime_effect"] += 1
             continue
-        if not all(numerically_admissible(grid, task.params, float(config["min_reference_range"])) for grid in t_eval_by_horizon.values()):
+        grids = {
+            horizon: np.linspace(
+                support.observation_min, task.params.tau + horizon, int(config["eval_points"])
+            )
+            for horizon in horizons_after_onset
+        }
+        if not all(numerically_admissible(grid, task.params, float(config["min_reference_range"])) for grid in grids.values()):
             reject["nonfinite_or_degenerate_trajectory"] += 1
             continue
         accepted.append(task)
@@ -232,21 +240,29 @@ def run(config: dict[str, Any], blinded_contrast_csv: Path | None = None) -> dic
     }
     horizon_audit = {
         str(horizon): {
-            "post_onset_fraction": [], "reference_range": [], "max_abs_slope": [],
+            "post_onset_fraction": [], "reference_range": [], "normalized_max_slope": [],
             "post_onset_admissible": [], "slope_admissible": [], "finite": [],
         }
-        for horizon in horizons
+        for horizon in horizons_after_onset
     }
     for task in accepted:
+        t_eval_by_horizon = {
+            horizon: np.linspace(
+                support.observation_min, task.params.tau + horizon, int(config["eval_points"])
+            )
+            for horizon in horizons_after_onset
+        }
         for horizon, grid in t_eval_by_horizon.items():
             y = smooth_regime(grid, task.params)
             post_fraction = post_onset_fraction(grid, task.params.tau)
             max_abs_slope = float(np.max(np.abs(smooth_regime_slope(grid, task.params))))
+            r_ref = reference_range(grid, task.params)
+            normalized_max_slope = support.width * max_abs_slope / r_ref
             horizon_audit[str(horizon)]["post_onset_fraction"].append(post_fraction)
-            horizon_audit[str(horizon)]["reference_range"].append(reference_range(grid, task.params))
-            horizon_audit[str(horizon)]["max_abs_slope"].append(max_abs_slope)
+            horizon_audit[str(horizon)]["reference_range"].append(r_ref)
+            horizon_audit[str(horizon)]["normalized_max_slope"].append(normalized_max_slope)
             horizon_audit[str(horizon)]["post_onset_admissible"].append(post_fraction >= float(config["min_post_onset_fraction"]))
-            horizon_audit[str(horizon)]["slope_admissible"].append(max_abs_slope <= float(config["max_abs_slope"]))
+            horizon_audit[str(horizon)]["slope_admissible"].append(normalized_max_slope <= float(config["max_normalized_slope"]))
             horizon_audit[str(horizon)]["finite"].append(bool(np.all(np.isfinite(y))))
         # The common full-domain onset grid makes E_tau independent of supplied I.
         for noise_ratio in noise_ratios:
@@ -261,8 +277,8 @@ def run(config: dict[str, Any], blinded_contrast_csv: Path | None = None) -> dic
                 t_prefix = np.linspace(support.observation_min, endpoint, int(config["prefix_points"]))
                 y_prefix = smooth_regime(t_prefix, task.params) + noise_rng.normal(0.0, sigma, size=t_prefix.size)
                 losses, conditions = _profile_nll_and_condition(
-                    t_prefix, y_prefix, full_grid, task.params.s, sigma
-                )
+                t_prefix, y_prefix, full_grid, task.params.s, task.params.kappa, sigma
+            )
                 evidence[str(noise_ratio)][level].append(onset_evidence_concentration(losses))
                 design_condition[str(noise_ratio)][level].extend(conditions.tolist())
 
@@ -270,7 +286,7 @@ def run(config: dict[str, Any], blinded_contrast_csv: Path | None = None) -> dic
     for key, audit in horizon_audit.items():
         horizon_summary[key] = {
             metric: _quantiles(values) for metric, values in audit.items()
-            if metric in {"post_onset_fraction", "reference_range", "max_abs_slope"}
+            if metric in {"post_onset_fraction", "reference_range", "normalized_max_slope"}
         }
         horizon_summary[key]["fraction_post_onset_admissible"] = float(np.mean(audit["post_onset_admissible"]))
         horizon_summary[key]["fraction_slope_admissible"] = float(np.mean(audit["slope_admissible"]))
