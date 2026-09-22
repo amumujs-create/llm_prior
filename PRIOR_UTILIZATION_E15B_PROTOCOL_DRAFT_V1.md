@@ -39,6 +39,12 @@ observed prefix, while its slope pattern supplies information about the scope
 endpoint. Post-scope behavior is generated separately and is not used by any
 policy to fit or select a scope hypothesis.
 
+To isolate scope uncertainty, `gamma=gamma_0` is a single experiment-wide
+constant, not a task-level nuisance parameter. Only `a` and positive `b` vary
+by task. Allowing `b`, `gamma`, and `h*` all to vary would confound the scope
+endpoint with precursor strength through the same observed linear and quadratic
+coefficients.
+
 `E_h` is not computed from the loss of fitting a nested local constraint.
 That loss would mechanically favor shorter horizons: an `h_2` constraint
 contains an `h_1<h_2` constraint. Instead, a separate prefix-only
@@ -155,6 +161,16 @@ distinct scope hypotheses yield nondegenerate forecast solutions, deterministic
 constraint residuals are within tolerance, both oracle-scored windows have
 enough points, post-scope modes are balanced, and `h*` is never substituted for
 the separately stored `h_viol`.
+
+The policy-free numerical selection order is `gamma_0`, then noise ratio, then
+far horizon. Candidate `gamma_0 W_h` values are `{2,4,6,8}`; B0 retains only
+candidates with finite non-saturated low/high `E_h`, higher median concentration
+at greater exposure with retained overlap, stable precursor/KKT diagnostics,
+and median effective distinct constrained-solution count of at least four.
+At the selected `gamma_0`, the largest noise ratio preserving the same evidence
+geometry is selected; the longest horizon meeting finite, window-coverage,
+reference-range, and normalized-slope gates is then selected. These choices do
+not inspect policy forecast outcomes.
 
 ## Interpretation boundary
 

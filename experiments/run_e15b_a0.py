@@ -12,7 +12,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-from collections import Counter
+from collections import Counter, defaultdict
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -84,12 +84,11 @@ def _draw_task(rng: np.random.Generator, config: dict[str, Any], h_star: float, 
     ranges = config["parameter_ranges"]
     a_lo, a_hi = _pair(ranges["a"], "parameter_ranges.a")
     b_lo, b_hi = _pair(ranges["b"], "parameter_ranges.b")
-    g_lo, g_hi = _pair(ranges["gamma"], "parameter_ranges.gamma")
     return CandidateTask(
         params=ScopeTaskParams(
             a=float(rng.uniform(a_lo, a_hi)),
             b=float(rng.uniform(b_lo, b_hi)),
-            gamma=float(rng.uniform(g_lo, g_hi)),
+            gamma=float(config["gamma0_times_scope_width"]) / float(config["scope_width"]),
             h_star=h_star,
             width=float(config["scope_width"]),
             post_scope_mode=mode,
@@ -103,15 +102,18 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
         config,
         "contract_id", "seed", "pilot_tasks", "max_attempts", "scope_domain", "observation_start",
         "scope_width", "support_margin_ratio", "parameter_ranges", "post_scope_modes", "prefix_points",
+        "gamma0_times_scope_width",
         "eval_points", "exposure_offsets", "noise_ratios", "noise_reference_horizon_ratio",
         "horizon_after_scope_ratios", "far_start_after_scope_ratio", "scope_grid_points",
         "min_reference_range", "max_precursor_condition", "constraint_tolerance", "max_stationarity_residual",
-        "min_window_points", "min_unique_scope_solutions",
+        "min_window_points", "min_unique_scope_solutions", "max_normalized_slope",
     )
     h_min, h_max = _pair(config["scope_domain"], "scope_domain")
     width = float(config["scope_width"])
     if width <= 0.0 or not np.isfinite(width):
         raise ValueError("scope_width must be finite and positive")
+    if not np.isfinite(float(config["gamma0_times_scope_width"])) or float(config["gamma0_times_scope_width"]) <= 0.0:
+        raise ValueError("gamma0_times_scope_width must be finite and positive")
     expected_width = h_max - h_min
     if not np.isclose(width, expected_width, rtol=0.0, atol=1e-12):
         raise ValueError("scope_width must equal scope_domain width")
@@ -136,7 +138,7 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
     margin = float(config["support_margin_ratio"]) * width
     if margin <= 0.0 or h_min + margin >= h_max - margin:
         raise ValueError("support_margin_ratio leaves no unclipped true-scope interval")
-    if float(config["observation_start"]) >= h_min - max(exposure_offsets.values()):
+    if float(config["observation_start"]) >= h_min + margin - max(exposure_offsets.values()):
         raise ValueError("observation_start must precede every possible low-exposure endpoint")
     if int(config["scope_grid_points"]) < 3:
         raise ValueError("scope_grid_points must be at least three")
@@ -145,27 +147,40 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
     rng = np.random.default_rng(int(config["seed"]))
     accepted: list[CandidateTask] = []
     rejections = Counter()
+    rejections_by_mode: dict[str, Counter[str]] = defaultdict(Counter)
     attempts = 0
     largest_horizon = max(horizon_ratios) * width
     while len(accepted) < int(config["pilot_tasks"]) and attempts < int(config["max_attempts"]):
         attempts += 1
         h_star = float(rng.uniform(h_min + margin, h_max - margin))
-        mode = modes[len(accepted) % len(modes)]
+        # Cycle proposals rather than accepted rows. A numerically inadmissible
+        # first mode must not prevent the remaining post-scope modes from being
+        # audited, and the resulting imbalance remains visible in the artifact.
+        mode = modes[(attempts - 1) % len(modes)]
         task = _draw_task(rng, config, h_star, mode)
         far_end = h_star + largest_horizon
         eval_grid = np.linspace(float(config["observation_start"]), far_end, int(config["eval_points"]))
         values = clean_scope_trajectory(eval_grid, task.params)
         if not np.all(np.isfinite(values)):
             rejections["nonfinite_trajectory"] += 1
+            rejections_by_mode[str(mode)]["nonfinite_trajectory"] += 1
             continue
         ref_grid = np.linspace(h_star + far_start_ratio * width, h_star + noise_reference_ratio * width, int(config["eval_points"]) + 1)[1:]
         try:
             r_ref = _reference_range(ref_grid, task.params)
         except ValueError:
             rejections["degenerate_reference_range"] += 1
+            rejections_by_mode[str(mode)]["degenerate_reference_range"] += 1
             continue
         if r_ref < float(config["min_reference_range"]):
             rejections["reference_range_below_minimum"] += 1
+            rejections_by_mode[str(mode)]["reference_range_below_minimum"] += 1
+            continue
+        slope_grid = np.linspace(float(config["observation_start"]), far_end, int(config["eval_points"]))
+        normalized_max_slope = width * float(np.max(np.abs(clean_scope_slope(slope_grid, task.params)))) / r_ref
+        if normalized_max_slope > float(config["max_normalized_slope"]):
+            rejections["normalized_slope_above_maximum"] += 1
+            rejections_by_mode[str(mode)]["normalized_slope_above_maximum"] += 1
             continue
         accepted.append(task)
 
@@ -228,6 +243,12 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
     for ratio, audit in horizon_audit.items():
         horizon_summary[ratio] = {metric: _quantiles(values) for metric, values in audit.items() if metric != "finite"}
         horizon_summary[ratio]["finite_rate"] = float(np.mean(audit["finite"])) if audit["finite"] else 0.0
+        horizon_summary[ratio]["reference_range_pass"] = bool(
+            all(value >= float(config["min_reference_range"]) for value in [_reference_range(np.linspace(task.params.h_star + far_start_ratio * width, task.params.h_star + noise_reference_ratio * width, int(config["eval_points"]) + 1)[1:], task.params) for task in accepted])
+        )
+        horizon_summary[ratio]["normalized_slope_pass"] = bool(
+            all(value <= float(config["max_normalized_slope"]) for value in audit["normalized_max_slope"])
+        )
         horizon_summary[ratio]["all_windows_supported"] = bool(
             all(value >= int(config["min_window_points"]) for value in audit["valid_points"] + audit["post_points"])
         )
@@ -254,17 +275,25 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
         for metrics in solver_geometry.values()
     )
     nondegenerate_scope_solutions = all(
-        min(metrics["unique_solutions"], default=0.0) >= float(config["min_unique_scope_solutions"])
+        bool(metrics["unique_solutions"])
+        and float(np.median(metrics["unique_solutions"])) >= float(config["min_unique_scope_solutions"])
         for metrics in solver_geometry.values()
     )
-    modes_balanced = max(mode_counts.values(), default=0) - min(mode_counts.values(), default=0) <= 1
+    modes_balanced = (
+        len(mode_counts) == len(modes)
+        and max(mode_counts.values(), default=0) - min(mode_counts.values(), default=0) <= 1
+    )
     status = "PASS" if (
         len(accepted) == int(config["pilot_tasks"])
         and all_evidence_finite
         and all_conditioned
         and all_stationary
         and nondegenerate_scope_solutions
-        and all(summary["all_windows_supported"] for summary in horizon_summary.values())
+        and any(
+            summary["all_windows_supported"] and summary["finite_rate"] == 1.0
+            and summary["reference_range_pass"] and summary["normalized_slope_pass"]
+            for summary in horizon_summary.values()
+        )
         and modes_balanced
     ) else "FAIL"
     return {
@@ -276,6 +305,9 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
         "attempts": attempts,
         "acceptance_rate": len(accepted) / attempts if attempts else 0.0,
         "rejections": dict(sorted(rejections.items())),
+        "rejections_by_post_scope_mode": {
+            mode: dict(sorted(counts.items())) for mode, counts in sorted(rejections_by_mode.items())
+        },
         "scope_evidence_E_h": evidence_summary,
         "precursor_condition_number": condition_summary,
         "solver_geometry": solver_summary,
@@ -294,6 +326,7 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
             "constraint_tolerance": float(config["constraint_tolerance"]),
             "max_stationarity_residual": float(config["max_stationarity_residual"]),
             "min_window_points": int(config["min_window_points"]),
+            "max_normalized_slope": float(config["max_normalized_slope"]),
         },
         "note": "This A0 artifact contains no policy forecast losses, policy contrasts, rankings, signs, or winners.",
     }
