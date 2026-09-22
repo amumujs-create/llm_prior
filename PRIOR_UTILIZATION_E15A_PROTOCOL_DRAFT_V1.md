@@ -9,8 +9,9 @@ represented and acted on.
 
 `K = {regime exists, tau in I}` is the shared knowledge object. For exact
 knowledge, `I={tau*}`. For interval knowledge, every policy receives the same
-interval `I`; a point policy is explicitly an **early-commitment projection**
-of `I`, not an information-preserving representation.
+support set `I`; a point policy is explicitly an **early-commitment projection**
+of `I`, not an information-preserving representation. A uniform density over
+`I` is likewise a utilization-policy choice, not information asserted by `K`.
 
 ## Scope and held-fixed components
 
@@ -33,7 +34,13 @@ of `I`, not an information-preserving representation.
 3. `broad`: a valid wider interval centered on `tau*`.
 4. `existence_only`: the frozen admissible onset domain.
 5. `slightly_biased`: same width as `narrow`, shifted by a frozen positive or
-   negative offset; coverage/violation is recorded rather than hidden.
+   negative offset; `Coverage(I)=1(tau* in I)` and violation distance are
+   recorded rather than hidden.
+
+Biased rows are stratified into `covered_biased` and `uncovered_biased`.
+When `tau*` is outside `I`, the true onset is not representable by
+support-only policies; this knowledge-validity failure is never counted as
+wrong-hypothesis collapse.
 
 ### Prefix observability
 
@@ -46,14 +53,29 @@ evidence is recorded from the prefix.
 | Policy | Use of the same knowledge object `K` |
 |---|---|
 | `no_prior` | Common predictive family without onset knowledge. |
-| `hard_point` | Deterministically commits to the midpoint of `I`; deliberately discards interval uncertainty when `I` is non-singleton. |
+| `hard_midpoint` | Deterministically commits to the midpoint of `I`; deliberately discards interval uncertainty when `I` is non-singleton. |
+| `evidence_MAP_point` | Selects `tau_MAP=argmax_{tau in grid(I)} p(D_prefix|tau)` and commits to that single onset. |
 | `soft_constraint` | Fits the common family with a frozen penalty for leaving `I`. |
-| `distributional_prior` | Integrates the common-family predictive distribution over a continuous uniform density on `I`. |
+| `distributional_prior` | Integrates predictions against a continuous uniform density on `I`, without prefix-likelihood reweighting. |
 | `uniform_hypothesis_ensemble` | A frozen discrete onset grid spanning `I`, equally weighted. |
 | `evidence_weighted_mixture` | The same discrete grid, reweighted only by prefix likelihood. |
 
-For `exact`, the policies that retain onset uncertainty collapse by design; this
-is a representation-equivalence audit, not an expected performance gap.
+The four central policies form a factorial decomposition:
+
+|  | Point commitment | Uncertainty retained |
+|---|---|---|
+| No prefix-evidence weighting | `hard_midpoint` | `uniform_hypothesis_ensemble` |
+| Prefix-evidence weighting | `evidence_MAP_point` | `evidence_weighted_mixture` |
+
+Thus `evidence_MAP_point` versus `evidence_weighted_mixture` isolates the
+benefit of retaining multiple prior-consistent onsets after the same prefix
+evidence has been used. For `exact`, uncertainty-retaining policies collapse
+by design; this is a representation-equivalence audit, not an expected gap.
+
+The frozen soft objective is
+`L = L_prefix + lambda[(tau_L-tau)_+^2 + (tau-tau_U)_+^2`.
+It is a soft utilization of the same interval knowledge, not an
+information-preserving interval representation.
 
 ## Required implementation freezes before execution
 
@@ -63,7 +85,7 @@ is a representation-equivalence audit, not an expected performance gap.
    domain, and discrete hypothesis grid.
 3. Common nuisance-fit objective and optimizer budget. No policy-specific
    tuning, validation selection, or future-dependent calibration.
-4. Soft-constraint penalty and distributional/mixture likelihood temperature.
+4. Soft-constraint penalty and mixture likelihood temperature.
 5. Catastrophic-failure threshold, distance bins, and wrong-hypothesis-collapse
    definition before results.
 6. Latent-task paired bootstrap (`B=5000`); policies and candidate hypotheses
@@ -72,6 +94,7 @@ is a representation-equivalence audit, not an expected performance gap.
 ## Primary outcomes
 
 - Far-OOD RMSE.
+- Far-OOD CRPS for policies that yield predictive distributions.
 - Worst-group far-OOD error across predeclared knowledge × observability cells.
 - Catastrophic failure rate.
 - Distance-wise degradation profile.
@@ -92,6 +115,12 @@ ranking is sought.
    retain multiple onset hypotheses.
 3. Lower prefix evidence may favor retaining mixture entropy, but this is an
    empirical hypothesis rather than a sanity gate.
+
+Wrong-hypothesis collapse is defined only for covered knowledge states. For a
+mixture it requires both `H(w) < H_collapse` and
+`|tau_MAP-tau*| > delta_tau`; point policies use the same onset-error condition
+with their unit-mass weight. `H_collapse` and `delta_tau` are numerical freeze
+items, not post-result thresholds.
 
 ## Interpretation boundary
 
