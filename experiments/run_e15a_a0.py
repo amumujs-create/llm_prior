@@ -123,7 +123,11 @@ def _profile_nll_and_condition(
 
 
 def _draw_task(
-    rng: np.random.Generator, ranges: dict[str, tuple[float, float]], tau: float, seed: int
+    rng: np.random.Generator,
+    ranges: dict[str, tuple[float, float]],
+    tau: float,
+    s0: float,
+    seed: int,
 ) -> CandidateTask:
     return CandidateTask(
         params=SmoothRegimeParams(
@@ -131,7 +135,7 @@ def _draw_task(
             b=float(rng.uniform(*ranges["b"])),
             c=float(rng.uniform(*ranges["c"])),
             tau=tau,
-            s=float(rng.uniform(*ranges["s"])),
+            s=s0,
         ),
         seed=seed,
     )
@@ -174,7 +178,7 @@ def run(config: dict[str, Any], blinded_contrast_csv: Path | None = None) -> dic
         config,
         "contract_id", "seed", "pilot_tasks", "max_attempts", "onset_domain",
         "observation_domain", "prefix_points", "eval_points", "parameter_ranges",
-        "noise_ratios", "horizon_candidates",
+        "s0", "noise_ratios", "horizon_candidates",
         "min_reference_range", "min_post_onset_fraction", "slope_scale", "min_c_ratio",
         "max_abs_slope", "max_design_condition",
     )
@@ -182,7 +186,10 @@ def run(config: dict[str, Any], blinded_contrast_csv: Path | None = None) -> dic
         *_pair(config["onset_domain"], "onset_domain"),
         *_pair(config["observation_domain"], "observation_domain"),
     )
-    ranges = {key: _pair(config["parameter_ranges"][key], f"parameter_ranges.{key}") for key in ("a", "b", "c", "s")}
+    ranges = {key: _pair(config["parameter_ranges"][key], f"parameter_ranges.{key}") for key in ("a", "b", "c")}
+    s0 = float(config["s0"])
+    if not np.isfinite(s0) or s0 <= 0.0:
+        raise ValueError("s0 must be a positive finite common transition width")
     noise_ratios = [float(x) for x in config["noise_ratios"]]
     horizons = [float(x) for x in config["horizon_candidates"]]
     if not noise_ratios or not horizons:
@@ -205,7 +212,7 @@ def run(config: dict[str, Any], blinded_contrast_csv: Path | None = None) -> dic
         if not support.accepts_true_onset(tau):
             reject["support_or_exposure_boundary"] += 1
             continue
-        task = _draw_task(rng, ranges, tau, int(rng.integers(0, 2**32 - 1)))
+        task = _draw_task(rng, ranges, tau, s0, int(rng.integers(0, 2**32 - 1)))
         if abs(task.params.c) / float(config["slope_scale"]) <= float(config["min_c_ratio"]):
             reject["degenerate_regime_effect"] += 1
             continue
