@@ -33,9 +33,10 @@ of `I`, not an information-preserving representation. A uniform density over
 2. `narrow`: a valid interval centered on `tau*` with frozen half-width.
 3. `broad`: a valid wider interval centered on `tau*`.
 4. `existence_only`: the frozen admissible onset domain.
-5. `slightly_biased`: same width as `narrow`, shifted by a frozen positive or
-   negative offset; `Coverage(I)=1(tau* in I)` and violation distance are
-   recorded rather than hidden.
+5. `covered_biased`: narrow-width interval shifted by `+/- .05W_tau`.
+6. `uncovered_biased`: narrow-width interval shifted by `+/- .15W_tau`.
+   `Coverage(I)=1(tau* in I)` and violation distance are recorded rather than
+   hidden.
 
 Biased rows are stratified into `covered_biased` and `uncovered_biased`.
 When `tau*` is outside `I`, the true onset is not representable by
@@ -44,9 +45,12 @@ wrong-hypothesis collapse.
 
 ### Prefix observability
 
-`low`, `medium`, and `high` use frozen observed-prefix endpoints/noise layouts.
-They are design factors, not labels copied into analysis; realized regime
-evidence is recorded from the prefix.
+`low`, `medium`, and `high` use a common frozen noise scale and vary only
+prefix exposure. With onset-domain width `W_tau`, their prefix endpoints are
+`tau*-0.20W_tau`, `tau*-0.05W_tau`, and `tau*+0.10W_tau`, respectively.
+Task acceptance restricts `tau*` so these endpoints remain in the admissible
+observation domain. They are design factors, not labels copied into analysis;
+realized regime evidence is recorded from the prefix.
 
 ### Utilization policy
 
@@ -81,13 +85,20 @@ information-preserving interval representation.
 
 1. Regime generator equation, parameter ranges, prefix endpoints, far-OOD
    horizon, noise scale, task quota, and maximum generation attempts.
-2. Exact interval half-widths, biased offsets/directions, admissible onset
-   domain, and discrete hypothesis grid.
+2. The following normalized numerical choices, where
+   `W_tau=tau_max-tau_min`: narrow half-width `.10W_tau`, broad half-width
+   `.30W_tau`, covered bias `+/- .05W_tau`, uncovered bias `+/- .15W_tau`,
+   hypothesis-grid spacing `.025W_tau`, and wrong-onset tolerance
+   `delta_tau=.05W_tau`.
 3. Common nuisance-fit objective and optimizer budget. No policy-specific
    tuning, validation selection, or future-dependent calibration.
-4. Soft-constraint penalty and mixture likelihood temperature.
-5. Catastrophic-failure threshold, distance bins, and wrong-hypothesis-collapse
-   definition before results.
+4. Noise-normalized Gaussian prefix NLL. The soft objective is
+   `L=NLL_prefix+lambda[((tau_L-tau)_+/h_n)^2+((tau-tau_U)_+/h_n)^2]`, with
+   `lambda=1`; evidence-mixture weights use the untempered likelihood `T=1`.
+5. Normalized entropy `H_tilde=H(w)/log(K)` for `K>1`, collapse threshold
+   `H_tilde<.25`, normalized far-OOD catastrophic threshold
+   `NRMSE_far=RMSE_far/R_ref>.50`, and distance bins covering forecast thirds
+   `[0,1/3)`, `[1/3,2/3)`, and `[2/3,1]`.
 6. Latent-task paired bootstrap (`B=5000`); policies and candidate hypotheses
    remain repeated measures within a task.
 
@@ -96,15 +107,21 @@ information-preserving interval representation.
 - Far-OOD RMSE.
 - Far-OOD CRPS for policies that yield predictive distributions.
 - Worst-group far-OOD error across predeclared knowledge × observability cells.
+- `Worst-valid`: worst-group error restricted to covered prior-support rows.
+- `Worst-all`: worst-group error including uncovered biased rows.
 - Catastrophic failure rate.
 - Distance-wise degradation profile.
 - Wrong-hypothesis collapse rate for point/mixture policies.
 - Mixture entropy and true-onset hypothesis weight, conditional on the prefix.
 
-The primary contrasts are policy contrasts within the same task and knowledge
-state. A claim that one policy is preferable must be conditional on the
-predeclared onset-uncertainty and observability strata; no universal policy
-ranking is sought.
+The prespecified primary contrasts within the same task and knowledge state
+are: (C1) evidence mixture minus evidence-MAP point, isolating uncertainty
+retention after evidence use; (C2) evidence mixture minus uniform ensemble,
+isolating evidence weighting while retaining uncertainty; and (C3)
+evidence-MAP point minus hard midpoint, isolating evidence use after point
+commitment. All other policy comparisons are secondary. A claim that one policy
+is preferable must be conditional on onset-uncertainty and observability
+strata; no universal policy ranking is sought.
 
 ## Predeclared hypotheses
 
@@ -117,10 +134,12 @@ ranking is sought.
    empirical hypothesis rather than a sanity gate.
 
 Wrong-hypothesis collapse is defined only for covered knowledge states. For a
-mixture it requires both `H(w) < H_collapse` and
+mixture it requires both `H_tilde(w) < .25` and
 `|tau_MAP-tau*| > delta_tau`; point policies use the same onset-error condition
-with their unit-mass weight. `H_collapse` and `delta_tau` are numerical freeze
-items, not post-result thresholds.
+with their unit-mass weight. Exact (`K=1`) rows are excluded from entropy-based
+collapse classification. Truth-neighborhood mass is
+`W_truth=sum_{k:|tau_k-tau*|<=delta_tau} w_k`, avoiding an arbitrary demand
+that `tau*` lie exactly on the discrete grid.
 
 ## Interpretation boundary
 
