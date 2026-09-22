@@ -13,14 +13,37 @@ which a directional constraint remains valid.
 
 `K = {df/dt >= 0 on a future interval of uncertain endpoint h}`.
 
-The clean truth is nondecreasing through a task-specific `h*` and may change
-afterward. The supplied knowledge object describes direction but not an exact,
-globally valid endpoint. Thus a globally hard monotonic constraint can become
-invalid after `h*`, even when it is valid on its declared local scope.
+`h*` is the endpoint through which monotonicity is warranted, not the first
+turning point or the first time that decrease begins. The clean truth is
+nondecreasing through `h*`; after `h*` it may continue increasing, flatten, or
+later decrease. The supplied knowledge object describes direction but not an
+exact, globally valid endpoint. Thus a globally hard monotonic constraint can
+become invalid after `h*`, even when it was locally valid throughout its
+declared scope.
 
 This directly tests the E10/E13 anatomy distinction:
 
 `validity != scope`.
+
+## Scope precursor and realized scope evidence
+
+Scope candidates must be distinguishable from the prefix without exposing a
+direction violation. E15-B therefore uses a generator family with an
+in-scope shape precursor, for example
+
+`f'(t)=b[1+gamma(h*-t)]` for `t<=h*`, with `b>0` and `gamma>0`.
+
+Equivalently, the in-scope clean trajectory may be parameterized as
+`f(t)=a+b[t+gamma(h*t-t^2/2)]`. It remains nondecreasing throughout the
+observed prefix, while its slope pattern supplies information about the scope
+endpoint. Post-scope behavior is generated separately and is not used by any
+policy to fit or select a scope hypothesis.
+
+For the full admissible scope grid, prefix-only profile scores define
+`w_k^full ∝ exp[-(ell_k-ell_min)]` and
+`E_h=1-H(w^full)/log(K_full)`. `E_h` is computed on the full admissible scope
+domain, never on the supplied support `H`; it is a continuous descriptor rather
+than an additional design label.
 
 ## Held fixed
 
@@ -59,9 +82,14 @@ the directional claim beyond the supplied support.
 
 1. **Scope knowledge:** exact local horizon, narrow valid interval, broad valid
    interval, endpoint-unspecified support, covered biased interval, uncovered
-   biased interval.
-2. **Prefix exposure / directional evidence:** low, medium, high; a continuous
-   prefix-derived scope-evidence descriptor is reported separately.
+   biased interval. On normalized scope width `W_h`, the candidate geometry is
+   exact `{h*}`, narrow `h*±.10W_h`, broad `h*±.30W_h`, full-domain unspecified,
+   covered bias `±.05W_h`, and uncovered bias `±.15W_h`. Supports are never
+   clipped.
+2. **Prefix exposure / directional evidence:** candidate B0 exposures end at
+   `h*-.30W_h`, `h*-.12W_h`, and `h*-.03W_h`. All prefixes remain in the
+   direction-valid region; the continuous prefix-derived `E_h` is reported
+   separately.
 3. **True scope:** task-specific `h*`, evaluated only after predictions have
    been fixed. It determines coverage and scope violation, not policy input.
 
@@ -80,6 +108,9 @@ the directional claim beyond the supplied support.
 
 - Far-OOD NRMSE and CRPS on a common post-prefix window.
 - Distance-wise degradation.
+- Oracle-scored within-scope error on `(common high-prefix end, h*]` and
+  post-scope error on `(h*, h_far]`. `h*` is evaluation-only and never enters a
+  policy path.
 - Scope violation rate and excess post-scope error.
 - Worst-valid and Worst-all error, retaining uncovered scope supports as a
   validity-failure stratum rather than hiding them.
@@ -91,7 +122,10 @@ the directional claim beyond the supplied support.
 Before a confirmatory run, discarded-seed E15-B0 must freeze the shape family,
 noise ratio, common far-OOD horizon, scope-support geometry, numerical
 constraint solver, quota, and maximum attempts without inspecting directional
-policy winners or contrast signs.
+policy winners or contrast signs. Its primary construct-validity sanity is that
+`E_h` changes across prefix exposures with retained overlap; if scope evidence
+is absent at every exposure, the generator is inadequate rather than a reason
+to tune policy outcomes.
 
 ## Interpretation boundary
 
