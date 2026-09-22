@@ -217,6 +217,15 @@ freezes the regime equation, nuisance ranges, `sigma/R_ref`, far-OOD horizon,
 optimizer/budget, task quota, maximum attempts, and all seeds/rules in a
 manifest. The E15-A0 tasks are excluded from E15-A.
 
+For sample-size calibration, E15-A0 may access only the variance (or standard
+deviation) of prespecified paired loss contrasts on discarded pilot tasks.
+Contrast means and signs, policy-specific means, rankings, cell-wise winners,
+hypothesis tests, catastrophic-rate differences, CRPS comparisons, and
+wrong-concentration/commitment comparisons are masked and unavailable. A
+variance-only initial quota may use `n≈(1.96*s_delta/epsilon)^2`, followed by a
+clustered-bootstrap precision check, where neither the mean nor sign of the
+contrast is revealed.
+
 ## Interpretation boundary
 
 E15-A evaluates a single event-prior family under controlled onset uncertainty.
