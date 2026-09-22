@@ -44,7 +44,7 @@ of `I`, not an information-preserving representation. A uniform density over
 Biased rows are stratified into `covered_biased` and `uncovered_biased`.
 When `tau*` is outside `I`, the true onset is not representable by
 support-only policies; this knowledge-validity failure is never counted as
-wrong-hypothesis collapse.
+wrong concentration/commitment.
 
 ### Prefix exposure
 
@@ -62,7 +62,7 @@ frozen evidence statistic / profiled likelihood separation. Thus
 
 | Policy | Use of the same knowledge object `K` |
 |---|---|
-| `no_prior` | Common predictive family without onset knowledge. |
+| `free_onset_baseline` | Common regime continuation family with no supplied onset support; it freely selects an onset over the admissible onset domain. |
 | `hard_midpoint` | Deterministically commits to the midpoint of `I`; deliberately discards interval uncertainty when `I` is non-singleton. |
 | `evidence_MAP_point` | Uses the common profiled prefix likelihood on the frozen grid, then commits to its single MAP onset. |
 | `soft_constraint` | Fits the common family with a frozen penalty for leaving `I`. |
@@ -78,9 +78,13 @@ The four central policies form a factorial decomposition:
 | Prefix-evidence weighting | `evidence_MAP_point` | `evidence_weighted_mixture` |
 
 Thus `evidence_MAP_point` versus `evidence_weighted_mixture` isolates the
-benefit of retaining multiple prior-consistent onsets after the same prefix
-evidence has been used. For `exact`, uncertainty-retaining policies collapse
+benefit of retaining multiple prior-consistent onsets after the same onset
+likelihood has been used. For `exact`, uncertainty-retaining policies collapse
 by design; this is a representation-equivalence audit, not an expected gap.
+
+When `existence_only` spans the full admissible onset domain,
+`free_onset_baseline` and `existence_only` `evidence_MAP_point` are expected to
+be representation-equivalent. This is an audit, not a primary policy contrast.
 
 For every frozen grid hypothesis `tau_k`, all evidence-using policies first
 compute the identical profile score
@@ -118,7 +122,9 @@ information-preserving interval representation.
    remain repeated measures within a task.
 7. The continuous `distributional_prior` uses deterministic Gauss--Legendre
    quadrature with `N_quad=201` nodes on the same support `I`; it does not use
-   a separate support or data-dependent quadrature rule.
+   a separate support or data-dependent quadrature rule. For exact support
+   `I={tau*}`, it is evaluated directly as the degenerate distribution
+   `delta(tau-tau*)`, rather than by a zero-width quadrature map.
 8. No onset support interval may be clipped. A task is accepted only if both
    `[tau*-.30W_tau, tau*+.30W_tau] subseteq [tau_min,tau_max]` and the full
    low-to-high exposure-endpoint range
@@ -128,6 +134,22 @@ information-preserving interval representation.
 9. `R_ref=max_{t in Omega_eval} f_clean(t)-min_{t in Omega_eval} f_clean(t)`.
    It is a synthetic evaluation-scale constant only: it is never supplied to
    a policy or fitted model.
+
+## Realized onset evidence
+
+Prefix exposure is a design factor; realized onset evidence is a continuous
+task-level descriptor. It is computed independently of the supplied knowledge
+interval, using the full admissible-domain frozen grid and the common profiled
+scores `ell_k`:
+
+`w_k^full=exp[-(ell_k-ell_min)] / sum_j exp[-(ell_j-ell_min)]`,
+`E_tau=1-[-sum_k w_k^full log(w_k^full)]/log(K_full)`.
+
+`E_tau` is onset-evidence concentration: values near zero indicate diffuse
+prefix likelihood across admissible onsets, while values near one indicate
+strong likelihood concentration. It is not thresholded into another design
+factor. Primary effect modification is assessed continuously, for example by
+the C1 paired contrast versus `E_tau`.
 
 ## Primary outcomes
 
@@ -147,10 +169,11 @@ information-preserving interval representation.
 
 The prespecified primary contrasts within the same task and knowledge state
 are: (C1) evidence mixture minus evidence-MAP point, isolating uncertainty
-retention after evidence use; (C2) evidence mixture minus uniform ensemble,
-isolating evidence weighting while retaining uncertainty; and (C3)
-evidence-MAP point minus hard midpoint, isolating evidence use after point
-commitment. All other policy comparisons are secondary. A claim that one policy
+retention after identical onset-likelihood use; (C2) evidence mixture minus
+uniform ensemble, isolating onset-likelihood weighting while retaining
+uncertainty; and (C3) evidence-MAP point minus hard midpoint, isolating
+onset-likelihood selection after point commitment. All other policy comparisons
+are secondary. A claim that one policy
 is preferable must be conditional on onset-uncertainty, prefix-exposure, and
 realized-evidence strata; no universal policy ranking is sought.
 
@@ -159,8 +182,8 @@ realized-evidence strata; no universal policy ranking is sought.
 1. With exact or very narrow valid onset knowledge, hard commitment may match
    uncertainty-retaining policies.
 2. With broad onset uncertainty and low realized prefix evidence, early point
-   commitment may produce more wrong-hypothesis collapse than policies that
-   retain multiple onset hypotheses.
+   commitment may produce more wrong commitment than policies that retain
+   multiple onset hypotheses.
 3. Lower realized prefix evidence may favor retaining mixture entropy, but this is an
    empirical hypothesis rather than a sanity gate.
 
@@ -176,6 +199,23 @@ For `exact` support, the representation-equivalence audit applies to
 `hard_midpoint`, `evidence_MAP_point`, `distributional_prior`,
 `uniform_hypothesis_ensemble`, and `evidence_weighted_mixture`. A finite-
 penalty `soft_constraint` is explicitly excluded from that equality audit.
+
+## E15-A0 design-only calibration
+
+Before the confirmatory run, an independent, discarded-seed E15-A0 pilot fixes
+the remaining numerical generator and computation contract. It must not inspect
+or compare the seven-policy prediction outcomes, rankings, RMSE, CRPS, or
+collapse rates.
+
+E15-A0 may inspect only: (1) generator admissibility and numerical stability;
+(2) the spread and overlap of `E_tau` across the three prefix-exposure settings
+at one common noise scale; (3) a common far-OOD horizon with post-onset support
+and no numerical saturation; (4) convergence of the shared profiled `ell_k`
+under increasing optimizer budget; and (5) paired-contrast variance solely to
+choose a task quota for a prespecified confidence-interval half-width. It then
+freezes the regime equation, nuisance ranges, `sigma/R_ref`, far-OOD horizon,
+optimizer/budget, task quota, maximum attempts, and all seeds/rules in a
+manifest. The E15-A0 tasks are excluded from E15-A.
 
 ## Interpretation boundary
 
