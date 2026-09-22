@@ -26,7 +26,7 @@ def load(path: Path, field: str) -> dict[tuple[str, str], dict[str, float]]:
 
 def render(data: dict, metric: str, out: Path) -> None:
     plt.rcParams.update({"font.size": 10, "axes.spines.top": False, "axes.spines.right": False})
-    fig, ax = plt.subplots(figsize=(7.2, 4.6), dpi=180)
+    fig, ax = plt.subplots(figsize=(8.2, 4.8), dpi=180)
     x = np.arange(len(EXPOSURES))
     for state in STATES:
         vals = [data[(state, exposure)] for exposure in EXPOSURES]
@@ -37,11 +37,11 @@ def render(data: dict, metric: str, out: Path) -> None:
     ax.axhline(0., color="black", linewidth=.8)
     ax.set_xticks(x, ("Low", "Medium", "High"))
     ax.set_xlabel("Prefix exposure")
-    ax.set_ylabel(f"Mean paired {metric} (post-scope NRMSE)")
+    ax.set_ylabel("Mean paired post-scope NRMSE contrast")
     ax.set_title(f"E15-B {metric} by prefix exposure")
     ax.legend(frameon=False, fontsize=8, loc="best")
     ax.text(.01, .01, "Error bars: cellwise 95% latent-task paired-bootstrap CI\nExact omitted: identically zero by equivalence; uncovered-biased omitted.", transform=ax.transAxes, va="bottom", fontsize=7.5)
-    fig.tight_layout()
+    fig.subplots_adjust(left=.24, right=.98, bottom=.19, top=.88)
     out.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(out, bbox_inches="tight")
     plt.close(fig)
