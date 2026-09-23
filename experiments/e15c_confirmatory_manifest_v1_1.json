@@ -1,0 +1,92 @@
+{
+  "artifact": "E15-C confirmatory manifest",
+  "bootstrap": {
+    "replicates": 5000,
+    "unit": "latent_task_id"
+  },
+  "contract_version": "e15c-confirmatory-v1.1",
+  "estimator": {
+    "amplitude_profile": "bounded_closed_form",
+    "amplitude_profile_bound_ratio": 1.5,
+    "invariant_response": "z_q=(1-q)z_1+qz_3",
+    "residual_q_grid": {
+      "max": 1.0,
+      "min": 0.0,
+      "step": 0.05
+    },
+    "residual_shape": "g_q(x)=(1-q)x+qx^3"
+  },
+  "evaluation": {
+    "common_far_window": "(.75,1.00]",
+    "forecast_points_including_left_endpoint": 161,
+    "primary_metric": "NRMSE_normalized_by_R_inv"
+  },
+  "generator": {
+    "A_ref": "k0*abs(y0)",
+    "amplitude_envelope_ratio": 1.5,
+    "amplitude_eta_distribution": "uniform[.5,1.5]",
+    "amplitude_sign_balance": "absolute imbalance <= 1 across accepted tasks",
+    "invariant": "dy/dt=-k0*y+A*g_q(x)",
+    "kappa0_equals_k0_T": 1.0,
+    "public_domain": "x=(t-t_min)/(t_max-t_min) in [0,1]",
+    "q_distribution": "uniform[0,1]",
+    "y0": 1.0
+  },
+  "inference": {
+    "cellwise_confidence_interval": "95% latent-task paired bootstrap",
+    "primary_contrasts": {
+      "C1_C": "evidence_weighted_residual_mixture - invariant_residual_MAP",
+      "C2_C": "evidence_weighted_residual_mixture - invariant_residual_ensemble",
+      "C_inv": "invariant_residual_ensemble - free_baseline"
+    }
+  },
+  "integrity": {
+    "amplitude_bound_shared_by_all_residual_policies": true,
+    "capacity_matching_audit": "free_baseline uses the same A bound, q grid, profile loss, observation grid, and deterministic enumerative c solver; c=-k0 reproduces the invariant response for fixed q,A",
+    "future_label_leakage": "forbidden before prediction is fixed",
+    "singleton_q_equivalence_audit": "on a singleton residual grid, invariant MAP, uniform ensemble, and evidence-weighted mixture predictions must agree",
+    "standardized_noise_shared_across_exposures": true
+  },
+  "matched_free": {
+    "A_profile": "same bounded closed-form profile as invariant policies for every (c,q)",
+    "c_grid_dimensionless_cT": {
+      "max": 1.0,
+      "min": -2.0,
+      "step": 0.05
+    },
+    "policy_role": "free_baseline; uniform ensemble over q after deterministic c,A profiling for each q",
+    "response": "y_cq(x)=y0*exp(cT*x)+A*z_cq(x), where z_cq is the fixed-grid convolution of exp(cT*(x-s)) with g_q(s)",
+    "solver": "enumerate the 61 predeclared cT values for each q; choose minimum prefix profile loss with ties within 1e-12 resolved by smaller cT then lower q index"
+  },
+  "noise": {
+    "rho": 0.1,
+    "rule": "sigma=rho*R_inv",
+    "standardized_master_noise": "one shared realization per latent task across prefix exposures"
+  },
+  "policies": {
+    "closed_mechanism": "A=0; secondary incompleteness-overcommitment stress",
+    "evidence_weighted_residual_mixture": "bounded A profile at every q, then weights proportional to exp[-(loss-loss_min)] over the common q grid",
+    "free_baseline": "matched-free uniform residual ensemble defined in matched_free",
+    "invariant_residual_ensemble": "bounded A profile at every q, then uniform average over the common q grid",
+    "invariant_residual_MAP": "bounded A profile at every q, then select minimum prefix-loss q with ties within 1e-12 resolved by lower q index"
+  },
+  "quota": {
+    "accepted_latent_tasks": 125,
+    "max_attempts": 133,
+    "precision_half_width_target_NRMSE": 0.025
+  },
+  "sampling": {
+    "confirmatory_seed_namespace": "e15c-confirmatory-v1.1",
+    "full_observation_grid_points": 81,
+    "prefix_exposures": {
+      "high": 0.75,
+      "low": 0.25,
+      "medium": 0.5
+    }
+  },
+  "scales": {
+    "A_ref": "k0*abs(y0)",
+    "R_inv": "abs(y0)*(1-exp(-k0*T))",
+    "R_inv_value_under_manifest": 0.6321205588285577
+  }
+}
