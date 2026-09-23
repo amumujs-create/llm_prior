@@ -1,0 +1,12 @@
+{
+  "protocol": "E15-D-D1-bootstrap-v1.2-r1",
+  "source_rows_sha256": "2ee194755f3638bc8cc8421d25f9de914f249cba2737489e2c1cce2ef763812b",
+  "source_integrity_sha256": "f2a3743df0d983ac15810f4544714953973c7e79e1fc91cd2aa61a9dae00b8ca",
+  "estimand": "D1_S = NRMSE(kappa_selective) - NRMSE(joint_uniform)",
+  "prefix_exposure": "S",
+  "bootstrap_unit": "latent_task_id",
+  "bootstrap_replicates": 5000,
+  "bootstrap_rng": {"bit_generator": "PCG64", "seed": 6092337104280266802},
+  "quantile_method": "linear",
+  "interval": "cellwise_95_percent"
+}
