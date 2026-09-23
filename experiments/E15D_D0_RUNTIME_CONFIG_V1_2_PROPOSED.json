@@ -1,0 +1,30 @@
+{
+  "protocol": "E15-D0-v1.2",
+  "status": "FROZEN",
+  "implementation_addendum_sha256": "7c1b63cb104eb70148c3576cd85ca40ec8cdcfe7bd0a2311483ece38ee4a1888",
+  "inherited_implementation_addendum_sha256": "212be986ffa6057bf927d1f33bbbb021112954730b9088be7d70c16e16ae32e6",
+  "public_observation_grid": {"start": 0.0, "stop": 1.0, "step": 0.01, "points": 101, "prefix_includes_endpoint": true},
+  "likelihood": {"family": "gaussian_known_sigma", "sigma": "rho_times_R0", "R0": 1.0, "nll": "sum_without_candidate_common_constants"},
+  "entropy_log_base": "natural",
+  "quantile_method": "linear",
+  "continuation_distinctness": {"domain": "(x_J,x_far]", "method": "exact_continuous_rms", "threshold": 0.01, "minimum_clique_size": 4},
+  "rng": {"bit_generator": "PCG64", "seed_namespace": "e15d-d0-v1.2-discarded", "seed_digest_bytes": 8, "seed_byte_order": "big", "seed_modulus": "2^63", "draw_order": ["u_kappa", "u_lambda", "master_standard_normal_101"]},
+  "discarded_calibration": {"task_ids": [0, 399], "task_count": 400, "no_replacement": true},
+  "candidate_ladders": {
+    "supports": [{"name": "broad", "lower": 0.1, "upper": 0.9}, {"name": "medium", "lower": 0.2, "upper": 0.8}, {"name": "narrow", "lower": 0.3, "upper": 0.7}],
+    "grid_spacings": [0.05, 0.025],
+    "rhos": [0.1, 0.05, 0.025, 0.01],
+    "exposure_triples": [{"name": "T1", "L": 0.25, "S": 0.55, "J": 0.8}, {"name": "T2", "L": 0.25, "S": 0.6, "J": 0.85}, {"name": "T3", "L": 0.3, "S": 0.65, "J": 0.9}],
+    "far_horizons": [1.0, 0.95]
+  },
+  "selection_priority": ["widest_admissible_support", "coarsest_admissible_grid", "largest_admissible_noise", "earliest_admissible_exposure_triple", "longest_admissible_horizon"],
+  "source_contract_sha256": {
+    "semantic_contract": "af19abc014f84837dc7a3046b8a7c716f1dc2b1189c56cd3958bca98e54f585a",
+    "factorised_d2_contract": "e7cd973a6a477a8343d01c1c935c0a2dba036f0f5761e45828ebb5eb5697e8bd",
+    "protocol_index": "b6556760a5b12d9b700ade26134eaf82acf1c6cb28bc4f23cff55075632d2863",
+    "v1_1_execution_addendum": "1d87e8c4003927c39c0097b52ae28b30df0185898e88103997128a3e30933c10",
+    "dependence_equivalence_amendment": "9772346f68aade9c8bb88aa18027cc1cb0bfb939120e4f7b71b985a26561872e",
+    "v1_2_overlap_gate_amendment": "eaf764aabe3726029cd726b0c911ee542a52f41e8680a82822ba67f43f5cfa4a",
+    "v1_1_failed_d0_artifact": "f123bccb3420e3fbedc4e336c0da49351de69d492083e0231392d1958201cbd3"
+  }
+}
