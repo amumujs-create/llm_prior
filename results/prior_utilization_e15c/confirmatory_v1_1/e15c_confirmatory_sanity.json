@@ -1,0 +1,34 @@
+{
+  "amplitude_bound": 1.5,
+  "future_label_names_absent_from_prediction_functions": true,
+  "manifest_sha256": "1d6da0e4984be39d92dfcfd1fec82e248a68d4f9919e2ddda014fe65e3d2f18f",
+  "manifest_sha_assertion": true,
+  "matched_free_amplitude_bound_max_abs": 1.5,
+  "matched_free_c_grid_contains_minus_k0": true,
+  "policy_outcomes_inspected": false,
+  "replay_and_singleton_checks": [
+    {
+      "all_finite": true,
+      "endpoint": 0.25,
+      "free_replay_max_abs_error": 0.0,
+      "invariant_replay_max_abs_error": 0.0,
+      "singleton_equivalence_max_abs_error": 0.0
+    },
+    {
+      "all_finite": true,
+      "endpoint": 0.5,
+      "free_replay_max_abs_error": 0.0,
+      "invariant_replay_max_abs_error": 0.0,
+      "singleton_equivalence_max_abs_error": 0.0
+    },
+    {
+      "all_finite": true,
+      "endpoint": 0.75,
+      "free_replay_max_abs_error": 0.0,
+      "invariant_replay_max_abs_error": 0.0,
+      "singleton_equivalence_max_abs_error": 0.0
+    }
+  ],
+  "response_c_minus_k0_equivalence_max_abs_error": 0.0,
+  "status": "PASS"
+}

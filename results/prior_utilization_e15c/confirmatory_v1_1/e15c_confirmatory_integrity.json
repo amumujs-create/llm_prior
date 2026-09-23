@@ -1,0 +1,28 @@
+{
+  "accepted_tasks": 125,
+  "actual_rows": 1875,
+  "duplicate_rows": 0,
+  "expected_rows": 1875,
+  "exposures": [
+    "high",
+    "low",
+    "medium"
+  ],
+  "manifest_sha256": "1d6da0e4984be39d92dfcfd1fec82e248a68d4f9919e2ddda014fe65e3d2f18f",
+  "max_attempts": 133,
+  "missing_rows": 0,
+  "note": "Corpus rows contain scores for later preregistered analysis; this run emits no aggregate score, contrast, sign, rank, or winner.",
+  "outcomes_opened": false,
+  "policies": [
+    "closed_mechanism",
+    "invariant_residual_MAP",
+    "invariant_residual_ensemble",
+    "evidence_weighted_residual_mixture",
+    "free_baseline"
+  ],
+  "proposals_used": 125,
+  "rejection_count": 0,
+  "rejections": [],
+  "row_sha256": "943923b9f0131a04001b340fcee942a4276270dfaad9cd873b9d6abc295349fd",
+  "status": "PASS"
+}
