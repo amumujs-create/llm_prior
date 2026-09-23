@@ -4,7 +4,7 @@
   "disposition_reason": [
     "decoded_data_integrity_passed",
     "underlying_experimental_data_terms_not_found_at_pinned_package_commit",
-    "physics_constants_documented_but_delta_K_operationalization_not_frozen"
+    "physics_delta_K_operationalization_resolved"
   ],
   "acquisition": {
     "upstream_repository": "https://github.com/SimoneHermann/hierRegSDE.git",
@@ -22,7 +22,21 @@
     "license_file_present_at_pinned_commit": false,
     "dataset_specific_terms": "not found",
     "underlying_data_rights_interpretation": "unresolved",
-    "rule": "Package license is not interpreted as a separate license grant for the underlying experimental data."
+    "rule": "Package license is not interpreted as a separate license grant for the underlying experimental data.",
+    "rights_resolution_search": {
+      "date": "2026-09-23",
+      "result": "No explicit machine-readable full-68-by-164 archival release with dataset-specific license/use terms was identified in the public source audit.",
+      "nonresolving_evidence": [
+        "package documentation credits Eric J. Tuegel and Prof. B. M. Hillberry for data provenance",
+        "later papers and package mirrors document research use and data layout",
+        "these sources do not state a separate license grant for the underlying experimental corpus"
+      ],
+      "remaining_resolution_paths": [
+        "obtain explicit academic-research permission from the package author or provenance-chain data provider",
+        "locate an archival machine-readable release with explicit terms",
+        "obtain institutionally documented research-use approval without treating it as an independent legal conclusion by this protocol"
+      ]
+    }
   },
   "rda_decoding_audit": {
     "decoder": "Python rdata 0.11.2; Rscript unavailable in the audit environment",
@@ -45,7 +59,7 @@
     "cross_specimen_trajectory_crossing": "not used as an integrity criterion"
   },
   "physics_provenance_subgate": {
-    "status": "DOCUMENTED_NOT_OPERATIONALIZED",
+    "status": "RESOLVED",
     "publicly_documented": {
       "specimen_type": "center-cracked 2024-T3 aluminum panel",
       "specimen_length_mm": 558.8,
@@ -54,13 +68,14 @@
       "initial_crack_length_mm": 9.0,
       "stress_range_MPa": 48.28,
       "stress_ratio": 0.2,
-      "candidate_geometry_factor": "F(a) = 1 / sqrt(cos(pi*a/w)); must be independently checked against the frozen operational convention before any C,m grid is designed"
+      "geometry_factor": "F(a) = 1 / sqrt(cos(pi*a/w))"
     },
     "sources": [
       "https://c3.ndc.nasa.gov/dashlink/static/media/publication/2010_IJPHM_fatigue.pdf",
       "https://oaktrust.library.tamu.edu/server/api/core/bitstreams/0d20556e-daff-4f39-be68-d2d53f096f0a/content"
     ],
-    "rule": "No Paris parameter grid, residual family, prefix geometry, or split design may be selected until the Delta-K formula and units are frozen from public experimental metadata."
+    "operational_contract": "experiments/E16A_VIRKLER_DELTAK_OPERATIONAL_CONTRACT_V1.md",
+    "rule": "No Paris parameter grid, residual family, prefix geometry, or split design may be selected while the overall source disposition is HOLD."
   },
-  "next_authorized_action": "Resolve dataset-specific use terms and freeze the public Delta-K operational convention; otherwise keep E16-A source status HOLD."
+  "next_authorized_action": "Resolve dataset-specific use terms; otherwise keep E16-A source status HOLD."
 }

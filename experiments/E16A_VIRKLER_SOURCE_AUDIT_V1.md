@@ -5,9 +5,17 @@
 **HOLD: no confirmatory split is authorized.**  The pinned candidate's raw
 bytes and decoded structural audit are recorded in
 `results/prior_utilization_e16a/source_acquisition_v1/E16A_VIRKLER_SOURCE_MANIFEST_V1.json`.
-The source cannot be promoted to PASS until underlying experimental-data terms
-and the public Delta-K operational convention are resolved.  This audit is not
-a numerical-design or outcome-analysis artifact.
+The public Delta-K operational convention is resolved in
+`E16A_VIRKLER_DELTAK_OPERATIONAL_CONTRACT_V1.md`; the source cannot be
+promoted to PASS until underlying experimental-data terms are resolved.  This
+audit is not a numerical-design or outcome-analysis artifact.
+
+The public rights-resolution search completed on 2026-09-23 did not locate a
+machine-readable, full 68 by 164 archival release with explicit
+dataset-specific use terms. Package documentation, mirrors, and later papers
+establish usage and provenance context but do not substitute for a license
+grant. The remaining paths are explicit permission, an archival release with
+terms, or a documented institutional research-use determination.
 
 ## Experimental provenance
 
