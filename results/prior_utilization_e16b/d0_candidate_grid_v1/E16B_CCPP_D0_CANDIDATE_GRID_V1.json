@@ -1,0 +1,110 @@
+{
+  "protocol": "E16-B CCPP candidate-grid D0 v1",
+  "final_status": "PASS",
+  "source_hashes": {
+    "workbook_sha256": "ccd490981db2a2f079963b3d9f0aea30d9d338900a0285428dfc6385396f4651",
+    "geometry_artifact_sha256": "b1cf100c8453d609816bcc8f2eaa9e3724a7ff540e6de9a541fbec603fbb3753",
+    "split_replay_artifact_sha256": "f6455174876f4aec9e5eb6da261a1563443ed1f5b1a03de7da323a1e47e09f9a"
+  },
+  "target_access": "prohibited; only AT,V,AP,RH loaded",
+  "coordinate_convention": {
+    "u": "(AT - 24.79) / 4.45",
+    "z": "(V, AP, RH - train median) / train IQR",
+    "train_x_median": [
+      44.34,
+      1014.68,
+      79.49
+    ],
+    "train_x_iqr": [
+      17.349999999999994,
+      7.990000000000009,
+      17.014999999999986
+    ]
+  },
+  "shape_envelope": {
+    "U_minus": 5.164044943820224,
+    "U_plus": 2.7685393258426965,
+    "Z_star": 6.013767273664703
+  },
+  "derivative_budgets": {
+    "b_c": 0.5,
+    "b_gamma": 0.25,
+    "b_margin": 0.25,
+    "epsilon": 1e-12
+  },
+  "shape_levels": {
+    "r_c_minus": 0.04841166231505657,
+    "r_c_plus": 0.09030032467532469,
+    "r_gamma": 0.041571279469824515,
+    "r_c": [
+      -0.04841166231505657,
+      0.0,
+      0.09030032467532469
+    ],
+    "r_interaction": [
+      -0.041571279469824515,
+      0.0,
+      0.041571279469824515
+    ]
+  },
+  "amplitude_reference_measure": {
+    "nodes": [
+      0.1,
+      0.3,
+      0.5,
+      0.7,
+      0.9
+    ],
+    "mass_each": 0.2,
+    "shape_mass_each_level": 0.3333333333333333,
+    "candidate_mass": 0.0024691358024691358
+  },
+  "candidate_count": 405,
+  "candidate_table_sha256": "7f6ffc33550ff812976333e4020fc65c8ee3b1ada3910bb03f938d6a9aa9fab8",
+  "candidate_order": "amplitude, r_c, r_V, r_AP, r_RH; each in frozen displayed order",
+  "monotonicity_audit": {
+    "all_pass": true,
+    "maximum_bracket_derivative": -0.25,
+    "maximum_normalized_derivative": -0.025,
+    "maximum_bound_excess": 0.0
+  },
+  "future_shell": {
+    "definition": "AT > q85 = 27.96; guard plus confirmatory X rows only",
+    "row_count": 1433,
+    "design_rank": 5,
+    "singular_values": [
+      141.287102246412,
+      31.08586182477223,
+      20.91140596090534,
+      13.039477337173865,
+      6.770027599001247
+    ]
+  },
+  "pairwise_distinctness": {
+    "pair_count": 81810,
+    "min": 0.0028561212504713616,
+    "q05": 0.030345746347525182,
+    "median": 0.36857058133964155,
+    "q95": 0.991893803148206,
+    "max": 1.3331117480417947,
+    "pairs_at_or_below_1e-10": 0
+  },
+  "replay_checks": {
+    "source_workbook_sha256_match": true,
+    "geometry_artifact_sha256_match": true,
+    "partition_index_hashes_match": true,
+    "partition_membership_hash_match": true
+  },
+  "d0_checks": {
+    "shape_envelope_finite_positive": true,
+    "candidate_count_405": true,
+    "unique_parameter_tuples_405": true,
+    "exactly_81_per_amplitude": true,
+    "candidate_table_replay_sha256_match": true,
+    "all_continuations_finite": true,
+    "all_empirical_scope_monotone": true,
+    "future_shell_design_rank_5": true,
+    "all_pairwise_continuations_distinct": true
+  },
+  "scope": "target-free candidate construction and geometry audit; no model, loss, MAP, weighting, or outcome"
+}
