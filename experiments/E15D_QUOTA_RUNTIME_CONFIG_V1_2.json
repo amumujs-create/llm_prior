@@ -1,0 +1,18 @@
+{
+  "protocol": "E15-D-quota-v1.2",
+  "status": "FROZEN",
+  "seed_namespace": "e15d-quota-v1.2-protected",
+  "task_count": 400,
+  "no_replacement": true,
+  "support": {"lower": 0.1, "upper": 0.9},
+  "grid_spacing": 0.05,
+  "rho": 0.1,
+  "exposures": {"L": 0.25, "S": 0.6, "J": 0.85},
+  "far_window": {"lower_open": 0.85, "upper_closed": 1.0},
+  "R0": 1.0,
+  "epsilon": 0.025,
+  "minimum_quota": 125,
+  "quota_estimands": ["D1_S", "D2_S", "D2_J", "D3_S"],
+  "source_contract_sha256": "be1cef1c9c8c0180d79f066e8ef2676a36625e04fcc4b2998fb052ad4dcdc902",
+  "source_d0_artifact_sha256": "ac4c71ac39da0b86214460175d993ed6ed75d87ac71230b2f4ae4c7d5b2d6c46"
+}
