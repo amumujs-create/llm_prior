@@ -1,0 +1,66 @@
+{
+  "protocol": "E16-A Virkler source acquisition v1",
+  "status": "HOLD",
+  "disposition_reason": [
+    "decoded_data_integrity_passed",
+    "underlying_experimental_data_terms_not_found_at_pinned_package_commit",
+    "physics_constants_documented_but_delta_K_operationalization_not_frozen"
+  ],
+  "acquisition": {
+    "upstream_repository": "https://github.com/SimoneHermann/hierRegSDE.git",
+    "pinned_commit": "2f83658a4346c487a343814cccbecb3042fe6001",
+    "relative_path": "data/Virkler.rda",
+    "git_blob_sha1": "70218e5172f79ef8d42ff91e476fc5664e1bbb34",
+    "raw_byte_sha256": "43f8c07e0dc6b5b0df236f9a15d3198846fe21e746908391deb5d1057af8712e",
+    "byte_size": 41835,
+    "acquisition_date": "2026-09-23",
+    "raw_file_retention": "pinned local acquisition staging only; not added to the research repository while underlying data terms remain unresolved"
+  },
+  "license_and_rights": {
+    "package_license": "GPL2",
+    "package_license_source": "DESCRIPTION at pinned commit",
+    "license_file_present_at_pinned_commit": false,
+    "dataset_specific_terms": "not found",
+    "underlying_data_rights_interpretation": "unresolved",
+    "rule": "Package license is not interpreted as a separate license grant for the underlying experimental data."
+  },
+  "rda_decoding_audit": {
+    "decoder": "Python rdata 0.11.2; Rscript unavailable in the audit environment",
+    "object_names": [".Random.seed", "Virkler"],
+    "primary_object": "Virkler",
+    "decoded_class": "data.frame-equivalent",
+    "shape": [164, 69],
+    "first_column": "CrackLength",
+    "trajectory_columns": "CycleCount1 through CycleCount68",
+    "missing_values": 0,
+    "nonfinite_values": 0,
+    "crack_length_duplicates": 0,
+    "crack_length_strictly_increasing": true,
+    "crack_length_endpoints_mm": [9.0, 49.8],
+    "trajectory_shape": [164, 68],
+    "all_trajectories_nondecreasing": true,
+    "minimum_within_trajectory_cycle_increment": 258.0,
+    "first_level_cycle_count_range": [0.0, 0.0],
+    "last_level_cycle_count_range": [222792.0, 320996.0],
+    "cross_specimen_trajectory_crossing": "not used as an integrity criterion"
+  },
+  "physics_provenance_subgate": {
+    "status": "DOCUMENTED_NOT_OPERATIONALIZED",
+    "publicly_documented": {
+      "specimen_type": "center-cracked 2024-T3 aluminum panel",
+      "specimen_length_mm": 558.8,
+      "specimen_width_mm": 152.4,
+      "specimen_thickness_mm": 2.54,
+      "initial_crack_length_mm": 9.0,
+      "stress_range_MPa": 48.28,
+      "stress_ratio": 0.2,
+      "candidate_geometry_factor": "F(a) = 1 / sqrt(cos(pi*a/w)); must be independently checked against the frozen operational convention before any C,m grid is designed"
+    },
+    "sources": [
+      "https://c3.ndc.nasa.gov/dashlink/static/media/publication/2010_IJPHM_fatigue.pdf",
+      "https://oaktrust.library.tamu.edu/server/api/core/bitstreams/0d20556e-daff-4f39-be68-d2d53f096f0a/content"
+    ],
+    "rule": "No Paris parameter grid, residual family, prefix geometry, or split design may be selected until the Delta-K formula and units are frozen from public experimental metadata."
+  },
+  "next_authorized_action": "Resolve dataset-specific use terms and freeze the public Delta-K operational convention; otherwise keep E16-A source status HOLD."
+}

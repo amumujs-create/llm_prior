@@ -2,9 +2,12 @@
 
 ## Disposition
 
-**No source bytes are frozen and no confirmatory split is authorized.**  This
-audit establishes the source hierarchy and acquisition gates for E16-A; it is
-not a data acquisition, numerical-design, or outcome-analysis artifact.
+**HOLD: no confirmatory split is authorized.**  The pinned candidate's raw
+bytes and decoded structural audit are recorded in
+`results/prior_utilization_e16a/source_acquisition_v1/E16A_VIRKLER_SOURCE_MANIFEST_V1.json`.
+The source cannot be promoted to PASS until underlying experimental-data terms
+and the public Delta-K operational convention are resolved.  This audit is not
+a numerical-design or outcome-analysis artifact.
 
 ## Experimental provenance
 
