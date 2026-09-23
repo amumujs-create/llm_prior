@@ -1,0 +1,1281 @@
+{
+  "candidates": [
+    {
+      "admissible": true,
+      "exposures": {
+        "high": {
+          "E_r": {
+            "median": 0.4696591309847188,
+            "q05": 0.23373685544677383,
+            "q95": 0.7630295120445472
+          },
+          "bounded_amplitude_fraction": 0.24563492063492062,
+          "effective_residual_continuations": {
+            "median": 10.0,
+            "q05": 5.950000000000001,
+            "q95": 16.0
+          },
+          "profile_basis_minimum": 0.03463325213602447,
+          "uniform_closed_distance_fraction_ge_delta": 1.0,
+          "uniform_minus_closed_distance": {
+            "median": 0.25390894669273883,
+            "q05": 0.1073909957618485,
+            "q95": 0.41488566831733964
+          }
+        },
+        "low": {
+          "E_r": {
+            "median": 0.05484958062424744,
+            "q05": 5.591747146314053e-05,
+            "q95": 0.3502083648101496
+          },
+          "bounded_amplitude_fraction": 0.3275793650793651,
+          "effective_residual_continuations": {
+            "median": 14.0,
+            "q05": 8.0,
+            "q95": 18.0
+          },
+          "profile_basis_minimum": 2.400141169053987e-06,
+          "uniform_closed_distance_fraction_ge_delta": 0.9958333333333333,
+          "uniform_minus_closed_distance": {
+            "median": 0.24421649296198364,
+            "q05": 0.05699997267592355,
+            "q95": 0.4199930390156436
+          }
+        },
+        "medium": {
+          "E_r": {
+            "median": 0.13069920845382071,
+            "q05": 0.012721931258337467,
+            "q95": 0.4170587954013092
+          },
+          "bounded_amplitude_fraction": 0.2984126984126984,
+          "effective_residual_continuations": {
+            "median": 13.0,
+            "q05": 8.0,
+            "q95": 17.0
+          },
+          "profile_basis_minimum": 0.0010151551148960675,
+          "uniform_closed_distance_fraction_ge_delta": 1.0,
+          "uniform_minus_closed_distance": {
+            "median": 0.24646464825481296,
+            "q05": 0.08493059935471411,
+            "q95": 0.41469490890755484
+          }
+        }
+      },
+      "gates": {
+        "E_r_not_endpoint_saturated": true,
+        "adjacent_E_r_5_95_overlap": true,
+        "finite_numerics": true,
+        "median_effective_continuation_count_ge_4": true,
+        "ordered_E_r_medians": true,
+        "uniform_ensemble_not_closed_mechanism": true
+      },
+      "grid_step": 0.05,
+      "q_count": 21,
+      "rho": 0.01,
+      "sigma": 0.006321205588285576,
+      "x_far": 0.9
+    },
+    {
+      "admissible": true,
+      "exposures": {
+        "high": {
+          "E_r": {
+            "median": 0.4696591309847188,
+            "q05": 0.23373685544677383,
+            "q95": 0.7630295120445472
+          },
+          "bounded_amplitude_fraction": 0.24563492063492062,
+          "effective_residual_continuations": {
+            "median": 13.0,
+            "q05": 8.0,
+            "q95": 18.0
+          },
+          "profile_basis_minimum": 0.03463325213602447,
+          "uniform_closed_distance_fraction_ge_delta": 1.0,
+          "uniform_minus_closed_distance": {
+            "median": 0.3020920921490382,
+            "q05": 0.12829297704703593,
+            "q95": 0.48693972600085467
+          }
+        },
+        "low": {
+          "E_r": {
+            "median": 0.05484958062424744,
+            "q05": 5.591747146314053e-05,
+            "q95": 0.3502083648101496
+          },
+          "bounded_amplitude_fraction": 0.3275793650793651,
+          "effective_residual_continuations": {
+            "median": 17.0,
+            "q05": 9.0,
+            "q95": 20.0
+          },
+          "profile_basis_minimum": 2.400141169053987e-06,
+          "uniform_closed_distance_fraction_ge_delta": 1.0,
+          "uniform_minus_closed_distance": {
+            "median": 0.2916312825868384,
+            "q05": 0.0701972501144857,
+            "q95": 0.49270630199584503
+          }
+        },
+        "medium": {
+          "E_r": {
+            "median": 0.13069920845382071,
+            "q05": 0.012721931258337467,
+            "q95": 0.4170587954013092
+          },
+          "bounded_amplitude_fraction": 0.2984126984126984,
+          "effective_residual_continuations": {
+            "median": 16.0,
+            "q05": 10.0,
+            "q95": 20.0
+          },
+          "profile_basis_minimum": 0.0010151551148960675,
+          "uniform_closed_distance_fraction_ge_delta": 1.0,
+          "uniform_minus_closed_distance": {
+            "median": 0.2939771860936188,
+            "q05": 0.10274355805579938,
+            "q95": 0.4867391718533642
+          }
+        }
+      },
+      "gates": {
+        "E_r_not_endpoint_saturated": true,
+        "adjacent_E_r_5_95_overlap": true,
+        "finite_numerics": true,
+        "median_effective_continuation_count_ge_4": true,
+        "ordered_E_r_medians": true,
+        "uniform_ensemble_not_closed_mechanism": true
+      },
+      "grid_step": 0.05,
+      "q_count": 21,
+      "rho": 0.01,
+      "sigma": 0.006321205588285576,
+      "x_far": 1.0
+    },
+    {
+      "admissible": true,
+      "exposures": {
+        "high": {
+          "E_r": {
+            "median": 0.20271758202351386,
+            "q05": 0.06972406966328512,
+            "q95": 0.5261021878726027
+          },
+          "bounded_amplitude_fraction": 0.24503968253968253,
+          "effective_residual_continuations": {
+            "median": 9.0,
+            "q05": 5.0,
+            "q95": 16.0
+          },
+          "profile_basis_minimum": 0.03463325213602447,
+          "uniform_closed_distance_fraction_ge_delta": 1.0,
+          "uniform_minus_closed_distance": {
+            "median": 0.25206555064991665,
+            "q05": 0.10369839859889558,
+            "q95": 0.4145995693953077
+          }
+        },
+        "low": {
+          "E_r": {
+            "median": 0.010588869978180149,
+            "q05": 1.1012016262706982e-05,
+            "q95": 0.23768907383000348
+          },
+          "bounded_amplitude_fraction": 0.3470238095238095,
+          "effective_residual_continuations": {
+            "median": 14.0,
+            "q05": 7.0,
+            "q95": 19.0
+          },
+          "profile_basis_minimum": 2.400141169053987e-06,
+          "uniform_closed_distance_fraction_ge_delta": 0.9958333333333333,
+          "uniform_minus_closed_distance": {
+            "median": 0.25028182527750403,
+            "q05": 0.05989002074871297,
+            "q95": 0.4270936012788733
+          }
+        },
+        "medium": {
+          "E_r": {
+            "median": 0.07679359096116017,
+            "q05": 0.0011310929016831175,
+            "q95": 0.369479495596689
+          },
+          "bounded_amplitude_fraction": 0.2968253968253968,
+          "effective_residual_continuations": {
+            "median": 13.0,
+            "q05": 7.0,
+            "q95": 17.0
+          },
+          "profile_basis_minimum": 0.0010151551148960675,
+          "uniform_closed_distance_fraction_ge_delta": 0.9958333333333333,
+          "uniform_minus_closed_distance": {
+            "median": 0.24697230808563075,
+            "q05": 0.07248551588495891,
+            "q95": 0.4150828160430922
+          }
+        }
+      },
+      "gates": {
+        "E_r_not_endpoint_saturated": true,
+        "adjacent_E_r_5_95_overlap": true,
+        "finite_numerics": true,
+        "median_effective_continuation_count_ge_4": true,
+        "ordered_E_r_medians": true,
+        "uniform_ensemble_not_closed_mechanism": true
+      },
+      "grid_step": 0.05,
+      "q_count": 21,
+      "rho": 0.025,
+      "sigma": 0.01580301397071394,
+      "x_far": 0.9
+    },
+    {
+      "admissible": true,
+      "exposures": {
+        "high": {
+          "E_r": {
+            "median": 0.20271758202351386,
+            "q05": 0.06972406966328512,
+            "q95": 0.5261021878726027
+          },
+          "bounded_amplitude_fraction": 0.24503968253968253,
+          "effective_residual_continuations": {
+            "median": 13.0,
+            "q05": 8.0,
+            "q95": 18.0
+          },
+          "profile_basis_minimum": 0.03463325213602447,
+          "uniform_closed_distance_fraction_ge_delta": 1.0,
+          "uniform_minus_closed_distance": {
+            "median": 0.29994889272225556,
+            "q05": 0.12396828825542588,
+            "q95": 0.48661697676706867
+          }
+        },
+        "low": {
+          "E_r": {
+            "median": 0.010588869978180149,
+            "q05": 1.1012016262706982e-05,
+            "q95": 0.23768907383000348
+          },
+          "bounded_amplitude_fraction": 0.3470238095238095,
+          "effective_residual_continuations": {
+            "median": 17.0,
+            "q05": 8.950000000000001,
+            "q95": 20.0
+          },
+          "profile_basis_minimum": 2.400141169053987e-06,
+          "uniform_closed_distance_fraction_ge_delta": 0.9958333333333333,
+          "uniform_minus_closed_distance": {
+            "median": 0.2986835829633777,
+            "q05": 0.07415325641910828,
+            "q95": 0.5006811365509267
+          }
+        },
+        "medium": {
+          "E_r": {
+            "median": 0.07679359096116017,
+            "q05": 0.0011310929016831175,
+            "q95": 0.369479495596689
+          },
+          "bounded_amplitude_fraction": 0.2968253968253968,
+          "effective_residual_continuations": {
+            "median": 16.0,
+            "q05": 8.950000000000001,
+            "q95": 20.0
+          },
+          "profile_basis_minimum": 0.0010151551148960675,
+          "uniform_closed_distance_fraction_ge_delta": 0.9958333333333333,
+          "uniform_minus_closed_distance": {
+            "median": 0.29456129649975515,
+            "q05": 0.08747551296961958,
+            "q95": 0.48717579318521836
+          }
+        }
+      },
+      "gates": {
+        "E_r_not_endpoint_saturated": true,
+        "adjacent_E_r_5_95_overlap": true,
+        "finite_numerics": true,
+        "median_effective_continuation_count_ge_4": true,
+        "ordered_E_r_medians": true,
+        "uniform_ensemble_not_closed_mechanism": true
+      },
+      "grid_step": 0.05,
+      "q_count": 21,
+      "rho": 0.025,
+      "sigma": 0.01580301397071394,
+      "x_far": 1.0
+    },
+    {
+      "admissible": true,
+      "exposures": {
+        "high": {
+          "E_r": {
+            "median": 0.099439009311863,
+            "q05": 0.011437394565537502,
+            "q95": 0.3797190507888419
+          },
+          "bounded_amplitude_fraction": 0.24563492063492062,
+          "effective_residual_continuations": {
+            "median": 10.0,
+            "q05": 5.0,
+            "q95": 16.0
+          },
+          "profile_basis_minimum": 0.03463325213602447,
+          "uniform_closed_distance_fraction_ge_delta": 1.0,
+          "uniform_minus_closed_distance": {
+            "median": 0.2517838069529533,
+            "q05": 0.09824133676626455,
+            "q95": 0.4140481356939321
+          }
+        },
+        "low": {
+          "E_r": {
+            "median": 0.0022092273857110545,
+            "q05": 5.541596536484672e-07,
+            "q95": 0.11946802118685983
+          },
+          "bounded_amplitude_fraction": 0.3962301587301587,
+          "effective_residual_continuations": {
+            "median": 15.0,
+            "q05": 5.0,
+            "q95": 21.0
+          },
+          "profile_basis_minimum": 2.400141169053987e-06,
+          "uniform_closed_distance_fraction_ge_delta": 0.975,
+          "uniform_minus_closed_distance": {
+            "median": 0.27999873836309697,
+            "q05": 0.024869047377052752,
+            "q95": 0.4353623669862987
+          }
+        },
+        "medium": {
+          "E_r": {
+            "median": 0.04758252302434951,
+            "q05": 2.9128825698881982e-05,
+            "q95": 0.2917664454968435
+          },
+          "bounded_amplitude_fraction": 0.2978174603174603,
+          "effective_residual_continuations": {
+            "median": 13.0,
+            "q05": 6.0,
+            "q95": 17.0
+          },
+          "profile_basis_minimum": 0.0010151551148960675,
+          "uniform_closed_distance_fraction_ge_delta": 0.9875,
+          "uniform_minus_closed_distance": {
+            "median": 0.2497352396068705,
+            "q05": 0.04847784244950957,
+            "q95": 0.4124076336946089
+          }
+        }
+      },
+      "gates": {
+        "E_r_not_endpoint_saturated": true,
+        "adjacent_E_r_5_95_overlap": true,
+        "finite_numerics": true,
+        "median_effective_continuation_count_ge_4": true,
+        "ordered_E_r_medians": true,
+        "uniform_ensemble_not_closed_mechanism": true
+      },
+      "grid_step": 0.05,
+      "q_count": 21,
+      "rho": 0.05,
+      "sigma": 0.03160602794142788,
+      "x_far": 0.9
+    },
+    {
+      "admissible": true,
+      "exposures": {
+        "high": {
+          "E_r": {
+            "median": 0.099439009311863,
+            "q05": 0.011437394565537502,
+            "q95": 0.3797190507888419
+          },
+          "bounded_amplitude_fraction": 0.24563492063492062,
+          "effective_residual_continuations": {
+            "median": 13.0,
+            "q05": 8.0,
+            "q95": 18.0
+          },
+          "profile_basis_minimum": 0.03463325213602447,
+          "uniform_closed_distance_fraction_ge_delta": 1.0,
+          "uniform_minus_closed_distance": {
+            "median": 0.2995979529451972,
+            "q05": 0.11746380534268934,
+            "q95": 0.4859949198765896
+          }
+        },
+        "low": {
+          "E_r": {
+            "median": 0.0022092273857110545,
+            "q05": 5.541596536484672e-07,
+            "q95": 0.11946802118685983
+          },
+          "bounded_amplitude_fraction": 0.3962301587301587,
+          "effective_residual_continuations": {
+            "median": 17.0,
+            "q05": 6.0,
+            "q95": 21.0
+          },
+          "profile_basis_minimum": 2.400141169053987e-06,
+          "uniform_closed_distance_fraction_ge_delta": 0.9833333333333333,
+          "uniform_minus_closed_distance": {
+            "median": 0.3330741918758421,
+            "q05": 0.03160825240626857,
+            "q95": 0.5099384992935889
+          }
+        },
+        "medium": {
+          "E_r": {
+            "median": 0.04758252302434951,
+            "q05": 2.9128825698881982e-05,
+            "q95": 0.2917664454968435
+          },
+          "bounded_amplitude_fraction": 0.2978174603174603,
+          "effective_residual_continuations": {
+            "median": 16.0,
+            "q05": 7.0,
+            "q95": 20.0
+          },
+          "profile_basis_minimum": 0.0010151551148960675,
+          "uniform_closed_distance_fraction_ge_delta": 0.9916666666666667,
+          "uniform_minus_closed_distance": {
+            "median": 0.29779254030250246,
+            "q05": 0.05851564824401205,
+            "q95": 0.48415966958555207
+          }
+        }
+      },
+      "gates": {
+        "E_r_not_endpoint_saturated": true,
+        "adjacent_E_r_5_95_overlap": true,
+        "finite_numerics": true,
+        "median_effective_continuation_count_ge_4": true,
+        "ordered_E_r_medians": true,
+        "uniform_ensemble_not_closed_mechanism": true
+      },
+      "grid_step": 0.05,
+      "q_count": 21,
+      "rho": 0.05,
+      "sigma": 0.03160602794142788,
+      "x_far": 1.0
+    },
+    {
+      "admissible": true,
+      "exposures": {
+        "high": {
+          "E_r": {
+            "median": 0.049201330002268395,
+            "q05": 0.0013958955253703777,
+            "q95": 0.3061962376449769
+          },
+          "bounded_amplitude_fraction": 0.24682539682539684,
+          "effective_residual_continuations": {
+            "median": 10.0,
+            "q05": 4.0,
+            "q95": 16.049999999999983
+          },
+          "profile_basis_minimum": 0.03463325213602447,
+          "uniform_closed_distance_fraction_ge_delta": 1.0,
+          "uniform_minus_closed_distance": {
+            "median": 0.25263316380003087,
+            "q05": 0.0904038582556602,
+            "q95": 0.41464065988395893
+          }
+        },
+        "low": {
+          "E_r": {
+            "median": 0.0007732417064100217,
+            "q05": 2.816337667466141e-07,
+            "q95": 0.05084221833593948
+          },
+          "bounded_amplitude_fraction": 0.5339285714285714,
+          "effective_residual_continuations": {
+            "median": 16.0,
+            "q05": 8.950000000000001,
+            "q95": 21.0
+          },
+          "profile_basis_minimum": 2.400141169053987e-06,
+          "uniform_closed_distance_fraction_ge_delta": 0.9833333333333333,
+          "uniform_minus_closed_distance": {
+            "median": 0.3443243677363732,
+            "q05": 0.06736267122710679,
+            "q95": 0.43536599269992243
+          }
+        },
+        "medium": {
+          "E_r": {
+            "median": 0.014063298748570097,
+            "q05": 1.8620060391866263e-05,
+            "q95": 0.23494100000507034
+          },
+          "bounded_amplitude_fraction": 0.3,
+          "effective_residual_continuations": {
+            "median": 13.0,
+            "q05": 5.950000000000001,
+            "q95": 18.0
+          },
+          "profile_basis_minimum": 0.0010151551148960675,
+          "uniform_closed_distance_fraction_ge_delta": 0.9916666666666667,
+          "uniform_minus_closed_distance": {
+            "median": 0.25779783282676694,
+            "q05": 0.04181711025331149,
+            "q95": 0.42222065176348145
+          }
+        }
+      },
+      "gates": {
+        "E_r_not_endpoint_saturated": true,
+        "adjacent_E_r_5_95_overlap": true,
+        "finite_numerics": true,
+        "median_effective_continuation_count_ge_4": true,
+        "ordered_E_r_medians": true,
+        "uniform_ensemble_not_closed_mechanism": true
+      },
+      "grid_step": 0.05,
+      "q_count": 21,
+      "rho": 0.1,
+      "sigma": 0.06321205588285576,
+      "x_far": 0.9
+    },
+    {
+      "admissible": true,
+      "exposures": {
+        "high": {
+          "E_r": {
+            "median": 0.049201330002268395,
+            "q05": 0.0013958955253703777,
+            "q95": 0.3061962376449769
+          },
+          "bounded_amplitude_fraction": 0.24682539682539684,
+          "effective_residual_continuations": {
+            "median": 13.0,
+            "q05": 6.950000000000001,
+            "q95": 18.0
+          },
+          "profile_basis_minimum": 0.03463325213602447,
+          "uniform_closed_distance_fraction_ge_delta": 1.0,
+          "uniform_minus_closed_distance": {
+            "median": 0.30062254401023014,
+            "q05": 0.10787542034031472,
+            "q95": 0.48666380868953824
+          }
+        },
+        "low": {
+          "E_r": {
+            "median": 0.0007732417064100217,
+            "q05": 2.816337667466141e-07,
+            "q95": 0.05084221833593948
+          },
+          "bounded_amplitude_fraction": 0.5339285714285714,
+          "effective_residual_continuations": {
+            "median": 19.0,
+            "q05": 10.0,
+            "q95": 21.0
+          },
+          "profile_basis_minimum": 2.400141169053987e-06,
+          "uniform_closed_distance_fraction_ge_delta": 0.9833333333333333,
+          "uniform_minus_closed_distance": {
+            "median": 0.4069169404180928,
+            "q05": 0.08276205487514952,
+            "q95": 0.5099425491775231
+          }
+        },
+        "medium": {
+          "E_r": {
+            "median": 0.014063298748570097,
+            "q05": 1.8620060391866263e-05,
+            "q95": 0.23494100000507034
+          },
+          "bounded_amplitude_fraction": 0.3,
+          "effective_residual_continuations": {
+            "median": 16.0,
+            "q05": 7.0,
+            "q95": 20.0
+          },
+          "profile_basis_minimum": 0.0010151551148960675,
+          "uniform_closed_distance_fraction_ge_delta": 0.9958333333333333,
+          "uniform_minus_closed_distance": {
+            "median": 0.30715178230621343,
+            "q05": 0.050847426948519354,
+            "q95": 0.4952074307612077
+          }
+        }
+      },
+      "gates": {
+        "E_r_not_endpoint_saturated": true,
+        "adjacent_E_r_5_95_overlap": true,
+        "finite_numerics": true,
+        "median_effective_continuation_count_ge_4": true,
+        "ordered_E_r_medians": true,
+        "uniform_ensemble_not_closed_mechanism": true
+      },
+      "grid_step": 0.05,
+      "q_count": 21,
+      "rho": 0.1,
+      "sigma": 0.06321205588285576,
+      "x_far": 1.0
+    },
+    {
+      "admissible": true,
+      "exposures": {
+        "high": {
+          "E_r": {
+            "median": 0.37854120185172463,
+            "q05": 0.1872287827188261,
+            "q95": 0.6421813554689064
+          },
+          "bounded_amplitude_fraction": 0.24115853658536585,
+          "effective_residual_continuations": {
+            "median": 10.0,
+            "q05": 6.0,
+            "q95": 16.049999999999983
+          },
+          "profile_basis_minimum": 0.03463325213602447,
+          "uniform_closed_distance_fraction_ge_delta": 1.0,
+          "uniform_minus_closed_distance": {
+            "median": 0.25452406933167543,
+            "q05": 0.10709982676305713,
+            "q95": 0.4161104685132252
+          }
+        },
+        "low": {
+          "E_r": {
+            "median": 0.042290086691047224,
+            "q05": 5.7138338884193955e-05,
+            "q95": 0.28999132457135857
+          },
+          "bounded_amplitude_fraction": 0.3246951219512195,
+          "effective_residual_continuations": {
+            "median": 16.0,
+            "q05": 10.0,
+            "q95": 18.0
+          },
+          "profile_basis_minimum": 2.400141169053987e-06,
+          "uniform_closed_distance_fraction_ge_delta": 0.9916666666666667,
+          "uniform_minus_closed_distance": {
+            "median": 0.2451408484117852,
+            "q05": 0.0559486555822646,
+            "q95": 0.42115199917668045
+          }
+        },
+        "medium": {
+          "E_r": {
+            "median": 0.10428365120902278,
+            "q05": 0.00895698977965853,
+            "q95": 0.34233212983247097
+          },
+          "bounded_amplitude_fraction": 0.29329268292682925,
+          "effective_residual_continuations": {
+            "median": 15.0,
+            "q05": 11.0,
+            "q95": 18.0
+          },
+          "profile_basis_minimum": 0.0010151551148960675,
+          "uniform_closed_distance_fraction_ge_delta": 1.0,
+          "uniform_minus_closed_distance": {
+            "median": 0.24730126305050137,
+            "q05": 0.0836465468117482,
+            "q95": 0.4159136943399572
+          }
+        }
+      },
+      "gates": {
+        "E_r_not_endpoint_saturated": true,
+        "adjacent_E_r_5_95_overlap": true,
+        "finite_numerics": true,
+        "median_effective_continuation_count_ge_4": true,
+        "ordered_E_r_medians": true,
+        "uniform_ensemble_not_closed_mechanism": true
+      },
+      "grid_step": 0.025,
+      "q_count": 41,
+      "rho": 0.01,
+      "sigma": 0.006321205588285576,
+      "x_far": 0.9
+    },
+    {
+      "admissible": true,
+      "exposures": {
+        "high": {
+          "E_r": {
+            "median": 0.37854120185172463,
+            "q05": 0.1872287827188261,
+            "q95": 0.6421813554689064
+          },
+          "bounded_amplitude_fraction": 0.24115853658536585,
+          "effective_residual_continuations": {
+            "median": 14.0,
+            "q05": 9.0,
+            "q95": 18.0
+          },
+          "profile_basis_minimum": 0.03463325213602447,
+          "uniform_closed_distance_fraction_ge_delta": 1.0,
+          "uniform_minus_closed_distance": {
+            "median": 0.30264925566663237,
+            "q05": 0.12780431695371577,
+            "q95": 0.4883042165830879
+          }
+        },
+        "low": {
+          "E_r": {
+            "median": 0.042290086691047224,
+            "q05": 5.7138338884193955e-05,
+            "q95": 0.28999132457135857
+          },
+          "bounded_amplitude_fraction": 0.3246951219512195,
+          "effective_residual_continuations": {
+            "median": 20.0,
+            "q05": 11.0,
+            "q95": 21.0
+          },
+          "profile_basis_minimum": 2.400141169053987e-06,
+          "uniform_closed_distance_fraction_ge_delta": 0.9916666666666667,
+          "uniform_minus_closed_distance": {
+            "median": 0.2925419317867898,
+            "q05": 0.06873142324385832,
+            "q95": 0.493996581234283
+          }
+        },
+        "medium": {
+          "E_r": {
+            "median": 0.10428365120902278,
+            "q05": 0.00895698977965853,
+            "q95": 0.34233212983247097
+          },
+          "bounded_amplitude_fraction": 0.29329268292682925,
+          "effective_residual_continuations": {
+            "median": 19.0,
+            "q05": 13.0,
+            "q95": 20.0
+          },
+          "profile_basis_minimum": 0.0010151551148960675,
+          "uniform_closed_distance_fraction_ge_delta": 1.0,
+          "uniform_minus_closed_distance": {
+            "median": 0.2947903907140984,
+            "q05": 0.10095779149356973,
+            "q95": 0.4880940992604966
+          }
+        }
+      },
+      "gates": {
+        "E_r_not_endpoint_saturated": true,
+        "adjacent_E_r_5_95_overlap": true,
+        "finite_numerics": true,
+        "median_effective_continuation_count_ge_4": true,
+        "ordered_E_r_medians": true,
+        "uniform_ensemble_not_closed_mechanism": true
+      },
+      "grid_step": 0.025,
+      "q_count": 41,
+      "rho": 0.01,
+      "sigma": 0.006321205588285576,
+      "x_far": 1.0
+    },
+    {
+      "admissible": true,
+      "exposures": {
+        "high": {
+          "E_r": {
+            "median": 0.16327613156560605,
+            "q05": 0.0539302431336692,
+            "q95": 0.43111816089391314
+          },
+          "bounded_amplitude_fraction": 0.24126016260162603,
+          "effective_residual_continuations": {
+            "median": 10.0,
+            "q05": 6.0,
+            "q95": 17.0
+          },
+          "profile_basis_minimum": 0.03463325213602447,
+          "uniform_closed_distance_fraction_ge_delta": 1.0,
+          "uniform_minus_closed_distance": {
+            "median": 0.2526398724214777,
+            "q05": 0.10337107950225363,
+            "q95": 0.415842056294139
+          }
+        },
+        "low": {
+          "E_r": {
+            "median": 0.0075949078167373285,
+            "q05": 7.413215718321542e-06,
+            "q95": 0.19469161835534227
+          },
+          "bounded_amplitude_fraction": 0.3438008130081301,
+          "effective_residual_continuations": {
+            "median": 16.0,
+            "q05": 10.0,
+            "q95": 19.0
+          },
+          "profile_basis_minimum": 2.400141169053987e-06,
+          "uniform_closed_distance_fraction_ge_delta": 0.9916666666666667,
+          "uniform_minus_closed_distance": {
+            "median": 0.2513672348881925,
+            "q05": 0.05780191036424183,
+            "q95": 0.42800135907992054
+          }
+        },
+        "medium": {
+          "E_r": {
+            "median": 0.060328045624302384,
+            "q05": 0.0008667815352749634,
+            "q95": 0.3063296433595068
+          },
+          "bounded_amplitude_fraction": 0.2939024390243902,
+          "effective_residual_continuations": {
+            "median": 15.0,
+            "q05": 9.0,
+            "q95": 18.0
+          },
+          "profile_basis_minimum": 0.0010151551148960675,
+          "uniform_closed_distance_fraction_ge_delta": 0.9958333333333333,
+          "uniform_minus_closed_distance": {
+            "median": 0.247810247987308,
+            "q05": 0.07165399254034514,
+            "q95": 0.41630745955330584
+          }
+        }
+      },
+      "gates": {
+        "E_r_not_endpoint_saturated": true,
+        "adjacent_E_r_5_95_overlap": true,
+        "finite_numerics": true,
+        "median_effective_continuation_count_ge_4": true,
+        "ordered_E_r_medians": true,
+        "uniform_ensemble_not_closed_mechanism": true
+      },
+      "grid_step": 0.025,
+      "q_count": 41,
+      "rho": 0.025,
+      "sigma": 0.01580301397071394,
+      "x_far": 0.9
+    },
+    {
+      "admissible": true,
+      "exposures": {
+        "high": {
+          "E_r": {
+            "median": 0.16327613156560605,
+            "q05": 0.0539302431336692,
+            "q95": 0.43111816089391314
+          },
+          "bounded_amplitude_fraction": 0.24126016260162603,
+          "effective_residual_continuations": {
+            "median": 14.0,
+            "q05": 9.0,
+            "q95": 18.0
+          },
+          "profile_basis_minimum": 0.03463325213602447,
+          "uniform_closed_distance_fraction_ge_delta": 1.0,
+          "uniform_minus_closed_distance": {
+            "median": 0.30045521960275867,
+            "q05": 0.12343426881567873,
+            "q95": 0.48800145652074883
+          }
+        },
+        "low": {
+          "E_r": {
+            "median": 0.0075949078167373285,
+            "q05": 7.413215718321542e-06,
+            "q95": 0.19469161835534227
+          },
+          "bounded_amplitude_fraction": 0.3438008130081301,
+          "effective_residual_continuations": {
+            "median": 20.0,
+            "q05": 12.0,
+            "q95": 21.0
+          },
+          "profile_basis_minimum": 2.400141169053987e-06,
+          "uniform_closed_distance_fraction_ge_delta": 0.9958333333333333,
+          "uniform_minus_closed_distance": {
+            "median": 0.2997901117610542,
+            "q05": 0.07134327207512085,
+            "q95": 0.5016928737143819
+          }
+        },
+        "medium": {
+          "E_r": {
+            "median": 0.060328045624302384,
+            "q05": 0.0008667815352749634,
+            "q95": 0.3063296433595068
+          },
+          "bounded_amplitude_fraction": 0.2939024390243902,
+          "effective_residual_continuations": {
+            "median": 19.0,
+            "q05": 11.0,
+            "q95": 20.0
+          },
+          "profile_basis_minimum": 0.0010151551148960675,
+          "uniform_closed_distance_fraction_ge_delta": 0.9958333333333333,
+          "uniform_minus_closed_distance": {
+            "median": 0.2953763099105601,
+            "q05": 0.08630037061699845,
+            "q95": 0.48853768570757716
+          }
+        }
+      },
+      "gates": {
+        "E_r_not_endpoint_saturated": true,
+        "adjacent_E_r_5_95_overlap": true,
+        "finite_numerics": true,
+        "median_effective_continuation_count_ge_4": true,
+        "ordered_E_r_medians": true,
+        "uniform_ensemble_not_closed_mechanism": true
+      },
+      "grid_step": 0.025,
+      "q_count": 41,
+      "rho": 0.025,
+      "sigma": 0.01580301397071394,
+      "x_far": 1.0
+    },
+    {
+      "admissible": true,
+      "exposures": {
+        "high": {
+          "E_r": {
+            "median": 0.0786304222206261,
+            "q05": 0.007895407276230176,
+            "q95": 0.31336683073256955
+          },
+          "bounded_amplitude_fraction": 0.24126016260162603,
+          "effective_residual_continuations": {
+            "median": 10.0,
+            "q05": 6.0,
+            "q95": 16.049999999999983
+          },
+          "profile_basis_minimum": 0.03463325213602447,
+          "uniform_closed_distance_fraction_ge_delta": 1.0,
+          "uniform_minus_closed_distance": {
+            "median": 0.2523113142596749,
+            "q05": 0.09792097534761812,
+            "q95": 0.4153025615532144
+          }
+        },
+        "low": {
+          "E_r": {
+            "median": 0.0015942260835536959,
+            "q05": 3.4517971643777124e-07,
+            "q95": 0.09595412679616913
+          },
+          "bounded_amplitude_fraction": 0.3929878048780488,
+          "effective_residual_continuations": {
+            "median": 17.0,
+            "q05": 6.0,
+            "q95": 21.0
+          },
+          "profile_basis_minimum": 2.400141169053987e-06,
+          "uniform_closed_distance_fraction_ge_delta": 0.9875,
+          "uniform_minus_closed_distance": {
+            "median": 0.2812796182110624,
+            "q05": 0.026898473068550158,
+            "q95": 0.43536413562708726
+          }
+        },
+        "medium": {
+          "E_r": {
+            "median": 0.03621536705871936,
+            "q05": 1.999113184644186e-05,
+            "q95": 0.24062694575023866
+          },
+          "bounded_amplitude_fraction": 0.2946138211382114,
+          "effective_residual_continuations": {
+            "median": 15.0,
+            "q05": 7.900000000000002,
+            "q95": 18.0
+          },
+          "profile_basis_minimum": 0.0010151551148960675,
+          "uniform_closed_distance_fraction_ge_delta": 0.9875,
+          "uniform_minus_closed_distance": {
+            "median": 0.25052835885044433,
+            "q05": 0.0479061839173614,
+            "q95": 0.4137712304030858
+          }
+        }
+      },
+      "gates": {
+        "E_r_not_endpoint_saturated": true,
+        "adjacent_E_r_5_95_overlap": true,
+        "finite_numerics": true,
+        "median_effective_continuation_count_ge_4": true,
+        "ordered_E_r_medians": true,
+        "uniform_ensemble_not_closed_mechanism": true
+      },
+      "grid_step": 0.025,
+      "q_count": 41,
+      "rho": 0.05,
+      "sigma": 0.03160602794142788,
+      "x_far": 0.9
+    },
+    {
+      "admissible": true,
+      "exposures": {
+        "high": {
+          "E_r": {
+            "median": 0.0786304222206261,
+            "q05": 0.007895407276230176,
+            "q95": 0.31336683073256955
+          },
+          "bounded_amplitude_fraction": 0.24126016260162603,
+          "effective_residual_continuations": {
+            "median": 14.0,
+            "q05": 9.0,
+            "q95": 18.0
+          },
+          "profile_basis_minimum": 0.03463325213602447,
+          "uniform_closed_distance_fraction_ge_delta": 1.0,
+          "uniform_minus_closed_distance": {
+            "median": 0.3000467832030992,
+            "q05": 0.11694406171280536,
+            "q95": 0.4873926311203009
+          }
+        },
+        "low": {
+          "E_r": {
+            "median": 0.0015942260835536959,
+            "q05": 3.4517971643777124e-07,
+            "q95": 0.09595412679616913
+          },
+          "bounded_amplitude_fraction": 0.3929878048780488,
+          "effective_residual_continuations": {
+            "median": 20.0,
+            "q05": 7.0,
+            "q95": 21.0
+          },
+          "profile_basis_minimum": 2.400141169053987e-06,
+          "uniform_closed_distance_fraction_ge_delta": 0.9875,
+          "uniform_minus_closed_distance": {
+            "median": 0.33441854454927983,
+            "q05": 0.030768489802439375,
+            "q95": 0.5099404748467169
+          }
+        },
+        "medium": {
+          "E_r": {
+            "median": 0.03621536705871936,
+            "q05": 1.999113184644186e-05,
+            "q95": 0.24062694575023866
+          },
+          "bounded_amplitude_fraction": 0.2946138211382114,
+          "effective_residual_continuations": {
+            "median": 19.0,
+            "q05": 9.950000000000001,
+            "q95": 20.0
+          },
+          "profile_basis_minimum": 0.0010151551148960675,
+          "uniform_closed_distance_fraction_ge_delta": 0.9916666666666667,
+          "uniform_minus_closed_distance": {
+            "median": 0.2985520735741397,
+            "q05": 0.0577091873324914,
+            "q95": 0.4856781355549928
+          }
+        }
+      },
+      "gates": {
+        "E_r_not_endpoint_saturated": true,
+        "adjacent_E_r_5_95_overlap": true,
+        "finite_numerics": true,
+        "median_effective_continuation_count_ge_4": true,
+        "ordered_E_r_medians": true,
+        "uniform_ensemble_not_closed_mechanism": true
+      },
+      "grid_step": 0.025,
+      "q_count": 41,
+      "rho": 0.05,
+      "sigma": 0.03160602794142788,
+      "x_far": 1.0
+    },
+    {
+      "admissible": true,
+      "exposures": {
+        "high": {
+          "E_r": {
+            "median": 0.03787803830949449,
+            "q05": 0.0010409042293634486,
+            "q95": 0.2521251467236059
+          },
+          "bounded_amplitude_fraction": 0.24176829268292682,
+          "effective_residual_continuations": {
+            "median": 10.0,
+            "q05": 5.0,
+            "q95": 16.049999999999983
+          },
+          "profile_basis_minimum": 0.03463325213602447,
+          "uniform_closed_distance_fraction_ge_delta": 1.0,
+          "uniform_minus_closed_distance": {
+            "median": 0.2532438736905607,
+            "q05": 0.09022494015318662,
+            "q95": 0.4158798320609127
+          }
+        },
+        "low": {
+          "E_r": {
+            "median": 0.0005825225010736568,
+            "q05": 1.7494434816911492e-07,
+            "q95": 0.04016436460390178
+          },
+          "bounded_amplitude_fraction": 0.5318089430894309,
+          "effective_residual_continuations": {
+            "median": 17.0,
+            "q05": 11.0,
+            "q95": 21.0
+          },
+          "profile_basis_minimum": 2.400141169053987e-06,
+          "uniform_closed_distance_fraction_ge_delta": 0.9875,
+          "uniform_minus_closed_distance": {
+            "median": 0.3460167658953909,
+            "q05": 0.07044290813956308,
+            "q95": 0.43536599269992243
+          }
+        },
+        "medium": {
+          "E_r": {
+            "median": 0.01007297806370333,
+            "q05": 1.0770820385763715e-05,
+            "q95": 0.19261611532443962
+          },
+          "bounded_amplitude_fraction": 0.29603658536585364,
+          "effective_residual_continuations": {
+            "median": 15.0,
+            "q05": 7.0,
+            "q95": 18.0
+          },
+          "profile_basis_minimum": 0.0010151551148960675,
+          "uniform_closed_distance_fraction_ge_delta": 0.9916666666666667,
+          "uniform_minus_closed_distance": {
+            "median": 0.25860673465163964,
+            "q05": 0.04086273810002389,
+            "q95": 0.4232859033452709
+          }
+        }
+      },
+      "gates": {
+        "E_r_not_endpoint_saturated": true,
+        "adjacent_E_r_5_95_overlap": true,
+        "finite_numerics": true,
+        "median_effective_continuation_count_ge_4": true,
+        "ordered_E_r_medians": true,
+        "uniform_ensemble_not_closed_mechanism": true
+      },
+      "grid_step": 0.025,
+      "q_count": 41,
+      "rho": 0.1,
+      "sigma": 0.06321205588285576,
+      "x_far": 0.9
+    },
+    {
+      "admissible": true,
+      "exposures": {
+        "high": {
+          "E_r": {
+            "median": 0.03787803830949449,
+            "q05": 0.0010409042293634486,
+            "q95": 0.2521251467236059
+          },
+          "bounded_amplitude_fraction": 0.24176829268292682,
+          "effective_residual_continuations": {
+            "median": 14.5,
+            "q05": 7.0,
+            "q95": 18.0
+          },
+          "profile_basis_minimum": 0.03463325213602447,
+          "uniform_closed_distance_fraction_ge_delta": 1.0,
+          "uniform_minus_closed_distance": {
+            "median": 0.30117372060862463,
+            "q05": 0.10755318315648404,
+            "q95": 0.48804445001854435
+          }
+        },
+        "low": {
+          "E_r": {
+            "median": 0.0005825225010736568,
+            "q05": 1.7494434816911492e-07,
+            "q95": 0.04016436460390178
+          },
+          "bounded_amplitude_fraction": 0.5318089430894309,
+          "effective_residual_continuations": {
+            "median": 20.0,
+            "q05": 13.0,
+            "q95": 21.0
+          },
+          "profile_basis_minimum": 2.400141169053987e-06,
+          "uniform_closed_distance_fraction_ge_delta": 0.9916666666666667,
+          "uniform_minus_closed_distance": {
+            "median": 0.40876980265832136,
+            "q05": 0.08475114445606084,
+            "q95": 0.5099425491775231
+          }
+        },
+        "medium": {
+          "E_r": {
+            "median": 0.01007297806370333,
+            "q05": 1.0770820385763715e-05,
+            "q95": 0.19261611532443962
+          },
+          "bounded_amplitude_fraction": 0.29603658536585364,
+          "effective_residual_continuations": {
+            "median": 19.0,
+            "q05": 8.950000000000001,
+            "q95": 20.0
+          },
+          "profile_basis_minimum": 0.0010151551148960675,
+          "uniform_closed_distance_fraction_ge_delta": 0.9958333333333333,
+          "uniform_minus_closed_distance": {
+            "median": 0.3079039901521217,
+            "q05": 0.04954284504886722,
+            "q95": 0.4963938353812713
+          }
+        }
+      },
+      "gates": {
+        "E_r_not_endpoint_saturated": true,
+        "adjacent_E_r_5_95_overlap": true,
+        "finite_numerics": true,
+        "median_effective_continuation_count_ge_4": true,
+        "ordered_E_r_medians": true,
+        "uniform_ensemble_not_closed_mechanism": true
+      },
+      "grid_step": 0.025,
+      "q_count": 41,
+      "rho": 0.1,
+      "sigma": 0.06321205588285576,
+      "x_far": 1.0
+    }
+  ],
+  "contract": {
+    "a_ref": 1.0,
+    "amplitude_bound_ratio": 1.5,
+    "contract_id": "e15-c0-v1.1",
+    "delta_cont": 0.01,
+    "eta_high": 1.5,
+    "eta_low": 0.5,
+    "kappa0": 1.0,
+    "n_forecast_points": 161,
+    "n_observation_points": 81,
+    "n_tasks": 240,
+    "r_inv": 0.6321205588285577,
+    "seed": 151503,
+    "y0": 1.0
+  },
+  "contract_sha256": "cedf36099595bb3a2c968997ebfb2add681b230f8520a6790867f319d152b88b",
+  "estimator_amendment": "bounded amplitude profile only: clip A_LS to [-1.5 A_ref, +1.5 A_ref]",
+  "policy_outcomes_inspected": false,
+  "selection": {
+    "selected_grid_step": 0.05,
+    "selected_rho": 0.1,
+    "selected_x_far": 1.0,
+    "selection_order": [
+      "coarsest admissible grid",
+      "largest admissible rho",
+      "longest admissible x_far"
+    ],
+    "status": "PASS"
+  }
+}

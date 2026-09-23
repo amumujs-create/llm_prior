@@ -1,0 +1,81 @@
+{
+  "confirmatory_quota": 125,
+  "contract": {
+    "amplitude_bound_ratio": 1.5,
+    "contract_id": "e15-c0-v1.1-protected-quota",
+    "epsilon": 0.025,
+    "grid_step": 0.05,
+    "minimum_quota": 125,
+    "pilot_seed": 151504,
+    "pilot_tasks": 240,
+    "rho": 0.1,
+    "x_far": 1.0
+  },
+  "contract_sha256": "1473666dc5a8f5f10291ad99db49fc1ba98e086bae5205cc62b29b1f8ba47542",
+  "estimator_amendment": "bounded amplitude profile only",
+  "max_attempts": {
+    "accepted": 240,
+    "failure_probability_target": 0.0001,
+    "max_attempts": 133,
+    "proposals": 240,
+    "wilson_lower_probability": 0.9888525683608576
+  },
+  "note": "Variance-derived quantities only; contrast means, signs, rankings, and winners are absent.",
+  "pilot_acceptance": {
+    "accepted_tasks": 240,
+    "proposals": 240,
+    "rejection_count": 0
+  },
+  "policy_outcomes_inspected": false,
+  "protected_primary_cells": [
+    {
+      "contrast": "C1_C",
+      "n_tasks": 240,
+      "paired_sd": 0.10521388515505092,
+      "paired_sd_upper_95": 0.11382374194493998,
+      "prefix_exposure": "low",
+      "required_quota": 125
+    },
+    {
+      "contrast": "C1_C",
+      "n_tasks": 240,
+      "paired_sd": 0.06569805956989745,
+      "paired_sd_upper_95": 0.07107425952142317,
+      "prefix_exposure": "medium",
+      "required_quota": 125
+    },
+    {
+      "contrast": "C1_C",
+      "n_tasks": 240,
+      "paired_sd": 0.03389868768257963,
+      "paired_sd_upper_95": 0.03667268320495841,
+      "prefix_exposure": "high",
+      "required_quota": 125
+    },
+    {
+      "contrast": "C2_C",
+      "n_tasks": 240,
+      "paired_sd": 0.023273843600046033,
+      "paired_sd_upper_95": 0.02517838747323702,
+      "prefix_exposure": "low",
+      "required_quota": 125
+    },
+    {
+      "contrast": "C2_C",
+      "n_tasks": 240,
+      "paired_sd": 0.027489326430055933,
+      "paired_sd_upper_95": 0.02973883145940169,
+      "prefix_exposure": "medium",
+      "required_quota": 125
+    },
+    {
+      "contrast": "C2_C",
+      "n_tasks": 240,
+      "paired_sd": 0.03195833679689317,
+      "paired_sd_upper_95": 0.03457354963366658,
+      "prefix_exposure": "high",
+      "required_quota": 125
+    }
+  ],
+  "raw_contrasts_persisted": false
+}
