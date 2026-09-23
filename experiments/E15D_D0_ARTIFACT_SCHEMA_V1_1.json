@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "E15-D0 v1.1 outcome-free calibration artifact",
+  "type": "object",
+  "required": ["protocol", "discarded_calibration", "source_hashes", "selection_rule", "candidate_count", "candidates", "selected_candidate", "final_status"],
+  "properties": {
+    "protocol": {"type": "string", "const": "E15-D0-v1.1"},
+    "discarded_calibration": {"type": "object"},
+    "source_hashes": {"type": "object"},
+    "selection_rule": {"type": "array", "items": {"type": "string"}},
+    "candidate_count": {"type": "integer", "const": 144},
+    "candidates": {"type": "array", "minItems": 144, "maxItems": 144, "items": {"$ref": "#/$defs/candidate"}},
+    "selected_candidate": {"type": ["object", "null"]},
+    "final_status": {"type": "string", "enum": ["PASS", "FAIL"]}
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "summary": {
+      "type": "object",
+      "required": ["q05", "median", "q95"],
+      "properties": {"q05": {"type": "number"}, "median": {"type": "number"}, "q95": {"type": "number"}},
+      "additionalProperties": false
+    },
+    "candidate": {
+      "type": "object",
+      "required": ["candidate_id", "support", "grid_spacing", "rho", "exposure_triple", "far_horizon", "evidence", "distinctness", "numerical_stability", "construct_gate", "failure_reasons"],
+      "properties": {
+        "candidate_id": {"type": "string"},
+        "support": {"type": "object"},
+        "grid_spacing": {"type": "number"},
+        "rho": {"type": "number"},
+        "exposure_triple": {"type": "object"},
+        "far_horizon": {"type": "number"},
+        "evidence": {"type": "object"},
+        "distinctness": {"type": "object"},
+        "numerical_stability": {"type": "object"},
+        "construct_gate": {"type": "string", "enum": ["PASS", "FAIL"]},
+        "failure_reasons": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    }
+  }
+}

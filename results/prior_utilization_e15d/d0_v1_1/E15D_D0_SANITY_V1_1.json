@@ -1,0 +1,47 @@
+{
+  "checks": {
+    "candidate_order_does_not_change_latents": true,
+    "continuous_rms_matches_dense_integration": true,
+    "forbidden_outcome_functions_absent": true,
+    "future_label_leakage_absent": true,
+    "nested_prefixes": true,
+    "same_candidate_repeats_identically": true,
+    "synthetic_clique_fail": true,
+    "synthetic_clique_pass": true,
+    "task_seed_replay_identical": true,
+    "weight_and_entropy_stability": true
+  },
+  "final_status": "PASS",
+  "forbidden_function_audit": {
+    "defined_functions": [
+      "build_artifact",
+      "candidate_from_dict",
+      "candidate_id",
+      "candidate_ladder",
+      "candidate_record",
+      "coefficient_grid",
+      "construct_failures",
+      "dense_rms",
+      "evidence_for_prefix",
+      "exact_continuous_rms",
+      "extend",
+      "find_four_clique",
+      "forbidden_function_audit",
+      "load_config",
+      "main",
+      "normalized_entropy",
+      "prefix_loss_grid",
+      "public_grid",
+      "quantile_summary",
+      "reject_outcome_keys",
+      "sanity_checks",
+      "sha256_file",
+      "stable_weights",
+      "task_latents",
+      "task_seed"
+    ],
+    "forbidden_present": [],
+    "passed": true
+  },
+  "protocol": "E15-D0-v1.1"
+}
