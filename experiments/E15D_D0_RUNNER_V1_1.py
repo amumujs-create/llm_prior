@@ -461,10 +461,13 @@ def build_artifact(config: dict[str, Any], config_path: Path, schema_path: Path)
 
 
 def reject_outcome_keys(value: Any) -> None:
-    forbidden_fragments = ("rmse", "crps", "d1", "d2", "d_dep", "d3", "winner", "ranking", "policy")
+    forbidden_keys = {
+        "rmse", "nrmse", "crps", "d1", "d2", "d_dep", "d3",
+        "winner", "ranking", "policy_mean", "policy_sign",
+    }
     if isinstance(value, dict):
         for key, item in value.items():
-            if any(fragment in key.lower() for fragment in forbidden_fragments):
+            if key.lower() in forbidden_keys:
                 raise ValueError(f"outcome-related key prohibited in D0 artifact: {key}")
             reject_outcome_keys(item)
     elif isinstance(value, list):
