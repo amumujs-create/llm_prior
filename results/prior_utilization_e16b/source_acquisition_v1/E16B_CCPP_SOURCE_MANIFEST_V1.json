@@ -1,0 +1,126 @@
+{
+  "protocol": "E16-B CCPP official source byte and workbook audit v1",
+  "source_status": "PASS",
+  "source_identity": {
+    "official_doi": "10.24432/C5002N",
+    "official_archive_url": "https://archive.ics.uci.edu/static/public/294/combined%2Bcycle%2Bpower%2Bplant.zip",
+    "license": "CC BY 4.0",
+    "zip_sha256": "cc7b2a4977c0a44e8221c91d9a7e5746b3c68186cff7e5c61c70af6432b98c7a",
+    "zip_byte_size": 3674852,
+    "extracted_file_sha256": {
+      "Folds5x2_pp.xlsx": "ccd490981db2a2f079963b3d9f0aea30d9d338900a0285428dfc6385396f4651",
+      "Folds5x2_pp.ods": "5a9b34c94892cb7040ed5dd10209f3a5855c103e7b52ba515842a03ed9971891",
+      "Readme.txt": "2d79c1fb5a91fa1fcbeb514546d9d3fc354be8e4bf8f4df316445e1e7089c137",
+      "Readme.txt~": "5e6c49c59351d603a4a81f49114915a14a11c3610842b015cba1b4a4422fdd77"
+    }
+  },
+  "workbook_audit": {
+    "sheet_count": 5,
+    "canonical_sheet": "Sheet1",
+    "sheets": [
+      {
+        "sheet_name": "Sheet1",
+        "shape": [
+          9568,
+          5
+        ],
+        "columns": [
+          "AT",
+          "V",
+          "AP",
+          "RH",
+          "PE"
+        ],
+        "missing_cells": 0,
+        "nonfinite_cells": 0,
+        "ordered_row_sha256": "6bd8e6d8b7d5aa7d68db15dad5ee2653c4e0a9730d1853152e0710c4ac29101a",
+        "row_multiset_sha256": "7cdbca849f1730fedb2ee9c7704a5f8c62dfe31174caadc57e1f4839a4963e55",
+        "duplicate_row_groups": 41,
+        "duplicate_excess_rows": 41
+      },
+      {
+        "sheet_name": "Sheet2",
+        "shape": [
+          9568,
+          5
+        ],
+        "columns": [
+          "AT",
+          "V",
+          "AP",
+          "RH",
+          "PE"
+        ],
+        "missing_cells": 0,
+        "nonfinite_cells": 0,
+        "ordered_row_sha256": "65aadf8ce1fbe52dbf99062284cd7431b5ebb22c329bc8d978c59c62c618d423",
+        "row_multiset_sha256": "7cdbca849f1730fedb2ee9c7704a5f8c62dfe31174caadc57e1f4839a4963e55",
+        "duplicate_row_groups": 41,
+        "duplicate_excess_rows": 41
+      },
+      {
+        "sheet_name": "Sheet3",
+        "shape": [
+          9568,
+          5
+        ],
+        "columns": [
+          "AT",
+          "V",
+          "AP",
+          "RH",
+          "PE"
+        ],
+        "missing_cells": 0,
+        "nonfinite_cells": 0,
+        "ordered_row_sha256": "2c01ab14687cb05a8f61b7a42e3b12be40ff8c57f432f60966a2524d8e58cb01",
+        "row_multiset_sha256": "7cdbca849f1730fedb2ee9c7704a5f8c62dfe31174caadc57e1f4839a4963e55",
+        "duplicate_row_groups": 41,
+        "duplicate_excess_rows": 41
+      },
+      {
+        "sheet_name": "Sheet4",
+        "shape": [
+          9568,
+          5
+        ],
+        "columns": [
+          "AT",
+          "V",
+          "AP",
+          "RH",
+          "PE"
+        ],
+        "missing_cells": 0,
+        "nonfinite_cells": 0,
+        "ordered_row_sha256": "a3566fe9ade43664614430938ff0c6ca2256ed47abbb3b50944b4caa37eac977",
+        "row_multiset_sha256": "7cdbca849f1730fedb2ee9c7704a5f8c62dfe31174caadc57e1f4839a4963e55",
+        "duplicate_row_groups": 41,
+        "duplicate_excess_rows": 41
+      },
+      {
+        "sheet_name": "Sheet5",
+        "shape": [
+          9568,
+          5
+        ],
+        "columns": [
+          "AT",
+          "V",
+          "AP",
+          "RH",
+          "PE"
+        ],
+        "missing_cells": 0,
+        "nonfinite_cells": 0,
+        "ordered_row_sha256": "40b17bc37e21ce2929a3396b3a51beee1e78e1d2dd1b77ed828df7fb07363702",
+        "row_multiset_sha256": "7cdbca849f1730fedb2ee9c7704a5f8c62dfe31174caadc57e1f4839a4963e55",
+        "duplicate_row_groups": 41,
+        "duplicate_excess_rows": 41
+      }
+    ],
+    "all_sheets_same_row_multiset": true,
+    "canonical_duplicate_policy": "recorded only; no row removed or deduplicated"
+  },
+  "audit_scope": "source structure only; no support cutoff, split, target-derived prior, model, policy, or outcome was computed"
+}
