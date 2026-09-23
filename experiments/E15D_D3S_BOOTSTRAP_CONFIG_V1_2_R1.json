@@ -1,0 +1,13 @@
+{
+  "protocol": "E15-D-D3S-bootstrap-v1.2-r1",
+  "source_rows_sha256": "2ee194755f3638bc8cc8421d25f9de914f249cba2737489e2c1cce2ef763812b",
+  "estimand": "D3_S = NRMSE(joint_MAP) - NRMSE(factorized_joint_weighted)",
+  "prefix_exposure": "S",
+  "left_policy": "joint_MAP",
+  "right_policy": "factorized_joint_weighted",
+  "bootstrap_unit": "latent_task_id",
+  "bootstrap_replicates": 5000,
+  "bootstrap_rng": {"bit_generator": "PCG64", "seed": 832786258895085509},
+  "quantile_method": "linear",
+  "interval": "cellwise_95_percent"
+}
