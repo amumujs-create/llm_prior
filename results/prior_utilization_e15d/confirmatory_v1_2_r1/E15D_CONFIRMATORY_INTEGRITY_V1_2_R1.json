@@ -1,0 +1,15 @@
+{
+  "accepted_task_count": 153,
+  "actual_row_count": 1836,
+  "all_finite": true,
+  "all_joint_factorized_equivalent": true,
+  "all_prefix_only": true,
+  "clean_target_scoring": true,
+  "duplicate_or_missing_rows": false,
+  "expected_row_count": 1836,
+  "final_status": "PASS",
+  "integrity_correction": "R1_fresh_namespace_and_LF_writer",
+  "manifest_sha256": "cd1a46722b9c1bc6ddd3afe31532f5cf56ed11330c5cff22c5e46cd92615ef46",
+  "protocol": "E15-D-confirmatory-v1.2-r1",
+  "rows_sha256": "2ee194755f3638bc8cc8421d25f9de914f249cba2737489e2c1cce2ef763812b"
+}
