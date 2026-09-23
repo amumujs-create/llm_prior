@@ -1,0 +1,15 @@
+{
+  "checks": {
+    "clean_target_scoring": true,
+    "common_far_window_after_all_prefixes": true,
+    "expected_policy_count": true,
+    "finite_policy_rows": true,
+    "joint_factorized_equivalence": true,
+    "nested_prefixes": true,
+    "no_acceptance_filter": true,
+    "prefix_only_weights": true,
+    "task_seed_replay_identical": true
+  },
+  "final_status": "PASS",
+  "protocol": "E15-D-confirmatory-v1.2-r1"
+}
