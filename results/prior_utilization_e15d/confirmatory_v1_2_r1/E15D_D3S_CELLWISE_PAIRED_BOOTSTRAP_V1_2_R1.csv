@@ -1,0 +1,2 @@
+estimand,prefix_exposure,n_tasks,mean_contrast,ci_2_5,ci_97_5,bootstrap_replicates,bootstrap_unit,source_rows_sha256
+D3_S,S,153,0.08307983453349282,0.05774881400438891,0.10811059122176644,5000,latent_task_id,2ee194755f3638bc8cc8421d25f9de914f249cba2737489e2c1cce2ef763812b
