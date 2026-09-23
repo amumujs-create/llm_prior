@@ -1,0 +1,44 @@
+{
+  "confirmatory_quota": 153,
+  "discarded_calibration": {
+    "no_replacement": true,
+    "seed_namespace": "e15d-quota-v1.2-protected",
+    "task_count": 400
+  },
+  "precision_contract": {
+    "epsilon": 0.025,
+    "minimum_quota": 125
+  },
+  "protected": true,
+  "protocol": "E15-D-quota-v1.2",
+  "source_hashes": {
+    "config_sha256": "266be85d1c6f92fb34d2a4d2d34899b7da4886c98e0ebb72b2f75035f36497a9",
+    "runner_sha256": "74ccb83fa5aeb0557c4116b7d7999579e18498cb1e4009714c4f62aa50b55370"
+  },
+  "variance_summary": [
+    {
+      "estimand": "D1_S",
+      "n_tasks": 400,
+      "paired_sd": 0.14993360243650727,
+      "required_quota": 139
+    },
+    {
+      "estimand": "D2_S",
+      "n_tasks": 400,
+      "paired_sd": 0.0214115537273065,
+      "required_quota": 3
+    },
+    {
+      "estimand": "D2_J",
+      "n_tasks": 400,
+      "paired_sd": 0.0844562981435619,
+      "required_quota": 44
+    },
+    {
+      "estimand": "D3_S",
+      "n_tasks": 400,
+      "paired_sd": 0.1576639311437278,
+      "required_quota": 153
+    }
+  ]
+}
