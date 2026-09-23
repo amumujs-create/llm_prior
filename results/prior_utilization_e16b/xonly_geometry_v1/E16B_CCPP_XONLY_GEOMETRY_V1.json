@@ -1,0 +1,109 @@
+{
+  "protocol": "E16-B CCPP AT-tail X-only geometry audit v1",
+  "status": "PASS",
+  "source_identity": {
+    "source_manifest_sha256": "96534c72420df127e3c43b87ae01492d2bb2efe2152409c5586ff0852b9cb391",
+    "workbook_sha256": "ccd490981db2a2f079963b3d9f0aea30d9d338900a0285428dfc6385396f4651",
+    "canonical_sheet": "Sheet1"
+  },
+  "x_only_contract": {
+    "loaded_columns": [
+      "AT",
+      "V",
+      "AP",
+      "RH"
+    ],
+    "target_column_access": "prohibited; not loaded into this audit",
+    "quantile_method": "numpy.quantile(method='linear')",
+    "support_coordinate": "AT",
+    "extrapolation_direction": "high-temperature tail",
+    "split_definition": {
+      "train": "AT <= q70",
+      "validation": "q70 < AT <= q85",
+      "guard_band": "q85 < AT <= q90; excluded from fitting and tuning",
+      "confirmatory_test": "AT > q90",
+      "final_training_rule": "train region only; validation is never merged into training"
+    }
+  },
+  "at_quantiles": {
+    "q70": 24.79,
+    "q85": 27.96,
+    "q90": 29.24,
+    "ties_at_q70": 5,
+    "ties_at_q85": 4,
+    "ties_at_q90": 5
+  },
+  "split_counts": {
+    "train": 6699,
+    "validation": 1436,
+    "guard_band": 477,
+    "confirmatory_test": 956,
+    "total": 9568
+  },
+  "at_support": {
+    "train_max": 24.79,
+    "validation_min": 24.8,
+    "guard_band_min": 27.97,
+    "confirmatory_test_min": 29.25,
+    "strict_train_to_test_gap": 4.460000000000001
+  },
+  "remaining_covariate_diagnostics": [
+    {
+      "feature": "V",
+      "train_min": 25.36,
+      "train_max": 81.56,
+      "test_min": 43.21,
+      "test_max": 80.18,
+      "test_within_train_minmax_count": 956,
+      "test_within_train_minmax_fraction": 1.0,
+      "train_median": 44.34,
+      "test_median": 70.17,
+      "median_shift_over_train_iqr": 1.4887608069164269,
+      "wasserstein_over_train_iqr": 1.2293141040422502,
+      "train_iqr": 17.349999999999994
+    },
+    {
+      "feature": "AP",
+      "train_min": 992.89,
+      "train_max": 1033.3,
+      "test_min": 997.34,
+      "test_max": 1018.12,
+      "test_within_train_minmax_count": 956,
+      "test_within_train_minmax_fraction": 1.0,
+      "train_median": 1014.68,
+      "test_median": 1008.64,
+      "median_shift_over_train_iqr": -0.7559449311639496,
+      "wasserstein_over_train_iqr": 0.7657081307532402,
+      "train_iqr": 7.990000000000009
+    },
+    {
+      "feature": "RH",
+      "train_min": 28.81,
+      "train_max": 100.16,
+      "test_min": 25.56,
+      "test_max": 84.85,
+      "test_within_train_minmax_count": 951,
+      "test_within_train_minmax_fraction": 0.9947698744769874,
+      "train_median": 79.49,
+      "test_median": 55.655,
+      "median_shift_over_train_iqr": -1.4008228034087578,
+      "wasserstein_over_train_iqr": 1.3401426594541959,
+      "train_iqr": 17.014999999999986
+    }
+  ],
+  "nearest_neighbor_diagnostic": {
+    "features": [
+      "V",
+      "AP",
+      "RH"
+    ],
+    "standardization": "train median and train IQR",
+    "train_leave_one_out_nn_q95": 0.1190947776540734,
+    "test_to_train_nn_median": 0.24973699714499512,
+    "test_to_train_nn_q95": 0.7117062416522772,
+    "c_overlap": 0.21234309623430964,
+    "classification_rule": "compound covariate shift iff C_overlap < 0.95",
+    "classification": "high-AT extrapolation under compound covariate shift"
+  },
+  "scope": "X-only geometry; no target-derived summaries, split optimization, model, policy, or predictive outcome"
+}
