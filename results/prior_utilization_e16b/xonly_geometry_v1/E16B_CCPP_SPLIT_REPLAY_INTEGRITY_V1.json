@@ -1,0 +1,49 @@
+{
+  "protocol": "E16-B CCPP split replay integrity audit v1",
+  "status": "PASS",
+  "source_identity": {
+    "workbook_sha256": "ccd490981db2a2f079963b3d9f0aea30d9d338900a0285428dfc6385396f4651",
+    "geometry_artifact_sha256": "b1cf100c8453d609816bcc8f2eaa9e3724a7ff540e6de9a541fbec603fbb3753",
+    "canonical_sheet": "Sheet1"
+  },
+  "data_access": {
+    "loaded_columns": [
+      "AT",
+      "V",
+      "AP",
+      "RH"
+    ],
+    "target_column_access": "prohibited; not loaded"
+  },
+  "replayed_quantiles": {
+    "q70": 24.79,
+    "q85": 27.96,
+    "q90": 29.24,
+    "method": "numpy.quantile(method='linear')"
+  },
+  "replayed_counts": {
+    "train": 6699,
+    "validation": 1436,
+    "guard_band": 477,
+    "confirmatory_test": 956
+  },
+  "strict_train_to_test_gap": 4.460000000000001,
+  "row_index_convention": "zero-based canonical Sheet1 data rows; header excluded; SHA-256 over big-endian uint32 bytes",
+  "partition_index_sha256": {
+    "train": "1df2c72d433116dd09c1e0cb49a68c0e9d2c1540f451bfa2fa89fdeecac68b35",
+    "validation": "6a3de868b247e217e0d2e7f49efcbe28cd4cb27b20f22f03dc4cc4932a026535",
+    "guard_band": "af1fa393edcc0d046943736d4a3834d53e16dc50b369c15472f40f532e1b0afe",
+    "confirmatory_test": "c4ecb7caabf74c33ffca06c98304dd15fd1cfab246c95130a795c4022345f9d8"
+  },
+  "partition_membership_sha256": "d48f1c242c2e9f2163751ec88a74bd17c4fbec763b2d63a37bc63d52601b4aa7",
+  "pass_checks": {
+    "source_workbook_sha256_match": true,
+    "quantiles_exact_replay": true,
+    "counts_match": true,
+    "partition_exhaustive": true,
+    "partition_disjoint": true,
+    "strict_train_to_test_gap_match": true,
+    "x_only_input": true
+  },
+  "scope": "integrity replay only; no target, model, policy, likelihood, or predictive outcome"
+}
