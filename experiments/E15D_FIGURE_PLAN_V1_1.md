@@ -18,7 +18,9 @@ After integrity freeze and only from frozen cellwise tables:
 1. frozen evidence geometry;
 2. S-regime primary D1 and D2;
 3. D2 across L/S/J, explicitly labelling S primary and J secondary;
-4. secondary dependence and point-collapse diagnostics.
+4. point-collapse diagnostics plus the deterministic additive
+   joint-versus-factorized equivalence audit (not a scientific dependence
+   contrast).
 
 The final E15 A/B/C/D integration visualizes
 

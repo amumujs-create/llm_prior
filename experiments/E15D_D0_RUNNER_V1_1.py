@@ -16,7 +16,7 @@ import json
 import math
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any
 
 import numpy as np
 
@@ -297,6 +297,85 @@ def forbidden_function_audit() -> dict[str, Any]:
     return {"defined_functions": sorted(defined), "forbidden_present": sorted(defined & FORBIDDEN_FUNCTION_NAMES), "passed": not bool(defined & FORBIDDEN_FUNCTION_NAMES)}
 
 
+def dependence_equivalence_audit(x: np.ndarray) -> dict[str, float | bool]:
+    """Audit the additive identity with fixed, non-factorized normalized weights."""
+    kappas = np.array([0.10, 0.55, 0.90], dtype=float)
+    lambdas = np.array([0.10, 0.60, 0.90], dtype=float)
+    weights = np.array([[0.03, 0.12, 0.05], [0.16, 0.07, 0.18], [0.11, 0.22, 0.06]], dtype=float)
+    weights /= np.sum(weights)
+    marginal_kappa = np.sum(weights, axis=1)
+    marginal_lambda = np.sum(weights, axis=0)
+    continuations = x[None, None, :] + kappas[:, None, None] * x[None, None, :] ** 2 + lambdas[None, :, None] * x[None, None, :] ** 6
+    full_mixture = np.einsum("ij,ijm->m", weights, continuations)
+    factorized_mixture = np.einsum("ij,ijm->m", marginal_kappa[:, None] * marginal_lambda[None, :], continuations)
+    grid_maximum = float(np.max(np.abs(full_mixture - factorized_mixture)))
+    full_kappa = float(np.sum(kappas[:, None] * weights))
+    full_lambda = float(np.sum(lambdas[None, :] * weights))
+    factor_kappa = float(np.sum(kappas * marginal_kappa))
+    factor_lambda = float(np.sum(lambdas * marginal_lambda))
+    continuous_supremum_bound = abs(full_kappa - factor_kappa) + abs(full_lambda - factor_lambda)
+    return {
+        "maximum_absolute_difference_on_public_grid": grid_maximum,
+        "continuous_supremum_bound": continuous_supremum_bound,
+        "tolerance": 1e-12,
+        "passed": max(grid_maximum, continuous_supremum_bound) <= 1e-12,
+    }
+
+
+def validate_schema_instance(instance: Any, schema: dict[str, Any], root: dict[str, Any], path: str = "$") -> None:
+    if "$ref" in schema:
+        reference = schema["$ref"]
+        if not reference.startswith("#/"):
+            raise ValueError(f"unsupported schema reference at {path}: {reference}")
+        target: Any = root
+        for component in reference[2:].split("/"):
+            target = target[component]
+        validate_schema_instance(instance, target, root, path)
+        return
+    expected_type = schema.get("type")
+    if expected_type is not None:
+        allowed = expected_type if isinstance(expected_type, list) else [expected_type]
+        types = {
+            "object": lambda value: isinstance(value, dict),
+            "array": lambda value: isinstance(value, list),
+            "string": lambda value: isinstance(value, str),
+            "integer": lambda value: isinstance(value, int) and not isinstance(value, bool),
+            "number": lambda value: isinstance(value, (int, float)) and not isinstance(value, bool),
+            "null": lambda value: value is None,
+        }
+        if not any(types[name](instance) for name in allowed):
+            raise ValueError(f"schema type mismatch at {path}: expected {allowed}")
+    if "const" in schema and instance != schema["const"]:
+        raise ValueError(f"schema const mismatch at {path}")
+    if "enum" in schema and instance not in schema["enum"]:
+        raise ValueError(f"schema enum mismatch at {path}")
+    if isinstance(instance, dict):
+        properties = schema.get("properties", {})
+        for required in schema.get("required", []):
+            if required not in instance:
+                raise ValueError(f"schema required field missing at {path}: {required}")
+        if schema.get("additionalProperties") is False:
+            extra = set(instance) - set(properties)
+            if extra:
+                raise ValueError(f"schema additional properties at {path}: {sorted(extra)}")
+        for key, value in instance.items():
+            if key in properties:
+                validate_schema_instance(value, properties[key], root, f"{path}.{key}")
+    if isinstance(instance, list):
+        if "minItems" in schema and len(instance) < schema["minItems"]:
+            raise ValueError(f"schema minItems mismatch at {path}")
+        if "maxItems" in schema and len(instance) > schema["maxItems"]:
+            raise ValueError(f"schema maxItems mismatch at {path}")
+        if "items" in schema:
+            for index, value in enumerate(instance):
+                validate_schema_instance(value, schema["items"], root, f"{path}[{index}]")
+
+
+def validate_artifact_schema(artifact: dict[str, Any], schema_path: Path) -> None:
+    schema = json.loads(schema_path.read_text(encoding="utf-8"))
+    validate_schema_instance(artifact, schema, schema)
+
+
 def sanity_checks(config: dict[str, Any]) -> dict[str, Any]:
     x = public_grid(config)
     namespace = config["rng"]["seed_namespace"]
@@ -330,6 +409,22 @@ def sanity_checks(config: dict[str, Any]) -> dict[str, Any]:
         for left, right in zip(forward_latents, reverse_latents)
     )
     forbidden = forbidden_function_audit()
+    dependence = dependence_equivalence_audit(x)
+    schema_probe = {
+        "protocol": "E15-D0-v1.1",
+        "discarded_calibration": {"seed_namespace": namespace},
+        "source_hashes": {"runner_sha256": "x", "config_sha256": "x", "schema_sha256": "x", "implementation_addendum_sha256": config["implementation_addendum_sha256"], "contract_sha256": config["source_contract_sha256"]},
+        "selection_rule": config["selection_priority"],
+        "candidate_count": 144,
+        "candidates": [record_one] * 144,
+        "selected_candidate": record_one,
+        "final_status": "PASS",
+    }
+    try:
+        validate_artifact_schema(schema_probe, DEFAULT_SCHEMA)
+        schema_validation = True
+    except ValueError:
+        schema_validation = False
     checks = {
         "task_seed_replay_identical": replay,
         "candidate_order_does_not_change_latents": order_invariant,
@@ -341,8 +436,10 @@ def sanity_checks(config: dict[str, Any]) -> dict[str, Any]:
         "synthetic_clique_fail": clique_fail,
         "future_label_leakage_absent": leakage_invariant,
         "forbidden_outcome_functions_absent": forbidden["passed"],
+        "dependence_equivalence": bool(dependence["passed"]),
+        "artifact_schema_validation": schema_validation,
     }
-    return {"protocol": "E15-D0-v1.1", "checks": checks, "forbidden_function_audit": forbidden, "final_status": "PASS" if all(checks.values()) else "FAIL"}
+    return {"protocol": "E15-D0-v1.1", "checks": checks, "forbidden_function_audit": forbidden, "dependence_equivalence_audit": dependence, "final_status": "PASS" if all(checks.values()) else "FAIL"}
 
 
 def build_artifact(config: dict[str, Any], config_path: Path, schema_path: Path) -> dict[str, Any]:
@@ -351,7 +448,7 @@ def build_artifact(config: dict[str, Any], config_path: Path, schema_path: Path)
     artifact = {
         "protocol": "E15-D0-v1.1",
         "discarded_calibration": {"seed_namespace": config["rng"]["seed_namespace"], "task_id_start": 0, "task_id_end": 399, "task_count": 400, "no_replacement": True},
-        "source_hashes": {"runner_sha256": sha256_file(Path(__file__)), "config_sha256": sha256_file(config_path), "schema_sha256": sha256_file(schema_path), "contract_sha256": config["source_contract_sha256"]},
+        "source_hashes": {"runner_sha256": sha256_file(Path(__file__)), "config_sha256": sha256_file(config_path), "schema_sha256": sha256_file(schema_path), "implementation_addendum_sha256": config["implementation_addendum_sha256"], "contract_sha256": config["source_contract_sha256"]},
         "selection_rule": config["selection_priority"],
         "candidate_count": len(records),
         "candidates": records,
@@ -359,6 +456,7 @@ def build_artifact(config: dict[str, Any], config_path: Path, schema_path: Path)
         "final_status": "PASS" if selected is not None else "FAIL",
     }
     reject_outcome_keys(artifact)
+    validate_artifact_schema(artifact, schema_path)
     return artifact
 
 

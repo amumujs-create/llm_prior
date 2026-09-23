@@ -1,7 +1,9 @@
 {
   "checks": {
+    "artifact_schema_validation": true,
     "candidate_order_does_not_change_latents": true,
     "continuous_rms_matches_dense_integration": true,
+    "dependence_equivalence": true,
     "forbidden_outcome_functions_absent": true,
     "future_label_leakage_absent": true,
     "nested_prefixes": true,
@@ -10,6 +12,12 @@
     "synthetic_clique_pass": true,
     "task_seed_replay_identical": true,
     "weight_and_entropy_stability": true
+  },
+  "dependence_equivalence_audit": {
+    "continuous_supremum_bound": 1.1102230246251565e-16,
+    "maximum_absolute_difference_on_public_grid": 4.440892098500626e-16,
+    "passed": true,
+    "tolerance": 1e-12
   },
   "final_status": "PASS",
   "forbidden_function_audit": {
@@ -22,6 +30,7 @@
       "coefficient_grid",
       "construct_failures",
       "dense_rms",
+      "dependence_equivalence_audit",
       "evidence_for_prefix",
       "exact_continuous_rms",
       "extend",
@@ -38,7 +47,9 @@
       "sha256_file",
       "stable_weights",
       "task_latents",
-      "task_seed"
+      "task_seed",
+      "validate_artifact_schema",
+      "validate_schema_instance"
     ],
     "forbidden_present": [],
     "passed": true

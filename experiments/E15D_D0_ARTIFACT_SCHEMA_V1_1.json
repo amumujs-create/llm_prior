@@ -6,7 +6,18 @@
   "properties": {
     "protocol": {"type": "string", "const": "E15-D0-v1.1"},
     "discarded_calibration": {"type": "object"},
-    "source_hashes": {"type": "object"},
+    "source_hashes": {
+      "type": "object",
+      "required": ["runner_sha256", "config_sha256", "schema_sha256", "implementation_addendum_sha256", "contract_sha256"],
+      "properties": {
+        "runner_sha256": {"type": "string"},
+        "config_sha256": {"type": "string"},
+        "schema_sha256": {"type": "string"},
+        "implementation_addendum_sha256": {"type": "string"},
+        "contract_sha256": {"type": "object"}
+      },
+      "additionalProperties": false
+    },
     "selection_rule": {"type": "array", "items": {"type": "string"}},
     "candidate_count": {"type": "integer", "const": 144},
     "candidates": {"type": "array", "minItems": 144, "maxItems": 144, "items": {"$ref": "#/$defs/candidate"}},

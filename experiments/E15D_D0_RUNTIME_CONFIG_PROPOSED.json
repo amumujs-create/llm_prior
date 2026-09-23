@@ -21,6 +21,7 @@
     "semantic_contract": "af19abc014f84837dc7a3046b8a7c716f1dc2b1189c56cd3958bca98e54f585a",
     "factorised_d2_contract": "e7cd973a6a477a8343d01c1c935c0a2dba036f0f5761e45828ebb5eb5697e8bd",
     "protocol_index": "b6556760a5b12d9b700ade26134eaf82acf1c6cb28bc4f23cff55075632d2863",
-    "execution_addendum": "1d87e8c4003927c39c0097b52ae28b30df0185898e88103997128a3e30933c10"
+    "execution_addendum": "1d87e8c4003927c39c0097b52ae28b30df0185898e88103997128a3e30933c10",
+    "dependence_equivalence_amendment": "9772346f68aade9c8bb88aa18027cc1cb0bfb939120e4f7b71b985a26561872e"
   }
 }
