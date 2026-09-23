@@ -1,0 +1,79 @@
+{
+  "confirmatory_quota": 184957,
+  "contract": {
+    "contract_id": "e15-c0-protected-quota-v1",
+    "epsilon": 0.025,
+    "grid_step": 0.05,
+    "minimum_quota": 125,
+    "pilot_seed": 151504,
+    "pilot_tasks": 240,
+    "rho": 0.1,
+    "x_far": 1.0
+  },
+  "contract_sha256": "da451cfb4f657bc4f31195fb2c8bd4c4f20cf1027e191562070741949ac901d7",
+  "max_attempts": {
+    "accepted": 240,
+    "failure_probability_target": 0.0001,
+    "max_attempts": 187215,
+    "proposals": 240,
+    "wilson_lower_probability": 0.9888525683608576
+  },
+  "note": "Only variance-derived quota quantities are exposed. No contrast mean, sign, policy outcome, score, ranking, or winner is present in this artifact.",
+  "pilot_acceptance": {
+    "accepted_tasks": 240,
+    "proposals": 240,
+    "rejection_count": 0
+  },
+  "policy_outcomes_inspected": false,
+  "protected_primary_cells": [
+    {
+      "contrast": "C1_C",
+      "n_tasks": 240,
+      "paired_sd": 5.070588733849151,
+      "paired_sd_upper_95": 5.485524868699887,
+      "prefix_exposure": "low",
+      "required_quota": 184957
+    },
+    {
+      "contrast": "C1_C",
+      "n_tasks": 240,
+      "paired_sd": 0.3463003370255565,
+      "paired_sd_upper_95": 0.3746387669170719,
+      "prefix_exposure": "medium",
+      "required_quota": 863
+    },
+    {
+      "contrast": "C1_C",
+      "n_tasks": 240,
+      "paired_sd": 0.044980066438251004,
+      "paired_sd_upper_95": 0.04866087272976209,
+      "prefix_exposure": "high",
+      "required_quota": 125
+    },
+    {
+      "contrast": "C2_C",
+      "n_tasks": 240,
+      "paired_sd": 0.2947682893783087,
+      "paired_sd_upper_95": 0.3188897516169453,
+      "prefix_exposure": "low",
+      "required_quota": 626
+    },
+    {
+      "contrast": "C2_C",
+      "n_tasks": 240,
+      "paired_sd": 0.07238219010714796,
+      "paired_sd_upper_95": 0.07830536545651058,
+      "prefix_exposure": "medium",
+      "required_quota": 125
+    },
+    {
+      "contrast": "C2_C",
+      "n_tasks": 240,
+      "paired_sd": 0.04150589866946947,
+      "paired_sd_upper_95": 0.044902407057627054,
+      "prefix_exposure": "high",
+      "required_quota": 125
+    }
+  ],
+  "raw_contrasts_persisted": false
+}
