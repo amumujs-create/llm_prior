@@ -1,0 +1,31 @@
+{
+  "protocol": "E16-B affine point-mixture equivalence audit v1",
+  "final_status": "PASS",
+  "source_hashes": {
+    "workbook_sha256": "ccd490981db2a2f079963b3d9f0aea30d9d338900a0285428dfc6385396f4651",
+    "d0_artifact_sha256": "0cab946725de42bbd7a4edb9a34b27d150ea3ebaa70acdf8551d3a62afb96f23",
+    "capacity_artifact_sha256": "67c62550cb31a2b2aee9ce583a646713fd53304e05176a8cd7017933c99ac901"
+  },
+  "target_access": {
+    "train_target_rows_read": 6699,
+    "validation_guard_confirmatory_target_access": "prohibited"
+  },
+  "candidate_count": 405,
+  "common_ridge": 0.0001,
+  "numerical_checks": {
+    "candidate_fit_and_predictions_finite": true,
+    "mean_specification_fit_and_prediction_finite": true
+  },
+  "mean_raw_specification": {
+    "s": -0.5000000000000017,
+    "c": 0.006981443726711346,
+    "gamma_V": 0.0,
+    "gamma_AP": 0.0,
+    "gamma_RH": 0.0
+  },
+  "evaluation_domain": "all 9,568 canonical X rows",
+  "max_abs_uniform_point_mean_minus_mean_specification": 5.773159728050814e-15,
+  "rms_uniform_point_mean_minus_mean_specification": 1.3951864863579293e-15,
+  "tolerance": 1e-12,
+  "interpretation": "uniform candidate point mean is affinely equivalent to the point prediction at the uniform mean raw specification"
+}
