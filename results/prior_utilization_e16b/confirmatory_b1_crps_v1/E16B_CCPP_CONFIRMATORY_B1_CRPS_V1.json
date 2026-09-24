@@ -1,0 +1,44 @@
+{
+  "protocol": "E16-B CCPP confirmatory primary B1 exact CRPS v1",
+  "final_status": "PASS",
+  "source_hashes": {
+    "workbook_sha256": "ccd490981db2a2f079963b3d9f0aea30d9d338900a0285428dfc6385396f4651",
+    "prediction_manifest_sha256": "0a1946f94e1ab174b160855d09296935223066cf805b89885d222d6b1c73f14e",
+    "components_sha256": "d36e4c715358b18e1c466e0a784ed5052f0bab74ba680908487ec7cba4f55a53",
+    "final_scoring_contract_sha256": "0a3624b5003c11fe8f5702a648d1b3c3e184b57d51a423bf74fa425badde9b5b",
+    "capacity_artifact_sha256": "67c62550cb31a2b2aee9ce583a646713fd53304e05176a8cd7017933c99ac901"
+  },
+  "target_access": {
+    "confirmatory_target_rows_read": 956,
+    "train_target_access": "normalization values loaded only from frozen capacity artifact",
+    "validation_target_access": "none",
+    "guard_target_access": "prohibited"
+  },
+  "scoring": {
+    "metric": "exact finite Gaussian-mixture CRPS",
+    "normalized_target_scale": "frozen train median/IQR",
+    "sigma_ref": 0.26536872271489265,
+    "component_counts": {
+      "uniform": 405,
+      "MAP": 1
+    }
+  },
+  "bootstrap": {
+    "unit": "empirical confirmatory row",
+    "replicates": 5000,
+    "generator": "NumPy PCG64",
+    "seed": 20260924,
+    "ci": "percentile 95%, linear quantiles"
+  },
+  "primary_estimand": {
+    "name": "B1_CRPS = CRPS_uniform - CRPS_MAP",
+    "n_rows": 956,
+    "mean": 0.13700838552617803,
+    "ci_2_5": 0.13144014099661291,
+    "ci_97_5": 0.14232832977382953,
+    "prospective_prediction": "< 0",
+    "disposition": "Prospective failure"
+  },
+  "row_delta_sha256": "9a9320fedd2c74650c6067fb0bb9dbafde49b6300e41758c29474bb157bbbe99",
+  "scope": "B1 only; weighted mixture, B2, and NRMSE were not computed or persisted in this run"
+}
