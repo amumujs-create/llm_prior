@@ -1,0 +1,41 @@
+{
+  "protocol": "E16-B CCPP confirmatory secondary B2 exact CRPS v1",
+  "final_status": "PASS",
+  "source_hashes": {
+    "workbook_sha256": "ccd490981db2a2f079963b3d9f0aea30d9d338900a0285428dfc6385396f4651",
+    "prediction_manifest_sha256": "0a1946f94e1ab174b160855d09296935223066cf805b89885d222d6b1c73f14e",
+    "components_sha256": "d36e4c715358b18e1c466e0a784ed5052f0bab74ba680908487ec7cba4f55a53",
+    "final_scoring_contract_sha256": "0a3624b5003c11fe8f5702a648d1b3c3e184b57d51a423bf74fa425badde9b5b",
+    "frozen_B1_sha256": "09b1dd793cfb5a5647bf9141bd05fe95b463f876773a79b3ba80f9dbaf0ff9d7"
+  },
+  "target_access": {
+    "confirmatory_target_rows_read": 956,
+    "validation_target_access": "none",
+    "guard_target_access": "prohibited"
+  },
+  "scoring": {
+    "metric": "exact finite Gaussian-mixture CRPS",
+    "sigma_ref": 0.26536872271489265,
+    "component_counts": {
+      "weighted": 405,
+      "uniform": 405
+    }
+  },
+  "bootstrap": {
+    "unit": "empirical confirmatory row",
+    "replicates": 5000,
+    "generator": "NumPy PCG64",
+    "seed": 20260924,
+    "ci": "percentile 95%, linear quantiles"
+  },
+  "secondary_estimand": {
+    "name": "B2_CRPS = CRPS_weighted - CRPS_uniform",
+    "n_rows": 956,
+    "mean": -0.13555836354572112,
+    "ci_2_5": -0.1406314151871323,
+    "ci_97_5": -0.1302895945934926,
+    "direction": "non-directional; no success/failure disposition"
+  },
+  "row_delta_sha256": "1d7e3a38058de3562231087e4406102890ab32862598a7a04bca87b1e69280ff",
+  "scope": "B2 only after frozen B1; NRMSE was not computed or persisted in this run"
+}

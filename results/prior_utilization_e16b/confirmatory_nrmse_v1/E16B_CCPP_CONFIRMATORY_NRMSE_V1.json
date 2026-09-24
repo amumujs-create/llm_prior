@@ -1,0 +1,41 @@
+{
+  "protocol": "E16-B CCPP confirmatory secondary point-prediction NRMSE diagnostics v1",
+  "final_status": "PASS",
+  "source_hashes": {
+    "workbook_sha256": "ccd490981db2a2f079963b3d9f0aea30d9d338900a0285428dfc6385396f4651",
+    "prediction_manifest_sha256": "0a1946f94e1ab174b160855d09296935223066cf805b89885d222d6b1c73f14e",
+    "components_sha256": "d36e4c715358b18e1c466e0a784ed5052f0bab74ba680908487ec7cba4f55a53",
+    "frozen_B1_CRPS_sha256": "09b1dd793cfb5a5647bf9141bd05fe95b463f876773a79b3ba80f9dbaf0ff9d7",
+    "frozen_B2_CRPS_sha256": "df2a70408d88dce2aa7a974463d9591c0fe457dc52e2897cb8eb716ba04b9d03"
+  },
+  "target_access": {
+    "confirmatory_target_rows_read": 956,
+    "validation_target_access": "none",
+    "guard_target_access": "prohibited"
+  },
+  "metric_boundary": "NRMSE is a secondary point-specification diagnostic, not evidence that a predictive distribution retained diversity.",
+  "bootstrap": {
+    "unit": "empirical confirmatory row",
+    "replicates": 5000,
+    "generator": "NumPy PCG64",
+    "seed": 20260924,
+    "ci": "percentile 95%, linear quantiles"
+  },
+  "secondary_diagnostics": {
+    "B1_NRMSE = NRMSE_uniform - NRMSE_MAP": {
+      "mean": 0.2441098726933439,
+      "ci_2_5": 0.23444376023458516,
+      "ci_97_5": 0.25338961971514823
+    },
+    "B2_NRMSE = NRMSE_weighted - NRMSE_uniform": {
+      "mean": -0.24134173729639222,
+      "ci_2_5": -0.250275893356117,
+      "ci_97_5": -0.23203668644532927
+    }
+  },
+  "prediction_vector_sha256": {
+    "uniform": "1f9799e3299da55a247d712e97d3833428d23d050cebd1f362525ec769047c95",
+    "weighted": "587243d485a1088d852a8e924f8fb3be6b01815646a93479151aaee30250d835",
+    "MAP": "273cd9a9b255e830c7e16dc6cab85d1ac2dbfdcedf3e120816cadbe7e331b19b"
+  }
+}
