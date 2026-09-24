@@ -1,0 +1,23 @@
+{
+  "protocol": "E16-B CCPP sealed test-X predictive-distribution integrity audit v1",
+  "final_status": "PASS",
+  "source_hashes": {
+    "prediction_manifest_sha256": "0a1946f94e1ab174b160855d09296935223066cf805b89885d222d6b1c73f14e",
+    "components_sha256": "d36e4c715358b18e1c466e0a784ed5052f0bab74ba680908487ec7cba4f55a53"
+  },
+  "checks": {
+    "allowed_npz_keys_only": true,
+    "component_means_shape": true,
+    "test_indices_shape": true,
+    "all_component_means_finite": true,
+    "uniform_weights_exact": true,
+    "weighted_weights_sum_to_one": true,
+    "weights_finite_nonnegative": true,
+    "MAP_index_in_range": true,
+    "sigma_matches_manifest": true,
+    "component_sha_matches_manifest": true,
+    "no_target_named_arrays": true
+  },
+  "target_access": "none; audit reads only already-frozen prediction arrays",
+  "scope": "test predictive distributions are structurally complete and contain no target array"
+}

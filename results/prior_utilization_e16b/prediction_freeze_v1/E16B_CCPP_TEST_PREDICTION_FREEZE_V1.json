@@ -1,0 +1,41 @@
+{
+  "protocol": "E16-B CCPP validation-selected test-X predictive-distribution freeze v1",
+  "final_status": "PASS",
+  "source_hashes": {
+    "workbook_sha256": "ccd490981db2a2f079963b3d9f0aea30d9d338900a0285428dfc6385396f4651",
+    "d0_artifact_sha256": "0cab946725de42bbd7a4edb9a34b27d150ea3ebaa70acdf8551d3a62afb96f23",
+    "capacity_artifact_sha256": "67c62550cb31a2b2aee9ce583a646713fd53304e05176a8cd7017933c99ac901",
+    "validation_evidence_sha256": "db96d14ebea2f0e01bfa9f81ac3c5ab424c59fe0dcfba2fb82132bc42b09ac7c"
+  },
+  "target_access": {
+    "train_target_rows_read": 6699,
+    "validation_target_access": "not read in this step",
+    "guard_target_access": "prohibited",
+    "confirmatory_target_access": "prohibited; workbook opened with max_col=4 for test X"
+  },
+  "component_artifact": {
+    "path": "results/prior_utilization_e16b/prediction_freeze_v1/E16B_CCPP_TEST_PREDICTIVE_COMPONENTS_V1.npz",
+    "sha256": "d36e4c715358b18e1c466e0a784ed5052f0bab74ba680908487ec7cba4f55a53",
+    "component_means_shape": [
+      956,
+      405
+    ],
+    "test_index_count": 956
+  },
+  "policies": {
+    "uniform": {
+      "component_count": 405,
+      "weights": "uniform_weights"
+    },
+    "MAP": {
+      "component_count": 1,
+      "zero_based_candidate_index": 160
+    },
+    "weighted": {
+      "component_count": 405,
+      "weights": "weighted_weights"
+    }
+  },
+  "sigma_ref": 0.26536872271489265,
+  "scope": "prediction distributions fixed from train fit, validation evidence, and test X only; no guard or confirmatory PE was read"
+}

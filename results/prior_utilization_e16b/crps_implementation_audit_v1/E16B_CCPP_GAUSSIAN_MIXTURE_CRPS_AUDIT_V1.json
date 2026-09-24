@@ -1,0 +1,37 @@
+{
+  "protocol": "E16-B exact finite Gaussian-mixture CRPS implementation audit v1",
+  "final_status": "PASS",
+  "target_access": "no CCPP target values read",
+  "checks": {
+    "singleton_equals_gaussian": true,
+    "identical_component_means_equals_single_gaussian": true,
+    "one_hot_equals_selected_gaussian": true,
+    "weights_sum_to_one": true,
+    "finite_nonnegative": true,
+    "deterministic_replay": true,
+    "toy_numerical_integration_agrees": true
+  },
+  "tolerances": {
+    "algebraic": 1e-12,
+    "numerical_integration": 1e-08
+  },
+  "fixed_toy": {
+    "observation": 0.37,
+    "sigma": 0.26536872271489265,
+    "means": [
+      -0.8,
+      -0.1,
+      0.45,
+      1.05
+    ],
+    "weights": [
+      0.1,
+      0.2,
+      0.3,
+      0.4
+    ]
+  },
+  "analytic_toy_crps": 0.1802196448580301,
+  "numerical_integration_toy_crps": 0.18021964485807532,
+  "absolute_difference": 4.52138326778595e-14
+}
