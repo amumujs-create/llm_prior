@@ -21,7 +21,10 @@ def main() -> None:
 
     fig, ax = plt.subplots(figsize=(9.4, 4.8), constrained_layout=True)
     x = [0, 1, 2]
-    y = [0.0, b2["mean"], weighted_minus_map]
+    # The ordinate is CRPS relative to the uniform mixture: MAP - Uniform is
+    # -B1, not Weighted - MAP.  The latter remains an annotated derived
+    # descriptive contrast below.
+    y = [0.0, b2["mean"], -b1["mean"]]
     labels = ["Uniform\nreference mixture", "Validation-weighted\nmixture", "Validation-selected\nMAP"]
     ax.plot(x, y, color="#4C78A8", linewidth=2.5, marker="o", markersize=9)
     ax.axhline(0.0, color="black", linestyle="--", linewidth=1)
