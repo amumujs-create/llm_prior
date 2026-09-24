@@ -85,7 +85,12 @@ def main() -> None:
     crps_g: dict[str, dict[float, np.ndarray]] = {name: {} for name in policies}
     audit = {"mean_preservation_max_abs": {}, "variance_match_max_abs": {}, "rho_zero_single_gaussian_max_abs": {}}
     for name, weights in policies.items():
-        mean = base_means @ weights
+        # Explicit finite checks below are authoritative; avoid stale BLAS
+        # floating-point warning flags observed in this local runtime.
+        with np.errstate(over="ignore", divide="ignore", invalid="ignore"):
+            mean = base_means @ weights
+        if not np.isfinite(mean).all():
+            raise ValueError("Nonfinite frozen mixture mean")
         centered = base_means - mean[:, None]
         variance = np.sum(weights * centered**2, axis=1)
         for rho in RHOS:
@@ -93,7 +98,11 @@ def main() -> None:
             crps_f[name][rho] = mixture_crps(y, transformed, weights, sigma)
             scale = np.sqrt(sigma**2 + rho**2 * variance)
             crps_g[name][rho] = gaussian_crps(y, mean, scale)
-            audit["mean_preservation_max_abs"][str(rho)] = float(np.max(np.abs(transformed @ weights - mean)))
+            with np.errstate(over="ignore", divide="ignore", invalid="ignore"):
+                reconstructed_mean = transformed @ weights
+            if not np.isfinite(reconstructed_mean).all():
+                raise ValueError("Nonfinite mean-preservation reconstruction")
+            audit["mean_preservation_max_abs"][str(rho)] = float(np.max(np.abs(reconstructed_mean - mean)))
             audit["variance_match_max_abs"][str(rho)] = float(np.max(np.abs((sigma**2 + np.sum(weights * (transformed - mean[:, None])**2, axis=1)) - scale**2)))
             if rho == 0.0:
                 audit["rho_zero_single_gaussian_max_abs"][name] = float(np.max(np.abs(crps_f[name][rho] - crps_g[name][rho])))

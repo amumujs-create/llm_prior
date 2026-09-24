@@ -1,0 +1,167 @@
+{
+  "protocol": "E16-B post-hoc mean-spread decomposition v1",
+  "final_status": "PASS",
+  "analysis_status": "post-hoc diagnostic; not an independent confirmatory result",
+  "source_hashes": {
+    "workbook_sha256": "ccd490981db2a2f079963b3d9f0aea30d9d338900a0285428dfc6385396f4651",
+    "components_sha256": "d36e4c715358b18e1c466e0a784ed5052f0bab74ba680908487ec7cba4f55a53",
+    "prediction_manifest_sha256": "0a1946f94e1ab174b160855d09296935223066cf805b89885d222d6b1c73f14e",
+    "B1_sha256": "09b1dd793cfb5a5647bf9141bd05fe95b463f876773a79b3ba80f9dbaf0ff9d7",
+    "B2_sha256": "df2a70408d88dce2aa7a974463d9591c0fe457dc52e2897cb8eb716ba04b9d03",
+    "contract_sha256": "083ab8a0547ccf1b3c6921fef893c00c440320a7dfce06cc3fea7c14fbb156e3"
+  },
+  "target_access": {
+    "confirmatory_target_rows_read": 956,
+    "validation_target_access": "none",
+    "guard_target_access": "prohibited"
+  },
+  "fixed_inputs": {
+    "sigma_ref": 0.26536872271489265,
+    "rhos": [
+      0.0,
+      0.25,
+      0.5,
+      0.75,
+      1.0
+    ],
+    "component_shape": [
+      956,
+      405
+    ],
+    "no_refit": true
+  },
+  "bootstrap": {
+    "unit": "shared empirical confirmatory row indices across all terms",
+    "replicates": 5000,
+    "generator": "NumPy PCG64",
+    "seed": 20260924,
+    "ci": "percentile 95%, linear quantiles"
+  },
+  "weighted_spread_table": {
+    "retention": {
+      "mean": 6.624196378348019e-05,
+      "ci_2_5": 4.206213483307114e-05,
+      "ci_97_5": 9.05062833295407e-05
+    },
+    "variance": {
+      "mean": 7.280425266654047e-05,
+      "ci_2_5": 4.9071415432836716e-05,
+      "ci_97_5": 9.68039631316813e-05
+    },
+    "shape": {
+      "mean": -6.562288883060281e-06,
+      "ci_2_5": -9.051434628088621e-06,
+      "ci_97_5": -4.32819918671113e-06
+    }
+  },
+  "uniform_to_weighted_recovery_table": {
+    "center_change": {
+      "mean": -0.1690379185576607,
+      "ci_2_5": -0.1777768616334731,
+      "ci_97_5": -0.16018532835480587
+    },
+    "variance_change": {
+      "mean": 0.029691720801501592,
+      "ci_2_5": 0.02643698819142389,
+      "ci_97_5": 0.033000045100834166
+    },
+    "shape_change": {
+      "mean": 0.00378783421043798,
+      "ci_2_5": 0.0032153000059691687,
+      "ci_97_5": 0.0043487875383484715
+    },
+    "recovery_total": {
+      "mean": -0.13555836354572112,
+      "ci_2_5": -0.14063141518713201,
+      "ci_97_5": -0.1302895945934925
+    }
+  },
+  "response_curve": {
+    "uniform": {
+      "0.0": {
+        "mean_CRPS": 0.29387801752951986,
+        "difference_from_rho_0": 0.0
+      },
+      "0.25": {
+        "mean_CRPS": 0.2880416869901254,
+        "difference_from_rho_0": -0.005836330539394466
+      },
+      "0.5": {
+        "mean_CRPS": 0.27535530114867757,
+        "difference_from_rho_0": -0.018522716380842397
+      },
+      "0.75": {
+        "mean_CRPS": 0.26439830790108826,
+        "difference_from_rho_0": -0.02947970962843166
+      },
+      "1.0": {
+        "mean_CRPS": 0.26046470448136383,
+        "difference_from_rho_0": -0.03341331304815609
+      }
+    },
+    "weighted": {
+      "0.0": {
+        "mean_CRPS": 0.12484009897185921,
+        "difference_from_rho_0": 0.0
+      },
+      "0.25": {
+        "mean_CRPS": 0.1248444758771435,
+        "difference_from_rho_0": 4.376905284296564e-06
+      },
+      "0.5": {
+        "mean_CRPS": 0.12485724452097394,
+        "difference_from_rho_0": 1.714554911472225e-05
+      },
+      "0.75": {
+        "mean_CRPS": 0.12487796548265652,
+        "difference_from_rho_0": 3.78665107973174e-05
+      },
+      "1.0": {
+        "mean_CRPS": 0.12490634093564268,
+        "difference_from_rho_0": 6.624196378348019e-05
+      }
+    }
+  },
+  "implementation_audit": {
+    "tolerance_normalized_target_scale": 1e-12,
+    "mean_preservation_max_abs": {
+      "0.0": 4.440892098500626e-16,
+      "0.25": 4.440892098500626e-16,
+      "0.5": 4.440892098500626e-16,
+      "0.75": 4.440892098500626e-16,
+      "1.0": 0.0
+    },
+    "variance_match_max_abs": {
+      "0.0": 0.0,
+      "0.25": 2.7755575615628914e-17,
+      "0.5": 2.7755575615628914e-17,
+      "0.75": 2.7755575615628914e-17,
+      "1.0": 1.3877787807814457e-17
+    },
+    "rho_zero_single_gaussian_max_abs": {
+      "uniform": 3.3306690738754696e-16,
+      "weighted": 1.1102230246251565e-16
+    },
+    "reproduction": {
+      "weighted_minus_uniform_mean": -0.13555836354572112,
+      "frozen_B2_mean": -0.13555836354572112,
+      "weighted_minus_uniform_abs_error": 0.0,
+      "uniform_minus_MAP_mean": 0.13700838552617803,
+      "frozen_B1_mean": 0.13700838552617803,
+      "uniform_minus_MAP_abs_error": 0.0
+    },
+    "row_identity_max_abs": 0.0,
+    "bootstrap_identity_max_abs": 7.771561172376096e-16,
+    "checks": {
+      "all_CRPS_finite_nonnegative": true,
+      "mean_preservation": true,
+      "variance_match": true,
+      "rho_zero_single_gaussian": true,
+      "original_B1_reproduced": true,
+      "original_B2_reproduced": true,
+      "row_level_decomposition_identity": true,
+      "bootstrap_decomposition_identity": true
+    }
+  },
+  "interpretation_boundary": "Score-path decomposition under frozen predictive distributions; its terms are not unique causal contributions or calibrated epistemic-uncertainty recovery."
+}
